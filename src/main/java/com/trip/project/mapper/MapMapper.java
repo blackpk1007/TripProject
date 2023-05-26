@@ -1,5 +1,8 @@
 package com.trip.project.mapper;
 
-public class MapMapper {
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface MapMapper {
 
 }
