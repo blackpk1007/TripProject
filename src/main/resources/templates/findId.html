@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<style type="text/css">
+.signup1 {
+	width: 500px;
+	height: 500px;
+	margin-inline: auto;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.signup2 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 50px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.signup_header {
+	padding-top: 40px;
+	padding-bottom: 25px;
+}
+
+.signup_body {
+	height: 350px;
+	box-sizing: border-box;
+}
+
+#signin {
+	font-size: 28pt;
+	font-weight: bold;
+}
+
+.loginForm {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.loginForm>input {
+	width: 100%;
+	height: 40px;
+	display: inline-block;
+	box-sizing: border-box;
+	border: 0.7px solid rgb(185, 184, 184);
+	border-radius: 0.5rem;
+}
+
+#findIdButton {
+	cursor: pointer;
+	width: 100%;
+	height: 40px;
+	border-radius: 0.5rem;
+	border: none;
+	font-size: 1.1rem;
+	color: black;
+	background-color: #8be7f9;
+}
+
+ul {
+	padding: 0;
+	text-align: center;
+	list-style: none;
+}
+
+li {
+	cursor: pointer;
+	list-style: none;
+	display: inline-block;
+	color: grey;
+}
+
+.wrap{
+	padding: 0;
+	display: flex;
+}
+
+.line{
+    flex:auto;
+	border: none;
+	height:1px;
+	background-color: #000000;
+}
+
+#txt{
+	text-decoration: none;
+	display: inline-block;
+	color: grey;
+}
+#userId{
+	width: 100%;
+	background-color: rgb(222, 222, 222);
+}
+
+#userEmail{
+	width: 100%;
+	background-color: rgb(222, 222, 222);
+}
+
+#menu{
+	width: 100%;
+	height: 40px;
+}
+
+#menu ul li{
+	background-color: #ffffff;
+	list-style: none;
+	text-align: center;
+}
+
+#menu .linka{
+	float: left;
+}
+
+#menu .linkb{
+	float: right;
+}
+
+#menu .link{
+	width: 120px;
+	text-decoration: none;
+	display: block;
+	color: #000000;
+	font-weight: bold;
+}
+
+</style>
+
+</head>
+<body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="logo.png">
+		</div>
+		<ul>
+			<li class="linka" ><a class="link" href="#">일정생성</a></li>
+			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linkb" ><a class="link" href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+
+	<div class="signup1">
+		<div class="signup2">
+			<div class="signup_header">
+				<div id="signin">아이디 찾기</div>
+				
+			</div>
+			<div class="signup_body">
+				<form method="post" action="/login/idcheck">
+					<div class="loginForm">
+                        <input type="text"	id="userId" name="userId" value="이름 입력">  
+					</div>
+					<div class="loginForm">
+                        <input type="text"	id="userEmail" name="userEmail" value="이메일 입력">
+					</div>
+					<button id="findIdButton" type="submit">확인</button>
+						<script>
+							alert(${error});
+						</script>
+					<ul class="wrap">
+						<hr class="line">
+						<li>&nbsp;&nbsp;<a href="/login/find" id="txt">회원가입</a></li>&nbsp; /&nbsp;
+						<li><a href="/login/find" id="txt">비밀번호 찾기</a></li>&nbsp;&nbsp;
+						<hr class="line">
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+
+</html>

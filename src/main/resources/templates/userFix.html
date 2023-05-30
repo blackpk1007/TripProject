@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<style type="text/css">
+.signup1 {
+	width: 500px;
+	height: 500px;
+	margin-inline: auto;
+	position: absolute;
+	left:50%;
+	top: 30%;
+	transform: translate(-50%, -50%);
+}
+
+.signup2 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 50px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.signup_header {
+	padding-top: 40px;
+	padding-bottom: 25px;
+}
+
+.signup_body {
+	height: 350px;
+	box-sizing: border-box;
+}
+
+#signin {
+	font-size: 28pt;
+	font-weight: bold;
+}
+
+.loginForm {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.loginForm>input {
+	width: 100%;
+	height: 40px;
+	display: inline-block;
+	box-sizing: border-box;
+	border: 0.7px solid rgb(185, 184, 184);
+	border-radius: 0.5rem;
+}
+
+
+ul {
+	padding: 0;
+	text-align: center;
+}
+
+li {
+	cursor: pointer;
+	list-style: none;
+	display: inline-block;
+	color: grey;
+}
+
+#menu{
+	width: 100%;
+	height: 40px;
+}
+
+#menu ul li{
+	background-color: #ffffff;
+	list-style: none;
+	text-align: center;
+}
+
+#menu .linka{
+	float: left;
+}
+
+#menu .linkb{
+	float: right;
+}
+
+#menu .link{
+	width: 120px;
+	text-decoration: none;
+	display: block;
+	color: #000000;
+	font-weight: bold;
+}
+
+</style>
+
+</head>
+<body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="logo.png">
+		</div>
+		<ul>
+			<li class="linka" ><a class="link" href="#">일정생성</a></li>
+			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linkb" ><a class="link" href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+
+	<div class="signup1">
+		<div class="signup2">
+			<div class="signup_header">
+				<div id="signin">회원정보 수정</div>
+				
+			</div>
+			<div class="signup_body">
+				<form method="post" action="/login/idcheck">
+					<div class="loginForm">이름<br>
+                        <input type="text"	id="userId" name="userId" >  
+					</div>
+					<div class="loginForm">생년월일<br>
+                        <input type="text"	id="userBirth" name="userBirth" >
+					</div>
+                    <div class="loginForm">아이디<br>
+                        <input type="text"	id="userId" name="userId" >
+					</div>
+                    <div class="loginForm">비밀번호<br>
+                        <input type="text"	id="userPw" name="userPw" >
+					</div>
+                    <div class="loginForm">비밀번호 확인<br>
+                        <input type="text"	id="userPwcheck" name="userPwcheck" >
+					</div>
+
+                    <button id="passfix" type="submit">비밀번호 변경</button>
+
+                    <div class="loginForm">이메일<br>
+                        <input type="text"	id="userEmail" name="userEmail" >
+					</div>
+                    <div class="loginForm">전화번호<br>
+                        <input type="text"	id="userPhone" name="userPhone" >
+					</div>
+
+					<button id="userDelete" type="submit">회원탈퇴</button>
+                    <button id="mypage" type="submit">마이페이지</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+
+</html>
