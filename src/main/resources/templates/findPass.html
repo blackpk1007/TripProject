@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<style type="text/css">
+.signup1 {
+	width: 500px;
+	height: 500px;
+	border: ;
+	margin-inline: auto;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 0.8rem;
+}
+
+.signup2 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 50px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.signup_header {
+	padding-top: 40px;
+	padding-bottom: 25px;
+}
+
+.signup_body {
+	height: 350px;
+	box-sizing: border-box;
+}
+
+#signin {
+	font-size: 28pt;
+	font-weight: bold;
+}
+
+.loginForm {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.loginForm>input {
+	width: 100%;
+	height: 40px;
+	display: inline-block;
+	box-sizing: border-box;
+	border: 0.7px solid rgb(185, 184, 184);
+	border-radius: 0.5rem;
+}
+
+#findIdButton {
+	cursor: pointer;
+	width: 100%;
+	height: 40px;
+	border-radius: 0.5rem;
+	border: none;
+	font-size: 1.1rem;
+	color: black;
+	background-color: #8be7f9;
+}
+
+ul {
+	padding: 0;
+	text-align: center;
+}
+
+li {
+	cursor: pointer;
+	list-style: none;
+	display: inline-block;
+	color: grey;
+}
+
+.line{
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    font-size:14px;
+    margin:8px 0px;
+}
+
+.line::before{
+    content: "";
+    flex-grow: 1;
+    margin:0px 16px;
+    background:(0,0,0,0.35);
+    height:1px;
+    font-size:0px;
+    line-height: 0px;
+}
+
+.line::after{
+    content: "";
+    flex-grow: 1;
+    margin:0px 16px;
+    background:(0,0,0,0.35);
+    height:1px;
+    font-size:0px;
+    line-height: 0px;
+}
+#userId{
+	width: 100%;
+	background-color: rgb(222, 222, 222);
+}
+
+#userEmail{
+	width: 100%;
+	background-color: rgb(222, 222, 222);
+}
+
+</style>
+
+</head>
+<body>
+	<div class="signup1">
+		<div class="signup2">
+			<div class="signup_header">
+				<div id="signin">비밀번호 찾기</div>
+				
+			</div>
+			<div class="signup_body">
+				<form method="post" action="/login/passcheck">
+					<div class="loginForm">
+                        <input type="text"	id="userId" name="userId" value="이름 입력">  
+					</div>
+					<div class="loginForm">
+                        <input type="text"	id="userEmail" name="userEmail" value="이메일 입력">
+					</div>
+					<button id="findIdButton" type="submit">확인</button>
+						<script>
+							alert(${error});
+						</script>
+					<ul class="line">
+						<li><a href="/login/find">회원가입</a></li>&nbsp; /&nbsp;
+						<li><a href="/login/find">아이디찾기</a></li>
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+
+</html>
