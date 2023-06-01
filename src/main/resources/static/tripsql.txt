@@ -1,0 +1,34 @@
+create table place(
+	placeNumber int auto_increment primary key,
+	placeName varchar(20) unique not null,
+	placeAddress varchar(50) not null,
+	placeCategory varchar(10) not null,
+	placePhone varchar(20) not null;
+	placeGood int not null;
+	placeContent varchar(200),
+	placeInfo varchar(200),
+	placeTag1 varchar(10),
+	placeTag2 varchar(10),
+	placeTag3 varchar(10),
+	placeLon double unique not null,
+	placeLat double unique not null
+);
+
+create table login(
+	userNumber int auto_increment primary key,
+	userName varchar(10) not null,
+	userID varchar(20) unique not null,
+	userPW varchar(20) not null,
+	userEmail varchar(30) not null,
+	userGender char(1) not null check (userGender IN ('F', 'M')),
+	userBirth varchar(20) not null,
+	userTemperature double default 36.5 not null
+);
+
+create table community(
+	communityNumber int auto_increment primary key,
+	communityTitle varchar(20) not null,
+	communityContent varchar(1000) not null,
+	communityDate date not null,
+	communityCategory varchar(10) not null
+);
