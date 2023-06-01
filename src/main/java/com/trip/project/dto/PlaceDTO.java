@@ -11,6 +11,8 @@ public class PlaceDTO {
 	private String placeName;
 	private String placeAddress;
 	private String placeCategory;
+	private String placePhone;
+	private int placeGood;
 	private String placeContent;
 	private String placeInfo;
 	private String placeTag1;
@@ -22,13 +24,17 @@ public class PlaceDTO {
 	public PlaceDTO() {
 		super();
 	}
-	public PlaceDTO(int placeNumber, String placeName, String placeAddress, String placeCategory, String placeContent,
-			String placeInfo, String placeTag1, String placeTag2, String placeTag3, double placeLon, double placeLat) {
+	
+	public PlaceDTO(int placeNumber, String placeName, String placeAddress, String placeCategory, String placePhone,
+			int placeGood, String placeContent, String placeInfo, String placeTag1, String placeTag2, String placeTag3,
+			double placeLon, double placeLat) {
 		super();
 		this.placeNumber = placeNumber;
 		this.placeName = placeName;
 		this.placeAddress = placeAddress;
 		this.placeCategory = placeCategory;
+		this.placePhone = placePhone;
+		this.placeGood = placeGood;
 		this.placeContent = placeContent;
 		this.placeInfo = placeInfo;
 		this.placeTag1 = placeTag1;
@@ -37,6 +43,9 @@ public class PlaceDTO {
 		this.placeLon = placeLon;
 		this.placeLat = placeLat;
 	}
+
+
+	
 	
 	
 }
