@@ -28,17 +28,17 @@
         </div>
         <div id="lists">
             <!--반복문으로 내용을 복사해야함-->
-            <dl th:each="dto:{dto}">
-                <dd class="num" th:text="{dto.communityNumber}"></dd>
-                <dd class="subject"><a href="/communitydetail?myno=${dto.communityNumber}"></a></dd>
-                <dd class="name">""</dd>
-                <dd class="created" th:text="{dto.communityDate}"></dd>
+            <dl th:each="dto:${list}">
+                <dd class="num" ><a th:text="${dto.communityNumber}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
+                <dd class="subject"><a th:text="${dto.communityTitle}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
+                <dd class="name">홍길동</dd>
+                <dd class="created" th:text="${#dates.format(dto.communityDate, 'yyyy-MM-dd')}"></dd>
             </dl>
         </div>
     </div>
     <!--페이징-->
     <div id="write">
-        <input type="button" src="" value="글쓰기" id="button" onclick="location.href='/community/communitywriteform'">
+        <input type="button" value="글쓰기" id="button" onclick="location.href='/community/communitywriteform'">
     </div>
 </div>
 </body>
