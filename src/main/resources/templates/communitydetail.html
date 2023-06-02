@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div id="detail">
+        <div>
+            <div><img src="다운로드.png" id="img"></div>
+            <div id="top_title">제주도 여행팁</div>
+        </div>
+        <div id="write_title">
+            <div id="title" class="left"><!--제목-->제목</div>
+            <div id="fmtdate" class="right"><!--<fmt:formatDate value="" pattern="yyyy-MM--dd"></fmt:formatDate>-->0000-00-00</div>
+            <div id="date" class="right">작성일자</div>
+            <div id="writer_user" class="right"><!--작성자-->홍길동</div>
+            <div id="writer" class="right">작성자</div>
+            
+        </div>
+        <div>
+            <textarea readonly="readonly" id="textarea"></textarea>
+        </div>
+        <div id="button">
+            <input type="button" value="수정" onclick="location.href='/community/communityupdateform?communityNumber=${dto.communityNumber}'">
+            <input type="button" value="삭제" onclick="location.href='/community/communitydelete?communityNumber=#{dto.communityNumber}'">
+            <input type="button" value="목록" onclick="loaction.href='/community/communitymain'">
+        </div>
+    </div>
+</body>
+</html>
