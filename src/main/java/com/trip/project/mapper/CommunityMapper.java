@@ -14,18 +14,18 @@ import com.trip.project.dto.CommunityDTO;
 
 @Mapper
 public interface CommunityMapper {
-	@Select(" SELECT * FROM COMMUNITY ORDER BY COMMUNITYNUMBER DESC ")
+	@Select(" SELECT * FROM community ORDER BY communityNumber DESC ")
 	List<CommunityDTO> selectCommunity();
 	
-	@Insert(" INSERT INTO COMMUNITY VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}) ")
+	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}) ")
 	int insert(CommunityDTO dto);
 	
-	@Select(" SELECT * FROM COMMUNITY WHERE COMMUNITYNUMBER=#{communityNumber} ")
+	@Select(" SELECT * FROM community WHERE communityNumber=#{communityNumber} ")
 	CommunityDTO selectOne(int communityNumber);
 	
-	@Update(" UPDATE COMMUNITY SET COMMUNITYTITLE=#{communityTitle}, COMMUNITYCONTENT=#{communityContent}, COMMUNITYCATEGORY=#{communityCategory} ")
+	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communiytContent=#{communityContent}, communityCategory=#{communityCategory} ")
 	int update(CommunityDTO dto);
 	
-	@Delete(" DELETE FROM COMMUNITY WHERE COMMUNITYNUMBER=#{communityNumber} ")
+	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} ")
 	int delete(int communityNumber);
 }
