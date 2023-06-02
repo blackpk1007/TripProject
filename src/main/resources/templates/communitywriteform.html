@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="write">
+    <div id="top_title">
+        게시글 작성
+    </div>
+    <form action="/community/communitywrite" method="post">
+        <div id="kategorie" class="div">
+            <div id="write_kg">카테고리</div>
+            <div id="tag">
+                <form action= method="post">
+                    <select>
+                        <option value="">팁</option>
+                        <option vlaue="">후기</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div id="title" class="div">
+            <div id="write_ti">제목</div>
+            <div><input type="text" id="title_text"></div>
+        </div>
+        <div id="contents" class="div">
+            <div id="write_con">내용</div>
+            <div id="write_ta"><textarea rows="30" id="textarea"></textarea></div>
+        </div>
+        <div id="button">
+            <input type="submit" value="작성">
+            <input type="button" value="목록" onclick="location.href='/community/communitymain'">
+        </div>
+    </form>
+</div>
+</body>
+</html>
