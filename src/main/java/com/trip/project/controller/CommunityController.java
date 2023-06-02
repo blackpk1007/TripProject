@@ -67,9 +67,9 @@ public class CommunityController {
 	public String communityUpdate(CommunityDTO dto){
 		logger.info("UPDATE COMMUNITY");
 		if(cService.update(dto)>0) {
-			return "redirect:/communitymain";
+			return "redirect:/community/communitymain";
 		}else {
-			return "redirect:/communityupdateform";
+			return "redirect:/community/communityupdateform";
 		}
 	}
 	
@@ -78,9 +78,9 @@ public class CommunityController {
 	public String communityDelete(int communityNumber) {
 		logger.info("DELETE COMMUNITY");
 		if(cService.delete(communityNumber)>0) {
-			return "redirect:/community";
+			return "redirect:/community/communitymain";
 		}else {
-			return "redirect:/detail?communityNumber"+communityNumber;
+			return "redirect:/community/communitydetail?communityNumber="+communityNumber;
 		}
 	}
 	
