@@ -83,6 +83,8 @@ public class CommunityController {
 			return "redirect:/community/communitydetail?communityNumber="+communityNumber;
 		}
 	}
+	
+	
 }
 
 
