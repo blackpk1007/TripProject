@@ -23,7 +23,7 @@ public class CommunityController {
 	@RequestMapping("/communitymain")
 	public String cummunityMain(Model model) {
 		logger.info("COMMUNITY MAIN");
-		model.addAttribute("dto", cService.selectCommunity());
+		model.addAttribute("list", cService.selectCommunity());
 		return "communitymain";
 	}
 	
@@ -47,9 +47,9 @@ public class CommunityController {
 	public String communityWrite(CommunityDTO dto) {
 		logger.info("COMMUNITY WRITE");
 		if(cService.insert(dto)>0) {
-			return "redirect:/communitymain";
+			return "redirect:/community/communitymain";
 		}else {
-			return "redirect:/communitywriteform";
+			return "redirect:/community/communitywriteform";
 		}
 		
 	}
@@ -83,6 +83,8 @@ public class CommunityController {
 			return "redirect:/detail?communityNumber"+communityNumber;
 		}
 	}
+	
+	
 }
 
 

@@ -12,8 +12,8 @@
     <div id="tag">
         <form action="" method="post">
             <select>
-                <option value="">팁</option>
-                <option value="">후기</option>
+                <option value="tip">팁</option>
+                <option value="review">후기</option>
             </select>
         </form>
     </div>
@@ -27,14 +27,14 @@
             </dl>
         </div>
         <div id="lists">
-            <!--반복문으로 내용을 복사해야함-->
-            <dl th:each="dto:{dto}">
-                <dd class="num" th:text="{dto.communityNumber}"></dd>
-                <dd class="subject"><a href="/communitydetail?myno=${dto.communityNumber}"></a></dd>
+            <!-- 반복문으로 내용을 복사해야함 -->
+            <dl th:each="dto:${list}">
+                <dd class="num" th:text="${dto.communityNumber}"></dd>
+                <dd class="subject" ><a th:text="${dto.communityTitle}" th:href="@{'/community/communitydetail?communityNumber='+${dto.communityNumber}}"></a></dd>
                 <dd class="name">""</dd>
-                <dd class="created" th:text="{dto.communityDate}"></dd>
+                <dd class="created" th:text="${dto.communityDate}"></dd>
             </dl>
-        </div>
+        </div> 
     </div>
     <!--페이징-->
     <div id="write">
