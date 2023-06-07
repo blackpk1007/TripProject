@@ -37,7 +37,7 @@
 
         header {
             width: 100%;
-            height: 200px;
+            height: 30vh;
             background-color: rgba(256, 256, 256, 0.6);
             position: absolute;
             top: 0;
@@ -45,7 +45,10 @@
         }
 
         #logo {
-           text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 3vh;
         }
 
         #top_menu {
@@ -56,24 +59,25 @@
 
         #top_menu a {
             color: black;
+            margin-right: 5vh;
         }
 
-        nav {
-            position: absolute;
-            bottom: 10px;
-            text-align: center;
-            left: 40%;
+        #nav {
+            /* position: absolute; */
+            /* bottom: 10px; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-size: 16px;
         }
-        
-        nav li {
-            display: inline;
-            margin-left: 30px;
+        #nav label{
+            margin-left: 5vh;
+            margin-right: 5vh;
         }
-
-        nav li a {
-            color: black;
-        } 
+        #nav > label > a{
+            text-decoration: none;
+            color:black;
+        }
         #back_img{
             width: 100%;
 
@@ -94,43 +98,88 @@
         }
 
         #tag1{
-            width:150px; height: 30px; border: 1px solid #B8E9FF; border-radius:2em;
+            width:150px; height: 30px; border: 1px solid #B8E9FF; border-radius:8px;
             background-color: #B8E9FF;
             color: white;
+            margin-left: 20vh;
+            margin-top: 8vh;
+            margin-bottom: 2vh;
         }
         #tag1_img{
+            width: 90%;
+            height: 50vh;
             display:flex;
-            margin: 10px 10%;
+            justify-content: center;
+            align-items: center;
+            margin-left: 10vh;
+            
         }
-        #tag1_img img{
+        /* #tag1_img > div {
+            display:flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        } */
+        /* #tag1_img img{
             width: 70%;
             height: 75%;
+        } */
+        
+        .a{
+            width: 100%;
+            height: 20vh;
         }
-        
-        
+
+        .insta{
+            position: relative;
+            margin-left: 3vh;
+            width: 100%;
+            height: 100%;
+            background-image: url("./img/insta.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            /* width: 350px;
+            height: 380px; */
+            /* object-fit: cover; */
+            box-shadow: 5px 5px 5px #595959;
+            }
+
+        /* .insta_1{
+            position: relative;
+            z-index: 1;
+            width: 70%;
+            height: 75%;
+            box-shadow: 5px 5px 5px #595959;
+        } */
+        .insta_2{
+            position: absolute;
+            top: 26%;
+            left: 17%;
+            z-index: 2;
+            width: 66%;
+            height: 40%;
+        }
     </style>
 </head>
 <body>
     <div id="back">
         <img src="./img/back.png" id="back_img">
         <header>
-            <div id="logo">
-                <img src="./img/logo.png" alt="Logo">
-            </div>
+            <div class="a">
+                <div id="logo">
+                    <img src="./img/logo2.png" alt="Logo">
+                </div>
 
-            <div id="top_menu">
-                <a href="/login">로그인</a>
-                <a href="/login/registerform">회원가입</a>
+                <div id="top_menu">
+                    <a href="#">로그인</a>
+                    <a href="#">회원가입</a>
+                </div>
             </div>
             <div id="nav">
-                <nav>
-                    <ul>
-                        <li><a href="#">일정만들기</a></li>
-                        <li><a href="#">코스보기</a></li>
-                        <li><a href="">커뮤니티</a></li>
-                        <li><a href="#">동행구하기</a></li>
-                    </ul>
-                </nav>
+                <label for=""><a href="#">일정만들기</a></label>
+                <label for=""><a href="#">코스보기</a></label>
+                <label for=""><a href="#">커뮤니티</a></label>
+                <label for=""><a href="#">동행구하기</a></label>
             </div>
             
         </header>
@@ -194,23 +243,41 @@
         <p>어떤 여행을 계획하고 계시나요?</p>
         <p>Hash Tag</p>
         <br><br>
-    </div>
-
-
+    </div> 
     <div align="center" id="tag1">#반려동물동반</div>
     <div id="tag1_img">
-        <a href="#"><img src="./img/udo.jpg" ></a>
-        <a href="#"><img src="./img/udo.jpg"></a>
-        <a href="#"><img src="./img/udo.jpg"></a>
-        <a href="#"><img src="./img/udo.jpg"></a>
+        <div class="insta">
+            <!-- <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a> -->
+        </div>
+        <div class="insta">
+            <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a>
+        </div>
+        <div class="insta">
+            <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a>
+        </div>
+        <div class="insta">
+            <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a>
+        </div>
     </div>
 
     <div align="center" id="tag1">#부모님동반</div>
     <div id="tag1_img">
-        <a href="#"><img src="./img/udo.jpg" ></a>
-        <a href="#"><img src="./img/udo.jpg"></a>
-        <a href="#"><img src="./img/udo.jpg"></a>
-        <a href="#"><img src="./img/udo.jpg"></a>
+        <div class="insta">
+            <a href="#"><img class="insta_1" src="./img/insta.png" ></a>
+            <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a>
+        </div>
+        <div class="insta">
+            <a href="#"><img class="insta_1" src="./img/insta.png" ></a>
+            <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a>
+        </div>
+        <div class="insta">
+            <a href="#"><img class="insta_1" src="./img/insta.png" ></a>
+            <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a>
+        </div>
+        <div class="insta">
+            <a href="#"><img class="insta_1" src="./img/insta.png" ></a>
+            <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a>
+        </div>
     </div>
 
 
@@ -223,7 +290,7 @@
     
         slidesPerView : 2, // 동시에 보여줄 슬라이드 갯수
         spaceBetween : 30, // 슬라이드간 간격
-        slidesPerGroup : 3, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+        slidesPerGroup : 2, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
     
         // 그룹수가 맞지 않을 경우 빈칸으로 메우기
         // 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
