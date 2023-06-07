@@ -1,3 +1,4 @@
+/*
 package com.trip.project.controller;
 
 import org.springframework.stereotype.Controller;
@@ -41,3 +42,4 @@ public class UserController {
 	
 	
 }
+*/

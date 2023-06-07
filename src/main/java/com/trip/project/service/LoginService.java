@@ -8,4 +8,8 @@ public interface LoginService {
 	
 	public int regist(LoginDTO dto);
 	
+	public int update(LoginDTO dto);
+	
+	public int delete(LoginDTO dto);
+	
 }
