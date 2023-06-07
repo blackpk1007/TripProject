@@ -1,8 +1,6 @@
 package com.trip.project.dto;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class PlaceDTO {
@@ -18,8 +16,8 @@ public class PlaceDTO {
 	private String placeTag1;
 	private String placeTag2;
 	private String placeTag3;
-	private double placeLon;
-	private double placeLat;
+	private String placeLon;
+	private String placeLat;
 	
 	public PlaceDTO() {
 		super();
@@ -27,7 +25,7 @@ public class PlaceDTO {
 	
 	public PlaceDTO(int placeNumber, String placeName, String placeAddress, String placeCategory, String placePhone,
 			int placeGood, String placeContent, String placeInfo, String placeTag1, String placeTag2, String placeTag3,
-			double placeLon, double placeLat) {
+			String placeLon, String placeLat) {
 		super();
 		this.placeNumber = placeNumber;
 		this.placeName = placeName;

@@ -1,18 +1,25 @@
 create table place(
 	placeNumber int auto_increment primary key,
-	placeName varchar(20) unique not null,
-	placeAddress varchar(50) not null,
+	placeName varchar(50) unique not null,
+	placeAddress varchar(100) not null,
 	placeCategory varchar(10) not null,
 	placePhone varchar(20) not null,
 	placeGood int not null,
-	placeContent varchar(200),
+	placeContent varchar(500),
 	placeInfo varchar(200),
-	placeTag1 varchar(10),
-	placeTag2 varchar(10),
-	placeTag3 varchar(10),
-	placeLon varchar(15) , 
+	placeTag1 varchar(20),
+	placeTag2 varchar(20),
+	placeTag3 varchar(20),
+	placeLon varchar(15),
 	placeLat varchar(15)
 );
+
+alter table place modify placeTag3 varchar(20);
+
+drop table place;
+delete from place;
+alter table place auto_increment = 1;
+select * from place;
 
 create table login(
 	userNumber int auto_increment primary key,
