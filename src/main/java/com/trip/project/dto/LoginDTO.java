@@ -1,12 +1,8 @@
 package com.trip.project.dto;
 
-import java.util.Date;
+import lombok.Data;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+@Data
 public class LoginDTO {
 	
 	private int userNumber;
@@ -14,15 +10,16 @@ public class LoginDTO {
 	private String userID;
 	private String userPW;
 	private String userEmail;
-	private String userGender;
-	private Date userBirth;
+	private char userGender;
+	private String userBirth;
+	private double userTemperature;
 	
 	public LoginDTO() {
 		super();
 	}
 	
-	public LoginDTO(int userNumber, String userName, String userID, String userPW, String userEmail, String userGender,
-			Date userBirth) {
+	public LoginDTO(int userNumber, String userName, String userID, String userPW, String userEmail, char userGender,
+			String userBirth, double userTemperature) {
 		super();
 		this.userNumber = userNumber;
 		this.userName = userName;
@@ -31,6 +28,10 @@ public class LoginDTO {
 		this.userEmail = userEmail;
 		this.userGender = userGender;
 		this.userBirth = userBirth;
+		this.userTemperature = userTemperature;
 	}
+
+
+	
 	
 }

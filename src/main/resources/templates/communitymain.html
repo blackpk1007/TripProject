@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div id="community">    
+    <div id="top_title">
+        커뮤니티
+    </div>
+    <div id="tag">
+        <form action="" method="post">
+            <select>
+                <option value="tip">팁</option>
+                <option value="review">후기</option>
+            </select>
+        </form>
+    </div>
+    <div id="community_list">
+        <div id="title">
+            <dl>
+                <dt class="num">번호</dt>
+                <dt class="subject">제목</dt>
+                <dt class="name">작성자</dt>
+                <dt class="created">작성일</dt>
+            </dl>
+        </div>
+        <div id="lists">
+            <!--반복문으로 내용을 복사해야함-->
+            <dl th:each="dto:${list}">
+                <dd class="num" ><a th:text="${dto.communityNumber}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
+                <dd class="subject"><a th:text="${dto.communityTitle}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
+                <dd class="name">홍길동</dd>
+                <dd class="created" th:text="${#dates.format(dto.communityDate, 'yyyy-MM-dd')}"></dd>
+
+            </dl>
+        </div> 
+    </div>
+    <!--페이징-->
+    <div id="write">
+        <input type="button" value="글쓰기" id="button" onclick="location.href='/community/communitywriteform'">
+    </div>
+</div>
+</body>
+</html>
