@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>RegisterForm</title>
 <style type="text/css">
 .signup1 {
 	width: 500px;
@@ -138,18 +137,15 @@ li {
 				
 			</div>
 			<div class="signup_body">
-				<form method="post" action="/login/idcheck">
+				<form method="post" action="/login/register">
 					<div class="loginForm">이름<br>
-                        <input type="text"	id="userId" name="userId" >  
-					</div>
-					<div class="loginForm">생년월일<br>
-                        <input type="text"	id="userBirth" name="userBirth" >
+                        <input type="text"	id="userName" name="userName" >  
 					</div>
                     <div class="loginForm">아이디<br>
-                        <input type="text"	id="userId" name="userId" >
+                        <input type="text"	id="userID" name="userID" >
 					</div>
                     <div class="loginForm">비밀번호<br>
-                        <input type="text"	id="userPw" name="userPw" >
+                        <input type="text"	id="userPW" name="userPW" >
 					</div>
                     <div class="loginForm">비밀번호 확인<br>
                         <input type="text"	id="userPwcheck" name="userPwcheck" >
@@ -157,18 +153,25 @@ li {
                     <div class="loginForm">이메일<br>
                         <input type="text"	id="userEmail" name="userEmail" >
 					</div>
+					
+					<!-- gender -->
+					
+					<div class="loginForm">생년월일<br>
+                        <input type="text"	id="userBirth" name="userBirth" >
+					</div>
                     <div class="loginForm">전화번호<br>
                         <input type="text"	id="userPhone" name="userPhone" >
 					</div>
-
-					<button id="AuthButton" type="submit">이메일 인증</button>
+					
+					<!-- temp? -->
                     <button id="signinButton" type="submit">회원가입</button>
+                    </form>
+					<button id="AuthButton" type="submit">이메일 인증</button>
 
 						<script>
 							alert(${error});
 						</script>
 
-				</form>
 			</div>
 		</div>
 	</div>
