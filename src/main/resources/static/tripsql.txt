@@ -3,15 +3,15 @@ create table place(
 	placeName varchar(20) unique not null,
 	placeAddress varchar(50) not null,
 	placeCategory varchar(10) not null,
-	placePhone varchar(20) not null;
-	placeGood int not null;
+	placePhone varchar(20) not null,
+	placeGood int not null,
 	placeContent varchar(200),
 	placeInfo varchar(200),
 	placeTag1 varchar(10),
 	placeTag2 varchar(10),
 	placeTag3 varchar(10),
-	placeLon double unique not null,
-	placeLat double unique not null
+	placeLon varchar(15) , 
+	placeLat varchar(15)
 );
 
 create table login(
