@@ -3,6 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	      #community{
+            width:50%;
+	        margin:20px auto;
+	        text-align:center;
+	        min-width:1000px;
+	      
+        }
+        #top_title{
+            font-size:20pt;
+        }
+        #tag{
+            height:10%;
+            float: left;
+        }
+        #community_list{
+            clear: both;
+            height: 54vh;
+            
+            
+                    }
+        #community_list dd {
+	    float:left;
+	    height:10px;
+	    line-height:1%;
+	    text-align:center;
+	    
+        }
+        #community_list #title {
+	    height:3vh;
+	    border-top:1px solid #CCCCCC;
+	    border-bottom:1px solid #CCCCCC;
+	    background-color: #E6E4E6;
+        }
+        #community_list #title dt {
+	    float:left;
+	    line-height:1%;
+	    text-align:center;
+        
+        }
+        #community_list .num {width:10%;}
+        #community_list .subject {width:55%;}
+        #community_list .name {width:20%;}
+        #community_list .created {width:15%;}
+
+        #community_list #lists {
+	        clear:both;
+        }
+        #lists dl{
+        margin:0px;
+       
+        } 
+        #community_list dd {
+	    float:left;
+	    height:5vh;
+	    line-height:310%;
+	    text-align:center;
+        margin-left: 0;
+        border-bottom: solid 1px gray;
+        }
+        #community_list a {
+	        line-height: 1%;
+            
+        }
+        #write{
+            clear: both;
+            float:right;
+            margin-top: 1%;
+            margin-right: 2.8%
+        }
+        select{
+            width:200%;
+            text-align: center;
+            margin-bottom: 10%;
+            height:2.7vh;
+         
+        }
+        #button{
+            width:150%;
+            height:3.3vh;
+            background-color: #B8E9FF;
+            border-color: #B8E9FF;
+            border-radius: 7px;
+           	cursor:pointer;
+        }
+</style>
 </head>
 <body>
 <div id="community">    
@@ -10,12 +96,13 @@
         커뮤니티
     </div>
     <div id="tag">
-        <form action="" method="post">
-            <select>
+       
+            <select> 
+            	<option value="all">전체</option>
                 <option value="tip">팁</option>
                 <option value="review">후기</option>
             </select>
-        </form>
+       
     </div>
     <div id="community_list">
         <div id="title">
@@ -33,7 +120,6 @@
                 <dd class="subject"><a th:text="${dto.communityTitle}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
                 <dd class="name">홍길동</dd>
                 <dd class="created" th:text="${#dates.format(dto.communityDate, 'yyyy-MM-dd')}"></dd>
-
             </dl>
         </div> 
     </div>
