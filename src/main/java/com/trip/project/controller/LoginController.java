@@ -69,15 +69,15 @@ public class LoginController {
 	// 회원가입 페이지
 	@RequestMapping("/registerform")
 	public String registerForm() {
-		
+
 		return "registerform";
-		
+
 	}
 
 	// 회원가입
 	@RequestMapping("/register")
 	public String register(Model model, LoginDTO dto) {
-		
+
 		int res = lservice.regist(dto);
 		if (res != 0) {
 			System.out.println(dto.getUserName());
@@ -85,6 +85,34 @@ public class LoginController {
 		} else {
 			return "registerform";
 		}
+	}
+
+	// 사용자 마이페이지 메인
+	@RequestMapping("/usermain")
+	public String userMain() {
+
+		return "usermain";
+	}
+
+	// 사용자 회원 정보 수정 페이지
+	@RequestMapping("userupdateform")
+	public String userUpdateForm() {
+
+		return "userupdateform";
+	}
+
+	// 사용자 회원 정보 수정
+	@RequestMapping("userupdate")
+	public String userupdate() {
+
+		return "userupdate";
+	}
+
+	// 사용자 회원 탈퇴
+	@RequestMapping("userdelete")
+	public String userDelete() {
+
+		return "userdelete";
 	}
 
 }
