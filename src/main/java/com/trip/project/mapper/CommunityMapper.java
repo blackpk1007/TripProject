@@ -14,7 +14,7 @@ import com.trip.project.dto.CommunityDTO;
 
 @Mapper
 public interface CommunityMapper {
-	@Select(" SELECT * FROM community ORDER BY communityNumber DESC ")
+	@Select(" SELECT * FROM community ORDER BY communityNumber ASC ")
 	List<CommunityDTO> selectCommunity();
 	
 	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}) ")
