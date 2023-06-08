@@ -19,10 +19,10 @@ public interface LoginMapper {
 		public int regist(LoginDTO dto);
 	
 		//회원정보수정
-		@Update(" UPDATE login SET userPW=#{userPW}, userEmail=#{userEmail}, WHERE userNumber=#{userNumber} ")
+		@Update(" UPDATE login SET userPW=#{userPW} WHERE userID=#{userID} ")
 		public int update(LoginDTO dto);
 		
 		//회원삭제
-		@Delete(" DELETE FROM login WHERE userNumber=#{userNumber} " )
+		@Delete(" DELETE FROM login WHERE userID=#{userID} " )
 		public int delete(LoginDTO dto);
 }
