@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import com.trip.project.dto.PlaceDTO;
 
@@ -15,4 +16,7 @@ public interface PlaceMapper {
 			+ "#{placeInfo}, #{placeTag1}, #{placeTag2}, #{placeTag3}, #{placeLon}, #{placeLat}) ")
 	int crawinsert(PlaceDTO dto);
 	
+	
+	@Select(" select placeName, placeLon, placeLat from place ")
+	List<PlaceDTO> placeList();
 }
