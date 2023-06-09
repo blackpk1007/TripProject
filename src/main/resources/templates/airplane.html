@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+var xhr = new XMLHttpRequest();
+var url = 'http://openapi.airport.co.kr/service/rest/FlightStatusList/getFlightStatusList'; /*URL*/
+var queryParams = '?' + encodeURIComponent('serviceKey') + '='+'1kainzqQnmN7SXsZINtwO%2FxHhS9Vym1t4CDA1aTLEbOtE%2BInS7RhlsMw%2F4vTuOAaepTP5Cv8gt1sge%2Bhc%2BDJtA%3D%3D'; /*Service Key*/
+queryParams += '&' + encodeURIComponent('schLineType') + '=' + encodeURIComponent('D / I'); /**/
+queryParams += '&' + encodeURIComponent('schIOType') + '=' + encodeURIComponent('I / 0'); /**/
+queryParams += '&' + encodeURIComponent('schAirCode') + '=' + encodeURIComponent('GMP'); /**/
+queryParams += '&' + encodeURIComponent('schStTime') + '=' + encodeURIComponent('0600'); /**/
+queryParams += '&' + encodeURIComponent('schEdTime') + '=' + encodeURIComponent('1800'); /**/
+xhr.open('GET', url + queryParams);
+xhr.onreadystatechange = function () {
+    if (this.readyState == 4) {
+        alert('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
+    }
+};
+
+xhr.send('');
+</script>
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+</html>
