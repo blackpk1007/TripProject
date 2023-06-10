@@ -38,7 +38,7 @@ public class Crawling {
 		try {
 			// 네이버 지도 검색 페이지로 이동
 			driver.get(
-					"https://www.visitjeju.net/kr/detail/list?menuId=DOM_000001719000000000&cate1cd=cate0000000005#p20&pageSize=15&sortListType=reviewcnt&viewType=thumb&isShowBtag&tag");
+					"https://www.visitjeju.net/kr/detail/list?menuId=DOM_000001719000000000&cate1cd=cate0000000005#p1&pageSize=15&sortListType=reviewcnt&viewType=thumb&isShowBtag&tag");
 
 			Thread.sleep(3000);
 			// 맛집 목록이 로드될 때까지 기다립니다.
@@ -48,7 +48,7 @@ public class Crawling {
 
 				System.out.println("Page: " + page);
 
-				for (int i = 12; i <= 15; i++) {
+				for (int i = 1; i <= 15; i++) {
 					WebElement category = driver
 							.findElement(By.xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[5]/ul/li["
 									+ i + "]/dl/dt/a/span"));
@@ -97,6 +97,9 @@ public class Crawling {
 				nextPageButton.click();
 				page++;
 			}
+//			Path jsonFilePath = Paths.get("C:\\image\\restaurants.json");
+//			Files.write(jsonFilePath, restaurantsArray.toString().getBytes());
+//			System.out.println("JSON file saved: " + jsonFilePath);
 
 		} catch (Exception e) {
 			System.out.println("에러 발생");
@@ -225,7 +228,6 @@ public class Crawling {
 		} catch (Exception e) {
 			tag3 = null;
 		}
-		
 		JSONObject restaurantObject = new JSONObject();
 		restaurantObject.put("placeName", title.getText() != null ? title.getText().replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9,. ()]", "") : "");
 		restaurantObject.put("placeAddress", (addr != null ? addr.getText() : ""));
@@ -250,7 +252,6 @@ public class Crawling {
 		String imageUrl = img.getAttribute("src");
 		if (!imageUrl.isEmpty()) {
 			try {
-
 				Path targetPath = Paths
 						.get("C:\\image\\" + title.getText().replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9,. ()]", "") + ".jpg");
 				if (Files.exists(targetPath)) {
