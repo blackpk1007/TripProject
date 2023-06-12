@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<script>
-var xhr = new XMLHttpRequest();
-var url = 'http://openapi.airport.co.kr/service/rest/FlightStatusList/getFlightStatusList'; /*URL*/
-var queryParams = '?' + encodeURIComponent('serviceKey') + '='+'1kainzqQnmN7SXsZINtwO%2FxHhS9Vym1t4CDA1aTLEbOtE%2BInS7RhlsMw%2F4vTuOAaepTP5Cv8gt1sge%2Bhc%2BDJtA%3D%3D'; /*Service Key*/
-queryParams += '&' + encodeURIComponent('schLineType') + '=' + encodeURIComponent('D / I'); /**/
-queryParams += '&' + encodeURIComponent('schIOType') + '=' + encodeURIComponent('I / 0'); /**/
-queryParams += '&' + encodeURIComponent('schAirCode') + '=' + encodeURIComponent('GMP'); /**/
-queryParams += '&' + encodeURIComponent('schStTime') + '=' + encodeURIComponent('0600'); /**/
-queryParams += '&' + encodeURIComponent('schEdTime') + '=' + encodeURIComponent('1800'); /**/
-xhr.open('GET', url + queryParams);
-xhr.onreadystatechange = function () {
-    if (this.readyState == 4) {
-        alert('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
-    }
-};
-
-xhr.send('');
-</script>
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Airplane</title>
 </head>
 <body>
-
+    <h1>Airplane Information</h1>
+    
+    <!-- flightStatus를 사용하여 항공편 정보 표시 -->
+    <table>
+        <tr>
+            <th>항공사</th>
+            <th>출발지</th>
+            <th>목적지</th>
+            <th>날짜</th>
+            <th>출발시간</th>
+            <th>변경시간</th>            
+            <th>현황</th>
+        </tr>
+        <tr th:each="flight : ${flightStatus}">
+            <td th:text="${flight.airlineKorean}"></td>
+            <td th:text="${flight.boardingKor}"></td>
+            <td th:text="${flight.arrivedKor}"></td>
+            <td th:text="${flight.flightDate}"></td>
+            <td th:text="${flight.std}"></td>
+            <td th:text="${flight.etd}"></td>
+            <td th:text="${flight.rmkKor}"></td>
+        </tr>
+    </table>
 </body>
 </html>
