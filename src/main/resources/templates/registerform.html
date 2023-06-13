@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>RegisterForm</title>
+<link rel="stylesheet" href="/resources/css/registerform.css"
+	type="text/css">
+
+
+</head>
+<body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka"><a class="link" href="#">일정생성</a></li>
+			<li class="linka"><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka"><a class="link" href="#">채팅방</a></li>
+			<li class="linkb"><a class="link" href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+
+	<div class="signup1">
+		<div class="signup2">
+			<div class="signup_header">
+				<div id="signin">회원가입</div>
+
+			</div>
+			<div class="signup_body">
+				<form method="post" action="/login/register">
+					<div class="loginForm">
+						&nbsp;이름 <input type="text" id="userName" name="userName">
+					</div>
+					<div class="loginForm">
+						&nbsp;생년월일 <input type="date" id="userBirth" name="userBirth">
+					</div>
+					<div class="male">
+						&nbsp;남자<input id=male type="radio" name="userGender" value="M" checked /> 
+					</div>
+					<div class="female">
+						여자<input id=female type="radio" name="userGender" value="F" />
+					</div>
+					<div class="loginForm">
+						&nbsp;아이디 <input type="text" id="userID" name="userID">
+					</div>
+					<div class="loginForm">
+						&nbsp;비밀번호 <input type="text" id="userPW" name="userPW">
+					</div>
+					<div class="loginForm">
+						&nbsp;비밀번호 확인 <input type="text" id="userPwcheck" name="userPwcheck">
+					</div>
+					<div class="loginForm">
+						&nbsp;이메일 <input type="text" id="userEmail" name="userEmail">
+					</div>
+					<div class="loginForm">
+						&nbsp;전화번호 <input type="text" id="userPhone" name="userPhone">
+					</div>
+
+					<!-- temp? -->
+					<button id="signinButton" type="submit">회원가입</button>
+				</form>
+				<button id="AuthButton" type="submit">이메일 인증</button>
+
+				<script>
+							alert(${error});
+						</script>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
+
+</html>

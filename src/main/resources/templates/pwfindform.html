@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>FindYourID</title>
+<link rel="stylesheet" href="/resources/css/pwfindform.css" type="text/css">
+</head>
+<body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka" ><a class="link" href="#">일정생성</a></li>
+			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linkb" ><a class="link" href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+
+	<div class="signup1">
+		<div class="signup2">
+			<div class="signup_header">
+				<div id="signin">패스워드 찾기</div>
+				
+			</div>
+			<div class="signup_body">
+				<form method="post" action="/login/idcheck">
+					<div class="loginForm">
+                        <input type="text"	id="userName" name="userName" placeholder=" 이름 입력">  
+					</div>
+					<div class="loginForm">
+                        <input type="text"	id="userEmail" name="userEmail" placeholder=" 이메일 입력">
+					</div>
+					<button id="findPwButton" type="submit">확인</button>
+						<script>
+							alert(${error});
+						</script>
+					<ul class="wrap">
+						<hr class="line">
+						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
+						<li><a href="/login/idfindform" id="txt">아이디 찾기</a></li>&nbsp;&nbsp;
+						<hr class="line">
+					</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
