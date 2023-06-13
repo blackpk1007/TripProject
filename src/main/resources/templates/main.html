@@ -176,6 +176,32 @@ header {
 	width: 66%;
 	height: 40%;
 }
+
+.popup-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+        
+        .popup {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .popup-close {
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
 </style>
 </head>
 <body>
@@ -192,22 +218,19 @@ header {
 				</div>
 			</div>
 			<div id="nav">
-				<label for=""><a href="/plan">일정만들기</a></label>
-				<label for=""><a href="#">코스보기</a></label>
-				<label for=""><a href="#">커뮤니티</a></label>
-				<label for=""><a href="#">동행구하기</a></label>
+				<label for=""><a href="/plan">일정만들기</a></label> <label for=""><a
+					href="#">코스보기</a></label> <label for=""><a href="#">커뮤니티</a></label> <label
+					for=""><a href="#">동행구하기</a></label>
 			</div>
 
 		</header>
 		<label id="main_text"> 제주도 여행의 모든것 </label>
 	</div>
 	<div id="place_text">
-		<br>
-		<br>
+		<br> <br>
 		<p>제주도 핫플레이스</p>
 		<p>Hot Place</p>
-		<br>
-		<br>
+		<br> <br>
 	</div>
 
 	<div class="swiper-container">
@@ -245,8 +268,7 @@ header {
 		<br> <br>
 		<p>코스추천</p>
 		<p>Course</p>
-		<br>
-		<br>
+		<br> <br>
 	</div>
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
@@ -284,8 +306,7 @@ header {
 	<div id="place_text">
 		<p>어떤 여행을 계획하고 계시나요?</p>
 		<p>Hash Tag</p>
-		<br>
-		<br>
+		<br> <br>
 	</div>
 	<div align="center" id="tag1">#반려동물동반</div>
 	<div id="tag1_img">
@@ -323,10 +344,45 @@ header {
 		</div>
 	</div>
 
+	<div id="popupContainer" class="popup-container">
+		<div class="popup">
+			<h1>팝업 내용</h1>
+			<div id="popupTable"></div>
+			<table id="flightTable">
+				<tr>
+					<th>항공사</th>
+					<th>출발지</th>
+					<th>목적지</th>
+					<th>날짜</th>
+					<th>항공편</th>
+					<th>출발시간</th>
+					<th>변경시간</th>
+					<th>현황</th>
+				</tr>
+				<tr th:each="arrived : ${arriveds}">
+					<td th:text="${arrived.airlineKorean}"></td>
+					<td th:text="${arrived.boardingKor}"></td>
+					<td th:text="${arrived.arrivedKor}"></td>
+					<td th:text="${arrived.flightDate}"></td>
+					<td th:text="${arrived.airFln}"></td>
+					<td th:text="${arrived.std}"></td>
+					<td th:text="${arrived.etd}"></td>
+					<td th:text="${arrived.rmkKor}"></td>
+				</tr>
+			</table>
+			<span class="popup-close" onclick="closePopup()">X</span>
+		</div>
+	</div>
 
-
-
-
+	<script>
+        window.addEventListener('load', function() {
+            document.getElementById('popupContainer').style.display = 'flex';
+        });
+        
+        function closePopup() {
+            document.getElementById('popupContainer').style.display = 'none';
+        }
+    </script>
 	<script>
 		new Swiper('.swiper-container', {
 
