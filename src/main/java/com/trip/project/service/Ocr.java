@@ -14,13 +14,12 @@ import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.stereotype.Service;
 
 public class Ocr {
 	public String ocr(String path) {
 		String apiURL = "https://3oebfrow1n.apigw.ntruss.com/custom/v1/23016/3cd4a68f4d744ae336ad066ec38f6d6c8f943eecf197177f45afcc0620da14e9/general";
 		String secretKey = "TlpSUk1FdXdrdnpyb3lhU1dUR3lneFp4ZmltYmxrVHQ=";
-		String imageFile = path+"\\image\\test2.jpg";
+		String imageFile = path+"\\image\\test3.jpg";
 		StringBuffer response=null;
 		try {
 			URL url = new URL(apiURL);
@@ -52,7 +51,7 @@ public class Ocr {
 			File file = new File(imageFile);
 			writeMultiPart(wr, postParams, file, boundary);
 			wr.close();
-			
+
 			int responseCode = con.getResponseCode();
 			BufferedReader br;
 			if (responseCode == 200) {
@@ -67,7 +66,7 @@ public class Ocr {
 			}
 			br.close();
 
-			System.out.println("ocrserivce : "+response);
+			System.out.println(response);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
