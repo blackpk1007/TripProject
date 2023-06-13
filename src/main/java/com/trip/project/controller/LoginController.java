@@ -39,28 +39,28 @@ public class LoginController {
 	}
 
 	// 아이디 찾기 페이지
-	@RequestMapping("idfindform")
+	@RequestMapping("/idfindform")
 	public String idFindForm() {
 
 		return "idfindform";
 	}
 
 	// 아이디 찾기
-	@RequestMapping("idfind")
+	@RequestMapping("/idfind")
 	public String idFind() {
 
 		return "idfind";
 	}
 
 	// 비밀번호 찾기 페이지
-	@RequestMapping("pwfindform")
+	@RequestMapping("/pwfindform")
 	public String pwFindForm() {
 
 		return "pwfindform";
 	}
 
 	// 비밀번호 찾기
-	@RequestMapping("pwfind")
+	@RequestMapping("/pwfind")
 	public String pwFind() {
 
 		return "pwfind";
