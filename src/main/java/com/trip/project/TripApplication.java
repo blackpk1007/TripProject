@@ -24,7 +24,7 @@ public class TripApplication {
 	@RequestMapping("/")
 	public String main() {
 		
-		return "main";
+		return "ocr";
 	}
 	
 	// 크롤링 테스트 페이지
