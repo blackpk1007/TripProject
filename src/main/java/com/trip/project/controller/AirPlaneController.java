@@ -110,6 +110,7 @@ public class AirPlaneController {
 			}
 		}
 		System.out.println(flightStatusList);
+		
 		model.addAttribute("flightStatus", flightStatusList);
 
 		return "airplane";

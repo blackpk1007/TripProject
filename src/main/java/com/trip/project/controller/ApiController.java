@@ -2,6 +2,8 @@ package com.trip.project.controller;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,8 @@ public class ApiController {
 		String res=ocr.ocr(path);
 		
 		JSONObject obj=new JSONObject(res);
-		model.addAttribute("res",obj);
+		
+		model.addAttribute("res", res);
 		
 		return "ocr";
 	}

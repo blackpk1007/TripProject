@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript">
-	$(function(){
-		let res=${res};
-		for(let i=0;i<res.images[0].fields.length;i++){
-			console.log(res.images[0].fields[i].inferText);
-			$("div").append(res.images[0].fields[i].inferText+" ");
-		}
-	});
+   $(function(){
+      let res = [[${res}]];
+      console.log(res);
+      if (res) {
+         for(let i=0; i<res.images[0].fields.length; i++){
+            console.log(res.images[0].fields[i].inferText);
+            $("div").append(res.images[0].fields[i].inferText + " ");
+         }
+      }
+   });
 </script>
 <head>
 <meta charset="UTF-8">
 <title>OCR Text Extraction</title>
 </head>
 <body>
-
     <h1>OCR Text Result:</h1>
 
     <div></div>
