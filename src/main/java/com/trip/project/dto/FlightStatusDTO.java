@@ -15,4 +15,5 @@ public class FlightStatusDTO {
 	private String rmkKor;
 	private int std;
 	private int etd;
+	private String airFln;
 }
