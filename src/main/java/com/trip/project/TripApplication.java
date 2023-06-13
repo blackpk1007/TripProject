@@ -15,6 +15,6 @@ public class TripApplication {
 	@RequestMapping("/")
 	public String main() {
 		
-		return "main";
+		return "ocr";
 	}
 }
