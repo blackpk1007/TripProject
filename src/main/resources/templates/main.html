@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+
+<style type="text/css">
+.swiper-container {
+	width: 80%;
+	height: 420px;
+}
+
+.swiper-slide {
+	text-align: center;
+	display: flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
+	align-items: center; /* 위아래 기준 중앙정렬 */
+	justify-content: center; /* 좌우 기준 중앙정렬 */
+}
+
+.swiper-slide img {
+	box-shadow: 0 0 5px #555;
+	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+	/* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+ul {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+#back {
+	position: relative;
+}
+
+header {
+	width: 100%;
+	height: 30vh;
+	background-color: rgba(256, 256, 256, 0.6);
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#logo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 3vh;
+}
+
+#top_menu {
+	position: absolute;
+	top: 30px;
+	right: 10px;
+}
+
+#top_menu a {
+	color: black;
+	margin-right: 5vh;
+}
+
+#nav {
+	/* position: absolute; */
+	/* bottom: 10px; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 16px;
+}
+
+#nav label {
+	margin-left: 5vh;
+	margin-right: 5vh;
+}
+
+#nav>label>a {
+	text-decoration: none;
+	color: black;
+}
+
+#back_img {
+	width: 100%;
+	object-fit: cover;
+}
+
+#main_text {
+	padding: 5px 10px;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	font-size: 24pt;
+}
+
+#place_text {
+	text-align: center;
+}
+
+#tag1 {
+	width: 150px;
+	height: 30px;
+	border: 1px solid #B8E9FF;
+	border-radius: 8px;
+	background-color: #B8E9FF;
+	color: white;
+	margin-left: 20vh;
+	margin-top: 8vh;
+	margin-bottom: 2vh;
+}
+
+#tag1_img {
+	width: 90%;
+	height: 50vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 10vh;
+}
+/* #tag1_img > div {
+            display:flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        } */
+/* #tag1_img img{
+            width: 70%;
+            height: 75%;
+        } */
+.a {
+	width: 100%;
+	height: 20vh;
+}
+
+.insta {
+	position: relative;
+	margin-left: 3vh;
+	width: 100%;
+	height: 100%;
+	background-image: url("./img/insta.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	/* width: 350px;
+            height: 380px; */
+	/* object-fit: cover; */
+	box-shadow: 5px 5px 5px #595959;
+}
+
+/* .insta_1{
+            position: relative;
+            z-index: 1;
+            width: 70%;
+            height: 75%;
+            box-shadow: 5px 5px 5px #595959;
+        } */
+.insta_2 {
+	position: absolute;
+	top: 26%;
+	left: 17%;
+	z-index: 2;
+	width: 66%;
+	height: 40%;
+}
+</style>
+</head>
+<body>
+	<div id="back">
+		<img src="/resources/image/back.png" id="back_img">
+		<header>
+			<div class="a">
+				<div id="logo">
+					<img src="/resources/image/logo2.png" alt="Logo">
+				</div>
+
+				<div id="top_menu">
+					<a href="/login">로그인</a> <a href="/login/registerform">회원가입</a>
+				</div>
+			</div>
+			<div id="nav">
+				<label for=""><a href="/plan">일정만들기</a></label>
+				<label for=""><a href="#">코스보기</a></label>
+				<label for=""><a href="#">커뮤니티</a></label>
+				<label for=""><a href="#">동행구하기</a></label>
+			</div>
+
+		</header>
+		<label id="main_text"> 제주도 여행의 모든것 </label>
+	</div>
+	<div id="place_text">
+		<br>
+		<br>
+		<p>제주도 핫플레이스</p>
+		<p>Hot Place</p>
+		<br>
+		<br>
+	</div>
+
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide" style="font-size: 50pt;">- 끝 -</div>
+		</div>
+
+		<!-- 네비게이션 -->
+		<div class="swiper-button-next"></div>
+		<!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+		<div class="swiper-button-prev"></div>
+		<!-- 이전 버튼 -->
+
+		<!-- 페이징 -->
+		<div class="swiper-pagination"></div>
+	</div>
+
+
+	<div id="place_text">
+		<br> <br>
+		<p>코스추천</p>
+		<p>Course</p>
+		<br>
+		<br>
+	</div>
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide">
+				<a href="#"><img src="/resources/image/udo.jpg"></a>
+			</div>
+			<div class="swiper-slide" style="font-size: 50pt;">- 끝 -</div>
+		</div>
+
+		<!-- 네비게이션 -->
+		<div class="swiper-button-next"></div>
+		<!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+		<div class="swiper-button-prev"></div>
+		<!-- 이전 버튼 -->
+
+		<!-- 페이징 -->
+		<div class="swiper-pagination"></div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div id="place_text">
+		<p>어떤 여행을 계획하고 계시나요?</p>
+		<p>Hash Tag</p>
+		<br>
+		<br>
+	</div>
+	<div align="center" id="tag1">#반려동물동반</div>
+	<div id="tag1_img">
+		<div class="insta">
+			<!-- <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a> -->
+		</div>
+		<div class="insta">
+			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		</div>
+		<div class="insta">
+			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		</div>
+		<div class="insta">
+			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		</div>
+	</div>
+
+	<div align="center" id="tag1">#부모님동반</div>
+	<div id="tag1_img">
+		<div class="insta">
+			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
+			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		</div>
+		<div class="insta">
+			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
+			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		</div>
+		<div class="insta">
+			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
+			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		</div>
+		<div class="insta">
+			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
+			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		</div>
+	</div>
+
+
+
+
+
+	<script>
+		new Swiper('.swiper-container', {
+
+			slidesPerView : 2, // 동시에 보여줄 슬라이드 갯수
+			spaceBetween : 30, // 슬라이드간 간격
+			slidesPerGroup : 2, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+
+			// 그룹수가 맞지 않을 경우 빈칸으로 메우기
+			// 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+			loopFillGroupWithBlank : true,
+
+			loop : true, // 무한 반복
+
+			pagination : { // 페이징
+				el : '.swiper-pagination',
+				clickable : true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+			},
+			navigation : { // 네비게이션
+				nextEl : '.swiper-button-next', // 다음 버튼 클래스명
+				prevEl : '.swiper-button-prev', // 이번 버튼 클래스명
+			},
+		});
+	</script>
+
+</body>
+</html>

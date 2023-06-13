@@ -152,3 +152,4 @@ $RECYCLE.BIN/
 .DS_Store
 src/main/resources/application.properties
 *.properties
+src/main/java/com/trip/project/crawling/Crawling.java

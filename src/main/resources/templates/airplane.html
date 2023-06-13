@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Airplane</title>
+</head>
+<body>
+    <h1>Airplane Information</h1>
+    
+    <!-- flightStatus를 사용하여 항공편 정보 표시 -->
+    <table>
+        <tr>
+            <th>항공사</th>
+            <th>출발지</th>
+            <th>목적지</th>
+            <th>날짜</th>
+            <th>출발시간</th>
+            <th>변경시간</th>            
+            <th>현황</th>
+        </tr>
+        <tr th:each="flight : ${flightStatus}">
+            <td th:text="${flight.airlineKorean}"></td>
+            <td th:text="${flight.boardingKor}"></td>
+            <td th:text="${flight.arrivedKor}"></td>
+            <td th:text="${flight.flightDate}"></td>
+            <td th:text="${flight.std}"></td>
+            <td th:text="${flight.etd}"></td>
+            <td th:text="${flight.rmkKor}"></td>
+        </tr>
+    </table>
+</body>
+</html>
