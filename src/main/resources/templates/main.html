@@ -347,29 +347,31 @@ header {
 	<div id="popupContainer" class="popup-container">
 		<div class="popup">
 			<h1>팝업 내용</h1>
-			<div id="popupTable"></div>
-			<table id="flightTable">
-				<tr>
-					<th>항공사</th>
-					<th>출발지</th>
-					<th>목적지</th>
-					<th>날짜</th>
-					<th>항공편</th>
-					<th>출발시간</th>
-					<th>변경시간</th>
-					<th>현황</th>
-				</tr>
-				<tr th:each="arrived : ${arriveds}">
-					<td th:text="${arrived.airlineKorean}"></td>
-					<td th:text="${arrived.boardingKor}"></td>
-					<td th:text="${arrived.arrivedKor}"></td>
-					<td th:text="${arrived.flightDate}"></td>
-					<td th:text="${arrived.airFln}"></td>
-					<td th:text="${arrived.std}"></td>
-					<td th:text="${arrived.etd}"></td>
-					<td th:text="${arrived.rmkKor}"></td>
-				</tr>
-			</table>
+			<div id="popupTable">
+
+				<table id="flightTable">
+					<tr>
+						<th>항공사</th>
+						<th>출발지</th>
+						<th>목적지</th>
+						<th>날짜</th>
+						<th>항공편</th>
+						<th>출발시간</th>
+						<th>변경시간</th>
+						<th>현황</th>
+					</tr>
+					<tr th:each="arrived : ${arriveds}">
+						<td th:text="${arrived.airlineKorean}"></td>
+						<td th:text="${arrived.boardingKor}"></td>
+						<td th:text="${arrived.arrivedKor}"></td>
+						<td th:text="${arrived.flightDate}"></td>
+						<td th:text="${arrived.airFln}"></td>
+						<td th:text="${arrived.std}"></td>
+						<td th:text="${arrived.etd}"></td>
+						<td th:text="${arrived.rmkKor}"></td>
+					</tr>
+				</table>
+			</div>
 			<span class="popup-close" onclick="closePopup()">X</span>
 		</div>
 	</div>
