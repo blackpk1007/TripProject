@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>OCR Text Extraction</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
+            let num = '[(${num})]';
+            let placeName = num.match(/placeName=([^,]+)/)[1];
+            let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
+
+            let check="";
+            
+	        // 괄호 제거하기
+	        placeAddress = placeAddress.replace(/\(|\)/g, '');
+	        placeAddress = placeAddress.replace(/\s/g, '');
+            console.log(placeName);
+            console.log(placeAddress);
+            if (res) {
+                res = JSON.parse(res); // JSON 문자열을 JavaScript 객체로 변환
+                for (let i = 0; i < res.images[0].fields.length; i++) {
+                    console.log(res.images[0].fields[i].inferText);
+                    $("div").append(res.images[0].fields[i].inferText + " ");
+                    
+                    check+=res.images[0].fields[i].inferText;
+                    
+                }
+                
+                console.log(check);
+                if (check.includes(placeAddress)) {
+                    console.log("placeAddress 값이 포함되어 있습니다.");
+                } else {
+                    console.log("placeAddress 값이 포함되어 있지 않습니다.");
+                }
+
+                if (check.includes(placeName)) {
+                    console.log("placeName 값이 포함되어 있습니다.");
+                } else {
+                    console.log("placeName 값이 포함되어 있지 않습니다.");
+                }
+            }
+            
+        });
+    </script>
+</head>
+<body>
+    <h1>OCR Text Result:</h1>
+    <div></div>
+    
+</body>
+</html>

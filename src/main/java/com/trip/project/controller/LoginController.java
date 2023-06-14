@@ -1,15 +1,10 @@
 package com.trip.project.controller;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.service.LoginService;
@@ -39,28 +34,28 @@ public class LoginController {
 	}
 
 	// 아이디 찾기 페이지
-	@RequestMapping("idfindform")
+	@RequestMapping("/idfindform")
 	public String idFindForm() {
 
 		return "idfindform";
 	}
 
 	// 아이디 찾기
-	@RequestMapping("idfind")
+	@RequestMapping("/idfind")
 	public String idFind() {
 
 		return "idfind";
 	}
 
 	// 비밀번호 찾기 페이지
-	@RequestMapping("pwfindform")
+	@RequestMapping("/pwfindform")
 	public String pwFindForm() {
 
 		return "pwfindform";
 	}
 
 	// 비밀번호 찾기
-	@RequestMapping("pwfind")
+	@RequestMapping("/pwfind")
 	public String pwFind() {
 
 		return "pwfind";
