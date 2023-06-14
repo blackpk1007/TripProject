@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.trip.project.service.AirPlaneService;
 import com.trip.project.service.CrawlingService;
+import com.trip.project.service.MainpageService;
 
 @CrossOrigin(origins = "http://localhost:8787")
 @Controller
@@ -24,6 +25,9 @@ public class TripApplication {
 	@Autowired
 	private AirPlaneService aservice;
 	
+	@Autowired
+	private MainpageService mainpageService;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(TripApplication.class, args);
 	}
@@ -34,7 +38,7 @@ public class TripApplication {
 		
 		model.addAttribute("arriveds", aservice.jejuArrived());
 		model.addAttribute("boardings", aservice.jejuBoarding());
-		
+		model.addAttribute("list", mainpageService.selectList());
 		return "main";
 	}
 	

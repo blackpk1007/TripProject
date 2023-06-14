@@ -193,9 +193,8 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 		flightStatus.setFlightDate(flightObject.optString("flightDate"));
 		flightStatus.setRmkKor(flightObject.optString("rmkKor"));
 		if (!flightObject.isNull("std")) {
-	        flightStatus.setStd(flightObject.getInt("std"));
-	    }
-	    
+	           flightStatus.setStd(flightObject.getInt("std"));
+	       }
 	    if (!flightObject.isNull("etd")) {
 	        flightStatus.setEtd(flightObject.getInt("etd"));
 	    }
