@@ -38,4 +38,10 @@ public class ApiController {
 		
 		return "ocr";
 	}
+	
+	@GetMapping("/weather")
+	public String weather() {
+		
+		return "";
+	}
 }

@@ -1,13 +1,19 @@
 package com.trip.project.controller;
 
-import java.util.ArrayList;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.service.PlanServiceImpl;
 
@@ -20,20 +26,19 @@ public class PlanController {
 	
 	
 	@RequestMapping
-	public String planMain(Model model) {
-		
+	public String planMain(Model model) throws JsonProcessingException {
+
 		model.addAttribute("placelist", pservice.placeList());
-		
+
 		return "plan";
+
 	}
 	
-	@RequestMapping("/marker")
-	public String planMarker(Model model) {
-//		List<PlaceDTO> placeList = new ArrayList<PlaceDTO>();
+	@ResponseBody
+	@GetMapping("/fetchPlaceList")
+	public List<PlaceDTO> planMarker() {
+		List<PlaceDTO> placeList = pservice.placeList();
 		
-		
-		System.out.println("place : "+pservice.placeList());
-		
-		return "plan";
+		return placeList;
 	}
 }
