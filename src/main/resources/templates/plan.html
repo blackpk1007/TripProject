@@ -1,889 +1,897 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
+	rel="stylesheet">
 <style type="text/css">
-	body{
+body {
 	
-	}
-    .header {
-        width: 90vw;
-        height: 13vh;
-        border-bottom: 1px solid #EEEEEE;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 5vh;
-        /* display: flex;
+}
+
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
             justify-content: center; */
-    }
+}
 
-    .header-category {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-    #logimg {
-        width: 15vw;
-        height: 12vh;
-        margin-left: 7vw;
-        margin-right: 14vw;
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
 
-    }
-
-    .header-category>label {
-        /* border: 1px solid;
+.header-category>label {
+	/* border: 1px solid;
             border-radius: 5px; */
-        color: #595959;
-        font-family: 'Noto Sans KR Regular', sans-serif;
-        padding: 7px;
-        padding-top: 0.2vh;
-        padding-bottom: 0.2vh;
-        cursor: pointer;
-    }
-
-    #label-left-course {
-        margin-right: 3vw;
-    }
-
-    #label-left-community {
-        margin-right: 3vw;
-    }
-
-    #label-left-chat {
-        margin-right: 3vw;
-        padding-left: 1vw;
-        padding-right: 1vw;
-    }
-
-    #label-right-login {
-        padding-left: 1vw;
-        padding-right: 1vw;
-        margin-left: 3vw;
-    }
-
-    #label-right-register {
-        margin-left: 3vw;
-    }
-
-    .main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 98vw;
-        height: 78vh;
-    }
-
-    .main-left {
-        width: 20vw;
-        height: 80vh;
-    }
-
-    .main-left h2 {
-        font-family: 'Noto Sans KR Light', sans-serif;
-        text-align: center;
-        color: #595959;
-        margin-top: 0vw;
-    }
-
-    .main-center {
-        width: 60vw;
-        height: 80vh;
-
-    }
-
-    .main-right {
-        width: 20vw;
-        height: 80vh;
-    }
-
-    .list {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 0.1vw solid #B8E9FF;
-        border-radius: 0.3vw;
-        width: 18vw;
-        height: 12vh;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    #list-img>img {
-        width: 7vw;
-        height: 10vh;
-        border: 0.1vw solid;
-        border-radius: 0.5vw;
-        margin-left: 0.5vw;
-        margin-right: 0.5vw;
-        margin-top: 0.5vh;
-    }
-
-    #list-name {
-        width: 30vw;
-        height: 10vh;
-        margin-left: 1vw;
-        margin-top: 5vh;
-        font-size: 12px;
-        font-family: 'Noto Sans KR Light', sans-serif;
-        text-align: left;
-        color: #595959;
-    }
-
-    #list-name-heartimg {
-        display: flex;
-        width: 5vw;
-        height: 3vh;
-        margin-top: 1vh;
-        margin-left: 0vw;
-    }
-
-    #heartimg {
-        width: 1vw;
-        height: 2vh;
-        margin-right: 0.5vw;
-    }
-
-    #list-plus>img {
-        width: 1vw;
-        height: 2vh;
-        margin-top: 8vh;
-        margin-left: 1vw;
-        margin-right: 1vw;
-    }
-
-    .course {
-        width: 20vw;
-        height: 44vh;
-    }
-
-    .course-color {
-        width: 19vw;
-        height: 10vh;
-        border: 0.1vw solid #B8E9FF;
-        border-radius: 0.5vw;
-        border-bottom-left-radius: 0vw;
-        border-bottom-right-radius: 0vw;
-        margin: 0vw;
-        margin: 0 auto;
-    }
-
-    .course-color h5 {
-        margin-top: 0.2vw;
-    }
-
-    .course-plan {
-        width: 19vw;
-        height: 33vh;
-        border: 0.1vw solid #B8E9FF;
-        border-top: 0vw;
-        border-radius: 0.5vw;
-        border-top-left-radius: 0vw;
-        border-top-right-radius: 0vw;
-        margin: 0vw;
-        margin: 0 auto;
-    }
-
-    .course-plan>img {
-        width: 10vw;
-        height: 2vh;
-        margin-top: 8vh;
-        margin-left: 1vh;
-        margin-right: 1vh;
-    }
-    
-    .course-color-check {
-        width: 100%;
-        height: 8vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-    }
-
-    .course-color-day {
-        display: flex;
-        align-items: center;
-        width: 90%;
-        height: 3vh;
-        margin-left: 1.5vh;
-    }
-
-    .course-color-day h5 {
-        text-align: left;
-    }
-
-    .course-color-check i {
-        margin-left: 0.5vh;
-        margin-right: 0.5vh;
-    }
-
-    .circle1 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle1:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle2 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle2:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle3 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle3:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle4 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle4:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle5 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle5:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle6 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle6:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle7 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle7:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle1 {
-        background-color: red;
-    }
-
-    .circle2 {
-        background-color: orange;
-    }
-
-    .circle3 {
-        background-color: yellow;
-    }
-
-    .circle4 {
-        background-color: green;
-    }
-
-    .circle5 {
-        background-color: blue;
-    }
-
-    .circle6 {
-        background-color: navy;
-    }
-
-    .circle7 {
-        background-color: purple;
-    }
-
-    /* input이 체크되면 특수문자 보이게 처리 */
-    #chk1:checked+.circle1:after {
-        opacity: 1;
-    }
-
-    #chk2:checked+.circle2:after {
-        opacity: 1;
-    }
-
-    #chk3:checked+.circle3:after {
-        opacity: 1;
-    }
-
-    #chk4:checked+.circle4:after {
-        opacity: 1;
-    }
-
-    #chk5:checked+.circle5:after {
-        opacity: 1;
-    }
-
-    #chk6:checked+.circle6:after {
-        opacity: 1;
-    }
-
-    #chk7:checked+.circle7:after {
-        opacity: 1;
-    }
-
-    /* 체크박스는 display:none;을 주면 데이터 처리가 안됨 */
-    #chk1 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk2 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk3 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk4 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk5 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk6 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk7 {
-        position: absolute;
-        left: -999em;
-    }
-
-    h5 {
-        margin: 0px;
-    }
-
-    @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
-
-    .calendar {
-        background-color: white;
-        width: 80%;
-        height: 30vh;
-        margin: 0px;
-        padding: 20px;
-        margin: 0 auto;
-        border: 1px solid #B8E9FF;
-        border-radius: 5px;
-        margin-bottom: 1vh;
-        /* box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3); */
-    }
-
-    td {
-        width: 3.5vh;
-        height: 3.5vh;
-    }
-
-    .Calendar-table {
-        text-align: center;
-        margin: auto;
-    }
-
-    .Calendar-table>thead>tr:first-child>td {
-        font-family: 'Questrial', sans-serif;
-        font-size: 0.5em;
-        font-weight: bold;
-    }
-
-    .Calendar-table>thead>tr:last-child>td {
-        font-family: 'Questrial', sans-serif;
-        font-size: 0.5em;
-        font-weight: 600;
-    }
-
-    .Calendar-table>tbody>tr>td>p {
-        font-family: 'Montserrat', sans-serif;
-        height: 5vh;
-        width: 5vh;
-        border-radius: 45px;
-        transition-duration: .2s;
-        line-height: 5vh;
-        margin: 1px;
-        display: block;
-        text-align: center;
-    }
-
-    .pastDay {
-        color: lightgray;
-        font-size: 0.5em;
-    }
-
-    .today {
-        background-color: #EEEEEE;
-        color: black;
-        font-size: 0.5em;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .futureDay {
-        background-color: #FFFFFF;
-        font-size: 0.5em;
-        cursor: pointer;
-    }
-
-    .futureDay:hover {
-        background: #eee;
-    }
-
-    .futureDay.choiceDay,
-    .today.choiceDay {
-        background: #B8E9FF;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.5em;
-        cursor: pointer;
-    }
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
+
+.main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 98vw;
+	height: 78vh;
+}
+
+.main-left {
+	width: 20vw;
+	height: 80vh;
+}
+
+.main-left h2 {
+	font-family: 'Noto Sans KR Light', sans-serif;
+	text-align: center;
+	color: #595959;
+	margin-top: 0vw;
+}
+
+.main-center {
+	width: 60vw;
+	height: 80vh;
+}
+
+.main-right {
+	width: 20vw;
+	height: 80vh;
+}
+
+.list {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 0.1vw solid #B8E9FF;
+	border-radius: 0.3vw;
+	width: 18vw;
+	height: 12vh;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#list-img>img {
+	width: 7vw;
+	height: 10vh;
+	border: 0.1vw solid;
+	border-radius: 0.5vw;
+	margin-left: 0.5vw;
+	margin-right: 0.5vw;
+	margin-top: 0.5vh;
+}
+
+#list-name {
+	width: 30vw;
+	height: 10vh;
+	margin-left: 1vw;
+	margin-top: 5vh;
+	font-size: 12px;
+	font-family: 'Noto Sans KR Light', sans-serif;
+	text-align: left;
+	color: #595959;
+}
+
+#list-name-heartimg {
+	display: flex;
+	width: 5vw;
+	height: 3vh;
+	margin-top: 1vh;
+	margin-left: 0vw;
+}
+
+#heartimg {
+	width: 1vw;
+	height: 2vh;
+	margin-right: 0.5vw;
+}
+
+#list-plus>img {
+	width: 1vw;
+	height: 2vh;
+	margin-top: 8vh;
+	margin-left: 1vw;
+	margin-right: 1vw;
+}
+
+.course {
+	width: 20vw;
+	height: 44vh;
+}
+
+.course-color {
+	width: 19vw;
+	height: 10vh;
+	border: 0.1vw solid #B8E9FF;
+	border-radius: 0.5vw;
+	border-bottom-left-radius: 0vw;
+	border-bottom-right-radius: 0vw;
+	margin: 0vw;
+	margin: 0 auto;
+}
+
+.course-color h5 {
+	margin-top: 0.2vw;
+}
+
+.course-plan {
+	width: 19vw;
+	height: 33vh;
+	border: 0.1vw solid #B8E9FF;
+	border-top: 0vw;
+	border-radius: 0.5vw;
+	border-top-left-radius: 0vw;
+	border-top-right-radius: 0vw;
+	margin: 0vw;
+	margin: 0 auto;
+}
+
+.course-plan>img {
+	width: 10vw;
+	height: 2vh;
+	margin-top: 8vh;
+	margin-left: 1vh;
+	margin-right: 1vh;
+}
+
+.course-color-check {
+	width: 100%;
+	height: 8vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.course-color-day {
+	display: flex;
+	align-items: center;
+	width: 90%;
+	height: 3vh;
+	margin-left: 1.5vh;
+}
+
+.course-color-day h5 {
+	text-align: left;
+}
+
+.course-color-check i {
+	margin-left: 0.5vh;
+	margin-right: 0.5vh;
+}
+
+.circle1 {
+	display: inline-block;
+	/* 영역적용가능해짐 */
+	width: 20px;
+	height: 20px;
+	border: 1px solid #333;
+	box-sizing: border-box;
+	border-radius: 10px;
+	/* 모서리둥글게 처리 */
+	position: relative;
+	top: 4px;
+	cursor: pointer;
+	/* 마우스 올렸을때 손모양 처리 */
+}
+
+.circle1:after {
+	content: '\2714';
+	/* 체크박스 특수문자 */
+	font-size: 24px;
+	color: #333;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	opacity: 0;
+	/* 처음엔 안보이게 처리 */
+	transition: 0.2s;
+	/* CSS변화에 시간차 처리 */
+}
+
+.circle2 {
+	display: inline-block;
+	/* 영역적용가능해짐 */
+	width: 20px;
+	height: 20px;
+	border: 1px solid #333;
+	box-sizing: border-box;
+	border-radius: 10px;
+	/* 모서리둥글게 처리 */
+	position: relative;
+	top: 4px;
+	cursor: pointer;
+	/* 마우스 올렸을때 손모양 처리 */
+}
+
+.circle2:after {
+	content: '\2714';
+	/* 체크박스 특수문자 */
+	font-size: 24px;
+	color: #333;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	opacity: 0;
+	/* 처음엔 안보이게 처리 */
+	transition: 0.2s;
+	/* CSS변화에 시간차 처리 */
+}
+
+.circle3 {
+	display: inline-block;
+	/* 영역적용가능해짐 */
+	width: 20px;
+	height: 20px;
+	border: 1px solid #333;
+	box-sizing: border-box;
+	border-radius: 10px;
+	/* 모서리둥글게 처리 */
+	position: relative;
+	top: 4px;
+	cursor: pointer;
+	/* 마우스 올렸을때 손모양 처리 */
+}
+
+.circle3:after {
+	content: '\2714';
+	/* 체크박스 특수문자 */
+	font-size: 24px;
+	color: #333;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	opacity: 0;
+	/* 처음엔 안보이게 처리 */
+	transition: 0.2s;
+	/* CSS변화에 시간차 처리 */
+}
+
+.circle4 {
+	display: inline-block;
+	/* 영역적용가능해짐 */
+	width: 20px;
+	height: 20px;
+	border: 1px solid #333;
+	box-sizing: border-box;
+	border-radius: 10px;
+	/* 모서리둥글게 처리 */
+	position: relative;
+	top: 4px;
+	cursor: pointer;
+	/* 마우스 올렸을때 손모양 처리 */
+}
+
+.circle4:after {
+	content: '\2714';
+	/* 체크박스 특수문자 */
+	font-size: 24px;
+	color: #333;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	opacity: 0;
+	/* 처음엔 안보이게 처리 */
+	transition: 0.2s;
+	/* CSS변화에 시간차 처리 */
+}
+
+.circle5 {
+	display: inline-block;
+	/* 영역적용가능해짐 */
+	width: 20px;
+	height: 20px;
+	border: 1px solid #333;
+	box-sizing: border-box;
+	border-radius: 10px;
+	/* 모서리둥글게 처리 */
+	position: relative;
+	top: 4px;
+	cursor: pointer;
+	/* 마우스 올렸을때 손모양 처리 */
+}
+
+.circle5:after {
+	content: '\2714';
+	/* 체크박스 특수문자 */
+	font-size: 24px;
+	color: #333;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	opacity: 0;
+	/* 처음엔 안보이게 처리 */
+	transition: 0.2s;
+	/* CSS변화에 시간차 처리 */
+}
+
+.circle6 {
+	display: inline-block;
+	/* 영역적용가능해짐 */
+	width: 20px;
+	height: 20px;
+	border: 1px solid #333;
+	box-sizing: border-box;
+	border-radius: 10px;
+	/* 모서리둥글게 처리 */
+	position: relative;
+	top: 4px;
+	cursor: pointer;
+	/* 마우스 올렸을때 손모양 처리 */
+}
+
+.circle6:after {
+	content: '\2714';
+	/* 체크박스 특수문자 */
+	font-size: 24px;
+	color: #333;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	opacity: 0;
+	/* 처음엔 안보이게 처리 */
+	transition: 0.2s;
+	/* CSS변화에 시간차 처리 */
+}
+
+.circle7 {
+	display: inline-block;
+	/* 영역적용가능해짐 */
+	width: 20px;
+	height: 20px;
+	border: 1px solid #333;
+	box-sizing: border-box;
+	border-radius: 10px;
+	/* 모서리둥글게 처리 */
+	position: relative;
+	top: 4px;
+	cursor: pointer;
+	/* 마우스 올렸을때 손모양 처리 */
+}
+
+.circle7:after {
+	content: '\2714';
+	/* 체크박스 특수문자 */
+	font-size: 24px;
+	color: #333;
+	position: absolute;
+	top: -14px;
+	left: 0;
+	opacity: 0;
+	/* 처음엔 안보이게 처리 */
+	transition: 0.2s;
+	/* CSS변화에 시간차 처리 */
+}
+
+.circle1 {
+	background-color: red;
+}
+
+.circle2 {
+	background-color: orange;
+}
+
+.circle3 {
+	background-color: yellow;
+}
+
+.circle4 {
+	background-color: green;
+}
+
+.circle5 {
+	background-color: blue;
+}
+
+.circle6 {
+	background-color: navy;
+}
+
+.circle7 {
+	background-color: purple;
+}
+
+/* input이 체크되면 특수문자 보이게 처리 */
+#chk1:checked+.circle1:after {
+	opacity: 1;
+}
+
+#chk2:checked+.circle2:after {
+	opacity: 1;
+}
+
+#chk3:checked+.circle3:after {
+	opacity: 1;
+}
+
+#chk4:checked+.circle4:after {
+	opacity: 1;
+}
+
+#chk5:checked+.circle5:after {
+	opacity: 1;
+}
+
+#chk6:checked+.circle6:after {
+	opacity: 1;
+}
+
+#chk7:checked+.circle7:after {
+	opacity: 1;
+}
+
+/* 체크박스는 display:none;을 주면 데이터 처리가 안됨 */
+#chk1 {
+	position: absolute;
+	left: -999em;
+}
+
+#chk2 {
+	position: absolute;
+	left: -999em;
+}
+
+#chk3 {
+	position: absolute;
+	left: -999em;
+}
+
+#chk4 {
+	position: absolute;
+	left: -999em;
+}
+
+#chk5 {
+	position: absolute;
+	left: -999em;
+}
+
+#chk6 {
+	position: absolute;
+	left: -999em;
+}
+
+#chk7 {
+	position: absolute;
+	left: -999em;
+}
+
+h5 {
+	margin: 0px;
+}
+
+@import
+	url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
+
+.calendar {
+	background-color: white;
+	width: 80%;
+	height: 30vh;
+	margin: 0px;
+	padding: 20px;
+	margin: 0 auto;
+	border: 1px solid #B8E9FF;
+	border-radius: 5px;
+	margin-bottom: 1vh;
+	/* box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3); */
+}
+
+td {
+	width: 3.5vh;
+	height: 3.5vh;
+}
+
+.Calendar-table {
+	text-align: center;
+	margin: auto;
+}
+
+.Calendar-table>thead>tr:first-child>td {
+	font-family: 'Questrial', sans-serif;
+	font-size: 0.5em;
+	font-weight: bold;
+}
+
+.Calendar-table>thead>tr:last-child>td {
+	font-family: 'Questrial', sans-serif;
+	font-size: 0.5em;
+	font-weight: 600;
+}
+
+.Calendar-table>tbody>tr>td>p {
+	font-family: 'Montserrat', sans-serif;
+	height: 5vh;
+	width: 5vh;
+	border-radius: 45px;
+	transition-duration: .2s;
+	line-height: 5vh;
+	margin: 1px;
+	display: block;
+	text-align: center;
+}
+
+.pastDay {
+	color: lightgray;
+	font-size: 0.5em;
+}
+
+.today {
+	background-color: #EEEEEE;
+	color: black;
+	font-size: 0.5em;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.futureDay {
+	background-color: #FFFFFF;
+	font-size: 0.5em;
+	cursor: pointer;
+}
+
+.futureDay:hover {
+	background: #eee;
+}
+
+.futureDay.choiceDay, .today.choiceDay {
+	background: #B8E9FF;
+	color: #fff;
+	font-weight: 600;
+	font-size: 0.5em;
+	cursor: pointer;
+}
 </style>
-<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
+<script
+	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-    // 페이지가 로딩이 된 후 호출하는 함수입니다.
-    function initTmap() {
-        // map 생성
-        // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
-        var map = new Tmapv2.Map("map_div", { // 지도가 생성될 div
-            center: new Tmapv2.LatLng(33.3616666, 126.5291666),
-            width: "60vw", // 지도의 넓이
-            height: "80vh", // 지도의 높이
-            zoom: 10
-        });
-        var positions = [
-             th:each="place : ${placelist}"
-            {
-                name: ${place.placeName}
-                lon: ${place.placeLon},
-                lat: ${place.placeLat}
-            },
-        ];
-        console.log(positions);
-        for (var i = 0; i< positions.length; i++){//for문을 통하여 배열 안에 있는 값을 마커 생성
-			var lonlat = positions[i].lonlat;
-			var title = positions[i].title;
-			//Marker 객체 생성.
-			marker = new Tmapv2.Marker({
-				position : lonlat, //Marker의 중심좌표 설정.
-				map : map, //Marker가 표시될 Map 설정.
-				title : title //Marker 타이틀.
-			});
+	// 페이지가 로딩이 된 후 호출하는 함수입니다.
+
+	function initTmap() {
+
+		// map 생성
+		// Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
+		var map = new Tmapv2.Map("map_div", { // 지도가 생성될 div
+			center : new Tmapv2.LatLng(33.3616666, 126.5291666),
+			width : "60vw", // 지도의 넓이
+			height : "80vh", // 지도의 높이
+			zoom : 10
+		});
+
+		$.ajax({
+			url : '/plan/fetchPlaceList', // 데이터를 가져올 서버의 엔드포인트
+			type : 'GET',
+			dataType : 'json',
+			success : function(data) {
+				// 서버에서 받은 데이터 처리
+				var positions = [];
+
+				for (var i = 0; i < data.length; i++) {
+					var place = data[i];
+					var extractedValue = {
+						title : place.placeName,
+						lonlat : new Tmapv2.LatLng(place.placeLon,place.placeLat)
+					};
+					positions.push(extractedValue);
+
+				}
+				console.log(positions);
+				// TODO: 데이터를 원하는 방식으로 처리
+				for (var i = 0; i < positions.length; i++) {//for문을 통하여 배열 안에 있는 값을 마커 생성
+					var lonlat = positions[i].lonlat;
+					var title = positions[i].title;
+					console.log(lonlat);
+					//Marker 객체 생성.
+					marker = new Tmapv2.Marker({
+						position : lonlat, //Marker의 중심좌표 설정.
+						map : map, //Marker가 표시될 Map 설정.
+						title : title
+					//Marker 타이틀.
+					});
+				}
+			},
+			error : function(xhr, status, error) {
+				// 에러 처리
+				console.error(error);
+			}
+		});
+
+	}
+	window.onload = function() {
+		buildCalendar();
+
+	} // 웹 페이지가 로드되면 buildCalendar 실행
+	window.addEventListener('load', function() {
+		initTmap();
+	})
+
+	let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
+	let today = new Date(); // 페이지를 로드한 날짜를 저장
+	today.setHours(0, 0, 0, 0); // 비교 편의를 위해 today의 시간을 초기화
+
+	// 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
+	function buildCalendar() {
+
+		let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1); // 이번달 1일
+		let lastDate = new Date(nowMonth.getFullYear(),
+				nowMonth.getMonth() + 1, 0); // 이번달 마지막날
+
+		let tbody_Calendar = document.querySelector(".Calendar-table > tbody");
+		document.getElementById("calYear").innerText = nowMonth.getFullYear(); // 연도 숫자 갱신
+		document.getElementById("calMonth").innerText = leftPad(nowMonth
+				.getMonth() + 1); // 월 숫자 갱신
+
+		while (tbody_Calendar.rows.length > 0) { // 이전 출력결과가 남아있는 경우 초기화
+			tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
 		}
-    }
-    window.onload = function () {
-        buildCalendar();
 
-    }    // 웹 페이지가 로드되면 buildCalendar 실행
-    window.addEventListener('load', function () {
-        initTmap();
-    })
+		let nowRow = tbody_Calendar.insertRow(); // 첫번째 행 추가           
 
-    let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
-    let today = new Date();     // 페이지를 로드한 날짜를 저장
-    today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
+		for (let j = 0; j < firstDate.getDay(); j++) { // 이번달 1일의 요일만큼
+			let nowColumn = nowRow.insertCell(); // 열 추가
+		}
 
-    // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-    function buildCalendar() {
+		for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay
+				.getDate() + 1)) { // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
 
-        let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
-        let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
+			let nowColumn = nowRow.insertCell(); // 새 열을 추가하고
+			nowColumn.innerText = leftPad(nowDay.getDate()); // 추가한 열에 날짜 입력
 
-        let tbody_Calendar = document.querySelector(".Calendar-table > tbody");
-        document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
-        document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
+			if (nowDay.getDay() == 0) { // 일요일인 경우 글자색 빨강으로
+				nowColumn.style.color = "#DC143C";
+			}
+			if (nowDay.getDay() == 6) { // 토요일인 경우 글자색 파랑으로 하고
+				nowColumn.style.color = "#0000CD";
+				nowRow = tbody_Calendar.insertRow(); // 새로운 행 추가
+			}
 
-        while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
-            tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
-        }
+			if (nowDay < today) { // 지난날인 경우
+				nowColumn.className = "pastDay";
+			} else if (nowDay.getFullYear() == today.getFullYear()
+					&& nowDay.getMonth() == today.getMonth()
+					&& nowDay.getDate() == today.getDate()) { // 오늘인 경우           
+				nowColumn.className = "today";
+				nowColumn.onclick = function() {
+					choiceDate(this);
+				}
+			} else { // 미래인 경우
+				nowColumn.className = "futureDay";
+				nowColumn.onclick = function() {
+					choiceDate(this);
+				}
+			}
+		}
+	}
 
-        let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
+	// 날짜 선택
+	function choiceDate(nowColumn) {
+		if (document.getElementsByClassName("choiceDay")[0]) { // 기존에 선택한 날짜가 있으면
+			document.getElementsByClassName("choiceDay")[0].classList
+					.remove("choiceDay"); // 해당 날짜의 "choiceDay" class 제거
+		}
+		nowColumn.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
+	}
 
-        for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
-            let nowColumn = nowRow.insertCell();        // 열 추가
-        }
+	// 이전달 버튼 클릭
+	function prevCalendar() {
+		nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1,
+				nowMonth.getDate()); // 현재 달을 1 감소
+		buildCalendar(); // 달력 다시 생성
+	}
+	// 다음달 버튼 클릭
+	function nextCalendar() {
+		nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1,
+				nowMonth.getDate()); // 현재 달을 1 증가
+		buildCalendar(); // 달력 다시 생성
+	}
 
-        for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {   // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
-
-            let nowColumn = nowRow.insertCell();        // 새 열을 추가하고
-            nowColumn.innerText = leftPad(nowDay.getDate());      // 추가한 열에 날짜 입력
-
-
-            if (nowDay.getDay() == 0) {                 // 일요일인 경우 글자색 빨강으로
-                nowColumn.style.color = "#DC143C";
-            }
-            if (nowDay.getDay() == 6) {                 // 토요일인 경우 글자색 파랑으로 하고
-                nowColumn.style.color = "#0000CD";
-                nowRow = tbody_Calendar.insertRow();    // 새로운 행 추가
-            }
-
-
-            if (nowDay < today) {                       // 지난날인 경우
-                nowColumn.className = "pastDay";
-            }
-            else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) { // 오늘인 경우           
-                nowColumn.className = "today";
-                nowColumn.onclick = function () { choiceDate(this); }
-            }
-            else {                                      // 미래인 경우
-                nowColumn.className = "futureDay";
-                nowColumn.onclick = function () { choiceDate(this); }
-            }
-        }
-    }
-
-    // 날짜 선택
-    function choiceDate(nowColumn) {
-        if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
-            document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
-        }
-        nowColumn.classList.add("choiceDay");           // 선택된 날짜에 "choiceDay" class 추가
-    }
-
-    // 이전달 버튼 클릭
-    function prevCalendar() {
-        nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
-        buildCalendar();    // 달력 다시 생성
-    }
-    // 다음달 버튼 클릭
-    function nextCalendar() {
-        nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
-        buildCalendar();    // 달력 다시 생성
-    }
-
-    // input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
-    function leftPad(value) {
-        if (value < 10) {
-            value = "0" + value;
-            return value;
-        }
-        return value;
-    }
+	// input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
+	function leftPad(value) {
+		if (value < 10) {
+			value = "0" + value;
+			return value;
+		}
+		return value;
+	}
 </script>
 
 <title>Insert title here</title>
 </head>
 <body>
-    <div class="header">
-        <div class="header-category">
-            <label id="label-left-course">코스추천</label>
-            <label id="label-left-community">커뮤니티</label>
-            <label id="label-left-chat">채팅방</label>
-            <img src="./logo.png" alt="" id="logimg">
-            <label id="label-right-login">로그인</label>
-            <label id="label-right-register">회원가입</label>
-        </div>
-    </div>
-    <div class="main">
-        <div class="main-left">
-            <h2>사용자 추천</h2>
-            <div class="list">
-                <div id="list-img">
-                    <img src="./곽지식당.jpg" alt="">
-                </div>
+	<div class="header">
+		<div class="header-category">
+			<label id="label-left-course">코스추천</label> <label
+				id="label-left-community">커뮤니티</label> <label id="label-left-chat">채팅방</label>
+			<img src="./logo.png" alt="" id="logimg"> <label
+				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
+		</div>
+	</div>
+	<div class="main">
+		<div class="main-left">
+			<h2>사용자 추천</h2>
+			<div class="list">
+				<div id="list-img">
+					<img src="./곽지식당.jpg" alt="">
+				</div>
 
-                <div id="list-name">
-                    <div id="list-name-label">
-                        <label>곽지식당</label>
-                    </div>
-                    <div id="list-name-heartimg">
-                        <div>
-                            <img src="004.png" alt="" id="heartimg">
-                        </div>
-                        <div id="list-name-heartimg-label">
-                            <label>456</label>
-                        </div>
+				<div id="list-name">
+					<div id="list-name-label">
+						<label>곽지식당</label>
+					</div>
+					<div id="list-name-heartimg">
+						<div>
+							<img src="004.png" alt="" id="heartimg">
+						</div>
+						<div id="list-name-heartimg-label">
+							<label>456</label>
+						</div>
 
-                    </div>
+					</div>
 
-                </div>
-                <div id="list-plus">
-                    <img src="plus.png" alt="">
-                </div>
+				</div>
+				<div id="list-plus">
+					<img src="plus.png" alt="">
+				</div>
 
-            </div>
-        </div>
-        <div class="main-center">
-            <div id="map_div"></div>
-        </div>
-        <div class="main-right">
-            <div class="calendar">
-                <table class="Calendar-table">
-                    <thead>
-                        <tr>
-                            <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
-                            <td colspan="5">
-                                <span id="calYear"></span>년
-                                <span id="calMonth"></span>월
-                            </td>
-                            <td onClick="nextCalendar();" style="cursor:pointer;">&#62;</td>
-                        </tr>
-                        <tr>
-                            <td>일</td>
-                            <td>월</td>
-                            <td>화</td>
-                            <td>수</td>
-                            <td>목</td>
-                            <td>금</td>
-                            <td>토</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div class="course">
-                <div class="course-color">
-                    <div class="course-color-day">
-                        <h5>Day1</h5>
-                    </div>
-                    <div class="course-color-check">
-                        <div>
-                            <h5>마커색상</h5>
-                        </div>
-                        <div>
-                            <label for="chk1">
-                                <input type="checkbox" id="chk1">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle1"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk2">
-                                <input type="checkbox" id="chk2">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle2"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk3">
-                                <input type="checkbox" id="chk3">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle3"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk4">
-                                <input type="checkbox" id="chk4">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle4"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk5">
-                                <input type="checkbox" id="chk5">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle5"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk6">
-                                <input type="checkbox" id="chk6">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle6"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk7">
-                                <input type="checkbox" id="chk7">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle7"></i>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+			</div>
+		</div>
+		<div class="main-center">
+			<div id="map_div"></div>
+			<div id="category-button">
+				<label>맛집</label>
+				<label>유튜브맛집</label>
+				<label>액티비티</label>
+				<label>관광지</label>
+				<label>오름</label>
+				<label>둘레길</label>
+			</div>
+		</div>
+		<div class="main-right">
+			<div class="calendar">
+				<table class="Calendar-table">
+					<thead>
+						<tr>
+							<td onClick="prevCalendar();" style="cursor: pointer;">&#60;</td>
+							<td colspan="5"><span id="calYear"></span>년 <span
+								id="calMonth"></span>월</td>
+							<td onClick="nextCalendar();" style="cursor: pointer;">&#62;</td>
+						</tr>
+						<tr>
+							<td>일</td>
+							<td>월</td>
+							<td>화</td>
+							<td>수</td>
+							<td>목</td>
+							<td>금</td>
+							<td>토</td>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="course">
+				<div class="course-color">
+					<div class="course-color-day">
+						<h5>Day1</h5>
+					</div>
+					<div class="course-color-check">
+						<div>
+							<h5>마커색상</h5>
+						</div>
+						<div>
+							<label for="chk1"> <input type="checkbox" id="chk1">
+								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle1"></i>
+							</label>
+						</div>
+						<div>
+							<label for="chk2"> <input type="checkbox" id="chk2">
+								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle2"></i>
+							</label>
+						</div>
+						<div>
+							<label for="chk3"> <input type="checkbox" id="chk3">
+								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle3"></i>
+							</label>
+						</div>
+						<div>
+							<label for="chk4"> <input type="checkbox" id="chk4">
+								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle4"></i>
+							</label>
+						</div>
+						<div>
+							<label for="chk5"> <input type="checkbox" id="chk5">
+								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle5"></i>
+							</label>
+						</div>
+						<div>
+							<label for="chk6"> <input type="checkbox" id="chk6">
+								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle6"></i>
+							</label>
+						</div>
+						<div>
+							<label for="chk7"> <input type="checkbox" id="chk7">
+								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle7"></i>
+							</label>
+						</div>
+					</div>
+				</div>
 
-                <div class="course-plan">
-                    <div id="list-img">
-                        <img src="./곽지식당.jpg" alt="">
-                    </div>
+				<div class="course-plan">
+					<div id="list-img">
+						<img src="./곽지식당.jpg" alt="">
+					</div>
 
-                    <div id="list-name">
-                        <div id="list-name-label">
-                            <label>곽지식당</label>
-                        </div>
-                    </div>
-                    <div id="list-minus">
-                        <img src="minus.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+					<div id="list-name">
+						<div id="list-name-label">
+							<label>곽지식당</label>
+						</div>
+					</div>
+					<div id="list-minus">
+						<img src="minus.png" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

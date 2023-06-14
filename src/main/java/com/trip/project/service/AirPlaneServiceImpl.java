@@ -3,7 +3,6 @@ package com.trip.project.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -196,10 +195,9 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 		if (!flightObject.isNull("std")) {
 	           flightStatus.setStd(flightObject.getInt("std"));
 	       }
-	       
-	       if (!flightObject.isNull("etd")) {
-	           flightStatus.setEtd(flightObject.getInt("etd"));
-	       }
+	    if (!flightObject.isNull("etd")) {
+	        flightStatus.setEtd(flightObject.getInt("etd"));
+	    }
 		flightStatus.setAirFln(flightObject.optString("airFln"));
 		
 		return flightStatus;
