@@ -116,7 +116,7 @@
         <div id="lists">
             <!--반복문으로 내용을 복사해야함-->
             <dl th:each="dto:${list}">
-                <dd class="num" ><a th:text="${dto.communityNumber}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
+                <dd class="num" ><a th:text="${dto.communityNumber}" th:href="@{/community/communitydetail(communityNumber=${dto.communityNumber})}"></a></dd>
                 <dd class="subject"><a th:text="${dto.communityTitle}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
                 <dd class="name">홍길동</dd>
                 <dd class="created" th:text="${#dates.format(dto.communityDate, 'yyyy-MM-dd')}"></dd>
