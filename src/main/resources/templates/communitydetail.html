@@ -104,6 +104,12 @@
             <input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
             <input type="button" value="수정" id="updateBT" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
         </div>
+        <div th:if="${image != null}">
+    		<div th:if="${image.imageNumber != null}">
+        		<img th:src="|/community/image/__${image.imageStoredName}__|">
+    		</div>
+    		<div th:unless="${image.imageNumber != null}" th:text="hi"></div>
+		</div>
     </div>
 </body>
 </html>
