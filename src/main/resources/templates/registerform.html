@@ -5,8 +5,6 @@
 <title>RegisterForm</title>
 <link rel="stylesheet" href="/resources/css/registerform.css"
 	type="text/css">
-
-
 </head>
 <body>
 	<nav id="menu">
@@ -28,7 +26,7 @@
 
 			</div>
 			<div class="signup_body">
-				<form method="post" action="/login/register">
+				<form name="registerform" method="post" action="/login/register">
 					<div class="loginForm">
 						&nbsp;이름 <input type="text" id="userName" name="userName">
 					</div>
@@ -36,10 +34,10 @@
 						&nbsp;생년월일 <input type="date" id="userBirth" name="userBirth">
 					</div>
 					<div class="male">
-						&nbsp;남자<input id=male type="radio" name="userGender" value="M" checked /> 
+						&nbsp;남자<input id="male" type="radio" name="userGender" value="M" checked /> 
 					</div>
 					<div class="female">
-						여자<input id=female type="radio" name="userGender" value="F" />
+						여자<input id="female" type="radio" name="userGender" value="F" />
 					</div>
 					<div class="loginForm">
 						&nbsp;아이디 <input type="text" id="userID" name="userID">
@@ -48,7 +46,7 @@
 						&nbsp;비밀번호 <input type="text" id="userPW" name="userPW">
 					</div>
 					<div class="loginForm">
-						&nbsp;비밀번호 확인 <input type="text" id="userPwcheck" name="userPwcheck">
+						&nbsp;비밀번호 확인 <input type="text" id="userPW2" name="userPW2">
 					</div>
 					<div class="loginForm">
 						&nbsp;이메일 <input type="text" id="userEmail" name="userEmail">
@@ -58,19 +56,17 @@
 					</div>
 
 					<!-- temp? -->
-					<button id="signinButton" type="submit">회원가입</button>
+					<button id="signinButton" onclick="return regist_check();">회원가입</button>
 				</form>
 				<button id="AuthButton" type="submit">이메일 인증</button>
 
-				<script>
-							alert(${error});
-						</script>
 
 			</div>
 		</div>
 	</div>
+	
+<script src="/resources/js/register.js"></script>
 
 </body>
 </html>
 
-</html>

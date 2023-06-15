@@ -11,11 +11,11 @@ import com.trip.project.dto.LoginDTO;
 @Mapper
 public interface LoginMapper {
 		
-		@Select(" SELECT * FROM login WHERE userID=#{userID} and userPW = #{userPW} ; ")
+		@Select(" SELECT * FROM login WHERE userID=#{userID}  ")
 		public LoginDTO login(LoginDTO dto);
 		
 		//회원가입
-		@Insert(" INSERT INTO login VALUES(NULL, #{userName}, #{userID}, #{userPW}, #{userEmail}, 'M', #{userBirth}, default ); ")
+		@Insert(" INSERT INTO login VALUES(NULL, #{userName}, #{userID}, #{userPW}, #{userEmail}, 'M', #{userBirth}, default ) ")
 		public int regist(LoginDTO dto);
 	
 		//회원정보수정
