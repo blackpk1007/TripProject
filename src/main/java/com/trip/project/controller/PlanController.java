@@ -24,11 +24,14 @@ public class PlanController {
 	@Autowired
 	private PlanServiceImpl pservice;
 	
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	@RequestMapping
 	public String planMain(Model model) throws JsonProcessingException {
 
 		model.addAttribute("placelist", pservice.placeList());
+		
 
 		return "plan";
 
