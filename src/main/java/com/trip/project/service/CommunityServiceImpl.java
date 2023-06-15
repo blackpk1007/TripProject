@@ -62,5 +62,11 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.selectOneImg(communityNumber);
 	}
 
+	@Override
+	public List<CommunityDTO> selectCommunityCategory(String communityCategory) {
+		return mapper.selectCommunityCategory(communityCategory);
+	}
+
+
 
 }
