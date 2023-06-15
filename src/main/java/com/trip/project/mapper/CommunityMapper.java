@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.trip.project.dto.CommunityDTO;
+import com.trip.project.dto.ImageDTO;
+import com.trip.project.dto.UploadFile;
 
 
 
@@ -25,9 +27,24 @@ public interface CommunityMapper {
 	
 
 	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communityContent=#{communityContent}, communityCategory=#{communityCategory} WHERE communityNumber=#{communityNumber} ")
-
 	int update(CommunityDTO dto);
 	
 	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} ")
 	int delete(int communityNumber);
+	
+	
+	@Select(" SELECT * FROM community ORDER BY communityNumber DESC LIMIT 1 ")
+	CommunityDTO ComunityselectOne();
+	@Insert(" INSERT INTO communityimage VALUES(#{imageNumber}, NOW(), #{imageOriginalName}, #{imageStoredName}) ")
+	int imageInsert(UploadFile image);
+	
+	@Select(" SELECT * FROM communityimage ")
+	List<ImageDTO> selectImage();
+	
+	@Select(" SELECT * FROM communityimage WHERE imageNumber=#{communityNumber} ")
+	ImageDTO selectOneImg(int imageNumber);
+	
+	@Select( "SELECT * FROM community  WHERE communityCategory=#{communityCategory} ORDER BY communityNumber DESC " )
+	List<CommunityDTO> selectCommunityCategory(String communityCategory);
+	
 }

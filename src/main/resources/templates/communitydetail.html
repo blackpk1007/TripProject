@@ -3,12 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	#detail{
+            width:50%;
+            min-width:800px;
+	        margin:20px auto;
+	        text-align:center;
+	        
+        }
+        #img{
+            width:5%;
+            float: left;
+            
+        }
+        #top_title{
+            float: left;
+            padding:1%;
+            margin-bottom:2%;
+            font-size:22px;
+        }
+        #write_title{
+            height:4vh;
+            clear: both;
+            border-top:solid 1px black;
+            border-bottom: solid 1px black;
+        }
+        .left{
+            float: left;
+        }
+        .right{
+            float: right;
+        }
+        #textarea{
+            resize: none;
+            width: 99%;
+            height:40vh;
+            margin-top:2%;
+            backgrount-color:white;
+            border:none;
+        }
+       
+        #title{padding:0.5%;}
+        #fmtdate{padding:0.5%;}
+        #date{padding:0.5%;}
+        #writer_user{padding:0.5%; margin-right: 2%;}
+        #writer{padding:0.5%;}
+        #updateBT{
+        	width:10%;
+            height:3.3vh;
+            background-color: #B8E9FF;
+            border-color: #B8E9FF;
+            border-radius: 7px;
+            float:right;
+            margin-right:0.5%;
+            cursor:pointer;
+        }
+        #deleteBT{
+        	width:10%;
+            height:3.3vh;
+            background-color: #B8E9FF;
+            border-color: #B8E9FF;
+            border-radius: 7px;
+            float:right;
+            margin-right:0.5%;
+            cursor:pointer;
+        }
+        #listBT{
+        	width:10%;
+            height:3.3vh;
+            background-color: #B8E9FF;
+            border-color: #B8E9FF;
+            border-radius: 7px;
+            float:right;
+            cursor:pointer;
+        }
+        
+        #contentImg{
+        	float: left;
+        	width-max:100%;
+        	width: 50%;
+        }
+        #contentAndImg{
+        	border: solid 1px black;
+        	margin-top:1%;
+        	margin-bottom:1%;
+        	padding: 1%;
+        }
+</style>
 </head>
 <body>
 <div id="detail">
-        <div>
-            <div><img src="다운로드.png" id="img"></div>
+        <div th:if="${dto.communityCategory} == 'tip'">
+            <div><img src="/resources/image/bulb.png" id="img"></div>
             <div id="top_title">제주도 여행팁</div>
+        </div>
+        <div th:if="${dto.communityCategory} == 'review'">
+            <div><img src="/resources/image/pencil.png" id="img"></div>
+            <div id="top_title">제주도 여행후기</div>
         </div>
         <div id="write_title">
             <div id="title" class="left" th:text="${dto.communityTitle}"></div>
@@ -18,14 +109,23 @@
             <div id="writer" class="right" >작성자</div>
             
         </div>
-        <div>
-            <textarea readonly="readonly" id="textarea" th:text="${dto.communityContent}"></textarea>
-        </div>
+        <div id=contentAndImg>
+        <div th:if="${image != null}">
+    		<div th:if="${image.imageNumber != null}" >
+        		<img th:src="|/community/image/__${image.imageStoredName}__|" id="contentImg">
+    		</div>
+    		<div th:unless="${image.imageNumber != null}" th:text=""></div>
+		</div>
+		<div>
+			<textarea readonly="readonly" id="textarea" th:text="${dto.communityContent}" ></textarea>
+		</div>
+		</div>
         <div id="button">
-            <input type="button" value="수정" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
-            <input type="button" value="삭제" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
-            <input type="button" value="목록" onclick="location.href='/community/communitymain'">
+            <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
+            <input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
+            <input type="button" value="수정" id="updateBT" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
         </div>
+        
     </div>
 </body>
 </html>

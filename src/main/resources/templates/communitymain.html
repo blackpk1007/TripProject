@@ -3,6 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	      #community{
+            width:50%;
+	        margin:20px auto;
+	        text-align:center;
+	        min-width:1000px;
+	      
+        }
+        #top_title{
+            font-size:20pt;
+        }
+        #tag{
+            height:10%;
+            float: left;
+        }
+        #community_list{
+            clear: both;
+            height: 54vh;
+            
+            
+                    }
+        #community_list dd {
+	    float:left;
+	    height:10px;
+	    line-height:1%;
+	    text-align:center;
+	    
+        }
+        #community_list #title {
+	    height:3vh;
+	    border-top:1px solid #CCCCCC;
+	    border-bottom:1px solid #CCCCCC;
+	    background-color: #E6E4E6;
+        }
+        #community_list #title dt {
+	    float:left;
+	    line-height:1%;
+	    text-align:center;
+        
+        }
+        #community_list .num {width:10%;}
+        #community_list .subject {width:55%;}
+        #community_list .name {width:20%;}
+        #community_list .created {width:15%;}
+
+        #community_list #lists {
+	        clear:both;
+        }
+        #lists dl{
+        margin:0px;
+       
+        } 
+        #community_list dd {
+	    float:left;
+	    height:5vh;
+	    line-height:310%;
+	    text-align:center;
+        margin-left: 0;
+        border-bottom: solid 1px gray;
+        }
+        #community_list a {
+	        line-height: 1%;
+            
+        }
+        #write{
+            clear: both;
+            float:right;
+            margin-top: 1%;
+            margin-right: 2.8%
+        }
+        select{
+            width:200%;
+            text-align: center;
+            margin-bottom: 10%;
+            height:2.7vh;
+         
+        }
+        #button{
+            width:150%;
+            height:3.3vh;
+            background-color: #B8E9FF;
+            border-color: #B8E9FF;
+            border-radius: 7px;
+           	cursor:pointer;
+        }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){	
+		$("#select").change(function(){		
+			//value 가져오기.
+			let select = document.getElementById("select");
+			let value = (select.options[select.selectedIndex].value);
+			
+			let category ={
+				communityCategory:value	
+			};
+			
+			console.log(value);
+			//ajax로 요청 후 해당 카테고리의 데이터 응답받기.
+			$.ajax({
+				url: '/community/selectbox',
+				type: 'post',
+				dataType: 'json',
+				contentType: 'application/json',
+				data: JSON.stringify(category),
+				success: function(data) {
+					$("#lists").empty();
+					
+					var dl = $("<dl></dl>");
+					for(let i = 0; i<data.length; i++){
+						let str = data[i];
+						let formattedDate = new Date(str.communityDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+						dl.append(
+							"<dd class='num'>" + "<a href='/community/communitydetail?communityNumber=" + str.communityNumber + "'>" + str.communityNumber + "</a>" + "</dd>" +
+							"<dd class='subject'>" + "<a href='/community/communitydetail?communityNumber=" + str.communityNumber + "'>" + str.communityTitle + "</a>" + "</dd>" +
+							"<dd class='name'>"+"홍길동"+"</dd>"+
+							"<dd class='created'>"+formattedDate+"</dd>"
+						);
+												
+					}
+					$("#lists").append(dl);
+					//dl태그 생성 -> 반복하면서 담겨 있는 커뮤니티 객체 하나씩 접근 -> 객체안의 값을 꺼내서 dd태그 만들며 갑 넣기
+				},
+				error:function(data){
+						alert("오류");
+				}
+				
+			});
+		});
+	});
+</script>
 </head>
 <body>
 <div id="community">    
@@ -10,12 +142,13 @@
         커뮤니티
     </div>
     <div id="tag">
-        <form action="" method="post">
-            <select>
-                <option value="tip">팁</option>
-                <option value="review">후기</option>
+       
+            <select id="select" > 
+            	<option value="all" id="all" name="select">전체</option>
+                <option value="tip" id="tip" name="select">팁</option>
+                <option value="review" id="review" name="select">후기</option>
             </select>
-        </form>
+       
     </div>
     <div id="community_list">
         <div id="title">
@@ -27,14 +160,14 @@
             </dl>
         </div>
         <div id="lists">
+       		
             <!--반복문으로 내용을 복사해야함-->
-            <dl th:each="dto:${list}">
-                <dd class="num" ><a th:text="${dto.communityNumber}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
+            	<dl th:each="dto:${list}">
+                <dd class="num" ><a th:text="${dto.communityNumber}" th:href="@{/community/communitydetail(communityNumber=${dto.communityNumber})}"></a></dd>
                 <dd class="subject"><a th:text="${dto.communityTitle}" th:href="@{'/community/communitydetail?communityNumber=' +${dto.communityNumber}}"></a></dd>
                 <dd class="name">홍길동</dd>
                 <dd class="created" th:text="${#dates.format(dto.communityDate, 'yyyy-MM-dd')}"></dd>
-
-            </dl>
+            </dl>  -
         </div> 
     </div>
     <!--페이징-->
