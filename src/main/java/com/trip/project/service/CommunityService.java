@@ -18,4 +18,6 @@ public interface CommunityService {
 	public List<ImageDTO> selectImage();
 	public ImageDTO selectOneImg(int imageNumber);
 	
+	public List<CommunityDTO> selectCommunityCategory(String communityCategory);
+	
 }

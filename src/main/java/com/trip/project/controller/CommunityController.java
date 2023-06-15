@@ -2,6 +2,7 @@ package com.trip.project.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -133,6 +136,18 @@ public class CommunityController {
 		System.out.println("show : "+filename);
 	    return new UrlResource("file:" + FileStore.getFullPath(filename));
 
+	}
+	@ResponseBody
+	@PostMapping("/selectbox")
+	public List<CommunityDTO> SelectBox(@RequestBody CommunityDTO dto) {
+		List<CommunityDTO> data = null;
+		
+		if("all".equals(dto.getCommunityCategory())) {
+			data = cService.selectCommunity();
+		}else {
+			data = cService.selectCommunityCategory(dto.getCommunityCategory());
+		}				
+		return data;
 	}
 
 }

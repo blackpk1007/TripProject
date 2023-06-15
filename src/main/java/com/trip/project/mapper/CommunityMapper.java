@@ -16,7 +16,7 @@ import com.trip.project.dto.UploadFile;
 
 @Mapper
 public interface CommunityMapper {
-	@Select(" SELECT * FROM community ORDER BY communityNumber ASC ")
+	@Select(" SELECT * FROM community ORDER BY communityNumber DESC ")
 	List<CommunityDTO> selectCommunity();
 	
 	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}) ")
@@ -43,4 +43,8 @@ public interface CommunityMapper {
 	
 	@Select(" SELECT * FROM communityimage WHERE imageNumber=#{communityNumber} ")
 	ImageDTO selectOneImg(int imageNumber);
+	
+	@Select( "SELECT * FROM community  WHERE communityCategory=#{communityCategory} ORDER BY communityNumber DESC " )
+	List<CommunityDTO> selectCommunityCategory(String communityCategory);
+	
 }
