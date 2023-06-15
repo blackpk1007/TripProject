@@ -618,41 +618,60 @@ td {
 		});
 
 		$.ajax({
-			url : '/plan/fetchPlaceList', // 데이터를 가져올 서버의 엔드포인트
-			type : 'GET',
-			dataType : 'json',
-			success : function(data) {
-				// 서버에서 받은 데이터 처리
-				var positions = [];
+		    url: '/plan/fetchPlaceList',
+		    type: 'GET',
+		    dataType: 'json',
+		    success: function(data) {
+		        var positions = [];
 
-				for (var i = 0; i < data.length; i++) {
-					var place = data[i];
-					var extractedValue = {
-						title : place.placeName,
-						lonlat : new Tmapv2.LatLng(place.placeLon,place.placeLat)
-					};
-					positions.push(extractedValue);
+		        for (var i = 0; i < data.length; i++) {
+		            var place = data[i];
+		            var extractedValue = {
+		                title: place.placeName,
+		                lonlat: new Tmapv2.LatLng(place.placeLon, place.placeLat)
+		            };
+		            positions.push(extractedValue);
+		        }
 
+		        console.log(positions);
+				//----------------------------------------------------------------------------------------------------------
+		        var markers = []; // 마커 배열을 생성
+
+		        for (var i = 0; i < positions.length; i++) {
+		            var lonlat = positions[i].lonlat;
+		            var title = positions[i].title;
+		            console.log(lonlat);
+
+		            var marker = new Tmapv2.Marker({
+		                position: lonlat,
+		                map: map,
+		                title: title
+		                
+		            });
+		            marker.setIcon("/resources/image/mk.png");
+		            markers.push(marker); // 생성된 마커를 배열에 추가
+		            marker.placeName = title;
+		        }
+
+		        // 마커 클릭 이벤트 등록
+		        for (var i = 0; i < markers.length; i++) {
+				  (function(index) {
+				    markers[index].addListener("click", function(evt) {
+				      var marker = markers[index];
+				      console.log(marker);
+				      console.log("Clicked marker index:", index);
+				      console.log("Marker position:", marker.getPosition());
+				      console.log("Marker icon:", marker.getIcon());
+				      console.log("Place name:", marker.placeName);
+				      marker.setIcon("/resources/image/m11.png");
+				    });
+				  })(i);
 				}
-				console.log(positions);
-				// TODO: 데이터를 원하는 방식으로 처리
-				for (var i = 0; i < positions.length; i++) {//for문을 통하여 배열 안에 있는 값을 마커 생성
-					var lonlat = positions[i].lonlat;
-					var title = positions[i].title;
-					console.log(lonlat);
-					//Marker 객체 생성.
-					marker = new Tmapv2.Marker({
-						position : lonlat, //Marker의 중심좌표 설정.
-						map : map, //Marker가 표시될 Map 설정.
-						title : title
-					//Marker 타이틀.
-					});
-				}
-			},
-			error : function(xhr, status, error) {
-				// 에러 처리
-				console.error(error);
-			}
+		    },
+		  //----------------------------------------------------------------------------------------------------------
+		    error: function(xhr, status, error) {
+		        console.error(error);
+		    }
 		});
 
 	}

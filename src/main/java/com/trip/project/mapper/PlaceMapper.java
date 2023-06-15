@@ -17,6 +17,6 @@ public interface PlaceMapper {
 	int crawinsert(PlaceDTO dto);
 	
 	
-	@Select(" select placeName, placeLon, placeLat from place ")
+	@Select(" select * from place ")
 	List<PlaceDTO> placeList();
 }

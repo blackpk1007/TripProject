@@ -48,4 +48,10 @@ public class TripApplication {
 		
 		cservice.crawinsert();
 	}
+	
+	@RequestMapping("/test")
+	public String test() {
+		
+		return "test";
+	}
 }
