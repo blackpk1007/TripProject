@@ -1,5 +1,6 @@
 package com.trip.project.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class LoginController {
 			model.addAttribute("message", "비밀번호일치하지않습니다.");
 			return "redirect:/login";
 		}
-		
+		session.setAttribute("login", res);
 		return "redirect:/";
 		
 //		if (res != null && res.getUserPW().equals(dto.getUserPW())) {
@@ -62,8 +63,11 @@ public class LoginController {
 	
 	// 로그아웃 - 메인 
 	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.removeAttribute("user");
+	public String logout(HttpSession session, HttpServletRequest request) {
+		session = request.getSession(false);
+	    if (session != null) {
+	        session.invalidate();
+	    }
 		return "redirect:/";
 	}
 
