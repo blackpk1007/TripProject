@@ -3,6 +3,7 @@ package com.trip.project.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,9 @@ public class LoginController {
 
 	@Autowired
 	private LoginService lservice;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	// 로그인 메인 페이지
 	@RequestMapping
@@ -29,13 +33,31 @@ public class LoginController {
 	@PostMapping("/logincheck")
 	public String login(HttpSession session, Model model, LoginDTO dto) {
 		LoginDTO res = lservice.login(dto);
-		if (res != null && res.getUserPW().equals(dto.getUserPW())) {
-			session.setAttribute("res", res);
-			return "redirect:/";
-		} else {
-			model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+		
+		if(dto.getUserID() == null) {
+			model.addAttribute("message","유저없음");
+			System.out.println("idcheck");
+			return "redirect:/login" ;
+		}
+		
+		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
+		if(!passwordEncoder.matches(dto.getUserPW(), res.getUserPW())) {
+			System.out.println("password.");
+			System.out.println(dto.getUserPW());
+			System.out.println(res.getUserPW());
+			model.addAttribute("message", "비밀번호일치하지않습니다.");
 			return "redirect:/login";
 		}
+		
+		return "redirect:/";
+		
+//		if (res != null && res.getUserPW().equals(dto.getUserPW())) {
+//			session.setAttribute("res", res);
+//			return "redirect:/";
+//		} else {
+//			model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+//			return "redirect:/login";
+//		}
 	}
 	
 	// 로그아웃 - 메인 
@@ -84,8 +106,8 @@ public class LoginController {
 	// 회원가입
 	@RequestMapping("/register")
 	public String register(Model model, LoginDTO dto) {
-
 		int res = lservice.regist(dto);
+		
 		
 		if (res != 0) {
 			System.out.println(dto.getUserName());
@@ -95,6 +117,7 @@ public class LoginController {
 			model.addAttribute("error", "재등록.");
 			return "redirect:/registerform";
 		}
+		
 	}
 
 	// 사용자 마이페이지 메인
