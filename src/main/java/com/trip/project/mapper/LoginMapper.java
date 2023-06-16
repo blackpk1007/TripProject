@@ -15,7 +15,7 @@ public interface LoginMapper {
 		public LoginDTO login(LoginDTO dto);
 		
 		//회원가입
-		@Insert(" INSERT INTO login VALUES(NULL, #{userName}, #{userID}, #{userPW}, #{userEmail}, 'M', #{userBirth}, default ) ")
+		@Insert(" INSERT INTO login VALUES(NULL, #{userName}, #{userID}, #{userPW}, #{userEmail}, #{userGender}, #{userBirth}, default ) ")
 		public int regist(LoginDTO dto);
 	
 		//회원정보수정
