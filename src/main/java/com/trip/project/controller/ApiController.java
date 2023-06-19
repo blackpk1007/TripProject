@@ -33,6 +33,7 @@ public class ApiController {
 		String res=ocr.ocr(path);
 		
 		JSONObject obj=new JSONObject(res);
+		
 		model.addAttribute("res",obj);
 		model.addAttribute("num",OcrTest.selectOne());
 		

@@ -64,11 +64,17 @@ public class LoginController {
 	// 회원가입 페이지
 	@RequestMapping("/registerform")
 	public String registerForm() {
-
+		
 		return "registerform";
 
 	}
 
+	/**
+	 * 
+	 * @param model
+	 * @param dto 로그인된 사람
+	 * @return 그 다음 뷰
+	 */
 	// 회원가입
 	@RequestMapping("/register")
 	public String register(Model model, LoginDTO dto) {
@@ -108,6 +114,12 @@ public class LoginController {
 	public String userDelete() {
 
 		return "userdelete";
+	}
+	
+	@RequestMapping("/userinserttest")
+	public String userinserttest() {
+		
+		return "userinserttest";
 	}
 
 }

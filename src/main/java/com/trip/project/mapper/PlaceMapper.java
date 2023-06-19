@@ -16,7 +16,11 @@ public interface PlaceMapper {
 			+ "#{placeInfo}, #{placeTag1}, #{placeTag2}, #{placeTag3}, #{placeLon}, #{placeLat}) ")
 	int crawinsert(PlaceDTO dto);
 	
+	// 모든 장소 좌표 마커
+	@Select(" select * from place where placeCategory = #{placeCategory}" )
+	List<PlaceDTO> placeCategoryMarker(String category);
 	
-	@Select(" select placeName, placeLon, placeLat from place ")
-	List<PlaceDTO> placeList();
+	// 맛집 정보
+	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc ")
+	List<PlaceDTO> placeRestaurantList();
 }
