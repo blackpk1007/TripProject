@@ -15,10 +15,15 @@ public class PlanServiceImpl implements PlanService{
 	private PlaceMapper pmapper;
 	
 	@Override
-	public List<PlaceDTO> placeList() {
+	public List<PlaceDTO> placeCategoryMarker(String categoey) {
 		
-		
-		return pmapper.placeList();
+		return pmapper.placeCategoryMarker(categoey);
+	}
+
+	@Override
+	public List<PlaceDTO> placeRestaurantList() {
+
+		return pmapper.placeRestaurantList();
 	}
 
 }

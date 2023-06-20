@@ -6,6 +6,8 @@ import com.trip.project.dto.PlaceDTO;
 
 public interface PlanService {
 	
-	public List<PlaceDTO> placeList();
+	public List<PlaceDTO> placeCategoryMarker(String categoey);
+	
+	public List<PlaceDTO> placeRestaurantList();
 
 }
