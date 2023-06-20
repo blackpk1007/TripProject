@@ -1,8 +1,10 @@
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<!-- <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
 <title>FindYourID</title>
 <link rel="stylesheet" href="/resources/css/idfindform.css" type="text/css">
 </head>
@@ -26,28 +28,95 @@
 				
 			</div>
 			<div class="signup_body">
-				<form method="post" action="/login/idcheck">
-					<div class="loginForm">
+				<form method="post">
+					<div class="loginForm" >
                         <input type="text"	id="userName" name="userName" placeholder=" 이름 입력">  
 					</div>
 					<div class="loginForm">
                         <input type="text"	id="userEmail" name="userEmail" placeholder=" 이메일 입력">
 					</div>
-					<button id="findIdButton" type="submit">확인</button>
-						<script>
-							alert(${error});
-						</script>
+					<button id="findIdButton" th:onclick="findId();">확인</button>
+					<div id="resultDiv">
+            			<p th:if="${msg}!=null" th:text="${msg}"></p>
+        			</div>
+				</form>
 					<ul class="wrap">
 						<hr class="line">
 						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
 						<li><a href="/login/pwfindform" id="txt">비밀번호 찾기</a></li>&nbsp;&nbsp;
 						<hr class="line">
 					</ul>
-				</form>
 			</div>
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+	<script th:inline="javascript"> 
 	
+	function findId(){
+		
+		alert("asdf");
+		
+		var data =$(".loginForm").val(); 
+		console.log(data);
+		
+		var UserDTO={
+				result:data
+		};
+		
+		/* var token = $("meta[name='_csrf']").attr("content");
+	    var header = $("meta[name='_csrf_header']").attr("content"); */
+	    	/* beforeSend: function(xhr){
+	        xhr.setRequestHeader(header,token); */
+		
+	    /* $.ajax({
+	    	
+
+	        url: "/login/idfind",
+	        data: UserDTO,
+	        type:"POST",
+	    }).done(function (fragment) {
+	        $("#resultDiv").replaceWith(fragment);
+	    }); */
+	    
+	    
+	    
+	    
+		/* if (loginForm.userName.value == "") {
+			alert("이름을 입력해 주세요.");
+			loginForm.userName.focus();
+			return;
+		}
+		if (loginForm.userEmail.value == "") {
+			alert("핸드폰번호를 입력해 주세요.");
+			loginForm.userEmail.focus();
+			return;
+		} */
+		
+	/* 	var userName =$("#userName").val();
+		var userEmail =$("#userEmail").val();
+		
+		var sendData="userName="+memName+'&userEmail='+userEmail; */
+		
+		
+		/* $.ajax({
+			url : "/login/idfind",
+			method : "post",
+			data : sendData,
+			dataType : "text",
+			success : function(text) {
+				if (text != null) {
+					$("#result_Div").html("아이디 = "+text);
+				} else {
+					$("#result_Div").html("해당정보가 없습니다.");
+				}
+			},
+			error : function(xhr) {
+				alert("에러코드 = " + xhr.status);
+			}
+		}); */
+	}
+	
+	</script>
 </body>
 </html>
 

@@ -14,6 +14,10 @@ public interface LoginMapper {
 		@Select(" SELECT * FROM login WHERE userID=#{userID}  ")
 		public LoginDTO login(LoginDTO dto);
 		
+		//아이디찾기 
+		@Select(" SELECT userID FROM login WHERE userName=#{userName} and userEmail=#{userEmail}  ")
+		public LoginDTO idfind(LoginDTO dto);
+		
 		//회원가입
 		@Insert(" INSERT INTO login VALUES(NULL, #{userName}, #{userID}, #{userPW}, #{userEmail}, #{userGender}, #{userBirth}, default ) ")
 		public int regist(LoginDTO dto);

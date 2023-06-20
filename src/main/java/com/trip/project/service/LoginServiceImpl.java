@@ -25,7 +25,6 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public int regist(LoginDTO dto) {
 		String encodedPassword= passwordEncoder.encode(dto.getUserPW());
-		System.out.println(encodedPassword);
 		dto.setUserPW(encodedPassword);
 		
 		return loginMapper.regist(dto);
@@ -34,12 +33,18 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public int update(LoginDTO dto) {
+		
 		return loginMapper.update(dto);
 	}
 
 	@Override
 	public int delete(LoginDTO dto) {
 		return loginMapper.delete(dto);
+	}
+	
+	@Override
+	public LoginDTO idfind(LoginDTO dto) {
+		return loginMapper.idfind(dto);
 	}
 
 }

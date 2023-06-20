@@ -12,4 +12,6 @@ public interface LoginService {
 	
 	public int delete(LoginDTO dto);
 	
+	public LoginDTO idfind(LoginDTO dto);
+	
 }

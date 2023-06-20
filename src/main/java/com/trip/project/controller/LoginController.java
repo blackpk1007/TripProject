@@ -20,7 +20,7 @@ public class LoginController {
 
 	@Autowired
 	private LoginService lservice;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -34,15 +34,15 @@ public class LoginController {
 	@PostMapping("/logincheck")
 	public String login(HttpSession session, Model model, LoginDTO dto) {
 		LoginDTO res = lservice.login(dto);
-		
-		if(dto.getUserID() == null) {
-			model.addAttribute("message","유저없음");
+
+		if (dto.getUserID() == null) {
+			model.addAttribute("message", "유저없음");
 			System.out.println("idcheck");
-			return "redirect:/login" ;
+			return "redirect:/login";
 		}
-		
+
 		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
-		if(!passwordEncoder.matches(dto.getUserPW(), res.getUserPW())) {
+		if (!passwordEncoder.matches(dto.getUserPW(), res.getUserPW())) {
 			System.out.println("password.");
 			System.out.println(dto.getUserPW());
 			System.out.println(res.getUserPW());
@@ -51,7 +51,7 @@ public class LoginController {
 		}
 		session.setAttribute("login", res);
 		return "redirect:/";
-		
+
 //		if (res != null && res.getUserPW().equals(dto.getUserPW())) {
 //			session.setAttribute("res", res);
 //			return "redirect:/";
@@ -60,14 +60,14 @@ public class LoginController {
 //			return "redirect:/login";
 //		}
 	}
-	
-	// 로그아웃 - 메인 
+
+	// 로그아웃 - 메인
 	@GetMapping("/logout")
 	public String logout(HttpSession session, HttpServletRequest request) {
 		session = request.getSession(false);
-	    if (session != null) {
-	        session.invalidate();
-	    }
+		if (session != null) {
+			session.invalidate();
+		}
 		return "redirect:/";
 	}
 
@@ -80,9 +80,21 @@ public class LoginController {
 
 	// 아이디 찾기
 	@RequestMapping("/idfind")
-	public String idFind() {
+	public String idFind(Model model, LoginDTO dto) {
+		
+		LoginDTO res = lservice.idfind(dto);
 
-		return "idfind";
+		model.addAttribute("msg",res+"/ 서버에서 붙여준 값입니다");
+        return "/login/idfindform :: #resultDiv";
+		
+//		System.out.println("member의 이름="+dto.getUserName());
+//		System.out.println("member의 이메일="+dto.getUserEmail());
+//		if(res==null) {
+//			return null; 
+//		}else {
+//			return "redirect:/login/idfindform";
+//		}
+//		
 	}
 
 	// 비밀번호 찾기 페이지
@@ -111,8 +123,7 @@ public class LoginController {
 	@RequestMapping("/register")
 	public String register(Model model, LoginDTO dto) {
 		int res = lservice.regist(dto);
-		
-		
+
 		if (res != 0) {
 			System.out.println(dto.getUserName());
 			model.addAttribute("message", "회원가입 완료.");
@@ -121,7 +132,7 @@ public class LoginController {
 			model.addAttribute("error", "재등록.");
 			return "redirect:/registerform";
 		}
-		
+
 	}
 
 	// 사용자 마이페이지 메인
@@ -134,22 +145,37 @@ public class LoginController {
 	// 사용자 회원 정보 수정 페이지
 	@RequestMapping("/userupdateform")
 	public String userUpdateForm() {
-
 		return "userupdateform";
 	}
 
 	// 사용자 회원 정보 수정
-	@RequestMapping("userupdate")
-	public String userupdate() {
+	@RequestMapping("/userupdate")
+	public String userupdate(Model model, LoginDTO dto) {
+		int res = lservice.update(dto);
 
-		return "userupdate";
+		if (res != 0) {
+			System.out.println(dto.getUserName());
+			model.addAttribute("message", "회원정보 수정 완료.");
+			return "redirect:/usermain";
+		} else {
+			model.addAttribute("error", "회원정보 수정 실패.");
+			return "redirect:/userupdateform";
+		}
 	}
 
 	// 사용자 회원 탈퇴
-	@RequestMapping("userdelete")
-	public String userDelete() {
+	@RequestMapping("/userdelete")
+	public String userDelete(Model model, LoginDTO dto) {
+		int res = lservice.delete(dto);
 
-		return "userdelete";
+		if (res != 0) {
+			System.out.println(dto.getUserName());
+			model.addAttribute("message", "회원정보 삭제 완료.");
+			return "redirect:/usermain";
+		} else {
+			model.addAttribute("error", "삭제실패.");
+			return "redirect:/usermain";
+		}
 	}
 
 }

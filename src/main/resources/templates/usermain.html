@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mypage</title>
+<link rel="stylesheet" href="#"
+	type="text/css">
+</head>
+<body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka"><a class="link" href="#">일정생성</a></li>
+			<li class="linka"><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka"><a class="link" href="#">채팅방</a></li>
+			<li class="linkb"><a class="link" href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+
+	<div class="profile1">
+	<img id="profilepic" src="#">
+		내 프로필
+		<button onclick="location.href='/login/userupdateform'">프로필 수정</button>
+	</div>
+	<div class="status">
+		<div id="plan" name="plan">나의 일정</div>
+		<div id="review" name="review">나의 리뷰</div>
+		<div id="post" name="post">나의 게시물</div>
+	</div>
+	<div class="myplan">
+		<div id="plan1">
+			<img id="location1" src="#">
+			<button>공유</button>
+			<button>수정</button>
+			<button>삭제</button>
+		</div>
+		<div id="plan2">
+			<img id="location2" src="#">
+			<button>공유</button>
+			<button>수정</button>
+			<button>삭제</button>
+		</div>
+	</div>
+
+</body>
+</html>
+
