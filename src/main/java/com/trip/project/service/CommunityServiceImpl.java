@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trip.project.dto.CommunityDTO;
+import com.trip.project.dto.ImageDTO;
+import com.trip.project.dto.UploadFile;
 import com.trip.project.mapper.CommunityMapper;
 
 @Service
@@ -38,5 +40,33 @@ public class CommunityServiceImpl implements CommunityService{
 	public int delete(int communityNumber) {
 		return mapper.delete(communityNumber);
 	}
+
+	@Override
+	public CommunityDTO ComunityselectOne() {
+		return mapper.ComunityselectOne();
+	}
+	
+	@Override 
+	public int imageInsert(UploadFile image) {
+		System.out.println("service : "+image);
+		return mapper.imageInsert(image);
+	}
+
+	@Override
+	public List<ImageDTO> selectImage() {
+		return mapper.selectImage();
+	}
+
+	@Override
+	public ImageDTO selectOneImg(int communityNumber) {
+		return mapper.selectOneImg(communityNumber);
+	}
+
+	@Override
+	public List<CommunityDTO> selectCommunityCategory(String communityCategory) {
+		return mapper.selectCommunityCategory(communityCategory);
+	}
+
+
 
 }

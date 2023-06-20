@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>UserUpdate</title>
+<link rel="stylesheet" href="/resources/css/userupdateform.css" type="text/css">
+
+</head>
+<body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka" ><a class="link" href="#">일정생성</a></li>
+			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linkb" ><a class="link" href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+
+	<div class="signup1">
+		<div class="signup2">
+			<div class="signup_header">
+				<div id="signin">회원정보 수정</div>
+				
+			</div>
+			<div class="signup_body">
+				<form method="post">
+					
+                    <div class="loginForm">비밀번호<br>
+                        <input type="text"	id="userPw" name="userPw" >
+					</div>
+                    <div class="loginForm">비밀번호 확인<br>
+                        <input type="text"	id="userPwcheck" name="userPwcheck" >
+					</div>
+                    <!-- <div class="loginForm">이메일<br>
+                        <input type="text"	id="userEmail" name="userEmail" >
+					</div>
+ 					-->
+                    <button id="updateButton" type="submit" formaction="login/userupdate">회원정보 변경</button>
+					<button id="deleteButton" type="submit" formaction="login/userdelete">회원탈퇴</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+

@@ -39,6 +39,8 @@
             width: 99%;
             height:40vh;
             margin-top:2%;
+            backgrount-color:white;
+            border:none;
         }
        
         #title{padding:0.5%;}
@@ -76,6 +78,17 @@
             cursor:pointer;
         }
         
+        #contentImg{
+        	float: left;
+        	width-max:100%;
+        	width: 50%;
+        }
+        #contentAndImg{
+        	border: solid 1px black;
+        	margin-top:1%;
+        	margin-bottom:1%;
+        	padding: 1%;
+        }
 </style>
 </head>
 <body>
@@ -96,14 +109,23 @@
             <div id="writer" class="right" >작성자</div>
             
         </div>
-        <div>
-            <textarea readonly="readonly" id="textarea" th:text="${dto.communityContent}"></textarea>
-        </div>
+        <div id=contentAndImg>
+        <div th:if="${image != null}">
+    		<div th:if="${image.imageNumber != null}" >
+        		<img th:src="|/community/image/__${image.imageStoredName}__|" id="contentImg">
+    		</div>
+    		<div th:unless="${image.imageNumber != null}" th:text=""></div>
+		</div>
+		<div>
+			<textarea readonly="readonly" id="textarea" th:text="${dto.communityContent}" ></textarea>
+		</div>
+		</div>
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
             <input type="button" value="수정" id="updateBT" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
         </div>
+        
     </div>
 </body>
 </html>

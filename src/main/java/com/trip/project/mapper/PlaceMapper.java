@@ -23,4 +23,8 @@ public interface PlaceMapper {
 	// 맛집 정보
 	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc ")
 	List<PlaceDTO> placeRestaurantList();
+
+	@Select(" select * from place ")
+	List<PlaceDTO> placeList();
+
 }
