@@ -52,13 +52,13 @@ public class LoginController {
 		session.setAttribute("login", res);
 		return "redirect:/";
 		
-//		if (res != null && res.getUserPW().equals(dto.getUserPW())) {
-//			session.setAttribute("res", res);
-//			return "redirect:/";
-//		} else {
-//			model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
-//			return "redirect:/login";
-//		}
+		if (res != null && res.getUserPW().equals(dto.getUserPW())) {
+			session.setAttribute("res", res);
+			return "redirect:/";
+		} else {
+			model.addAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:/login";
+		}
 	}
 	
 	// 로그아웃 - 메인 
@@ -162,6 +162,5 @@ public class LoginController {
 	public String userinserttest() {
 		
 		return "userinserttest";
-	}
-
+  }
 }

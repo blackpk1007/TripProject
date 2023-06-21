@@ -7,6 +7,8 @@ import com.trip.project.dto.OcrDTO;
 
 @Mapper
 public interface OcrMapper {
-	@Select(" SELECT * FROM place WHERE placeNumber=15 ")
-	OcrDTO selectOne();
+ 
+    
+    @Select(" SELECT placeNumber,placeName, placeAddress FROM place WHERE placeNumber=#{placeNumber}")
+    OcrDTO selectByPlaceNumber(int placeNumber);
 }

@@ -12,9 +12,9 @@ public class OcrTestImpl implements OcrTest{
 	private OcrMapper ocrMapper;
 
 
+	
 	@Override
-	public OcrDTO selectOne() {
-		
-		return ocrMapper.selectOne();
+	public OcrDTO selectByPlaceNumber(int placeNumber) {
+		return ocrMapper.selectByPlaceNumber(placeNumber);
 	}
 }
