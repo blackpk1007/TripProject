@@ -23,13 +23,10 @@ public class PlanController {
 	@Autowired
 	private PlanServiceImpl pservice;
 	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
 	@RequestMapping
-	public String planMain(Model model) throws JsonProcessingException {
+	public String planMain(Model model){
 
-		model.addAttribute("placelist", pservice.placeList());
+		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList());
 
 		return "plan";
 	}
@@ -37,8 +34,9 @@ public class PlanController {
 	@ResponseBody
 	@GetMapping("/fetchMarkers") 
 	public List<PlaceDTO> planMarker(@RequestParam("category") String category) { 
+		
 		List<PlaceDTO> placeList = pservice.placeCategoryMarker(category);
-	  
+		
 		return placeList; 
 	}
 	
