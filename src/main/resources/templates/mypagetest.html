@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <script type="text/javascript">
 function readURL(input) {
+	var session = sessionStorage.getItem('placeNumber');
+	document.getElementById("placeNumber").value= session;
   if (input.files && input.files[0]) {
     var reader = new FileReader();
     reader.onload = function(e) {
@@ -25,6 +27,7 @@ function readURL(input) {
     <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
     <img id="preview" />
     <input type="submit" value="등록" id="submitBT">
+    <input type="hidden" name="placeNumber" value="" id="placeNumber">
 </div>
 </form>
 </body>

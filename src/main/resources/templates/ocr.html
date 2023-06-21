@@ -21,14 +21,23 @@
             if (res) {
                 res = JSON.parse(res); // JSON 문자열을 JavaScript 객체로 변환
                 for (let i = 0; i < res.images[0].fields.length; i++) {
-                    console.log(res.images[0].fields[i].inferText);
                     $("div").append(res.images[0].fields[i].inferText + " ");
-                    
                     check+=res.images[0].fields[i].inferText;
                     
                 }
                 
                 console.log(check);
+                
+                
+                var regex = /(200[0-9]|201[0-9]|202[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g;
+                var result = check.match(regex);
+                if (result) {
+                	  var date = new Date(result[0]);
+                	  console.log(date);
+                	}
+                
+                
+                
                 if (check.includes(placeAddress)) {
                     console.log("placeAddress 값이 포함되어 있습니다.");
                 } else {

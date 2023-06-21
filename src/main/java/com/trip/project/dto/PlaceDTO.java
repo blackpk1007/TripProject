@@ -21,6 +21,8 @@ public class PlaceDTO {
 	private String placeTag2;
 	private String placeTag3;
 	private String placeLon;
-	private String placeLat;	
+	private String placeLat;
+	
+	
 	
 }

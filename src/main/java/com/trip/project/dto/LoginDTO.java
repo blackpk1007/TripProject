@@ -1,8 +1,17 @@
 package com.trip.project.dto;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginDTO {
 	
 	private int userNumber;
@@ -14,24 +23,6 @@ public class LoginDTO {
 	private String userBirth;
 	private double userTemperature;
 	
-	public LoginDTO() {
-		super();
-	}
-	
-	public LoginDTO(int userNumber, String userName, String userID, String userPW, String userEmail, char userGender,
-			String userBirth, double userTemperature) {
-		super();
-		this.userNumber = userNumber;
-		this.userName = userName;
-		this.userID = userID;
-		this.userPW = userPW;
-		this.userEmail = userEmail;
-		this.userGender = userGender;
-		this.userBirth = userBirth;
-		this.userTemperature = userTemperature;
-	}
-
-
-	
-	
+	private int count;
+	private int recommandPlaceNumber;
 }
