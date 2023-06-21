@@ -8,6 +8,8 @@
         $(function(){
             let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
             let num = '[(${num})]';
+            consoler.log(res);
+            consoler.log(num);
             let placeName = num.match(/placeName=([^,]+)/)[1];
             let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
 

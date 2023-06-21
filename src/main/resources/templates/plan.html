@@ -5,600 +5,8 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
 	rel="stylesheet">
+
 <style type="text/css">
-body {
-	
-}
-
-.header {
-	width: 90vw;
-	height: 13vh;
-	border-bottom: 1px solid #EEEEEE;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 5vh;
-	/* display: flex;
-            justify-content: center; */
-}
-
-.header-category {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-#logimg {
-	width: 15vw;
-	height: 12vh;
-	margin-left: 7vw;
-	margin-right: 14vw;
-}
-
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
-}
-
-#label-left-course {
-	margin-right: 3vw;
-}
-
-#label-left-community {
-	margin-right: 3vw;
-}
-
-#label-left-chat {
-	margin-right: 3vw;
-	padding-left: 1vw;
-	padding-right: 1vw;
-}
-
-#label-right-login {
-	padding-left: 1vw;
-	padding-right: 1vw;
-	margin-left: 3vw;
-}
-
-#label-right-register {
-	margin-left: 3vw;
-}
-
-.main {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 98vw;
-	height: 78vh;
-}
-
-.main-left {
-	width: 20vw;
-	height: 80vh;
-}
-
-.main-left h2 {
-	font-family: 'Noto Sans KR Light', sans-serif;
-	text-align: center;
-	color: #595959;
-	margin-top: 0vw;
-}
-
-.main-center {
-	width: 60vw;
-	height: 80vh;
-}
-
-.main-right {
-	width: 20vw;
-	height: 80vh;
-}
-
-.list {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border: 0.1vw solid #B8E9FF;
-	border-radius: 0.3vw;
-	width: 18vw;
-	height: 12vh;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-#list-img>img {
-	width: 7vw;
-	height: 10vh;
-	border: 0.1vw solid;
-	border-radius: 0.5vw;
-	margin-left: 0.5vw;
-	margin-right: 0.5vw;
-	margin-top: 0.5vh;
-}
-
-#list-name {
-	width: 30vw;
-	height: 10vh;
-	margin-left: 1vw;
-	margin-top: 5vh;
-	font-size: 12px;
-	font-family: 'Noto Sans KR Light', sans-serif;
-	text-align: left;
-	color: #595959;
-}
-
-#list-name-heartimg {
-	display: flex;
-	width: 5vw;
-	height: 3vh;
-	margin-top: 1vh;
-	margin-left: 0vw;
-}
-
-#heartimg {
-	width: 1vw;
-	height: 2vh;
-	margin-right: 0.5vw;
-}
-
-#list-plus>img {
-	width: 1vw;
-	height: 2vh;
-	margin-top: 8vh;
-	margin-left: 1vw;
-	margin-right: 1vw;
-}
-
-.course {
-	width: 20vw;
-	height: 44vh;
-}
-
-.course-color {
-	width: 19vw;
-	height: 10vh;
-	border: 0.1vw solid #B8E9FF;
-	border-radius: 0.5vw;
-	border-bottom-left-radius: 0vw;
-	border-bottom-right-radius: 0vw;
-	margin: 0vw;
-	margin: 0 auto;
-}
-
-.course-color h5 {
-	margin-top: 0.2vw;
-}
-
-.course-plan {
-	width: 19vw;
-	height: 33vh;
-	border: 0.1vw solid #B8E9FF;
-	border-top: 0vw;
-	border-radius: 0.5vw;
-	border-top-left-radius: 0vw;
-	border-top-right-radius: 0vw;
-	margin: 0vw;
-	margin: 0 auto;
-}
-
-.course-plan>img {
-	width: 10vw;
-	height: 2vh;
-	margin-top: 8vh;
-	margin-left: 1vh;
-	margin-right: 1vh;
-}
-
-.course-color-check {
-	width: 100%;
-	height: 8vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.course-color-day {
-	display: flex;
-	align-items: center;
-	width: 90%;
-	height: 3vh;
-	margin-left: 1.5vh;
-}
-
-.course-color-day h5 {
-	text-align: left;
-}
-
-.course-color-check i {
-	margin-left: 0.5vh;
-	margin-right: 0.5vh;
-}
-
-.circle1 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle1:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle2 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle2:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle3 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle3:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle4 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle4:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle5 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle5:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle6 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle6:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle7 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle7:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle1 {
-	background-color: red;
-}
-
-.circle2 {
-	background-color: orange;
-}
-
-.circle3 {
-	background-color: yellow;
-}
-
-.circle4 {
-	background-color: green;
-}
-
-.circle5 {
-	background-color: blue;
-}
-
-.circle6 {
-	background-color: navy;
-}
-
-.circle7 {
-	background-color: purple;
-}
-
-/* input이 체크되면 특수문자 보이게 처리 */
-#chk1:checked+.circle1:after {
-	opacity: 1;
-}
-
-#chk2:checked+.circle2:after {
-	opacity: 1;
-}
-
-#chk3:checked+.circle3:after {
-	opacity: 1;
-}
-
-#chk4:checked+.circle4:after {
-	opacity: 1;
-}
-
-#chk5:checked+.circle5:after {
-	opacity: 1;
-}
-
-#chk6:checked+.circle6:after {
-	opacity: 1;
-}
-
-#chk7:checked+.circle7:after {
-	opacity: 1;
-}
-
-/* 체크박스는 display:none;을 주면 데이터 처리가 안됨 */
-#chk1 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk2 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk3 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk4 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk5 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk6 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk7 {
-	position: absolute;
-	left: -999em;
-}
-
-h5 {
-	margin: 0px;
-}
-
-@import
-	url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
-
-.calendar {
-	background-color: white;
-	width: 80%;
-	height: 30vh;
-	margin: 0px;
-	padding: 20px;
-	margin: 0 auto;
-	border: 1px solid #B8E9FF;
-	border-radius: 5px;
-	margin-bottom: 1vh;
-	/* box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3); */
-}
-
-td {
-	width: 3.5vh;
-	height: 3.5vh;
-}
-
-.Calendar-table {
-	text-align: center;
-	margin: auto;
-}
-
-.Calendar-table>thead>tr:first-child>td {
-	font-family: 'Questrial', sans-serif;
-	font-size: 0.5em;
-	font-weight: bold;
-}
-
-.Calendar-table>thead>tr:last-child>td {
-	font-family: 'Questrial', sans-serif;
-	font-size: 0.5em;
-	font-weight: 600;
-}
-
-.Calendar-table>tbody>tr>td>p {
-	font-family: 'Montserrat', sans-serif;
-	height: 5vh;
-	width: 5vh;
-	border-radius: 45px;
-	transition-duration: .2s;
-	line-height: 5vh;
-	margin: 1px;
-	display: block;
-	text-align: center;
-}
-
-.pastDay {
-	color: lightgray;
-	font-size: 0.5em;
-}
-
-.today {
-	background-color: #EEEEEE;
-	color: black;
-	font-size: 0.5em;
-	font-weight: 600;
-	cursor: pointer;
-}
-
-.futureDay {
-	background-color: #FFFFFF;
-	font-size: 0.5em;
-	cursor: pointer;
-}
-
-.futureDay:hover {
-	background: #eee;
-}
-
-.futureDay.choiceDay, .today.choiceDay {
-	background: #B8E9FF;
-	color: #fff;
-	font-weight: 600;
-	font-size: 0.5em;
-	cursor: pointer;
-}
 #chart{
 	height: 10%;
 	width: 50%;
@@ -613,88 +21,139 @@ td {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
+<link rel="stylesheet" href="/resources/css/plan.css" type="text/css">
+	<script th:inline="javascript">
+var markers = []; // 마커를 담을 배열
+var placeData=[];
+var map; // map 객체 선언
+// 초기 마커 생성
+var placeList = [[${placeRestaurantList}]];
 
-	// 페이지가 로딩이 된 후 호출하는 함수입니다.
-	function initTmap() {
-		// 숨길 요소와 나타낼 요소를 변수로 저장
-	      var mainLeft = document.getElementsByClassName("main-left")[0];
-	      var placeMenu = document.getElementsByClassName("placemenu")[0];
-	    
-		// map 생성
-		// Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
-		var map = new Tmapv2.Map("map_div", { // 지도가 생성될 div
-			center : new Tmapv2.LatLng(33.3616666, 126.5291666),
-			width : "60vw", // 지도의 넓이
-			height : "80vh", // 지도의 높이
-			zoom : 10
-		});
-		//----------------------------------------------------------------------------------------------------------
-		$.ajax({
-		    url: '/plan/fetchPlaceList',
-		    type: 'GET',
-		    dataType: 'json',
-		    success: function(map2) {
-		    	var data = map2.placeList;
-		    	
+function initTmap() {
+	  // map 생성
+	  map = new Tmapv2.Map("map_div", {
+	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
+	    width: "60vw", // 지도의 넓이
+	    height: "80vh", // 지도의 높이
+	    zoom: 10
+	  });
+	  createMarkers(placeList);
+	}
 
-		    	var positions = [];
-		        var placeData=[];
-		        for (var i = 0; i < data.length; i++) {
-		            var place = data[i];
-		            var extractedValue = {
-		                title: place.placeName,
-		                lonlat: new Tmapv2.LatLng(place.placeLon, place.placeLat)
-		            };
-		            
-		            positions.push(extractedValue);
-		            var extractedValue2 = {
-		            		placeNumber: place.placeNumber,
-		            		placeName: place.placeName,
-		            		placeAddress: place.placeAddress,
-		            		placePhone: place.placePhone,
-		            		placeGood: place.placeGood,
-		            		placeInfo: place.placeInfo,
-		            		placeTag1: place.placeTag1,
-		            		placeTag2: place.placeTag2,
-		            		placeTag3: place.placeTag3
-			            };
-		            placeData.push(extractedValue2);
-		        }
+function fetchUpdatedMarkers(category) {
+	
+    $.ajax({
+      url: '/plan/fetchMarkers',
+      method: 'GET',
+      data: { category: category },
+      success: function (data) {
+    	  createMarkers(data);
+    	  updateList(data);
+      },
+      error: function () {
+        console.log('Failed to fetch updated markers.');
+      }
+    });
+  }
+  
+function updateList(data) {
+	  // 리스트를 업데이트하는 작업 수행
+	  var listContainer = document.querySelector('.list');
+	  listContainer.innerHTML = ''; // 기존 리스트 내용 초기화
 
-		        var markers = []; // 마커 배열을 생성
-		        for (var i = 0; i < positions.length; i++) {
-		            var lonlat = positions[i].lonlat;
-		            var title = positions[i].title;
-		            var marker = new Tmapv2.Marker({
-		                position: lonlat,
-		                map: map,
-		                title: title
-		                
-		            });
-		            marker.setIcon("/resources/image/mk.png");
-		            markers.push(marker); // 생성된 마커를 배열에 추가
-		        }
-		        
-		        var selectedMarker = null; // 클릭된 마커를 저장할 변수 추가
-		        
-		        document.getElementById("placemenu_button").onclick = function () {
-		        	mainLeft.style.display = 'block';
-				      placeMenu.style.display = 'none';
-				      if (selectedMarker !== null) {
-			                selectedMarker.setIcon("/resources/image/mk.png");
-			          }
-		          };
-		          
-		        // 마커 클릭 이벤트 등록
-		        for (var i = 0; i < markers.length; i++) {
-				  (function(index) {
-				    markers[index].addListener("click", function(evt) {
-				    
-				      var marker = markers[index];
-				      var placedata=placeData[index];
-				      var placeNumber = placedata.placeNumber;
-				      console.log(typeof placeNumber);
-				      $.ajax({
+	  // data를 기반으로 새로운 리스트 아이템 생성
+	  data.forEach(function (item) {
+	    var listItem = document.createElement('div');
+	    listItem.id = 'list-item';
+
+	    // 리스트 아이템 내용 생성 및 추가
+	    // 예시: 아이템의 이름은 item.name으로 가정
+	    var itemName = document.createElement('h3');
+	    itemName.textContent = item.name;
+	    listItem.appendChild(itemName);
+
+	    // 리스트 컨테이너에 새로운 리스트 아이템 추가
+	    listContainer.appendChild(listItem);
+	  });
+	}
+	
+function createMarkers(data) {
+    // 이전에 생성된 마커 삭제
+    // 숨길 요소와 나타낼 요소를 변수로 저장
+	var mainLeft = document.getElementsByClassName("main-left")[0];
+	var placeMenu = document.getElementsByClassName("placemenu")[0];
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+    markers = [];
+	placeData = [];
+    // 새로운 마커 생성
+    for (var i = 0; i < data.length; i++) {
+      var place = data[i];
+      var marker = new Tmapv2.Marker({
+        position: new Tmapv2.LatLng(place.placeLon, place.placeLat),
+        map: map,
+        title: place.placeName
+      });
+      
+      marker.setIcon("/resources/image/mk.png");
+      markers.push(marker); // 생성된 마커를 배열에 추가
+      
+      var extractedValue2 = {
+      		placeName: place.placeName,
+      		placeAddress: place.placeAddress,
+      		placePhone: place.placePhone,
+      		placeGood: place.placeGood,
+      		placeInfo: place.placeInfo,
+      		placeTag1: place.placeTag1,
+      		placeTag2: place.placeTag2,
+      		placeTag3: place.placeTag3
+            };
+      placeData.push(extractedValue2);
+    }
+    var selectedMarker = null; // 클릭된 마커를 저장할 변수 추가
+    
+    document.getElementById("placemenu_button").onclick = function () {
+    	mainLeft.style.display = 'block';
+	      placeMenu.style.display = 'none';
+	      if (selectedMarker !== null) {
+                selectedMarker.setIcon("/resources/image/mk.png");
+          }
+      };
+    // 마커 클릭 이벤트 등록
+    for (var i = 0; i < markers.length; i++) {
+	  (function(index) {
+	    markers[index].addListener("click", function(evt) {
+	    	      var marker = markers[index];
+	      var placedata = placeData[index];
+	      var placeNumber = placedata.placeNumber;
+	      console.log(marker);
+	      console.log(placedata);
+	   	  // 이전에 클릭된 마커가 있을 경우 아이콘을 원래대로 되돌림
+          if (selectedMarker !== null) {
+                selectedMarker.setIcon("/resources/image/mk.png");
+          }
+	      
+        sessionStorage.setItem('placeNumber', placedata.placeNumber);
+	      marker.setIcon("/resources/image/m11.png");
+	      
+	      // 요소의 스타일 속성을 조작하여 나타내거나 숨김
+	      mainLeft.style.display = 'none';
+	      placeMenu.style.display = 'block';
+	      
+	      document.getElementById("datatest1").innerText = placedata.placeName;
+	      document.getElementById("datatest2").innerText = placedata.placeAddress;
+	      document.getElementById("datatest3").innerText = placedata.placePhone;
+	      document.getElementById("datatest4").innerText = placedata.placeGood;
+	      document.getElementById("datatest5").innerText = placedata.placeInfo;
+	      document.getElementById("datatest6").innerText = placedata.placeTag1;
+	      document.getElementById("datatest7").innerText = placedata.placeTag2;
+	      document.getElementById("datatest8").innerText = placedata.placeTag3;
+	      
+	   	  // 클릭된 마커를 selectedMarker 변수에 저장
+        selectedMarker = marker;
+        
+        $.ajax({
 						    url: '/plan/genderList',
 						    type: 'GET',
 						    data: { recommandPlaceNumber : placeNumber },
@@ -816,61 +275,86 @@ td {
 					              console.error(error);
 					            }
 					          });
-				      
-				      sessionStorage.setItem('placeNumber', placedata.placeNumber);
-				      
-				   	  // 이전에 클릭된 마커가 있을 경우 아이콘을 원래대로 되돌림
-			          if (selectedMarker !== null) {
-			                selectedMarker.setIcon("/resources/image/mk.png");
-			          }
-				      console.log(placeNumber);	
-				      //console.log(data2[0].count);
-				      //console.log(data2[0].recommandPlaceNumber);
-				      //console.log("Clicked marker index:", index);
-				      //console.log("Marker position:", marker.getPosition());
-				      //console.log("Marker icon:", marker.getIcon());
-				      //console.log("Place name:", marker.placeName);
-				      marker.setIcon("/resources/image/m11.png");
-				      
-				   
-				      
-				      // 요소의 스타일 속성을 조작하여 나타내거나 숨김
-				      mainLeft.style.display = 'none';
-				      placeMenu.style.display = 'block';
-				      
-				      
-				      document.getElementById("datatest0").innerText = placedata.placeNumber;
-				      document.getElementById("datatest1").innerText = placedata.placeName;
-				      document.getElementById("datatest2").innerText = placedata.placeAddress;
-				      document.getElementById("datatest3").innerText = placedata.placePhone;
-				      document.getElementById("datatest4").innerText = placedata.placeGood;
-				      document.getElementById("datatest5").innerText = placedata.placeInfo;
-				      document.getElementById("datatest6").innerText = placedata.placeTag1;
-				      document.getElementById("datatest7").innerText = placedata.placeTag2;
-				      document.getElementById("datatest8").innerText = placedata.placeTag3;
-				      
-				      
-				   	  // 클릭된 마커를 selectedMarker 변수에 저장
-			          selectedMarker = marker;
-				    });
-				  })(i);
-				}
-		    },
-		  //----------------------------------------------------------------------------------------------------------
-		    error: function(xhr, status, error) {
-		        console.error(error);
-		    }
-		});
-
+	    });
+	  })(i);
 	}
-	window.onload = function() {
-		buildCalendar();
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    var restaurantBtn = document.getElementById('restaurant-btn');
+    restaurantBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('restaurant');
+    });
 
-	} // 웹 페이지가 로드되면 buildCalendar 실행
-	window.addEventListener('load', function() {
-		initTmap();
-	})
+    var youtubeBtn = document.getElementById('youtube-btn');
+    youtubeBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('youtube');
+    });
 
+    var touristBtn = document.getElementById('tourist-btn');
+    touristBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('tourist');
+    });
+
+    var hillBtn = document.getElementById('hill-btn');
+    hillBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('hill');
+    });
+
+    var ollegilBtn = document.getElementById('ollegil-btn');
+    ollegilBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('ollegil');
+    });
+    
+	
+	var plusElements = document.querySelectorAll('#list-plus');
+	plusElements.forEach(function(plus) {
+		  plus.addEventListener('click', function() {
+			// 클릭 이벤트 발생 시 실행되는 함수
+			    // 클릭한 plus 요소의 부모인 main-left div를 찾아 복사
+			    var mainLeft = this.parentNode;
+			    var coursePlan = document.querySelector('.course-plan');
+
+			    // main-left div 복사
+			    var clonedMainLeft = mainLeft.cloneNode(true);
+
+			    // main-left div 내의 minus 이미지 클릭 시 삭제 이벤트 추가
+			    var minus = clonedMainLeft.querySelector('#list-minus');
+			    /* minus.addEventListener('click', function() {
+			      // minus 이미지 클릭 시 실행되는 함수
+			      // 해당 main-left div를 삭제
+			      coursePlan.removeChild(clonedMainLeft);
+			    }); */
+
+			    // course-plan div에서 기존의 list div를 찾아 가져옴
+			    var listContainer = coursePlan.querySelector('.list');
+
+			    // 복사한 main-left div에서 plus 이미지를 제거
+			    var plusElement = clonedMainLeft.querySelector('#list-plus');
+			    plusElement.remove();
+			    
+			 	// list-name-heartimg 요소 제거
+			    var listNameHeartImg = clonedMainLeft.querySelector('#list-name-heartimg');
+			    listNameHeartImg.remove();
+			    
+			    var listMinusDiv = document.createElement('div');
+			    listMinusDiv.setAttribute('id', 'list-minus');
+
+			    // list-minus 이미지 생성
+			    var listMinusImg = document.createElement('img');
+			    listMinusImg.setAttribute('src', './resources/image/minus.png');
+			    listMinusImg.setAttribute('alt', '');
+
+			    // list-minus 이미지를 list-minus div에 추가
+			    listMinusDiv.appendChild(listMinusImg);
+
+			    // 복사한 main-left div에 list-minus div 추가
+			    clonedMainLeft.appendChild(listMinusDiv);
+
+			    // 가져온 list div에 복사한 main-left div 추가
+			    listContainer.appendChild(clonedMainLeft);
+		});
+	});
+  });
 	let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
 	let today = new Date(); // 페이지를 로드한 날짜를 저장
 	today.setHours(0, 0, 0, 0); // 비교 편의를 위해 today의 시간을 초기화
@@ -959,8 +443,11 @@ td {
 		}
 		return value;
 	}
+	window.onload = function () {
+		  buildCalendar();
+		  initTmap();
+		};	
 </script>
-
 <title>Insert title here</title>
 </head>
 <body>
@@ -968,7 +455,7 @@ td {
 		<div class="header-category">
 			<label id="label-left-course">코스추천</label> <label
 				id="label-left-community">커뮤니티</label> <label id="label-left-chat">채팅방</label>
-			<img src="./logo.png" alt="" id="logimg"> <label
+			<img src="./resources/image/logo.png" alt="" id="logimg"> <label
 				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
 		</div>
 	</div>
@@ -976,35 +463,29 @@ td {
 		<div class="main-left">
 			<h2>사용자 추천</h2>
 			<div class="list">
-				<div id="list-img">
-					<img src="./곽지식당.jpg" alt="">
-				</div>
-
-				<div id="list-name">
-					<div id="list-name-label">
-						<label>곽지식당</label>
+				<div th:each="restaurant : ${placeRestaurantList}">
+					<div id="list-img">
+						<img th:src="@{/resources/image/place/__${restaurant.placeName}__.jpg}" alt="">
 					</div>
-					<div id="list-name-heartimg">
-						<div>
-							<img src="004.png" alt="" id="heartimg">
+					<div id="list-name">
+						<div id="list-name-label">
+							<label th:text="${restaurant.placeName}">곽지식당</label>
 						</div>
-						<div id="list-name-heartimg-label">
-							<label>456</label>
+						<div id="list-name-heartimg">
+							<div>
+								<img src="./resources/image/heart.png" alt="" id="heartimg">
+							</div>
+							<div id="list-name-heartimg-label">
+								<label th:text="${restaurant.placeGood}">456</label>
+							</div>
 						</div>
-
 					</div>
-
+					<div id="list-plus">
+						<img src="./resources/image/plus.png" alt="" id="plus">
+					</div>
 				</div>
-				<div id="list-plus">
-					<img src="plus.png" alt="">
-				</div>
-
 			</div>
-				
 		</div>
-		
-		
-
 		<div class="placemenu" style="display:none;" >
 			<div id="placemenu_button" ><button>x</button></div>
 			<div id="placemenu_heart"><a href="/review">추천하기</a></div>
@@ -1022,16 +503,14 @@ td {
 			
 		</div>
 		
-		
 		<div class="main-center">
 			<div id="map_div"></div>
 			<div id="category-button">
-				<label>맛집</label>
-				<label>유튜브맛집</label>
-				<label>액티비티</label>
-				<label>관광지</label>
-				<label>오름</label>
-				<label>둘레길</label>
+				<button id="restaurant-btn">음식점</button>
+  				<button id="youtube-btn">유튜브맛집</button>
+  				<button id="tourist-btn">관광지</button>
+  				<button id="hill-btn">오름</button>
+  				<button id="ollegil-btn">올레길</button>
 			</div>
 		</div>
 		<div class="main-right">
@@ -1106,17 +585,7 @@ td {
 				</div>
 
 				<div class="course-plan">
-					<div id="list-img">
-						<img src="./곽지식당.jpg" alt="">
-					</div>
-
-					<div id="list-name">
-						<div id="list-name-label">
-							<label>곽지식당</label>
-						</div>
-					</div>
-					<div id="list-minus">
-						<img src="minus.png" alt="">
+					<div class="list">
 					</div>
 				</div>
 			</div>

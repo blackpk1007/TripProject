@@ -2,6 +2,7 @@ package com.trip.project.controller;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -24,21 +25,16 @@ import com.trip.project.service.PlanServiceImpl;
 @Controller
 @RequestMapping("/plan")
 public class PlanController {
-	
+
 	@Autowired
 	private PlanServiceImpl pservice;
 	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
 	@RequestMapping
-	public String planMain(Model model) throws JsonProcessingException {
+	public String planMain(Model model){
 
-		model.addAttribute("placelist", pservice.placeList());
-		
+		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList());
 
 		return "plan";
-
 	}
 	
 	@ResponseBody
@@ -53,7 +49,7 @@ public class PlanController {
 		
 		return map;
 	}
-	
+  
 	@ResponseBody
 	@GetMapping("/genderList")
 	public List<LoginDTO> genderList(@RequestParam int recommandPlaceNumber) {
@@ -68,5 +64,13 @@ public class PlanController {
 		System.out.println(birthList);
 		return birthList;
 	}
-	
+  
+	@GetMapping("/fetchMarkers") 
+	public List<PlaceDTO> planMarker(@RequestParam("category") String category) { 
+		
+		List<PlaceDTO> placeList = pservice.placeCategoryMarker(category);
+		
+		return placeList; 
+	}
+
 }
