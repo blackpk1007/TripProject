@@ -112,8 +112,9 @@
         게시글 수정
     </div>
     
-    <form action="/community/communityupdate" method="post">
+    <form action="/community/communityupdate" method="post" enctype="multipart/form-data">
     <input type="hidden" name="communityNumber" th:value="${dto.communityNumber}">
+   
         <div id="kategorie" class="div">
             <div id="write_kg">카테고리</div>
             <div id="tag">
@@ -130,6 +131,12 @@
             <div><input type="text" id="title_text" name="communityTitle" th:value="${dto.communityTitle}"></div>
         </div>
         <div id="contents" class="div">
+        	<!-- <div th:if="${image != null}">
+	    		<div th:if="${image.imageNumber != null}" >
+	        		<img th:src="|/community/image/__${image.imageStoredName}__|" id="contentImg">
+	    		</div>
+	    		<div th:unless="${image.imageNumber != null}" th:text=""></div>
+			</div> -->
             <div id="write_con">내용</div>
             <div id="write_ta"><textarea rows="30" id="textarea" name="communityContent" th:text="${dto.communityContent}"></textarea></div>
         </div>
@@ -137,6 +144,11 @@
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="submit" value="수정" id="submitBT">
         </div>
+        <div class="filebox">
+            	<!-- <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+            	<label for="attachFile">사진 업로드</label> -->
+           		<input type="file" id="attachFile" name="attachFile">
+            </div>
     </form>
 </div>
 </body>

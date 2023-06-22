@@ -1,5 +1,6 @@
 package com.trip.project.mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -10,14 +11,22 @@ import org.apache.ibatis.annotations.Update;
 
 import com.trip.project.dto.CommunityDTO;
 import com.trip.project.dto.ImageDTO;
+import com.trip.project.dto.SearchDTO;
 import com.trip.project.dto.UploadFile;
+import com.trip.project.paging.PagingResponse;
 
 
 
 @Mapper
 public interface CommunityMapper {
-	@Select(" SELECT * FROM community ORDER BY communityNumber DESC ")
-	List<CommunityDTO> selectCommunity();
+	@Select(" SELECT * FROM community ORDER BY communityNumber DESC LIMIT #{pagination.limitStart}, #{recordSize} ")
+	PagingResponse<CommunityDTO> selectCommunity(SearchDTO params);
+	
+	@Select(" SELECT * FROM community ORDER BY communityNumber DESC LIMIT #{pagination.limitStart}, #{recordSize} ")
+	List<CommunityDTO> selectCommunityList(SearchDTO params);
+	
+	@Select(" SELECT COUNT(*) FROM community ")
+	int Count(SearchDTO params);
 	
 	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}) ")
 	int insert(CommunityDTO dto);
@@ -32,9 +41,9 @@ public interface CommunityMapper {
 	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} ")
 	int delete(int communityNumber);
 	
-	
 	@Select(" SELECT * FROM community ORDER BY communityNumber DESC LIMIT 1 ")
 	CommunityDTO ComunityselectOne();
+	
 	@Insert(" INSERT INTO communityimage VALUES(#{imageNumber}, NOW(), #{imageOriginalName}, #{imageStoredName}) ")
 	int imageInsert(UploadFile image);
 	
@@ -44,7 +53,15 @@ public interface CommunityMapper {
 	@Select(" SELECT * FROM communityimage WHERE imageNumber=#{communityNumber} ")
 	ImageDTO selectOneImg(int imageNumber);
 	
-	@Select( "SELECT * FROM community  WHERE communityCategory=#{communityCategory} ORDER BY communityNumber DESC " )
-	List<CommunityDTO> selectCommunityCategory(String communityCategory);
+	@Update(" UPDATE communityimage SET imageCreateDate=NOW(), imageOriginalName=#{imageOriginalName}, imageStoredName=#{imageStoredName} WHERE imageNumber=#{imageNumber} " )
+	int updateImg(UploadFile image);
+	
+	@Select( "SELECT * FROM community  WHERE communityCategory=#{communityCategory} ORDER BY communityNumber DESC LIMIT #{pagination.limitStart}, #{recordSize} " )
+	PagingResponse<CommunityDTO> selectCommunityCategory(String communityCategory, SearchDTO params);
+	
+	@Select( "SELECT * FROM community  WHERE communityCategory=#{communityCategory} ORDER BY communityNumber DESC LIMIT #{params.pagination.limitStart}, #{params.recordSize} " )
+	List<CommunityDTO> selectCommunityCategoryList(String communityCategory, SearchDTO params);
+	
+	
 	
 }
