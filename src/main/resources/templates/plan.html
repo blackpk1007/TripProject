@@ -2,12 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
+	rel="stylesheet">
 <link href="./resources/css/plan.css" rel="stylesheet">
-<script	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
+<script
+	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
+var loginchk = [[${session.login}]];
+console.log(loginchk);
 var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
@@ -61,7 +66,9 @@ function updateList(data) {
 	    listContainer.appendChild(listItem);
 	  });
 	}
-	
+var selectedMarkerChart1 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas)
+var selectedMarkerChart2 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas2)
+
 function createMarkers(data) {
     // 이전에 생성된 마커 삭제
     // 숨길 요소와 나타낼 요소를 변수로 저장
@@ -120,6 +127,14 @@ function createMarkers(data) {
                 selectedMarker.setIcon("/resources/image/mk.png");
           }
 	      
+       // 이전에 클릭된 마커에 대한 차트를 파괴
+          if (selectedMarkerChart1 !== null) {
+            selectedMarkerChart1.destroy();
+          }
+          if (selectedMarkerChart2 !== null) {
+            selectedMarkerChart2.destroy();
+          }
+       
         sessionStorage.setItem('placeNumber', placedata.placeNumber);
 	      marker.setIcon("/resources/image/m11.png");
 	      
@@ -138,7 +153,9 @@ function createMarkers(data) {
 	      
 	   	  // 클릭된 마커를 selectedMarker 변수에 저장
         selectedMarker = marker;
-	   	  console.log("click :"+placeNumber);
+	   	console.log("click :"+placeNumber);
+	   	selectedMarkerChartId = "chart" + index;  // 각 마커에 대한 고유한 ID 생성
+	      
         
         $.ajax({
 						    url: '/plan/genderList',
@@ -158,7 +175,10 @@ function createMarkers(data) {
 						    	  var percentage2 = (ratio2 * 100).toFixed(2) + "%";
 
 						    	  var ctx = document.getElementById("chartCanvas").getContext("2d");
-						    	  new Chart(ctx, {
+						    	  if (selectedMarkerChart1) {
+						              selectedMarkerChart1.destroy();
+						            }
+						            selectedMarkerChart1 =new Chart(ctx, {
 						    	    type: 'pie',
 						    	    data: {
 						    	      labels: ["여성 (" + percentage1 + ")", "남성 (" + percentage2 + ")"],
@@ -209,7 +229,10 @@ function createMarkers(data) {
 						    	      }
 						    	}
 						    	var ctx = document.getElementById("chartCanvas2").getContext("2d");
-						    	new Chart(ctx, {
+						    	if (selectedMarkerChart2) {
+						              selectedMarkerChart2.destroy();
+						            }
+						            selectedMarkerChart2 = new Chart(ctx, {
 						    	      type: 'bar',
 						    	      data: {
 						    	        labels: Object.keys(ageCategories).map(function(label) {
@@ -446,11 +469,11 @@ function createMarkers(data) {
 				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
 		</div>
 	</div>
-	<div class="main">
+	<div class="main"> 
 		<div class="main-left">
 			<h2>사용자 추천</h2>
 			<div class="list">
-				<div th:each="restaurant : ${placeRestaurantList}">
+				<div id="left_block" th:each="restaurant : ${placeRestaurantList}">
 					<div id="list-img">
 						<img th:src="@{/resources/image/place/__${restaurant.placeName}__.jpg}" alt="">
 					</div>
@@ -472,10 +495,15 @@ function createMarkers(data) {
 					</div>
 				</div>
 			</div>
+			
 		</div>
-		<div class="placemenu" style="display:none;" >
-			<div id="placemenu_button" ><button>x</button></div>
-			<div id="placemenu_heart"><a href="/review">추천하기</a></div>
+		<div class="placemenu" style="display: none;">
+			<div id="placemenu_button">
+				<button>x</button>
+			</div>
+			<div id="placemenu_heart">
+				<a href="/review">추천하기</a>
+			</div>
 			<div id="datatest1"></div>
 			<div id="datatest2"></div>
 			<div id="datatest3"></div>
@@ -483,21 +511,25 @@ function createMarkers(data) {
 			<div id="datatest5"></div>
 			<div id="datatest6"></div>
 			<div id="datatest7"></div>
-			<div id="datatest8"></div>	
+			<div id="datatest8"></div>
 			<div id="datatest0"></div>
-			<div id="chart"><canvas id="chartCanvas" ></canvas></div>
-			<div id="chart2"><canvas id="chartCanvas2" ></canvas></div>
-			
+			<div id="chart">
+				<canvas id="chartCanvas"></canvas>
+			</div>
+			<div id="chart2">
+				<canvas id="chartCanvas2"></canvas>
+			</div>
+
 		</div>
-		
+
 		<div class="main-center">
 			<div id="map_div"></div>
 			<div id="category-button">
 				<button id="restaurant-btn">음식점</button>
-  				<button id="youtube-btn">유튜브맛집</button>
-  				<button id="tourist-btn">관광지</button>
-  				<button id="hill-btn">오름</button>
-  				<button id="ollegil-btn">올레길</button>
+				<button id="youtube-btn">유튜브맛집</button>
+				<button id="tourist-btn">관광지</button>
+				<button id="hill-btn">오름</button>
+				<button id="ollegil-btn">올레길</button>
 			</div>
 		</div>
 		<div class="main-right">
@@ -572,8 +604,7 @@ function createMarkers(data) {
 				</div>
 
 				<div class="course-plan">
-					<div class="list">
-					</div>
+					<div class="list"></div>
 				</div>
 			</div>
 		</div>

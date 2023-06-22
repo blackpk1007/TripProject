@@ -4,15 +4,38 @@
     <meta charset="UTF-8">
     <title>OCR Text Extraction</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script type="text/javascript">
+    <script th:inline="javascript">
+    var loginchk = [[${session.login}]];
+    console.log(loginchk.userID);
         $(function(){
             let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
             let num = '[(${num})]';
-            console.log(res);
-            console.log(num);
+            let userCheck = '[(${userCheck})]';
+            //console.log(res);
+            //console.log(num);
+            //console.log(userCheck);
+            
+            var userCheckcnt=0;
+            let userCheckArray = userCheck.match(/recommandUserID=([^,]+)/g);
+            let matches = userCheck.match(/recommandDate=([^,]+)/g);
+            let userIDs = userCheckArray.map(item => item.split('=')[1]);
+            let match = matches.map(item => item.split('=')[1]);
+            var dateCheckcnt=-1;
+            var dateCheckdata;
+            userIDs.forEach(function(userID) {
+            	dateCheckcnt++;
+                if (loginchk.userID == userID) {
+                    
+                    userCheckcnt++;
+                    dateCheckdata=match[dateCheckcnt];
+                    
+                }
+            });
+
+            
             let placeName = num.match(/placeName=([^,]+)/)[1];
             let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
-
+            console.log(placeName);
             let check="";
             
 	        // 괄호 제거하기
@@ -30,27 +53,43 @@
                 
                 console.log(check);
                 
-                
+                var date;
                 var regex = /(200[0-9]|201[0-9]|202[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g;
                 var result = check.match(regex);
                 if (result) {
-                	  var date = new Date(result[0]);
+                	  date = new Date(result[0]);
                 	  console.log(date);
                 	}
                 
                 
-                
+                var placeCheckcnt=0;
+            
                 if (check.includes(placeAddress)) {
                     console.log("placeAddress 값이 포함되어 있습니다.");
+                    placeCheckcnt++;
                 } else {
                     console.log("placeAddress 값이 포함되어 있지 않습니다.");
                 }
 
                 if (check.includes(placeName)) {
                     console.log("placeName 값이 포함되어 있습니다.");
+                    placeCheckcnt++;
                 } else {
                     console.log("placeName 값이 포함되어 있지 않습니다.");
                 }
+                
+                if(placeCheckcnt==2){
+                	if(userCheckcnt==0){
+                		alert("첫번째 영수증 인증이 완료되었습니다");
+                	}
+                	else if(userCheckcnt==1){
+                		if(dateCheckdata!=date){
+                			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
+                			console.log("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
+                		}
+                	}
+                }
+                else alert("영수증과 장소가 일치하지 않습니다");
             }
             
         });

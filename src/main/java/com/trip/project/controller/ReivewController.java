@@ -50,7 +50,7 @@ public class ReivewController {
         JSONObject obj = new JSONObject(res);
         model.addAttribute("res", obj);
         model.addAttribute("num", OcrTest.selectByPlaceNumber(placeNumber));
-        
+        model.addAttribute("userCheck", OcrTest.selectRecommandPlaceNumber(placeNumber));
 
         return "ocr";
     }

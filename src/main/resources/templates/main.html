@@ -240,6 +240,7 @@ header {
 </style>
 </head>
 <body>
+
 	<div id="back">
 		<img src="/resources/image/back.png" id="back_img">
 		<header>
@@ -410,6 +411,9 @@ header {
         function closePopup() {
             document.getElementById('popupContainer').style.display = 'none';
         }
+        
+        var loginchk = [[${session.login}]];
+        console.log(loginchk);
     </script>
 	<script>
 		new Swiper('.swiper-container', {
