@@ -1,6 +1,7 @@
 package com.trip.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.trip.project.dto.LoginDTO;
@@ -12,6 +13,9 @@ public class LoginServiceImpl implements LoginService {
 	@Autowired
 	private LoginMapper loginMapper;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public LoginDTO login(LoginDTO dto) {
 
@@ -20,7 +24,10 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public int regist(LoginDTO dto) {
-
+		String encodedPassword= passwordEncoder.encode(dto.getUserPW());
+		System.out.println(encodedPassword);
+		dto.setUserPW(encodedPassword);
+		
 		return loginMapper.regist(dto);
 
 	}

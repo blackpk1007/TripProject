@@ -9,6 +9,6 @@ import com.trip.project.dto.MainpageDTO;
 
 @Mapper
 public interface MainpageMapper {
-	@Select("SELECT placeName FROM place ORDER BY placeGood DESC LIMIT 6 ")
+	@Select(" SELECT placeName FROM place ORDER BY placeGood DESC LIMIT 6 ")
 	List<MainpageDTO> selectList();
 }
