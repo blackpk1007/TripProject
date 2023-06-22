@@ -30,11 +30,12 @@ public class ApiController {
 		System.out.println(path);
 		
 		Ocr ocr =new Ocr();
-		String res=ocr.ocr(path);
-		
-		JSONObject obj=new JSONObject(res);
-		model.addAttribute("res",obj);
-		model.addAttribute("num",OcrTest.selectOne());
+//		String res=ocr.ocr(path);
+//		
+//		JSONObject obj=new JSONObject(res);
+//		
+//		model.addAttribute("res",obj);
+//		model.addAttribute("num",OcrTest.selectOne());
 		
 		return "ocr";
 	}
