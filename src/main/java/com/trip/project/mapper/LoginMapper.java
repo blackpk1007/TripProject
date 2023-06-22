@@ -14,6 +14,10 @@ public interface LoginMapper {
 		@Select(" SELECT * FROM login WHERE userID=#{userID}  ")
 		public LoginDTO login(LoginDTO dto);
 		
+		//아이디찾기 
+		@Select(" SELECT userID FROM login WHERE userName=#{userName} and userEmail=#{userEmail}  ")
+		public LoginDTO idfind(LoginDTO dto);
+		
 		//회원가입
 		@Insert(" INSERT INTO login VALUES(NULL, #{userName}, #{userID}, #{userPW}, #{userEmail}, #{userGender}, #{userBirth}, default ) ")
 		public int regist(LoginDTO dto);
@@ -25,4 +29,13 @@ public interface LoginMapper {
 		//회원삭제
 		@Delete(" DELETE FROM login WHERE userID=#{userID} " )
 		public int delete(LoginDTO dto);
+		
+		//비밀번호 찾기
+		@Select(" SELECT userName FROM login WHERE userID=#{userID} and userEmail=#{userEmail} ")
+		public LoginDTO pwfind(LoginDTO dto);
+		
+		//비밀번호찾기-재생성
+		@Insert(" UPDATE login SET userPW=#{userPW} WHERE userID=#{userID} and userEmail=#{userEmail} ")
+		public int newpw(LoginDTO dto);
+		
 }

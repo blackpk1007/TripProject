@@ -25,7 +25,6 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public int regist(LoginDTO dto) {
 		String encodedPassword= passwordEncoder.encode(dto.getUserPW());
-		System.out.println(encodedPassword);
 		dto.setUserPW(encodedPassword);
 		
 		return loginMapper.regist(dto);
@@ -34,6 +33,7 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public int update(LoginDTO dto) {
+		
 		return loginMapper.update(dto);
 	}
 
@@ -41,5 +41,24 @@ public class LoginServiceImpl implements LoginService {
 	public int delete(LoginDTO dto) {
 		return loginMapper.delete(dto);
 	}
+	
+	@Override
+	public LoginDTO idfind(LoginDTO dto) {
+		return loginMapper.idfind(dto);
+	}
 
+	//비밀번호 찾기 
+	@Override
+	public LoginDTO pwfind(LoginDTO dto) {
+		return loginMapper.pwfind(dto);
+	}
+
+	//비밀번호 찾기 - 재설정 
+	@Override
+	public int newpw(LoginDTO dto) {
+		String encodedPassword= passwordEncoder.encode(dto.getUserPW());
+		dto.setUserPW(encodedPassword);
+		return loginMapper.newpw(dto);
+	}
+	
 }
