@@ -1,5 +1,6 @@
 package com.trip.project.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.trip.project.dto.CommunityDTO;
 import com.trip.project.dto.ImageDTO;
+import com.trip.project.dto.SearchDTO;
 import com.trip.project.dto.UploadFile;
 import com.trip.project.mapper.CommunityMapper;
+import com.trip.project.paging.Pagination;
+import com.trip.project.paging.PagingResponse;
 
 @Service
 public class CommunityServiceImpl implements CommunityService{
@@ -17,8 +21,23 @@ public class CommunityServiceImpl implements CommunityService{
 	private CommunityMapper mapper;
 	
 	@Override
-	public List<CommunityDTO> selectCommunity() {
-		return mapper.selectCommunity();
+	public PagingResponse<CommunityDTO> selectCommunity(final SearchDTO params) {
+		//조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
+		int count = mapper.Count(params);
+		System.out.println("count: " + count);
+		if(count < 1) {
+			return new PagingResponse<>(Collections.emptyList(),null);
+		}
+		
+		//Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDTO 타입의 객체인 params에 계산된 페이지 정보 저장
+		Pagination pagination = new Pagination(count, params);
+		params.setPagination(pagination);
+		
+		System.out.println(pagination.getTotalRecordCount());
+		
+		//계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
+		List<CommunityDTO> list = mapper.selectCommunityList(params);
+		return new PagingResponse<>(list, pagination);
 	}
 
 	@Override
@@ -63,8 +82,35 @@ public class CommunityServiceImpl implements CommunityService{
 	}
 
 	@Override
-	public List<CommunityDTO> selectCommunityCategory(String communityCategory) {
-		return mapper.selectCommunityCategory(communityCategory);
+	public PagingResponse<CommunityDTO> selectCommunityCategory(String communityCategory, SearchDTO params) {
+		//조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
+				int count = mapper.Count(params);
+				System.out.println("count: " + count);
+				if(count < 1) {
+					return new PagingResponse<>(Collections.emptyList(),null);
+				}
+				
+				//Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDTO 타입의 객체인 params에 계산된 페이지 정보 저장
+				Pagination pagination = new Pagination(count, params);
+				params.setPagination(pagination);
+				
+				System.out.println(pagination.getTotalRecordCount());
+				
+				//계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
+				//params.setCommunityCategory(communityCategory);
+				List<CommunityDTO> list = mapper.selectCommunityCategoryList(communityCategory,params);
+				return new PagingResponse<>(list, pagination);
+	}
+
+	// 게시글 수 카운팅
+	@Override
+	public int Count(SearchDTO params) {
+		return mapper.Count(params);
+	}
+
+	@Override
+	public int updateImg(UploadFile image) {
+		return mapper.updateImg(image);
 	}
 
 

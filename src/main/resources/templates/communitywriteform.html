@@ -143,10 +143,56 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-$("#attachFile").change(function(){
-	  var fileName = $("#attachFile").val();
-	  $(".upload-name").val(fileName);
-	});
+/* $(document).ready(function() {
+    const editor = document.getElementById('textarea');
+    const btnBold = document.getElementById('btn-bold');
+    const btnItalic = document.getElementById('btn-italic');
+    const btnUnderline = document.getElementById('btn-underline');
+    const btnStrike = document.getElementById('btn-strike');
+    const btnOrderedList = document.getElementById('btn-ordered-list');
+    const btnUnorderedList = document.getElementById('btn-unordered-list');
+
+    btnBold.addEventListener('click', function (event) {
+    	event.preventDefault();
+        setStyle('bold');
+    });
+
+    btnItalic.addEventListener('click', function (event) {
+    	event.preventDefault();
+        setStyle('italic');
+    });
+
+    btnUnderline.addEventListener('click', function (event) {
+    	event.preventDefault();
+        setStyle('underline');
+    });
+
+    btnStrike.addEventListener('click', function (event) {
+    	event.preventDefault();
+        setStyle('strikeThrough')
+    });
+
+    btnOrderedList.addEventListener('click', function (event) {
+    	event.preventDefault();
+        setStyle('insertOrderedList');
+    });
+
+    btnUnorderedList.addEventListener('click', function (event) {
+    	event.preventDefault();
+        setStyle('insertUnorderedList');
+    });
+
+    function setStyle(style) {
+        document.getElementById('write_ta').contentDocument.execCommand(style, false, null);
+        focusEditor();
+    }
+
+    // 버튼 클릭 시 에디터가 포커스를 잃기 때문에 다시 에디터에 포커스를 해줍니다.
+    function focusEditor() {
+        write_ta.focus({preventScroll: true});
+    }
+}); */
+
 </script>
 </head>
 <body>
@@ -171,7 +217,28 @@ $("#attachFile").change(function(){
             <div id="write_ti">제목</div>
             <div><input type="text" id="title_text" name="communityTitle"></div>
         </div>
+       
         <div id="contents" class="div">
+        	 <div class="editor-menu">
+			    <button id="btn-bold">
+			        <b>B</b>
+			    </button>
+			    <button id="btn-italic">
+			        <i>I</i>
+			    </button>
+			    <button id="btn-underline">
+			        <u>U</u>
+			    </button>
+			    <button id="btn-strike">
+			        <s>S</s>
+			    </button>
+			    <button id="btn-ordered-list">
+			        OL
+			    </button>
+			    <button id="btn-unordered-list">
+			        UL
+			    </button>
+			</div>
             <div id="write_con">내용</div>
             <div id="write_ta"><textarea rows="30" id="textarea" name="communityContent"></textarea></div>
         </div>
@@ -183,7 +250,7 @@ $("#attachFile").change(function(){
             	<input class="upload-name" value="첨부파일" placeholder="첨부파일">
             	<label for="attachFile">사진 업로드</label>
            		<input type="file" id="attachFile" name="attachFile">
-            </div>
+        </div>
     </form>
 </div>
 </body>
