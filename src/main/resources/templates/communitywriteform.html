@@ -52,6 +52,7 @@
             margin-left: 9.8%;
             width: 70%;
             height:3vh;
+            padding:3px;
         }
         #title{
             height: 6vh;
@@ -65,11 +66,16 @@
         }
         #textarea{
         	
-            resize: none;
+
             width:70%;
-            margin-left:9%;
+            margin-left:26%;
             margin-top:1%;
             margin-bottom: 1%;
+            border: solid 1px black;
+            height:60vh;
+           	text-align:left;
+           	padding:3px;
+           	overflow: auto;
             
         }
         #button{
@@ -104,46 +110,21 @@
             cursor:pointer;
         }
         
-        .filebox{
-        	float:left;
-        	maring-top:1%;
-        }
-        
-        .filebox .upload-name {
-    		display: inline-block;
-    		height: 4vh;
-    		padding: 0 10px;
-    		vertical-align: middle;
-    		border: 1px solid #dddddd;
-    		width: 50%;
-    		color: #999999;
+    	.editor-menu{
+    		margin-top:1%;
     		
-		}
-		.filebox label {
-    		display: inline-block;
-    		padding: 10px 20px;
-		    color: #fff;
-		    vertical-align: Middle;
-		    background-color: #999999;
-		    cursor: pointer;
-		    height: 2vh;
-		    margin-left: 10px;
+    	}
+	
 		   
 		    
-		}
-		.filebox input[type="file"] {
-    		position: absolute;
-		    width: 0;
-		    height: 0;
-		    padding: 0;
-		    overflow: hidden;
-		    border: 0;
+	
+		
 }
        
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-/* $(document).ready(function() {
+$(document).ready(function() {
     const editor = document.getElementById('textarea');
     const btnBold = document.getElementById('btn-bold');
     const btnItalic = document.getElementById('btn-italic');
@@ -152,46 +133,58 @@
     const btnOrderedList = document.getElementById('btn-ordered-list');
     const btnUnorderedList = document.getElementById('btn-unordered-list');
 
-    btnBold.addEventListener('click', function (event) {
+    btnBold.addEventListener('click', function () {
     	event.preventDefault();
         setStyle('bold');
     });
 
-    btnItalic.addEventListener('click', function (event) {
+    btnItalic.addEventListener('click', function () {
     	event.preventDefault();
         setStyle('italic');
     });
 
-    btnUnderline.addEventListener('click', function (event) {
+    btnUnderline.addEventListener('click', function () {
     	event.preventDefault();
         setStyle('underline');
     });
 
-    btnStrike.addEventListener('click', function (event) {
+    btnStrike.addEventListener('click', function () {
     	event.preventDefault();
-        setStyle('strikeThrough')
+        setStyle('strikeThrough');
     });
 
-    btnOrderedList.addEventListener('click', function (event) {
+    btnOrderedList.addEventListener('click', function () {
     	event.preventDefault();
         setStyle('insertOrderedList');
     });
 
-    btnUnorderedList.addEventListener('click', function (event) {
+    btnUnorderedList.addEventListener('click', function () {
     	event.preventDefault();
         setStyle('insertUnorderedList');
     });
 
     function setStyle(style) {
-        document.getElementById('write_ta').contentDocument.execCommand(style, false, null);
+        document.execCommand(style, false, null);
+        updateHiddenInput(); // 적용된 스타일을 hidden input에 업데이트
         focusEditor();
     }
 
-    // 버튼 클릭 시 에디터가 포커스를 잃기 때문에 다시 에디터에 포커스를 해줍니다.
-    function focusEditor() {
-        write_ta.focus({preventScroll: true});
+    function updateHiddenInput() {
+        const hiddenInput = document.querySelector('input[name="communityContent"]');
+        hiddenInput.value = editor.innerHTML;
     }
-}); */
+
+    function focusEditor() {
+        editor.focus({preventScroll: true});
+    }
+    
+    
+    $("#submitBT").on('click', function () {
+    	updateHiddenInput();
+    });
+    
+   
+});
 
 </script>
 </head>
@@ -238,18 +231,21 @@
 			    <button id="btn-unordered-list">
 			        UL
 			    </button>
+			    <input type="file" id="attachFile" name="attachFile">
 			</div>
             <div id="write_con">내용</div>
-            <div id="write_ta"><textarea rows="30" id="textarea" name="communityContent"></textarea></div>
+            <div id="textareaDiv">
+            	<div id="textarea" contenteditable="true"></div>
+            </div>	
+            <input type="hidden" name="communityContent">
         </div>
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="submit" value="작성" id="submitBT">
         </div>
         <div class="filebox">
-            	<input class="upload-name" value="첨부파일" placeholder="첨부파일">
-            	<label for="attachFile">사진 업로드</label>
-           		<input type="file" id="attachFile" name="attachFile">
+            	
+           		
         </div>
     </form>
 </div>

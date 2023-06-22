@@ -104,6 +104,12 @@ select {
 	border-radius: 7px;
 	cursor: pointer;
 }
+#gt{
+	float:right
+}
+.paging{
+	clear:both;
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <th:block layout:fragment="script">
@@ -161,18 +167,23 @@ function drawList(list, num) {
      * 2. 기존에 타임리프(Thymeleaf)를 이용해서 리스트 데이터를 그리던 것과 유사한 로직
      *    기존에는 게시글 번호를 (전체 데이터 수 - loop의 인덱스 번호)로 처리했으나, 현재는 (전체 데이터 수 - ((현재 페이지 번호 - 1) * 페이지당 출력할 데이터 개수))로 정밀히 계산
      */
+     
     list.forEach(row => {
+    	const communityDate = new Date(row.communityDate);
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-$/, '');
+        
         html += `
-        	<dl>
-				<dd class="num">
-					<a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityNumber}</a>
-				</dd>
-				<dd class="subject">
-					<a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityTitle}</a>
-				</dd>
-				<dd class="name">홍길동</dd>
-				<dd class="created"> "${row.communityDate}" </dd>
-			</dl>
+            <dl>
+                <dd class="num">
+                    <a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityNumber}</a>
+                </dd>
+                <dd class="subject">
+                    <a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityTitle}</a>
+                </dd>
+                <dd class="name">홍길동</dd>
+                <dd class="created"> ${formattedDate} </dd>
+            </dl>
         `;
     })
 
@@ -197,8 +208,8 @@ function drawList(list, num) {
             // 3. 이전 페이지가 있는 경우, 즉 시작 페이지(startPage)가 1이 아닌 경우 첫 페이지 버튼과 이전 페이지 버튼을 HTML에 추가
             if (pagination.existPrevPage) {
                 html += `
-                    <a href="javascript:void(0);" onclick="movePage(1)" class="page_bt first">첫 페이지</a>
-                    <a href="javascript:void(0);" onclick="movePage(${pagination.startPage - 1})" class="page_bt prev">이전 페이지</a>
+                    <a href="javascript:void(0);" onclick="movePage(1)" class="page_bt first">&lt;&lt;</a>
+                    <a href="javascript:void(0);" onclick="movePage(${pagination.startPage - 1})" class="page_bt prev">&lt;</a>
                 `;
             }
 
@@ -217,8 +228,8 @@ function drawList(list, num) {
             // 5. 현재 위치한 페이지 뒤에 데이터가 더 있는 경우, 다음 페이지 버튼과 끝 페이지 버튼을 HTML에 추가
             if (pagination.existNextPage) {
                 html += `
-                    <a href="javascript:void(0);" onclick="movePage(${pagination.endPage + 1});" class="page_bt next">다음 페이지</a>
-                    <a href="javascript:void(0);" onclick="movePage(${pagination.totalPageCount});" class="page_bt last">마지막 페이지</a>
+                    <div id="gt"><a href="javascript:void(0);" onclick="movePage(${pagination.endPage + 1});" class="page_bt next">&gt;</a>
+                    <a href="javascript:void(0);" onclick="movePage(${pagination.totalPageCount});" class="page_bt last">&gt;&gt;</a></div>
                 `;
             }
 
