@@ -590,3 +590,11 @@ td {
 	font-size: 0.5em;
 	cursor: pointer;
 }
+#chart{
+	height: 10%;
+	width: 50%;
+}
+#chart2{
+	height: 10%;
+	width: 90%;
+}

@@ -37,18 +37,18 @@ public class PlanController {
 		return "plan";
 	}
 	
-	@ResponseBody
-	@GetMapping("/fetchPlaceList")
-	public Map<String, List> planMarker() {
-		List<PlaceDTO> placeList = pservice.placeList();
-//		List<LoginDTO> genderList = pservice.genderList();
-		
-		Map<String,List> map = new HashMap<String, List>();
-		map.put("placeList", placeList);
-//		map.put("genderList", genderList);
-		
-		return map;
-	}
+//	@ResponseBody
+//	@GetMapping("/fetchPlaceList")
+//	public Map<String, List> planMarker() {
+//		List<PlaceDTO> placeList = pservice.placeList();
+////		List<LoginDTO> genderList = pservice.genderList();
+//		
+//		Map<String,List> map = new HashMap<String, List>();
+//		map.put("placeList", placeList);
+////		map.put("genderList", genderList);
+//		
+//		return map;
+//	}
   
 	@ResponseBody
 	@GetMapping("/genderList")
@@ -64,7 +64,8 @@ public class PlanController {
 		System.out.println(birthList);
 		return birthList;
 	}
-  
+	
+	@ResponseBody
 	@GetMapping("/fetchMarkers") 
 	public List<PlaceDTO> planMarker(@RequestParam("category") String category) { 
 		

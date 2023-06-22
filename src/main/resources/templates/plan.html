@@ -2,27 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
-	rel="stylesheet">
-
-<style type="text/css">
-#chart{
-	height: 10%;
-	width: 50%;
-}
-#chart2{
-	height: 10%;
-	width: 90%;
-}
-</style>
-<script
-	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+<link href="./resources/css/plan.css" rel="stylesheet">
+<script	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="text/javascript">
-<link rel="stylesheet" href="/resources/css/plan.css" type="text/css">
-	<script th:inline="javascript">
+<script th:inline="javascript">
 var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
@@ -100,6 +85,7 @@ function createMarkers(data) {
       markers.push(marker); // 생성된 마커를 배열에 추가
       
       var extractedValue2 = {
+    		placeNumber: place.placeNumber,
       		placeName: place.placeName,
       		placeAddress: place.placeAddress,
       		placePhone: place.placePhone,
@@ -152,6 +138,7 @@ function createMarkers(data) {
 	      
 	   	  // 클릭된 마커를 selectedMarker 변수에 저장
         selectedMarker = marker;
+	   	  console.log("click :"+placeNumber);
         
         $.ajax({
 						    url: '/plan/genderList',
