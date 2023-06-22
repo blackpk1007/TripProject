@@ -9,114 +9,78 @@
 <link rel="stylesheet" href="/resources/css/idfindform.css" type="text/css">
 </head>
 <body>
-	<nav id="menu">
-		<div style="text-align: center;">
-			<img id="logo" src="/resources/image/logo.png">
-		</div>
-		<ul>
-			<li class="linka" ><a class="link" href="#">일정생성</a></li>
-			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka" ><a class="link" href="#">채팅방</a></li>
-			<li class="linkb" ><a class="link" href="#">마이페이지</a></li>
-		</ul>
-	</nav>
+   <nav id="menu">
+      <div style="text-align: center;">
+         <img id="logo" src="/resources/image/logo.png">
+      </div>
+      <ul>
+         <li class="linka" ><a class="link" href="#">일정생성</a></li>
+         <li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+         <li class="linka" ><a class="link" href="#">채팅방</a></li>
+         <li class="linkb" ><a class="link" href="#">마이페이지</a></li>
+      </ul>
+   </nav>
 
-	<div class="signup1">
-		<div class="signup2">
-			<div class="signup_header">
-				<div id="signin">아이디 찾기</div>
-				
-			</div>
-			<div class="signup_body">
-				<form method="post">
-					<div class="loginForm" >
-                        <input type="text"	id="userName" name="userName" placeholder=" 이름 입력">  
-					</div>
-					<div class="loginForm">
-                        <input type="text"	id="userEmail" name="userEmail" placeholder=" 이메일 입력">
-					</div>
-					<button id="findIdButton" th:onclick="findId();">확인</button>
-					<div id="resultDiv">
-            			<p th:if="${msg}!=null" th:text="${msg}"></p>
-        			</div>
-				</form>
-					<ul class="wrap">
-						<hr class="line">
-						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
-						<li><a href="/login/pwfindform" id="txt">비밀번호 찾기</a></li>&nbsp;&nbsp;
-						<hr class="line">
-					</ul>
-			</div>
-		</div>
-	</div>
-	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-	<script th:inline="javascript"> 
-	
-	function findId(){
-		
-		alert("asdf");
-		
-		var data =$(".loginForm").val(); 
-		console.log(data);
-		
-		var UserDTO={
-				result:data
-		};
-		
-		/* var token = $("meta[name='_csrf']").attr("content");
-	    var header = $("meta[name='_csrf_header']").attr("content"); */
-	    	/* beforeSend: function(xhr){
-	        xhr.setRequestHeader(header,token); */
-		
-	    /* $.ajax({
-	    	
-
-	        url: "/login/idfind",
-	        data: UserDTO,
-	        type:"POST",
-	    }).done(function (fragment) {
-	        $("#resultDiv").replaceWith(fragment);
-	    }); */
-	    
-	    
-	    
-	    
-		/* if (loginForm.userName.value == "") {
-			alert("이름을 입력해 주세요.");
-			loginForm.userName.focus();
-			return;
-		}
-		if (loginForm.userEmail.value == "") {
-			alert("핸드폰번호를 입력해 주세요.");
-			loginForm.userEmail.focus();
-			return;
-		} */
-		
-	/* 	var userName =$("#userName").val();
-		var userEmail =$("#userEmail").val();
-		
-		var sendData="userName="+memName+'&userEmail='+userEmail; */
-		
-		
-		/* $.ajax({
-			url : "/login/idfind",
-			method : "post",
-			data : sendData,
-			dataType : "text",
-			success : function(text) {
-				if (text != null) {
-					$("#result_Div").html("아이디 = "+text);
-				} else {
-					$("#result_Div").html("해당정보가 없습니다.");
-				}
-			},
-			error : function(xhr) {
-				alert("에러코드 = " + xhr.status);
-			}
-		}); */
-	}
-	
-	</script>
+   <div class="signup1">
+      <div class="signup2">
+         <div class="signup_header">
+            <div id="signin">아이디 찾기</div>
+            
+         </div>
+         <div class="signup_body">
+               <div class="loginForm" >
+                        <input type="text"   id="userName" name="userName" placeholder=" 이름 입력">  
+               </div>
+               <div class="loginForm">
+                        <input type="text"   id="userEmail" name="userEmail" placeholder=" 이메일 입력">
+               </div>
+               <button id="findIdButton" th:onclick="findId();">확인</button>
+               <ul class="wrap">
+                  <hr class="line">
+                  <li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
+                  <li><a href="/login/pwfindform" id="txt">비밀번호 찾기</a></li>&nbsp;&nbsp;
+                  <hr class="line">
+               </ul>
+         </div>
+      </div>
+   </div>
+   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   <script th:inline="javascript"> 
+   
+   function findId(){
+      
+       var username = document.getElementById("userName");
+       var useremail = document.getElementById("userEmail");
+       var usernamevalue = document.getElementById("userName").value;
+       var useremailvalue = document.getElementById("userEmail").value;
+       if (username.value == "") {
+         alert("이름을 입력해 주세요.");
+         username.focus();
+         return false;
+      }
+      if (useremail.value == "") {
+         alert("이메일을 입력해 주세요.");
+         useremail.focus();
+         return false;
+      }
+      
+      $.ajax({
+          url : "/login/idfind",
+          type : "post",
+          data : { userName : usernamevalue,
+                 userEmail : useremailvalue}
+       })
+       		.done(function (result) {
+                console.log(result);
+                alert("아이디는"+result+"입니다.");
+                location.href="/login";
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+                alert("아이디와 이메일이 데이터베이스와 일치하지 않습니다.");
+            })
+   }
+   
+   </script>
 </body>
 </html>
-

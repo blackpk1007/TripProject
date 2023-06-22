@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>FindYourID</title>
@@ -24,26 +24,56 @@
 				<div id="signin">패스워드 찾기</div>
 				
 			</div>
+			<form id="pwfind" method="post">
 			<div class="signup_body">
-				<form method="post" action="/login/idcheck">
 					<div class="loginForm">
-                        <input type="text"	id="userName" name="userName" placeholder=" 이름 입력">  
+                        <input type="text"	id="userID" name="userID" placeholder=" ID 입력">  
 					</div>
 					<div class="loginForm">
                         <input type="text"	id="userEmail" name="userEmail" placeholder=" 이메일 입력">
 					</div>
-					<button id="findPwButton" type="submit">확인</button>
-						
+					<button id="findPwButton" type="button" th:onclick="findPw();">확인</button>
+			</div>
+			</form>
 					<ul class="wrap">
 						<hr class="line">
 						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
 						<li><a href="/login/idfindform" id="txt">아이디 찾기</a></li>&nbsp;&nbsp;
 						<hr class="line">
 					</ul>
-				</form>
+		
 			</div>
 		</div>
-	</div>
 	
+	
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   <script th:inline="javascript"> 
+   
+   function findPw(){
+      
+       var userid = document.getElementById("userID");
+       var useremail = document.getElementById("userEmail");
+       var useridvalue = document.getElementById("userID").value;
+       var useremailvalue = document.getElementById("userEmail").value;
+       var pwform = document.getElementById("pwfind");
+       console.log(userid);
+       console.log(useridvalue);
+       if (useridvalue == "") {
+         alert("아이디를 입력해 주세요.");
+         userid.focus();
+         return false;
+      }
+      if (useremailvalue == "") {
+         alert("이메일을 입력해 주세요.");
+         useremail.focus();
+         return false;
+      }
+      
+      //pwform.attr("action", "/login/pwfixform").submit();
+      pwform.action = "/login/pwfixform";
+      pwform.submit();
+   }
+      
+   </script>
 </body>
 </html>

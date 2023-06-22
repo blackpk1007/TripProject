@@ -29,4 +29,13 @@ public interface LoginMapper {
 		//회원삭제
 		@Delete(" DELETE FROM login WHERE userID=#{userID} " )
 		public int delete(LoginDTO dto);
+		
+		//비밀번호 찾기
+		@Select(" SELECT userName FROM login WHERE userID=#{userID} and userEmail=#{userEmail} ")
+		public LoginDTO pwfind(LoginDTO dto);
+		
+		//비밀번호찾기-재생성
+		@Insert(" UPDATE login SET userPW=#{userPW} WHERE userID=#{userID} and userEmail=#{userEmail} ")
+		public int newpw(LoginDTO dto);
+		
 }

@@ -47,4 +47,18 @@ public class LoginServiceImpl implements LoginService {
 		return loginMapper.idfind(dto);
 	}
 
+	//비밀번호 찾기 
+	@Override
+	public LoginDTO pwfind(LoginDTO dto) {
+		return loginMapper.pwfind(dto);
+	}
+
+	//비밀번호 찾기 - 재설정 
+	@Override
+	public int newpw(LoginDTO dto) {
+		String encodedPassword= passwordEncoder.encode(dto.getUserPW());
+		dto.setUserPW(encodedPassword);
+		return loginMapper.newpw(dto);
+	}
+	
 }

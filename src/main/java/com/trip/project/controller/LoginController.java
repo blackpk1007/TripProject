@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.service.LoginService;
@@ -79,23 +80,20 @@ public class LoginController {
 	}
 
 	// 아이디 찾기
-	@RequestMapping("/idfind")
-	public String idFind(Model model, LoginDTO dto) {
-		
-		LoginDTO res = lservice.idfind(dto);
+	@ResponseBody
+	   @PostMapping("/idfind")
+	   public String idFind(LoginDTO dto) {
+	      System.out.println("controller :"+dto.getUserName());
+	      System.out.println("controller :"+dto.getUserEmail());
+	      
+	      LoginDTO res = lservice.idfind(dto);
+	      
+	      System.out.println(res);
+	      
+	        return res.getUserID();
+	      
+	   }
 
-		model.addAttribute("msg",res+"/ 서버에서 붙여준 값입니다");
-        return "/login/idfindform :: #resultDiv";
-		
-//		System.out.println("member의 이름="+dto.getUserName());
-//		System.out.println("member의 이메일="+dto.getUserEmail());
-//		if(res==null) {
-//			return null; 
-//		}else {
-//			return "redirect:/login/idfindform";
-//		}
-//		
-	}
 
 	// 비밀번호 찾기 페이지
 	@RequestMapping("/pwfindform")
@@ -105,10 +103,33 @@ public class LoginController {
 	}
 
 	// 비밀번호 찾기
-	@RequestMapping("/pwfind")
-	public String pwFind() {
-
-		return "pwfind";
+	@ResponseBody
+	@PostMapping("/pwfind")
+	public String pwfind(LoginDTO dto) {
+		LoginDTO res = lservice.pwfind(dto);
+		System.out.println(res);
+		
+		return res.getUserName();
+	}
+	
+	// 비밀번호 재설정페이지
+	@PostMapping("/pwfixform")
+	public String pwfixform(Model model , LoginDTO dto) {
+		System.out.println(dto.getUserID());
+		System.out.println(dto.getUserEmail());
+		
+		model.addAttribute("dto",dto);
+		return "pwfixform";
+	}
+	
+	//비밀번호 재설정
+	@ResponseBody
+	@PostMapping("/pwfix")
+	public String pwfix( LoginDTO dto) {
+		int res = lservice.newpw(dto);
+		System.out.println(res);
+		
+		return dto.getUserName();
 	}
 
 	// 회원가입 페이지
