@@ -10,30 +10,21 @@
         $(function(){
             let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
             let num = '[(${num})]';
-            let userCheck = '[(${userCheck})]';
-            //console.log(res);
-            console.log(num);
-            //console.log(userCheck);
-            
+            let userCheck = [[(${userCheck})]];
             var userCheckcnt=0;
-            let userCheckArray = userCheck.match(/recommandUserID=([^,]+)/g);
-            let matches = userCheck.match(/recommandDate=([^,]+)/g);
-            let userIDs = userCheckArray.map(item => item.split('=')[1]);
-            let match = matches.map(item => item.split('=')[1]);
             var dateCheckcnt=-1;
             var dateCheckdata;
-            userIDs.forEach(function(userID) {
+            
+            for(var i=0;i<userCheck.length;i++){
             	dateCheckcnt++;
-                if (loginchk.userID == userID) {
+                if (loginchk.userID == userCheck[i].recommandUserID) {
                     
                     userCheckcnt++;
-                    dateCheckdata=match[dateCheckcnt];
-                    
-                }else{
-                	alert("로그인 정보를 확인해주세요");
+                    dateCheckdata=userCheck[i].recommandDate;
+                    console.log(dateCheckdata);
                 }
-                
-            });
+            }
+            
 
             let placeNumber = num.match(/placeNumber=([^,]+)/)[1];
             let placeName = num.match(/placeName=([^,]+)/)[1];
@@ -61,7 +52,6 @@
                 var result = check.match(regex);
                 if (result) {
                 	  date = new Date(result[0]);
-                	  console.log(date);
                 	}
                 
                 
@@ -80,13 +70,32 @@
                 } else {
                     console.log("placeName 값이 포함되어 있지 않습니다.");
                 }
-                
+                console.log(dateCheckdata);
+    			console.log(date);
                 if(placeCheckcnt==2){
                 	if(userCheckcnt==0){
                 		alert("첫번째 영수증 인증이 완료되었습니다");
+                		// 데이터를 서버로 전송하여 DB에 삽입
+                        $.ajax({
+                            url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+                            type: 'POST',
+                            data: {
+                                userID: loginchk.userID,
+                                placeNumber: placeNumber,
+                                date: date
+                            },
+                            success: function(response) {
+                                console.log(response);
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
                 	}
                 	else if(userCheckcnt==1){
                 		if(dateCheckdata!=date){
+                			console.log(dateCheckdata);
+                			console.log(date);
                 			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
                 			console.log("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
                 			
@@ -106,6 +115,9 @@
                                     console.log(error);
                                 }
                             });
+                		}
+                		else{
+                			alert("이전에 인증한 날짜 영수증입니다");
                 		}
                 	}
                 	else if(userCheckcnt>1){
