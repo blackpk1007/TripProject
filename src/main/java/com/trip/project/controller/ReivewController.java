@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.trip.project.service.CommunityService;
@@ -54,4 +55,10 @@ public class ReivewController {
 
         return "ocr";
     }
+	
+	@ResponseBody
+	@PostMapping("/insertRecommandData")
+	public void insertRecommandData(@RequestParam String userID, @RequestParam int placeNumber, @RequestParam String date) {
+	    OcrTest.insertRecommandData(userID, placeNumber, date);
+	}
 }

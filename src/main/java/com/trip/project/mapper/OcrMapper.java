@@ -2,6 +2,7 @@ package com.trip.project.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,4 +20,6 @@ public interface OcrMapper {
     @Select(" SELECT recommandUserID,recommandPlaceNumber, recommandDate FROM recommand WHERE recommandPlaceNumber=#{placeNumber} " )
     List<RecommandDTO> selectRecommandPlaceNumber(int placeNumber);
     
+    @Insert("INSERT INTO recommand (recommandUserID, recommandPlaceNumber, recommandDate) VALUES (#{userID}, #{placeNumber}, #{date}) ")
+    void insertRecommandData(String userID, int placeNumber, String date);
 }
