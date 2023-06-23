@@ -248,16 +248,20 @@ header {
 				<div id="logo">
 					<img src="/resources/image/logo2.png" alt="Logo">
 				</div>
-
-				<div id="top_menu">
+				<!-- 로그인전 --> 
+				<div th:if="${session.login == null}" id="top_menu">
 					<a href="/login">로그인</a> <a href="/login/registerform">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" id="top_menu">
+					<a href="/login/logout">로그아웃</a><a href="/login/usermain">마이페이지</a>
 				</div>
 			</div>
 			<div id="nav">
 				<label for=""><a href="/plan">일정만들기</a></label>
 				<label for=""><a href="/ocr">코스보기</a></label>
 				<label for=""><a href="/community/communitymain">커뮤니티</a></label>
-				<label for=""><a href="/login/usermain">마이페이지 임시 - 동행구하기</a></label>
+				<label for=""><a href="#">동행구하기</a></label>
 			</div>
 
 		</header>
@@ -403,7 +407,14 @@ header {
 		</div>
 	</div>
 -->
+	<script th:inline="javascript">
+	var loginchk = [[${session.login}]];
+	console.log(loginchk); 
+	
+	</script>
+
 	<script>
+	
         window.addEventListener('load', function() {
             document.getElementById('popupContainer').style.display = 'flex';
         });
