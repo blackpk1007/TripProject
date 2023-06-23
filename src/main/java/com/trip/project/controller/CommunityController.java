@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.project.dto.CommunityDTO;
 import com.trip.project.dto.ImageDTO;
+import com.trip.project.dto.SearchDTO;
 import com.trip.project.dto.UploadFile;
 import com.trip.project.file.FileStore;
+import com.trip.project.paging.PagingResponse;
 import com.trip.project.service.CommunityService;
 
 import io.opentelemetry.sdk.resources.Resource;
@@ -36,10 +40,10 @@ public class CommunityController {
 
 	// 커뮤니티 메인 페이지
 	@RequestMapping("/communitymain")
-	public String cummunityMain(Model model) {
+	public String cummunityMain(Model model, @ModelAttribute("params") final SearchDTO params) {
 		logger.info("COMMUNITY MAIN");
-		model.addAttribute("list", cService.selectCommunity());
-
+		model.addAttribute("response", cService.selectCommunity(params));
+		model.addAttribute("params", params);
 		return "communitymain";
 	}
 
@@ -69,6 +73,8 @@ public class CommunityController {
 	public String communityWrite(CommunityDTO dto) throws IOException {
 		logger.info("COMMUNITY WRITE");
 		System.out.println("controller : " + dto.getAttachFile());
+		System.out.println("controller : " + dto.getCommunityContent());
+		
 		// List<UploadFile> imagefile = FileStore.storeFiles(dto.getImageFiles());
 		UploadFile file = FileStore.storeFile(dto.getAttachFile());
 
@@ -104,18 +110,43 @@ public class CommunityController {
 	@RequestMapping("/communityupdateform")
 	public String communityUpdateForm(Model model, int communityNumber) {
 		logger.info("UPDATEFORM COMMUNITY");
+		ImageDTO imgDto = cService.selectOneImg(communityNumber);
+		
 		model.addAttribute("dto", cService.selectOne(communityNumber));
+		model.addAttribute("image", imgDto);
+		
 		return "communityupdateform";
 	}
 
 	// 커뮤니티 수정
 	@RequestMapping("/communityupdate")
-	public String communityUpdate(CommunityDTO dto) {
+	public String communityUpdate(CommunityDTO dto, ImageDTO imageDto) throws IOException {
 		logger.info("UPDATE COMMUNITY");
-		if (cService.update(dto) > 0) {
-			return "redirect:/community/communitymain";
-		} else {
-			return "redirect:/community/communityupdateform";
+		UploadFile file = FileStore.storeFile(dto.getAttachFile());
+
+		// 게시글 update
+		int communityUpdateRes = cService.update(dto);
+		int imageUpdateRes = 0;
+		
+		//file을 선택했을때 
+		if (file != null) {
+			//방금 INSERT한 게시글의 번호를 SELECT한 다음 UploadFile 객체에 저장
+			CommunityDTO tmp = cService.ComunityselectOne();
+			file.setImageNumber(tmp.getCommunityNumber());
+			//image insert
+			imageUpdateRes = cService.updateImg(file);
+			
+			if (communityUpdateRes > 0 &&  imageUpdateRes> 0) {
+				return "redirect:/community/communitymain";
+			} else {
+				return "redirect:/community/communityupdate";
+			}
+		}else {
+			if (communityUpdateRes > 0 ) {
+				return "redirect:/community/communitymain";
+			} else {
+				return "redirect:/community/communityupdate";
+			}
 		}
 	}
 
@@ -139,13 +170,13 @@ public class CommunityController {
 	}
 	@ResponseBody
 	@PostMapping("/selectbox")
-	public List<CommunityDTO> SelectBox(@RequestBody CommunityDTO dto) {
-		List<CommunityDTO> data = null;
+	public PagingResponse<CommunityDTO> SelectBox(@RequestBody CommunityDTO dto, SearchDTO params) {
+		PagingResponse<CommunityDTO> data = null;
 		
 		if("all".equals(dto.getCommunityCategory())) {
-			data = cService.selectCommunity();
+			data = cService.selectCommunity(params);
 		}else {
-			data = cService.selectCommunityCategory(dto.getCommunityCategory());
+			data = (PagingResponse<CommunityDTO>) cService.selectCommunityCategory(dto.getCommunityCategory(), params);
 		}				
 		return data;
 	}

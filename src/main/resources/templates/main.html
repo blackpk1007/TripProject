@@ -240,6 +240,7 @@ header {
 </style>
 </head>
 <body>
+
 	<div id="back">
 		<img src="/resources/image/back.png" id="back_img">
 		<header>
@@ -247,9 +248,13 @@ header {
 				<div id="logo">
 					<img src="/resources/image/logo2.png" alt="Logo">
 				</div>
-
-				<div id="top_menu">
+				<!-- 로그인전 --> 
+				<div th:if="${session.login == null}" id="top_menu">
 					<a href="/login">로그인</a> <a href="/login/registerform">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" id="top_menu">
+					<a href="/login/logout">로그아웃</a><a href="/login/usermain">마이페이지</a>
 				</div>
 			</div>
 			<div id="nav">
@@ -402,7 +407,14 @@ header {
 		</div>
 	</div>
 -->
+	<script th:inline="javascript">
+	var loginchk = [[${session.login}]];
+	console.log(loginchk); 
+	
+	</script>
+
 	<script>
+	
         window.addEventListener('load', function() {
             document.getElementById('popupContainer').style.display = 'flex';
         });
@@ -410,6 +422,9 @@ header {
         function closePopup() {
             document.getElementById('popupContainer').style.display = 'none';
         }
+        
+        var loginchk = [[${session.login}]];
+        console.log(loginchk);
     </script>
 	<script>
 		new Swiper('.swiper-container', {

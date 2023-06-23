@@ -2,6 +2,9 @@ package com.trip.project.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +42,15 @@ public class ReivewController {
 	}
 	
 	@PostMapping("/reveiwwrite")
-    public String review(@RequestParam("attachFile") MultipartFile file, Model model) throws IOException {
-        Ocr ocr = new Ocr();
+    public String review(@RequestParam("attachFile") MultipartFile file, Model model, Integer placeNumber, HttpSession session) throws IOException {
+		
+       
+		Ocr ocr = new Ocr(); 
         String res = ocr.ocr(file);
         JSONObject obj = new JSONObject(res);
         model.addAttribute("res", obj);
-        model.addAttribute("num", OcrTest.selectOne());
-        System.out.println("추출된 텍스트:");
-        System.out.println(obj.toString());
+        model.addAttribute("num", OcrTest.selectByPlaceNumber(placeNumber));
+        model.addAttribute("userCheck", OcrTest.selectRecommandPlaceNumber(placeNumber));
 
         return "ocr";
     }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mypage</title>
+<link rel="stylesheet" href="#"	type="text/css">
+<link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
+<style type="text/css">
+
+/*  프로필 */
+.profilearea{
+}
+
+
+.imagebox {
+    width: 150px;
+    height: 150px; 
+    border-radius: 70%;
+    overflow: hidden;
+    background: #BDBDBD;
+}
+.profilepic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 일정 3개 */
+.status{
+	display:flex;
+}
+.user_status{
+	flex:1;
+	text-align: center;
+}
+.num{
+	text-align: center;
+}
+
+/*공 수 삭 */
+#share{
+	font-size: 2rem;
+	color: #B8E9FF;	
+	border-width:2px;
+	border-style:outset;
+	border-color:#B8E9FF;
+	border-image: initial;
+}
+#fix{
+}
+#delete{
+}
+</style>
+</head>
+<body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka"><a class="link" href="#">일정생성</a></li>
+			<li class="linka"><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka"><a class="link" href="#">채팅방</a></li>
+			<li class="linkb"><a class="link" href="#">마이페이지</a></li>
+		</ul>
+	</nav>
+	
+	<div class="profilearea">
+		<div class="imagebox">
+	    	<img class="profilepic" id="profilepic" src="#">
+		</div>
+		<div class="profile">
+			내 프로필
+			<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
+			<button onclick="location.href='/login/userupdateform'">프로필 수정</button>
+		</div>
+	</div>
+	
+	<div class="status">
+		<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
+		<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
+		<div class="user_status" id="plan" onclick="#">나의 일정
+			<div class="num">갯수 끌고오기 </div>
+		</div>
+		<div class="user_status" id="review" onclick="#">나의 리뷰
+			<div class="num">갯수 끌고오기 </div>
+		</div>
+		<div class="user_status" id="post" onclick="#">나의 게시물
+			<div class="num">갯수 끌고오기 </div>
+		</div>
+	</div>
+	
+	<div>
+		나의 일정 or 나의 리뷰 or 나의 게시물 	끌고오기 
+	</div>
+	
+	<div class="myplan">
+		<div class="plan">
+			<div class="myplan1">
+			<img id="location1" src="#">
+			여행이름 여행일자를p로 나눠야되려나?
+			
+			<button id="share">공유</button>
+			<button id="fix">수정</button>
+			<button id="delete">삭제</button>
+			</div>
+			
+		</div>
+		<div class="plan">
+			<div class="myplan2">
+			<img id="location2" src="#">
+			
+			<button id="share">공유</button>
+			<button id="fix">수정</button>
+			<button id="delete">삭제</button>
+			</div>
+			
+		</div>
+	</div>
+	
+	<!-- 나의 일정, 나의 리뷰, 나의 게시물 누를때 바뀌는용, ui 안정함.나중에. 
+	
+	<div class="myreview">
+		<div id="review1">
+			<img id="location1" src="#">
+			<button>공유</button>
+			<button>수정</button>
+			<button>삭제</button>
+		</div>
+		<div id="review2">
+			<img id="location2" src="#">
+			<button>공유</button>
+			<button>수정</button>
+			<button>삭제</button>
+		</div>
+	</div>
+	
+	<div class="mypost">
+		<div id="post1">
+			<img id="location1" src="#">
+			<button>공유</button>
+			<button>수정</button>
+			<button>삭제</button>
+		</div>
+		<div id="post2">
+			<img id="location2" src="#">
+			<button>공유</button>
+			<button>수정</button>
+			<button>삭제</button>
+		</div>
+	</div> -->
+
+</body>
+</html>
+

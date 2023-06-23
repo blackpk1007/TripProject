@@ -53,6 +53,7 @@
             margin-left: 9.8%;
             width: 70%;
             height:3vh;
+            padding:3px;
         }
         #title{
             height: 6vh;
@@ -63,14 +64,20 @@
             margin: 20% auto;
             margin-left: 10%;
             line-height: 500%;
+            
         }
         #textarea{
         	
-            resize: none;
+
             width:70%;
-            margin-left:9%;
+            margin-left:26%;
             margin-top:1%;
             margin-bottom: 1%;
+            border: solid 1px black;
+            height:60vh;
+           	text-align:left;
+           	padding:3px;
+           	overflow: auto;
             
         }
         #button{
@@ -104,7 +111,76 @@
             float:right;
             cursor:pointer;
         }
+        .editor-menu{
+    		margin-top:1%;
+    		
+    	}
+        
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    const editor = document.getElementById('textarea');
+    const btnBold = document.getElementById('btn-bold');
+    const btnItalic = document.getElementById('btn-italic');
+    const btnUnderline = document.getElementById('btn-underline');
+    const btnStrike = document.getElementById('btn-strike');
+    const btnOrderedList = document.getElementById('btn-ordered-list');
+    const btnUnorderedList = document.getElementById('btn-unordered-list');
+
+    btnBold.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('bold');
+    });
+
+    btnItalic.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('italic');
+    });
+
+    btnUnderline.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('underline');
+    });
+
+    btnStrike.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('strikeThrough');
+    });
+
+    btnOrderedList.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('insertOrderedList');
+    });
+
+    btnUnorderedList.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('insertUnorderedList');
+    });
+
+    function setStyle(style) {
+        document.execCommand(style, false, null);
+        updateHiddenInput(); // 적용된 스타일을 hidden input에 업데이트
+        focusEditor();
+    }
+
+    function updateHiddenInput() {
+        const hiddenInput = document.querySelector('input[name="communityContent"]');
+        hiddenInput.value = editor.innerHTML;
+        
+    }
+
+    function focusEditor() {
+        editor.focus({preventScroll: true});
+    }
+    
+    $("#submitBT").on('click', function () {
+    	updateHiddenInput();
+    });
+   
+});
+
+</script>
 </head>
 <body>
 <div id="write">
@@ -112,8 +188,9 @@
         게시글 수정
     </div>
     
-    <form action="/community/communityupdate" method="post">
+    <form action="/community/communityupdate" method="post" enctype="multipart/form-data">
     <input type="hidden" name="communityNumber" th:value="${dto.communityNumber}">
+   
         <div id="kategorie" class="div">
             <div id="write_kg">카테고리</div>
             <div id="tag">
@@ -130,13 +207,36 @@
             <div><input type="text" id="title_text" name="communityTitle" th:value="${dto.communityTitle}"></div>
         </div>
         <div id="contents" class="div">
+        	 <div class="editor-menu">
+			    <button id="btn-bold">
+			        <b>B</b>
+			    </button>
+			    <button id="btn-italic">
+			        <i>I</i>
+			    </button>
+			    <button id="btn-underline">
+			        <u>U</u>
+			    </button>
+			    <button id="btn-strike">
+			        <s>S</s>
+			    </button>
+			    <button id="btn-ordered-list">
+			        OL
+			    </button>
+			    <button id="btn-unordered-list">
+			        UL
+			    </button>
+			    <input type="file" id="attachFile" name="attachFile">
+			</div>
             <div id="write_con">내용</div>
-            <div id="write_ta"><textarea rows="30" id="textarea" name="communityContent" th:text="${dto.communityContent}"></textarea></div>
+            <div id="textarea" contenteditable="true" th:utext="${dto.communityContent}"></div>
+            <input type="hidden" name="communityContent">
         </div>
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="submit" value="수정" id="submitBT">
         </div>
+        
     </form>
 </div>
 </body>

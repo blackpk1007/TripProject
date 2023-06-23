@@ -35,12 +35,14 @@
             float: right;
         }
         #textarea{
-            resize: none;
+            
             width: 99%;
             height:40vh;
-            margin-top:2%;
+            margin-top:1%;
             backgrount-color:white;
-            border:none;
+            text-align:left;
+            float:left;
+            overflow: auto;
         }
        
         #title{padding:0.5%;}
@@ -81,13 +83,14 @@
         #contentImg{
         	float: left;
         	width-max:100%;
-        	width: 50%;
+        	width: 40%;
         }
         #contentAndImg{
         	border: solid 1px black;
         	margin-top:1%;
         	margin-bottom:1%;
         	padding: 1%;
+        	height:80vh;
         }
 </style>
 </head>
@@ -110,16 +113,15 @@
             
         </div>
         <div id=contentAndImg>
-        <div th:if="${image != null}">
-    		<div th:if="${image.imageNumber != null}" >
-        		<img th:src="|/community/image/__${image.imageStoredName}__|" id="contentImg">
-    		</div>
-    		<div th:unless="${image.imageNumber != null}" th:text=""></div>
+	        <div th:if="${image != null}">
+	    		<div th:if="${image.imageNumber != null}" >
+	        		<img th:src="|/community/image/__${image.imageStoredName}__|" id="contentImg">
+	    		</div>
+	    		<div th:unless="${image.imageNumber != null}" th:text=""></div>
+			</div>
+			<div id="textarea" th:utext="${dto.communityContent}"></div>
 		</div>
-		<div>
-			<textarea readonly="readonly" id="textarea" th:text="${dto.communityContent}" ></textarea>
-		</div>
-		</div>
+		
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">

@@ -5,11 +5,14 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="/resources/css/plan.css" type="text/css">
+<link href="./resources/css/plan.css" rel="stylesheet">
 <script
 	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script th:inline="javascript">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+var loginchk = [[${session.login}]];
+console.log(loginchk);
 var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
@@ -114,6 +117,10 @@ function updateList(data) {
 	    reloadStylesheet(); */
 	  });
 }
+	}
+var selectedMarkerChart1 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas)
+var selectedMarkerChart2 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas2)
+
 function createMarkers(data) {
     // 이전에 생성된 마커 삭제
     // 숨길 요소와 나타낼 요소를 변수로 저장
@@ -137,6 +144,7 @@ function createMarkers(data) {
       markers.push(marker); // 생성된 마커를 배열에 추가
       
       var extractedValue2 = {
+    		placeNumber: place.placeNumber,
       		placeName: place.placeName,
       		placeAddress: place.placeAddress,
       		placePhone: place.placePhone,
@@ -161,17 +169,25 @@ function createMarkers(data) {
     for (var i = 0; i < markers.length; i++) {
 	  (function(index) {
 	    markers[index].addListener("click", function(evt) {
-	    
-	      var marker = markers[index];
+	    	      var marker = markers[index];
 	      var placedata = placeData[index];
-	      
+	      var placeNumber = placedata.placeNumber;
 	      console.log(marker);
 	      console.log(placedata);
 	   	  // 이전에 클릭된 마커가 있을 경우 아이콘을 원래대로 되돌림
           if (selectedMarker !== null) {
                 selectedMarker.setIcon("/resources/image/mk.png");
           }
-	   
+	      
+       // 이전에 클릭된 마커에 대한 차트를 파괴
+          if (selectedMarkerChart1 !== null) {
+            selectedMarkerChart1.destroy();
+          }
+          if (selectedMarkerChart2 !== null) {
+            selectedMarkerChart2.destroy();
+          }
+       
+        sessionStorage.setItem('placeNumber', placedata.placeNumber);
 	      marker.setIcon("/resources/image/m11.png");
 	      
 	      // 요소의 스타일 속성을 조작하여 나타내거나 숨김
@@ -188,7 +204,139 @@ function createMarkers(data) {
 	      document.getElementById("datatest8").innerText = placedata.placeTag3;
 	      
 	   	  // 클릭된 마커를 selectedMarker 변수에 저장
-          selectedMarker = marker;
+        selectedMarker = marker;
+	   	console.log("click :"+placeNumber);
+	   	selectedMarkerChartId = "chart" + index;  // 각 마커에 대한 고유한 ID 생성
+	      
+        
+        $.ajax({
+						    url: '/plan/genderList',
+						    type: 'GET',
+						    data: { recommandPlaceNumber : placeNumber },
+						    success: function(data2){
+						    	var count1 = data2[0].count;
+					            var count2 = data2[1].count;
+						    	console.log(data2[0].count);
+						    	console.log(data2[1].count);
+						    	
+						    	var total = count1 + count2;
+						    	  var ratio1 = count1 / total;
+						    	  var ratio2 = count2 / total;
+						    	  
+						    	  var percentage1 = (ratio1 * 100).toFixed(2) + "%";
+						    	  var percentage2 = (ratio2 * 100).toFixed(2) + "%";
+
+						    	  var ctx = document.getElementById("chartCanvas").getContext("2d");
+						    	  if (selectedMarkerChart1) {
+						              selectedMarkerChart1.destroy();
+						            }
+						            selectedMarkerChart1 =new Chart(ctx, {
+						    	    type: 'pie',
+						    	    data: {
+						    	      labels: ["여성 (" + percentage1 + ")", "남성 (" + percentage2 + ")"],
+						    	      datasets: [{
+						    	        data: [ratio1, ratio2],
+						    	        backgroundColor: ['#FF6384', '#36A2EB'],
+						    	        borderWidth: 1
+						    	      }]
+						    	    },
+					                options: {
+					                  responsive: true
+					                }
+					              });
+					            },
+					            error: function (xhr, status, error) {
+					              console.error(error);
+					            }
+					          });
+				      $.ajax({
+						    url: '/plan/birthList',
+						    type: 'GET',
+						    data: { recommandPlaceNumber : placeNumber },
+						    success: function(data3){
+						    	var ageCategories = {
+						    		      "10대": 0,
+						    		      "20대": 0,
+						    		      "30대": 0,
+						    		      "40대": 0,
+						    		      "50대": 0,
+						    		      "60대": 0
+						    		    };
+						    	for(var i=0;i<data3.length;i++){
+						    		var birthYear = parseInt(data3[i].userBirth);
+						    	      var age = new Date().getFullYear() - birthYear + 1;
+
+						    	      if (age >= 10 && age < 20) {
+						    	        ageCategories["10대"]++;
+						    	      } else if (age >= 20 && age < 30) {
+						    	        ageCategories["20대"]++;
+						    	      } else if (age >= 30 && age < 40) {
+						    	        ageCategories["30대"]++;
+						    	      } else if (age >= 40 && age < 50) {
+						    	        ageCategories["40대"]++;
+						    	      } else if (age >= 50 && age < 60) {
+						    	        ageCategories["50대"]++;
+						    	      } else {
+						    	        ageCategories["60대"]++;
+						    	      }
+						    	}
+						    	var ctx = document.getElementById("chartCanvas2").getContext("2d");
+						    	if (selectedMarkerChart2) {
+						              selectedMarkerChart2.destroy();
+						            }
+						            selectedMarkerChart2 = new Chart(ctx, {
+						    	      type: 'bar',
+						    	      data: {
+						    	        labels: Object.keys(ageCategories).map(function(label) {
+						    	          return label + "(" + ageCategories[label] + "명)";
+						    	        }),
+						    	        datasets: [{
+						    	          label: '연령대 비율',
+						    	          data: Object.values(ageCategories),
+						    	          backgroundColor: 'rgba(0, 123, 255, 0.7)',
+						    	          borderColor: 'rgba(0, 123, 255, 1)',
+						    	          borderWidth: 1
+						    	        }]
+						    	      },
+						    	      options: {
+						    	        responsive: true,
+						    	        scales: {
+						    	          y: {
+						    	            beginAtZero: true,
+						    	            ticks: {
+						    	              stepSize: 1,
+						    	              callback: function(value) {
+						    	                return value.toString();
+						    	              }
+						    	            }
+						    	          },
+						    	          x: {
+						    	            grid: {
+						    	              display: false
+						    	            }
+						    	          }
+						    	        },
+						    	        plugins: {
+						    	          legend: {
+						    	            display: false
+						    	          },
+						    	          tooltip: {
+						    	            callbacks: {
+						    	              label: function(context) {
+						    	                var label = context.label || '';
+						    	                var value = context.parsed.y || 0;
+						    	                return label + ': ' + value;
+						    	              }
+						    	            }
+						    	          }
+						    	        }
+						    	      }
+						    	    });
+						    	  },
+					            error: function (xhr, status, error) {
+					              console.error(error);
+					            }
+					          });
 	    });
 	  })(i);
 	}
@@ -556,11 +704,11 @@ function createMarkers(data) {
 				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
 		</div>
 	</div>
-	<div class="main">
+	<div class="main"> 
 		<div class="main-left">
 			<h2>사용자 추천</h2>
 			<div class="list">
-				<div th:each="restaurant : ${placeRestaurantList}">
+				<div id="left_block" th:each="restaurant : ${placeRestaurantList}">
 					<div id="list-img">
 						<img th:src="@{/resources/image/place/__${restaurant.placeName}__.jpg}" alt="">
 					</div>
@@ -584,10 +732,15 @@ function createMarkers(data) {
 					<input type="hidden" name="placeLat" value="${restaurant.placeLat}">
 				</div>
 			</div>
+			
 		</div>
-		<div class="placemenu" style="display:none;" >
-			<div id="placemenu_button" ><button>x</button></div>
-			<div id="placemenu_heart"><a href="/review">추천하기</a></div>
+		<div class="placemenu" style="display: none;">
+			<div id="placemenu_button">
+				<button>x</button>
+			</div>
+			<div id="placemenu_heart">
+				<a href="/review">추천하기</a>
+			</div>
 			<div id="datatest1"></div>
 			<div id="datatest2"></div>
 			<div id="datatest3"></div>
@@ -595,17 +748,25 @@ function createMarkers(data) {
 			<div id="datatest5"></div>
 			<div id="datatest6"></div>
 			<div id="datatest7"></div>
-			<div id="datatest8"></div>	
+			<div id="datatest8"></div>
+			<div id="datatest0"></div>
+			<div id="chart">
+				<canvas id="chartCanvas"></canvas>
+			</div>
+			<div id="chart2">
+				<canvas id="chartCanvas2"></canvas>
+			</div>
+
 		</div>
-		
+
 		<div class="main-center">
 			<div id="map_div"></div>
 			<div id="category-button">
 				<button id="restaurant-btn">음식점</button>
-  				<button id="youtube-btn">유튜브맛집</button>
-  				<button id="tourist-btn">관광지</button>
-  				<button id="hill-btn">오름</button>
-  				<button id="ollegil-btn">올레길</button>
+				<button id="youtube-btn">유튜브맛집</button>
+				<button id="tourist-btn">관광지</button>
+				<button id="hill-btn">오름</button>
+				<button id="ollegil-btn">올레길</button>
 			</div>
 		</div>
 		<div class="main-right">

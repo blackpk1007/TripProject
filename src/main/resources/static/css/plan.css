@@ -592,4 +592,11 @@ td {
 }
 .course-color-day h5:not(.active) {
   display: none;
+#chart{
+	height: 10%;
+	width: 50%;
+}
+#chart2{
+	height: 10%;
+	width: 90%;
 }
