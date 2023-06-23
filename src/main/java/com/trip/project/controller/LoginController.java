@@ -163,8 +163,10 @@ public class LoginController {
 	public String userMain(HttpSession session, Model model) {
 		String userID = (String) session.getAttribute("login");
 		model.addAttribute("community", cservice.usermainCommunity(userID));
+		model.addAttribute("communitycount",cservice.usermainCommunity(userID).size());
 		System.out.println(userID);
 		System.out.println("controller : "+cservice.usermainCommunity(userID));
+		System.out.println(cservice.usermainCommunity(userID).size());
 		return "usermain";
 		
 	}
