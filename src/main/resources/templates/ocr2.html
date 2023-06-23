@@ -11,20 +11,30 @@
             let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
             let num = '[(${num})]';
             let userCheck = [[(${userCheck})]];
+            //console.log(res);
+            console.log(num);
+            console.log(typeof userCheck);
+            console.log(userCheck.recommandDate);
+            
             var userCheckcnt=0;
+            let userCheckArray = userCheck.match(/recommandUserID=([^,]+)/g);
+            let matches = userCheck.match(/recommandDate=([^,]+)/g);
+        
+            let userIDs = userCheckArray.map(item => item.split('=')[1]);
+            let match = matches.map(item => item.split('=')[1]);
+            console.log(match);
             var dateCheckcnt=-1;
             var dateCheckdata;
-            
-            for(var i=0;i<userCheck.length;i++){
+            userIDs.forEach(function(userID) {
             	dateCheckcnt++;
-                if (loginchk.userID == userCheck[i].recommandUserID) {
+                if (loginchk.userID == userID) {
                     
                     userCheckcnt++;
-                    dateCheckdata=userCheck[i].recommandDate;
+                    dateCheckdata=match[dateCheckcnt];
                     console.log(dateCheckdata);
                 }
-            }
-            
+                
+            });
 
             let placeNumber = num.match(/placeNumber=([^,]+)/)[1];
             let placeName = num.match(/placeName=([^,]+)/)[1];
@@ -52,6 +62,7 @@
                 var result = check.match(regex);
                 if (result) {
                 	  date = new Date(result[0]);
+                	  console.log(date);
                 	}
                 
                 
@@ -115,9 +126,6 @@
                                     console.log(error);
                                 }
                             });
-                		}
-                		else{
-                			alert("이전에 인증한 날짜 영수증입니다");
                 		}
                 	}
                 	else if(userCheckcnt>1){
