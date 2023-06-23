@@ -25,4 +25,6 @@ public interface CommunityService {
 	
 	public int Count(SearchDTO params); //게시글 수 카운팅
 	
+	// 마이페이지에 게시물 정보 들고오기
+	public List<CommunityDTO> usermainCommunity(String userID);
 }

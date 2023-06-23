@@ -62,6 +62,11 @@ public interface CommunityMapper {
 	@Select( "SELECT * FROM community  WHERE communityCategory=#{communityCategory} ORDER BY communityNumber DESC LIMIT #{params.pagination.limitStart}, #{params.recordSize} " )
 	List<CommunityDTO> selectCommunityCategoryList(String communityCategory, SearchDTO params);
 	
+	// 마이페이지에 내 게시물 정보 들고오
+	@Select( " SELECT * FROM community WHERE communityWriter=#{userID} " )
+	List<CommunityDTO> usermainCommunity(String userID);
+	
+	
 	
 	
 }

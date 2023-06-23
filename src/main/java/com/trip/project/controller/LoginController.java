@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.project.dto.LoginDTO;
+import com.trip.project.service.CommunityService;
 import com.trip.project.service.LoginService;
 
 @Controller
@@ -21,6 +22,9 @@ public class LoginController {
 
 	@Autowired
 	private LoginService lservice;
+	
+	@Autowired
+	private CommunityService cservice;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -50,7 +54,8 @@ public class LoginController {
 			model.addAttribute("message", "비밀번호일치하지않습니다.");
 			return "redirect:/login";
 		}
-		session.setAttribute("login", res);
+		session.setAttribute("login", res.getUserID());
+		session.setMaxInactiveInterval(1800);
 		return "redirect:/";
   }
 	// 로그아웃 - 메인
@@ -155,9 +160,13 @@ public class LoginController {
 
 	// 사용자 마이페이지 메인
 	@RequestMapping("/usermain")
-	public String userMain() {
-
+	public String userMain(HttpSession session, Model model) {
+		String userID = (String) session.getAttribute("login");
+		model.addAttribute("community", cservice.usermainCommunity(userID));
+		System.out.println(userID);
+		System.out.println("controller : "+cservice.usermainCommunity(userID));
 		return "usermain";
+		
 	}
 
 	// 사용자 회원 정보 수정 페이지

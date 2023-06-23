@@ -113,6 +113,13 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.updateImg(image);
 	}
 
+	@Override
+	public List<CommunityDTO> usermainCommunity(String userID) {
+		
+		
+		return mapper.usermainCommunity(userID);
+	}
+
 
 
 }
