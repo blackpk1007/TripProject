@@ -45,7 +45,7 @@
             line-height:220%;
             
         }
-        #title_text{
+        #communityTitle{
         	
             float: left;
             margin:1% auto;
@@ -64,7 +64,7 @@
             margin-left: 10%;
             line-height: 500%;
         }
-        #textarea{
+        #contentText{
         	
 
             width:70%;
@@ -125,7 +125,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    const editor = document.getElementById('textarea');
+    const editor = document.getElementById('contentText');
     const btnBold = document.getElementById('btn-bold');
     const btnItalic = document.getElementById('btn-italic');
     const btnUnderline = document.getElementById('btn-underline');
@@ -179,8 +179,20 @@ $(document).ready(function() {
     }
     
     
-    $("#submitBT").on('click', function () {
-    	updateHiddenInput();
+    $("#submitBT").on('click', function (event) {
+    	let communityTitle = $("#communityTitle").val();
+    	let contentText = $("#contentText").text();
+    	console.log(communityTitle);
+    	console.log(contentText);
+    	
+    	if(communityTitle == null || communityTitle == "" || contentText == null || contentText == ""){
+    		alert("제목 혹은 내용을 입력해 주세요.");
+    		return false;
+    	}else{
+    		updateHiddenInput();
+    		
+    	}
+    	
     });
     
    
@@ -208,7 +220,7 @@ $(document).ready(function() {
         </div>
         <div id="title" class="div">
             <div id="write_ti">제목</div>
-            <div><input type="text" id="title_text" name="communityTitle"></div>
+            <div><input type="text" id="communityTitle" name="communityTitle"></div>
         </div>
        
         <div id="contents" class="div">
@@ -235,9 +247,9 @@ $(document).ready(function() {
 			</div>
             <div id="write_con">내용</div>
             <div id="textareaDiv">
-            	<div id="textarea" contenteditable="true"></div>
+            	<div id="contentText" contenteditable="true"></div>
             </div>	
-            <input type="hidden" name="communityContent">
+            <input type="hidden" name="communityContent" id="communityContent">
         </div>
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">

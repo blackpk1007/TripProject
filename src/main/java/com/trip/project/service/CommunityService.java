@@ -21,7 +21,8 @@ public interface CommunityService {
 	public ImageDTO selectOneImg(int imageNumber);
 	public int updateImg(UploadFile image);
 	
-	public PagingResponse<CommunityDTO> selectCommunityCategory(String communityCategory, SearchDTO params);
+	public PagingResponse<CommunityDTO> selectCommunityTip(String communityCategory, SearchDTO params);
+	public PagingResponse<CommunityDTO> selectCommunityReview(String communityCategory, SearchDTO params);
 	
 	public int Count(SearchDTO params); //게시글 수 카운팅
 	
