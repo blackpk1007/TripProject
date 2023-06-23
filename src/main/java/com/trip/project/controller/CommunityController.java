@@ -73,6 +73,8 @@ public class CommunityController {
 	public String communityWrite(CommunityDTO dto) throws IOException {
 		logger.info("COMMUNITY WRITE");
 		System.out.println("controller : " + dto.getAttachFile());
+		System.out.println("controller : " + dto.getCommunityContent());
+		
 		// List<UploadFile> imagefile = FileStore.storeFiles(dto.getImageFiles());
 		UploadFile file = FileStore.storeFile(dto.getAttachFile());
 
