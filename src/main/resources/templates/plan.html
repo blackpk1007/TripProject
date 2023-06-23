@@ -18,7 +18,16 @@ var placeData=[];
 var map; // map 객체 선언
 // 초기 마커 생성
 var placeList = [[${placeRestaurantList}]];
-
+/* function reloadStylesheet() {
+	  var links = document.getElementsByTagName('link');
+	  for (var i = 0; i < links.length; i++) {
+	    if (links[i].rel === 'stylesheet') {
+	      var href = links[i].href;
+	      links[i].href = ''; // 스타일시트 URL을 비웁니다.
+	      links[i].href = '/resources/css/plan.css'; // 스타일시트 URL을 다시 설정하여 재로드합니다.
+	    }
+	  }
+	} */
 function initTmap() {
 	  // map 생성
 	  map = new Tmapv2.Map("map_div", {
@@ -37,8 +46,9 @@ function fetchUpdatedMarkers(category) {
       method: 'GET',
       data: { category: category },
       success: function (data) {
-    	  createMarkers(data);
     	  updateList(data);
+    	  createMarkers(data);
+    	  
       },
       error: function () {
         console.log('Failed to fetch updated markers.');
@@ -47,24 +57,66 @@ function fetchUpdatedMarkers(category) {
   }
   
 function updateList(data) {
-	  // 리스트를 업데이트하는 작업 수행
-	  var listContainer = document.querySelector('.list');
+	var listContainer = document.querySelector('.list');
 	  listContainer.innerHTML = ''; // 기존 리스트 내용 초기화
 
-	  // data를 기반으로 새로운 리스트 아이템 생성
-	  data.forEach(function (item) {
+	  data.forEach(function (restaurant) {
 	    var listItem = document.createElement('div');
 	    listItem.id = 'list-item';
 
-	    // 리스트 아이템 내용 생성 및 추가
-	    // 예시: 아이템의 이름은 item.name으로 가정
-	    var itemName = document.createElement('h3');
-	    itemName.textContent = item.name;
-	    listItem.appendChild(itemName);
+	    var listImg = document.createElement('div');
+	    listImg.id = 'list-img';
+	    var img = document.createElement('img');
+	    img.src = './resources/image/place/' + restaurant.placeName + '.jpg';
+	    img.alt = '';
+	    listImg.appendChild(img);
+	    listItem.appendChild(listImg);
 
-	    // 리스트 컨테이너에 새로운 리스트 아이템 추가
+	    var listName = document.createElement('div');
+	    listName.id = 'list-name';
+
+	    var listNameLabel = document.createElement('div');
+	    listNameLabel.id = 'list-name-label';
+	    var nameLabel = document.createElement('label');
+	    nameLabel.textContent = restaurant.placeName;
+	    listNameLabel.appendChild(nameLabel);
+	    listName.appendChild(listNameLabel);
+
+	    var listNameHeartimg = document.createElement('div');
+	    listNameHeartimg.id = 'list-name-heartimg';
+
+	    var heartImg = document.createElement('div');
+	    var imgHeart = document.createElement('img');
+	    imgHeart.src = './resources/image/heart.png';
+	    imgHeart.alt = '';
+	    imgHeart.id = 'heart';
+	    heartImg.appendChild(imgHeart);
+	    listNameHeartimg.appendChild(heartImg);
+
+	    var listNameHeartimgLabel = document.createElement('div');
+	    listNameHeartimgLabel.id = 'list-name-heartimg-label';
+	    var heartLabel = document.createElement('label');
+	    heartLabel.textContent = restaurant.placeGood;
+	    listNameHeartimgLabel.appendChild(heartLabel);
+	    listNameHeartimg.appendChild(listNameHeartimgLabel);
+
+	    listName.appendChild(listNameHeartimg);
+	    listItem.appendChild(listName);
+
+	    var listPlus = document.createElement('div');
+	    listPlus.id = 'list-plus';
+	    var plusImg = document.createElement('img');
+	    plusImg.src = './resources/image/plus.png';
+	    plusImg.alt = '';
+	    plusImg.id = 'plus';
+	    listPlus.appendChild(plusImg);
+	    listItem.appendChild(listPlus);
+
 	    listContainer.appendChild(listItem);
+	 /* // CSS 스타일시트 재로드
+	    reloadStylesheet(); */
 	  });
+}
 	}
 var selectedMarkerChart1 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas)
 var selectedMarkerChart2 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas2)
@@ -288,6 +340,7 @@ function createMarkers(data) {
 	    });
 	  })(i);
 	}
+    createPlusClickEvent();
   }
   document.addEventListener('DOMContentLoaded', function () {
     var restaurantBtn = document.getElementById('restaurant-btn');
@@ -314,136 +367,317 @@ function createMarkers(data) {
     ollegilBtn.addEventListener('click', function () {
       fetchUpdatedMarkers('ollegil');
     });
-    
-	
-	var plusElements = document.querySelectorAll('#list-plus');
-	plusElements.forEach(function(plus) {
-		  plus.addEventListener('click', function() {
-			// 클릭 이벤트 발생 시 실행되는 함수
-			    // 클릭한 plus 요소의 부모인 main-left div를 찾아 복사
-			    var mainLeft = this.parentNode;
-			    var coursePlan = document.querySelector('.course-plan');
-
-			    // main-left div 복사
-			    var clonedMainLeft = mainLeft.cloneNode(true);
-
-			    // main-left div 내의 minus 이미지 클릭 시 삭제 이벤트 추가
-			    var minus = clonedMainLeft.querySelector('#list-minus');
-			    /* minus.addEventListener('click', function() {
-			      // minus 이미지 클릭 시 실행되는 함수
-			      // 해당 main-left div를 삭제
-			      coursePlan.removeChild(clonedMainLeft);
-			    }); */
-
-			    // course-plan div에서 기존의 list div를 찾아 가져옴
-			    var listContainer = coursePlan.querySelector('.list');
-
-			    // 복사한 main-left div에서 plus 이미지를 제거
-			    var plusElement = clonedMainLeft.querySelector('#list-plus');
-			    plusElement.remove();
-			    
-			 	// list-name-heartimg 요소 제거
-			    var listNameHeartImg = clonedMainLeft.querySelector('#list-name-heartimg');
-			    listNameHeartImg.remove();
-			    
-			    var listMinusDiv = document.createElement('div');
-			    listMinusDiv.setAttribute('id', 'list-minus');
-
-			    // list-minus 이미지 생성
-			    var listMinusImg = document.createElement('img');
-			    listMinusImg.setAttribute('src', './resources/image/minus.png');
-			    listMinusImg.setAttribute('alt', '');
-
-			    // list-minus 이미지를 list-minus div에 추가
-			    listMinusDiv.appendChild(listMinusImg);
-
-			    // 복사한 main-left div에 list-minus div 추가
-			    clonedMainLeft.appendChild(listMinusDiv);
-
-			    // 가져온 list div에 복사한 main-left div 추가
-			    listContainer.appendChild(clonedMainLeft);
-		});
-	});
   });
-	let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
-	let today = new Date(); // 페이지를 로드한 날짜를 저장
-	today.setHours(0, 0, 0, 0); // 비교 편의를 위해 today의 시간을 초기화
+  function createPlusClickEvent() {
+	  var plusElements = document.querySelectorAll('#list-plus');
+	  plusElements.forEach(function(plus) {
+	    plus.addEventListener('click', function() {
+	      // 클릭 이벤트 발생 시 실행되는 함수
+	      // 클릭한 plus 요소의 부모인 main-left div를 찾아 복사
+	      var mainLeft = this.parentNode;
+	      var coursePlan = document.querySelector('.course-plan');
 
-	// 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-	function buildCalendar() {
+	      // main-left div 복사
+	      var clonedMainLeft = mainLeft.cloneNode(true);
 
-		let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1); // 이번달 1일
-		let lastDate = new Date(nowMonth.getFullYear(),
-				nowMonth.getMonth() + 1, 0); // 이번달 마지막날
+	      // course-plan div에서 기존의 list div를 찾아 가져옴
+	      var listContainer = coursePlan.querySelector('.course-list');
 
-		let tbody_Calendar = document.querySelector(".Calendar-table > tbody");
-		document.getElementById("calYear").innerText = nowMonth.getFullYear(); // 연도 숫자 갱신
-		document.getElementById("calMonth").innerText = leftPad(nowMonth
-				.getMonth() + 1); // 월 숫자 갱신
+	      var isDuplicate = Array.from(listContainer.querySelectorAll('.main-left')).some(function(listItem) {
+	        var listItemLabel = listItem.querySelector('#list-name-label label');
+	        var listItemText = listItemLabel ? listItemLabel.textContent : '';
+	        var clonedMainLeftLabel = clonedMainLeft.querySelector('#list-name-label label');
+	        var clonedMainLeftText = clonedMainLeftLabel ? clonedMainLeftLabel.textContent : '';
+	        if (listItemText === clonedMainLeftText) {
+	          return true;  // 중복되는 경우 true 반환
+	        }
 
-		while (tbody_Calendar.rows.length > 0) { // 이전 출력결과가 남아있는 경우 초기화
-			tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
-		}
+	        return false;  // 중복되지 않는 경우 false 반환
+	      });
+	      if (isDuplicate) {
+	        alert('이미 추가된 장소입니다.'); // 중복된 장소인 경우 경고창 표시
+	        return;  // 중복되는 장소인 경우 함수 종료
+	      }
 
-		let nowRow = tbody_Calendar.insertRow(); // 첫번째 행 추가           
+	      // 복사한 main-left div에서 plus 이미지를 제거
+	      var plusElement = clonedMainLeft.querySelector('#list-plus');
+	      plusElement.remove();
 
-		for (let j = 0; j < firstDate.getDay(); j++) { // 이번달 1일의 요일만큼
-			let nowColumn = nowRow.insertCell(); // 열 추가
-		}
+	      // list-name-heartimg 요소 제거
+	      var listNameHeartImg = clonedMainLeft.querySelector('#list-name-heartimg');
+	      listNameHeartImg.remove();
 
-		for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay
-				.getDate() + 1)) { // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
+	      var listMinusDiv = document.createElement('div');
+	      listMinusDiv.setAttribute('id', 'list-minus');
 
-			let nowColumn = nowRow.insertCell(); // 새 열을 추가하고
-			nowColumn.innerText = leftPad(nowDay.getDate()); // 추가한 열에 날짜 입력
+	      // list-minus 이미지 생성
+	      var listMinusImg = document.createElement('img');
+	      listMinusImg.setAttribute('src', './resources/image/minus.png');
+	      listMinusImg.setAttribute('alt', '');
 
-			if (nowDay.getDay() == 0) { // 일요일인 경우 글자색 빨강으로
-				nowColumn.style.color = "#DC143C";
-			}
-			if (nowDay.getDay() == 6) { // 토요일인 경우 글자색 파랑으로 하고
-				nowColumn.style.color = "#0000CD";
-				nowRow = tbody_Calendar.insertRow(); // 새로운 행 추가
-			}
+	      // list-minus 이미지를 list-minus div에 추가
+	      listMinusDiv.appendChild(listMinusImg);
 
-			if (nowDay < today) { // 지난날인 경우
-				nowColumn.className = "pastDay";
-			} else if (nowDay.getFullYear() == today.getFullYear()
-					&& nowDay.getMonth() == today.getMonth()
-					&& nowDay.getDate() == today.getDate()) { // 오늘인 경우           
-				nowColumn.className = "today";
-				nowColumn.onclick = function() {
-					choiceDate(this);
-				}
-			} else { // 미래인 경우
-				nowColumn.className = "futureDay";
-				nowColumn.onclick = function() {
-					choiceDate(this);
-				}
-			}
-		}
+	      // 복사한 main-left div에 list-minus div 추가
+	      clonedMainLeft.appendChild(listMinusDiv);
+
+	      // 현재 Day에 해당하는 course-list에만 복사된 main-left div 추가
+	      var currentCourseList = document.getElementById(`course-list-${currentDay}`);
+	      var clonedMainLeftCopy = clonedMainLeft.cloneNode(true);
+	      currentCourseList.appendChild(clonedMainLeftCopy);
+
+	      // 현재 Day에 해당하는 course-list 다시 표시
+	      showCurrentDay();
+
+	      // list-minus 이미지 클릭 시 해당 main-left div 삭제
+	      listMinusDiv.addEventListener('click', function() {
+	        var parentMainLeft = this.parentNode;
+	        parentMainLeft.remove();
+	        showCurrentDay();
+	      });
+	    });
+	  });
 	}
 
-	// 날짜 선택
-	function choiceDate(nowColumn) {
-		if (document.getElementsByClassName("choiceDay")[0]) { // 기존에 선택한 날짜가 있으면
-			document.getElementsByClassName("choiceDay")[0].classList
-					.remove("choiceDay"); // 해당 날짜의 "choiceDay" class 제거
-		}
-		nowColumn.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
-	}
+  let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
+  let today = new Date(); // 페이지를 로드한 날짜를 저장
+  today.setHours(0, 0, 0, 0); // 비교 편의를 위해 today의 시간을 초기화
 
-	// 이전달 버튼 클릭
-	function prevCalendar() {
-		nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1,
-				nowMonth.getDate()); // 현재 달을 1 감소
-		buildCalendar(); // 달력 다시 생성
-	}
-	// 다음달 버튼 클릭
-	function nextCalendar() {
-		nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1,
-				nowMonth.getDate()); // 현재 달을 1 증가
-		buildCalendar(); // 달력 다시 생성
-	}
+  let selectedStartDate = null; // 선택된 시작 날짜
+  let selectedEndDate = null; // 선택된 종료 날짜
+
+  // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
+  function buildCalendar() {
+    let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1); // 이번달 1일
+    let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0); // 이번달 마지막날
+
+    let tbody_Calendar = document.querySelector(".Calendar-table > tbody");
+    document.getElementById("calYear").innerText = nowMonth.getFullYear(); // 연도 숫자 갱신
+    document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1); // 월 숫자 갱신
+
+    while (tbody_Calendar.rows.length > 0) { // 이전 출력결과가 남아있는 경우 초기화
+      tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
+    }
+
+    let nowRow = tbody_Calendar.insertRow(); // 첫번째 행 추가
+
+    for (let j = 0; j < firstDate.getDay(); j++) { // 이번달 1일의 요일만큼
+      let nowColumn = nowRow.insertCell(); // 열 추가
+    }
+
+    for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) { // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복
+      let nowColumn = nowRow.insertCell(); // 새 열을 추가하고
+      nowColumn.innerText = leftPad(nowDay.getDate()); // 추가한 열에 날짜 입력
+
+      if (nowDay.getDay() === 0) { // 일요일인 경우 글자색 빨강으로
+        nowColumn.style.color = "#DC143C";
+      }
+      if (nowDay.getDay() === 6) { // 토요일인 경우 글자색 파랑으로 하고
+        nowColumn.style.color = "#0000CD";
+        nowRow = tbody_Calendar.insertRow(); // 새로운 행 추가
+      }
+
+      if (nowDay < today) { // 지난날인 경우
+        nowColumn.className = "pastDay";
+      } else if (nowDay.getFullYear() === today.getFullYear() && nowDay.getMonth() === today.getMonth() && nowDay.getDate() === today.getDate()) { // 오늘인 경우
+        nowColumn.className = "today";
+        nowColumn.onclick = function() {
+          choiceDate(this);
+        };
+      } else { // 미래인 경우
+        nowColumn.className = "futureDay";
+        nowColumn.onclick = function() {
+          choiceDate(this);
+        };
+      }
+
+      // 선택된 날짜 범위에 해당하는 스타일 적용
+      if (selectedStartDate && selectedEndDate && nowDay >= selectedStartDate && nowDay <= selectedEndDate) {
+        nowColumn.classList.add("choiceDay");
+      } else if (selectedStartDate && !selectedEndDate && nowDay.getTime() === selectedStartDate.getTime()) {
+        nowColumn.classList.add("choiceDay");
+      }
+    }
+    // 선택된 날짜가 없을 때 Day 초기화
+    if (!selectedStartDate && !selectedEndDate) {
+      const courseColorDay = document.querySelector(".course-color-day");
+      courseColorDay.innerHTML = "";
+    }
+  }
+//전역 변수로 days와 currentDay 선언
+  let days;
+  let currentDay = 1;
+
+  // 적용 버튼 클릭 시 실행되는 함수
+  function applyDate() {
+    if (selectedStartDate && selectedEndDate) {
+      days = getDayDiff(selectedStartDate, selectedEndDate);
+      const courseColorDay = document.querySelector(".course-color-day");
+      courseColorDay.innerHTML = ""; // 기존의 Day 숫자 초기화
+
+      const coursePlan = document.querySelector(".course-plan");
+      coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+
+      for (let i = 1; i <= days; i++) {
+        const dayElement = document.createElement("h5");
+        dayElement.textContent = `Day${i}`;
+        dayElement.dataset.day = i; // 데이터 속성으로 day 값 설정
+        dayElement.addEventListener("click", function () {
+          changeCurrentDay(parseInt(this.dataset.day)); // day 값을 정수로 변환하여 전달
+        });
+        courseColorDay.appendChild(dayElement);
+
+        const courseList = document.createElement("div");
+        courseList.className = "course-list";
+        courseList.id = `course-list-${i}`; // 고유한 ID 설정
+        courseList.style.display = i === 1 ? "block" : "none"; // 첫 번째 day에 해당하는 course-list는 보여주기, 나머지는 숨김
+
+        // Create hidden input element for the selected date
+        const inputElement = document.createElement("input");
+        inputElement.type = "hidden";
+        inputElement.name = "planDate";
+        inputElement.value = ""; // 여기에 날짜 값 추가
+        courseList.appendChild(inputElement);
+
+        coursePlan.appendChild(courseList);
+      }
+
+      // Day 숫자 초기 설정 (첫 번째 Day를 선택한 상태로 설정)
+      const firstDayElement = document.querySelector(".course-color-day h5");
+      firstDayElement.classList.add("active");
+    } else {
+      const courseColorDay = document.querySelector(".course-color-day");
+      courseColorDay.innerHTML = ""; // Day 숫자 제거
+
+      const coursePlan = document.querySelector(".course-plan");
+      coursePlan.innerHTML = ""; // course-list 제거
+    }
+  }
+
+  // 다음날 버튼 클릭 시 실행되는 함수
+  function nextDay() {
+    if (currentDay < days) {
+      const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      currentCourseList.style.display = "none";
+      currentDay++;
+
+      const nextCourseList = document.getElementById(`course-list-${currentDay}`);
+      nextCourseList.style.display = "block";
+
+      // Day 숫자 변경
+      const courseColorDay = document.querySelector(".course-color-day");
+      const dayElements = courseColorDay.getElementsByTagName("h5");
+      for (let i = 0; i < dayElements.length; i++) {
+        const dayElement = dayElements[i];
+        if (parseInt(dayElement.dataset.day) === currentDay) {
+          dayElement.classList.add("active");
+        } else {
+          dayElement.classList.remove("active");
+        }
+      }
+    }
+  }
+
+  // 이전날 버튼 클릭 시 실행되는 함수
+  function previousDay() {
+    if (currentDay > 1) {
+      const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      currentCourseList.style.display = "none";
+      currentDay--;
+
+      const previousCourseList = document.getElementById(`course-list-${currentDay}`);
+      previousCourseList.style.display = "block";
+
+      // Day 숫자 변경
+      const courseColorDay = document.querySelector(".course-color-day");
+      const dayElements = courseColorDay.getElementsByTagName("h5");
+      for (let i = 0; i < dayElements.length; i++) {
+        const dayElement = dayElements[i];
+        if (parseInt(dayElement.dataset.day) === currentDay) {
+          dayElement.classList.add("active");
+        } else {
+          dayElement.classList.remove("active");
+        }
+      }
+    }
+  }
+
+  // 현재 표시 중인 Day 변경 함수
+  function changeCurrentDay(day) {
+    if (day !== currentDay) {
+      const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      currentCourseList.style.display = "none";
+      currentDay = day;
+
+      const nextCourseList = document.getElementById(`course-list-${currentDay}`);
+      nextCourseList.style.display = "block";
+
+      // Day 숫자 변경
+      const courseColorDay = document.querySelector(".course-color-day");
+      const dayElements = courseColorDay.getElementsByTagName("h5");
+      for (let i = 0; i < dayElements.length; i++) {
+        const dayElement = dayElements[i];
+        if (parseInt(dayElement.dataset.day) === currentDay) {
+          dayElement.classList.add("active");
+        } else {
+          dayElement.classList.remove("active");
+        }
+      }
+    }
+  }
+  // 현재 Day에 해당하는 course-list 보여주는 함수
+  function showCurrentDay() {
+    const courseLists = document.querySelectorAll(".course-list");
+    courseLists.forEach((courseList, index) => {
+      if (index + 1 === currentDay) {
+        courseList.style.display = "block";
+      } else {
+        courseList.style.display = "none";
+      }
+    });
+  }
+  // 날짜 선택
+  function choiceDate(nowColumn) {
+    const selectedDay = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), parseInt(nowColumn.innerText));
+
+    if (selectedStartDate && selectedEndDate) {
+      // 이미 시작 날짜와 종료 날짜가 선택된 경우
+      selectedStartDate = selectedEndDate = null; // 선택된 날짜 초기화
+    } else if (selectedStartDate) {
+      // 시작 날짜가 이미 선택된 경우
+      if (selectedDay < selectedStartDate) {
+        selectedEndDate = selectedStartDate;
+        selectedStartDate = selectedDay;
+      } else if (selectedDay > selectedStartDate) {
+        selectedEndDate = selectedDay;
+      } else {
+        selectedStartDate = null; // 선택된 날짜 초기화
+      }
+    } else {
+      // 시작 날짜가 선택되지 않은 경우
+      selectedStartDate = selectedDay;
+    }
+
+    buildCalendar(); // 달력 다시 생성
+  }
+//날짜 차이 계산
+  function getDayDiff(startDate, endDate) {
+    const oneDay = 24 * 60 * 60 * 1000; // 1일의 밀리초 수
+    const diffDays = Math.round(Math.abs((startDate - endDate) / oneDay)) + 1; // 날짜 차이 계산
+    return diffDays;
+  }
+  // 이전달 버튼 클릭
+  function prevCalendar() {
+    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate()); // 현재 달을 1 감소
+    buildCalendar(); // 달력 다시 생성
+  }
+
+  // 다음달 버튼 클릭
+  function nextCalendar() {
+    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate()); // 현재 달을 1 증가
+    buildCalendar(); // 달력 다시 생성
+  }
+
 
 	// input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
 	function leftPad(value) {
@@ -453,10 +687,11 @@ function createMarkers(data) {
 		}
 		return value;
 	}
+	
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
-		};	
+	};	
 </script>
 <title>Insert title here</title>
 </head>
@@ -493,6 +728,8 @@ function createMarkers(data) {
 					<div id="list-plus">
 						<img src="./resources/image/plus.png" alt="" id="plus">
 					</div>
+					<input type="hidden" name="placeLon" value="${restaurant.placeLon}">
+					<input type="hidden" name="placeLat" value="${restaurant.placeLat}">
 				</div>
 			</div>
 			
@@ -555,11 +792,18 @@ function createMarkers(data) {
 					<tbody>
 					</tbody>
 				</table>
+				<div>
+					<button type="button" th:onclick="applyDate()">적용</button>
+				</div>
 			</div>
+			<form action="/plan/createplan" method="post">
 			<div class="course">
 				<div class="course-color">
 					<div class="course-color-day">
-						<h5>Day1</h5>
+						
+					</div>
+					<div>
+						<button type="submit">등록</button>
 					</div>
 					<div class="course-color-check">
 						<div>
@@ -604,9 +848,13 @@ function createMarkers(data) {
 				</div>
 
 				<div class="course-plan">
-					<div class="list"></div>
 				</div>
+					<div>
+  						<button type="button" onclick="previousDay()">이전날</button>
+  						<button type="button" onclick="nextDay()">다음날</button>
+					</div>
 			</div>
+			</form>
 		</div>
 	</div>
 </body>
