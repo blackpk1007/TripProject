@@ -6,9 +6,16 @@
 <link rel="stylesheet" href="#"	type="text/css">
 <link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
 <style type="text/css">
-
+#logo{
+width:300px;
+height:200px;
+}
 /*  프로필 */
 .profilearea{
+	display:flex;
+	position:relative;
+	padding:1rem;
+	margin-left:8.8rem;
 }
 
 
@@ -18,37 +25,155 @@
     border-radius: 70%;
     overflow: hidden;
     background: #BDBDBD;
+    margin-right:1rem;
 }
 .profilepic {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    
 }
+.profile{
+	text-align:center;
+	font-size:1.8rem;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
+#profilefix{
+	font-size: 1.5rem;
+	background-color: #BDBDBD;	
+	border: solid;
+	border-width:2px;
+	border-color:#BDBDBD;
+	border-radius: 0.5rem;
+	padding:0.4rem;
+	margin-left:1rem;
+}
+
 
 /* 일정 3개 */
 .status{
 	display:flex;
+	
 }
 .user_status{
 	flex:1;
 	text-align: center;
+	background-color: #B8E9FF;
+	font-size: 1.8rem;
+	color: white;
+	margin:7vw;
+	margin-top:2rem;
+	margin-bottom:2rem;
+	padding-top:1rem;
+	border-radius:0.5rem;
 }
 .num{
 	text-align: center;
+	border: solid;
+	border-width:2px;
+	border-color:grey;
+	border-top-color:#B8E9FF;
+	background-color:white;
+	font-size: 1.8rem;
+	color: black;
+	padding-top:0.5rem;
+	padding-bottom:1rem;
+	border-color: #ECECEC;
+	border-bottom-left-radius:0.5rem;
+	border-bottom-right-radius:0.5rem;
+}
+
+/* main */
+.mymain_text{
+	font-size:1.8rem;
+}
+
+.mymain{
+	padding:5vw;
+	padding-top:1rem;
+	position:relative;
+}
+
+.main{
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius:0.5rem;
+	border-width:2px;
+	font-size: 1.8rem;
+	padding:1rem;
+	margin-top:2rem;
+	height:15vh;
+	width:80vw;
+	position:relative;
+	left:4.25vw;
+}
+
+#location1{
+	width: 150px;
+    height: 150px; 
+    overflow: hidden;
+    background: #BDBDBD;
+}
+
+.myplan1{
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
+#location2{
+	width: 150px;
+    height: 150px; 
+    overflow: hidden;
+    background: #BDBDBD;
+}
+
+.myplan2{
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+#loc1{
+	flex: 1 0 auto;
+}
+#loc2{
+	flex: 4 0 auto;
+}
+#loc3{
+	flex: 1 0 auto;
 }
 
 /*공 수 삭 */
 #share{
 	font-size: 2rem;
 	color: #B8E9FF;	
+	border: solid;
 	border-width:2px;
-	border-style:outset;
 	border-color:#B8E9FF;
-	border-image: initial;
+	border-radius: 0.5rem;
+	margin:1rem;
 }
 #fix{
+	font-size: 2rem;
+	color: #78A84E;	
+	border: solid;
+	border-width:2px;
+	border-color:#78A84E;
+	border-radius: 0.5rem;
+	margin:1rem;
+	
 }
 #delete{
+	font-size: 2rem;
+	color: #EFA174;	
+	border: solid;	
+	border-width:2px;
+	border-color:#EFA174;
+	border-radius: 0.5rem;
+	margin:1rem;
 }
 </style>
 </head>
@@ -70,9 +195,10 @@
 	    	<img class="profilepic" id="profilepic" src="#">
 		</div>
 		<div class="profile">
+		
 			내 프로필
 			<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
-			<button onclick="location.href='/login/userupdateform'">프로필 수정</button>
+			<button id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
 		</div>
 	</div>
 	
@@ -90,44 +216,55 @@
 		</div>
 	</div>
 	
-	<div>
+	<div class="mymain_text">
 		나의 일정 or 나의 리뷰 or 나의 게시물 	끌고오기 
 	</div>
 	
-	<div class="myplan">
-		<div class="plan">
+	<div class="mymain">
+		<div class="main">
 			<div class="myplan1">
-			<img id="location1" src="#">
-			여행이름 여행일자를p로 나눠야되려나?
-			
-			<button id="share">공유</button>
-			<button id="fix">수정</button>
-			<button id="delete">삭제</button>
+				<div id="loc1">
+					<img id="location1" src="#">
+				</div>
+				<div id="loc2">
+				여행이름 여행일자를p로 나눠야되려나?
+				</div>
+				<div id="loc3">
+					<button id="share">공유</button>
+					<button id="fix">수정</button>
+					<button id="delete">삭제</button>
+				</div>
 			</div>
-			
 		</div>
-		<div class="plan">
+		
+		<div class="main">
 			<div class="myplan2">
-			<img id="location2" src="#">
-			
-			<button id="share">공유</button>
-			<button id="fix">수정</button>
-			<button id="delete">삭제</button>
+				<div id="loc1">
+					<img id="location2" src="#">
+				</div>
+				<div id="loc2">
+					내용 
+				</div>
+				<div id="loc3">
+					<button id="share">공유</button>
+					<button id="fix">수정</button>
+					<button id="delete">삭제</button>
+				</div>
 			</div>
-			
 		</div>
+		
 	</div>
 	
 	<!-- 나의 일정, 나의 리뷰, 나의 게시물 누를때 바뀌는용, ui 안정함.나중에. 
 	
-	<div class="myreview">
-		<div id="review1">
+	<div class="mymain">
+		<div class="main">
 			<img id="location1" src="#">
 			<button>공유</button>
 			<button>수정</button>
 			<button>삭제</button>
 		</div>
-		<div id="review2">
+		<div class="main">
 			<img id="location2" src="#">
 			<button>공유</button>
 			<button>수정</button>
@@ -135,14 +272,14 @@
 		</div>
 	</div>
 	
-	<div class="mypost">
-		<div id="post1">
+	<div class="mymain">
+		<div class="main">
 			<img id="location1" src="#">
 			<button>공유</button>
 			<button>수정</button>
 			<button>삭제</button>
 		</div>
-		<div id="post2">
+		<div class="main">
 			<img id="location2" src="#">
 			<button>공유</button>
 			<button>수정</button>
