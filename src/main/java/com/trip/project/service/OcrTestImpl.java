@@ -2,6 +2,7 @@ package com.trip.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class OcrTestImpl implements OcrTest{
 	private OcrMapper ocrMapper;
 
 
+	@Autowired
+    private SqlSession sqlSession;
 	
 	@Override
 	public OcrDTO selectByPlaceNumber(int placeNumber) {
@@ -28,4 +31,8 @@ public class OcrTestImpl implements OcrTest{
 	}
 	
 
+	@Override
+    public void insertRecommandData(String userID, int placeNumber, String date) {
+        ocrMapper.insertRecommandData(userID, placeNumber, date);
+    }
 }

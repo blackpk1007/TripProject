@@ -8,5 +8,5 @@ import com.trip.project.dto.RecommandDTO;
 public interface OcrTest {
 	public OcrDTO selectByPlaceNumber(int placeNumber);
 	public List<RecommandDTO> selectRecommandPlaceNumber(int placeNumber);
-	
+	public void insertRecommandData(String userID, int placeNumber, String date);
 }

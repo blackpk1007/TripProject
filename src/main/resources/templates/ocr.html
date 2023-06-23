@@ -12,7 +12,7 @@
             let num = '[(${num})]';
             let userCheck = '[(${userCheck})]';
             //console.log(res);
-            //console.log(num);
+            console.log(num);
             //console.log(userCheck);
             
             var userCheckcnt=0;
@@ -29,13 +29,16 @@
                     userCheckcnt++;
                     dateCheckdata=match[dateCheckcnt];
                     
+                }else{
+                	alert("로그인 정보를 확인해주세요");
                 }
+                
             });
 
-            
+            let placeNumber = num.match(/placeNumber=([^,]+)/)[1];
             let placeName = num.match(/placeName=([^,]+)/)[1];
             let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
-            console.log(placeName);
+            console.log(placeNumber);
             let check="";
             
 	        // 괄호 제거하기
@@ -86,7 +89,27 @@
                 		if(dateCheckdata!=date){
                 			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
                 			console.log("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
+                			
+                			 // 데이터를 서버로 전송하여 DB에 삽입
+                            $.ajax({
+                                url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+                                type: 'POST',
+                                data: {
+                                    userID: loginchk.userID,
+                                    placeNumber: placeNumber,
+                                    date: date
+                                },
+                                success: function(response) {
+                                    console.log(response);
+                                },
+                                error: function(error) {
+                                    console.log(error);
+                                }
+                            });
                 		}
+                	}
+                	else if(userCheckcnt>1){
+                		alert("두번 이상 인증하셨습니다");
                 	}
                 }
                 else alert("영수증과 장소가 일치하지 않습니다");
