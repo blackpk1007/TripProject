@@ -67,6 +67,4 @@ public interface CommunityMapper {
 	List<CommunityDTO> usermainCommunity(String userID);
 	
 	
-	
-	
 }
