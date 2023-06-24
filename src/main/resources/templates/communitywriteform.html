@@ -114,7 +114,37 @@
     		margin-top:1%;
     		
     	}
-	
+		#menu{
+			width: 100%;
+			height: 40px;
+		}
+
+		#menu ul li{
+			background-color: #ffffff;
+			list-style: none;
+			text-align: center;
+		}
+		
+		#menu .linka{
+			float: left;
+		}
+		
+		#menu .linkb{
+			float: right;
+		}
+		
+		#menu .link{
+			width: 120px;
+			text-decoration: none;
+			display: block;
+			color: #000000;
+			font-weight: bold;
+		}
+		
+		#logo {
+			width: 200px;
+			height: 100px;
+			}
 		   
 		    
 	
@@ -201,6 +231,17 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka" ><a class="link" href="#">일정생성</a></li>
+			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linkb" ><a class="link" href="/login/userupdateform">마이페이지</a></li>
+		</ul>
+	</nav>
 	<div id="write">
     <div id="top_title">
         게시글 작성

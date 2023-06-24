@@ -3,6 +3,8 @@ package com.trip.project.controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,8 @@ public class CommunityController {
 		ImageDTO imgDto = cService.selectOneImg(communityNumber);
 		System.out.println(imgDto);
 		model.addAttribute("image", imgDto);
+		
+		
 
 		return "communitydetail";
 	}
@@ -134,15 +138,15 @@ public class CommunityController {
 			imageUpdateRes = cService.updateImg(file);
 			
 			if (communityUpdateRes > 0 &&  imageUpdateRes> 0) {
-				return "redirect:/community/communitymain";
+				return "redirect:/community/communitydetail?communityNumber="+dto.getCommunityNumber();
 			} else {
-				return "redirect:/community/communityupdate";
+				return "redirect:/community/communityupdate?communityNumber="+dto.getCommunityNumber();
 			}
 		}else {
 			if (communityUpdateRes > 0 ) {
-				return "redirect:/community/communitymain";
+				return "redirect:/community/communitydetail?communityNumber="+dto.getCommunityNumber();
 			} else {
-				return "redirect:/community/communityupdate";
+				return "redirect:/community/communityupdate?communityNumber="+dto.getCommunityNumber();
 			}
 		}
 	}

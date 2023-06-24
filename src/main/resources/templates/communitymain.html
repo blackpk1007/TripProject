@@ -117,6 +117,41 @@ select {
 	float:left;
 }
 p{margin:0;}
+#menu{
+	width: 100%;
+	height: 40px;
+}
+
+#menu ul li{
+	background-color: #ffffff;
+	list-style: none;
+	text-align: center;
+}
+
+#menu .linka{
+	float: left;
+}
+
+#menu .linkb{
+	float: right;
+}
+
+#menu .link{
+	width: 120px;
+	text-decoration: none;
+	display: block;
+	color: #000000;
+	font-weight: bold;
+}
+
+#logo {
+	width: 200px;
+	height: 100px;
+	}
+
+
+
+
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:inline="javascript">
@@ -177,8 +212,8 @@ function drawList(list, num) {
     list.forEach(row => {
     	const communityDate = new Date(row.communityDate);
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-$/, '');
-        
+        const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-$/, '').replace(/-\s*$/, '');
+        console.log(formattedDate)
         html += `
             <dl>
                 <dd class="num">
@@ -335,6 +370,17 @@ function drawListCategory(){
 </th:block>
 </head>
 <body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka" ><a class="link" href="#">일정생성</a></li>
+			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linkb" ><a class="link" href="/login/userupdateform">마이페이지</a></li>
+		</ul>
+	</nav>
 	<div id="community">
 		<div id="top_title">커뮤니티</div>
 		<div id="tag">
