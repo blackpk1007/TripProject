@@ -77,7 +77,7 @@ public class PlanController {
 		
 		List<PlaceDTO> placeList = pservice.placeCategoryMarker(category);
 		
-		return placeList; 
+		return placeList;
 	}
 	
 	@PostMapping("/createplan")

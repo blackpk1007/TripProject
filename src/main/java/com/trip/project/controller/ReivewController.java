@@ -37,11 +37,6 @@ public class ReivewController {
 	
 	@Autowired
 	private OcrTest OcrTest;
-	@RequestMapping
-	public String reviewmain() {
-		
-		return "mypagetest";
-	}
 	
 	@PostMapping("/reveiwwrite")
     public String review(@RequestParam("attachFile") MultipartFile file, Model model, Integer placeNumber, HttpSession session) throws IOException {
