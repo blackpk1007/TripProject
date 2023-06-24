@@ -700,10 +700,9 @@ function createMarkers(data) {
 		    const values = [];
 
 		    courseLists.forEach((courseList, index) => {
-		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
-		      const Listitem = courseList.querySelectorAll('.left_block');		      
-		      const inputLonElement = Listitem.querySelector('input[name="planLon"]');
-		      const inputLatElement = Listitem.querySelector('input[name="planLat"]');
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');		      
+		      const inputLonElement = courseList.querySelector('input[name="planLon"]');
+		      const inputLatElement = courseList.querySelector('input[name="planLat"]');
 
 		      const inputDateValue = inputDateElement.value;
 		      const inputLonValue = inputLonElement.value;
@@ -747,8 +746,8 @@ function createMarkers(data) {
 		<div class="header-category">
 			<label id="label-left-course">코스추천</label> <label
 				id="label-left-community">커뮤니티</label> <label id="label-left-chat">채팅방</label>
-			<img src="./resources/image/logo.png" alt="" id="logimg"> <label
-				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
+			<img src="./resources/image/logo.png" alt="" id="logimg"> 
+			<label id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
 		</div>
 	</div>
 	<div class="main"> 

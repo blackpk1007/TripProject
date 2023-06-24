@@ -35,23 +35,10 @@ public class TripApplication {
 	// 메인 페이지
 	@RequestMapping("/")
 	public String main(Model model) throws IOException {
-		
-		model.addAttribute("arriveds", aservice.jejuArrived());
-		model.addAttribute("boardings", aservice.jejuBoarding());
+	
 		model.addAttribute("list", mainpageService.selectList());
+		
 		return "main";
 	}
 	
-	// 크롤링 테스트 페이지
-	@RequestMapping("/crawling")
-	public void crawling() {
-		
-		cservice.crawinsert();
-	}
-	
-	@RequestMapping("/test")
-	public String test() {
-		
-		return "test";
-	}
 }

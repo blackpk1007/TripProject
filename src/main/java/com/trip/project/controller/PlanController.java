@@ -1,5 +1,6 @@
 package com.trip.project.controller;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDTO;
+import com.trip.project.service.AirPlaneService;
 import com.trip.project.service.PlanServiceImpl;
 
 @Controller
@@ -29,6 +31,9 @@ public class PlanController {
 
 	@Autowired
 	private PlanServiceImpl pservice;
+	
+	@Autowired
+	private AirPlaneService aservice;
 	
 	@RequestMapping
 	public String planMain(Model model){
@@ -83,11 +88,17 @@ public class PlanController {
 	}
 	
 	@GetMapping("/course")
-	public String course(@RequestParam("date") String date, @RequestParam("lon") String Lon, @RequestParam("lat") String Lat) {
-		System.out.println("controller : "+date);
-		System.out.println("controller : "+Lon);
-		System.out.println("controller : "+Lat);
+	public String course() {
 		return "course";
+	}
+	
+	@RequestMapping("/airplane")
+	public String airplane(Model model) throws IOException {
+		
+			model.addAttribute("arriveds", aservice.jejuArrived());
+			model.addAttribute("boardings", aservice.jejuBoarding());
+		
+		return "airplane";
 	}
 //	@ResponseBody
 //	@GetMapping("/fetchMarkers")
