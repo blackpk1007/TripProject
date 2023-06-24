@@ -212,7 +212,7 @@ function drawList(list, num) {
     list.forEach(row => {
     	const communityDate = new Date(row.communityDate);
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-$/, '').replace(/-\s*$/, '');
+        const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-\s*$/, '').replace(/\s/g, '');
         console.log(formattedDate)
         html += `
             <dl>

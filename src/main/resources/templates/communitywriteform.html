@@ -212,11 +212,24 @@ $(document).ready(function() {
     $("#submitBT").on('click', function (event) {
     	let communityTitle = $("#communityTitle").val();
     	let contentText = $("#contentText").text();
+    	let communityTitleLength = $("#communityTitle").val().length;
+    	let contentTextLength = $("#contentText").text().length;
+    	
+    	let titleLength = 30;
+    	let contentLength = 1000;
+    	
     	console.log(communityTitle);
     	console.log(contentText);
     	
     	if(communityTitle == null || communityTitle == "" || contentText == null || contentText == ""){
     		alert("제목 혹은 내용을 입력해 주세요.");
+    		return false;
+    		
+    	}else if(communityTitleLength > titleLength){
+    		alert("제목은 30자 이내로 작성하여 주세요.")
+    		return false;
+    	}else if(contentTextLength > contentLength){
+    		alert("내용은 1000자 이내로 작성하여 주세요.")
     		return false;
     	}else{
     		updateHiddenInput();
