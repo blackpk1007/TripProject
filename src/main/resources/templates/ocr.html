@@ -6,7 +6,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script th:inline="javascript">
     var loginchk = [[${session.login}]];
-    console.log(loginchk.userID);
+    console.log(loginchk);
         $(function(){
             let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
             let num = '[(${num})]';
@@ -17,14 +17,13 @@
             
             for(var i=0;i<userCheck.length;i++){
             	dateCheckcnt++;
-                if (loginchk.userID == userCheck[i].recommandUserID) {
+                if (loginchk == userCheck[i].recommandUserID) {
                     userCheckcnt++;
                     dateCheckdata=userCheck[i].recommandDate;
                     console.log(dateCheckdata);
                 }
             }
             
-
             let placeNumber = num.match(/placeNumber=([^,]+)/)[1];
             let placeName = num.match(/placeName=([^,]+)/)[1];
             let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
@@ -79,7 +78,7 @@
                             url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
                             type: 'POST',
                             data: {
-                                userID: loginchk.userID,
+                                userID: loginchk,
                                 placeNumber: placeNumber,
                                 date: date
                             },
@@ -103,7 +102,7 @@
                                 url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
                                 type: 'POST',
                                 data: {
-                                    userID: loginchk.userID,
+                                    userID: loginchk,
                                     placeNumber: placeNumber,
                                     date: date
                                 },

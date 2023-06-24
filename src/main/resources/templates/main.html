@@ -9,7 +9,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 .swiper-container {
 	width: 80%;
@@ -248,16 +248,20 @@ header {
 				<div id="logo">
 					<img src="/resources/image/logo2.png" alt="Logo">
 				</div>
-
-				<div id="top_menu">
+				<!-- 로그인전 --> 
+				<div th:if="${session.login == null}" id="top_menu">
 					<a href="/login">로그인</a> <a href="/login/registerform">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" id="top_menu">
+					<a href="/login/logout">로그아웃</a><a href="/login/usermain">마이페이지</a>
 				</div>
 			</div>
 			<div id="nav">
 				<label for=""><a href="/plan">일정만들기</a></label>
 				<label for=""><a href="/ocr">코스보기</a></label>
 				<label for=""><a href="/community/communitymain">커뮤니티</a></label>
-				<label for=""><a href="/login/usermain">마이페이지 임시 - 동행구하기</a></label>
+				<label for=""><a href="#">동행구하기</a></label>
 			</div>
 
 		</header>
@@ -349,52 +353,34 @@ header {
 			<div th:text="${parentsList.placeName}"></div>
 		</div>
 	</div>
+	<script th:inline="javascript">
+	var loginchk = [[${session.login}]];
+	console.log(loginchk); 
 	
-	
-<!--  
-	<div id="popupContainer" class="popup-container">
-		<div class="popup">
-			<h1>팝업 내용</h1>
-			<div id="popupTable">
+	</script>
 
-				<table id="flightTable">
-					<tr>
-						<th>항공사</th>
-						<th>출발지</th>
-						<th>목적지</th>
-						<th>날짜</th>
-						<th>항공편</th>
-						<th>출발시간</th>
-						<th>변경시간</th>
-						<th>현황</th>
-					</tr>
-					<tr th:each="arrived : ${arriveds}">
-						<td th:text="${arrived.airlineKorean}"></td>
-						<td th:text="${arrived.boardingKor}"></td>
-						<td th:text="${arrived.arrivedKor}"></td>
-						<td th:text="${arrived.flightDate}"></td>
-						<td th:text="${arrived.airFln}"></td>
-						<td th:text="${arrived.std}"></td>
-						<td th:text="${arrived.etd}"></td>
-						<td th:text="${arrived.rmkKor}"></td>
-					</tr>
-				</table>
-			</div>
-			<span class="popup-close" onclick="closePopup()">X</span>
-		</div>
-	</div>
--->
-	<script>
-        window.addEventListener('load', function() {
-            document.getElementById('popupContainer').style.display = 'flex';
-        });
-        
-        function closePopup() {
-            document.getElementById('popupContainer').style.display = 'none';
-        }
-        
-        var loginchk = [[${session.login}]];
-        console.log(loginchk);
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+		  window.addEventListener('load', function() {
+		    $.ajax({
+		      url: '/plan/airplane',
+		      type: 'GET',
+		      success: function(response) {
+		        var popupWindow = window.open('', 'Course Preview', 'width=800,height=600');
+		        if (popupWindow && popupWindow.document) {
+		          popupWindow.document.open();
+		          popupWindow.document.write(response);
+		          popupWindow.document.close();
+		        } else {
+		          // 팝업 차단 메시지 또는 대체 처리 로직
+		          console.log('팝업 차단되었거나 팝업 창을 열 수 없습니다.');
+		        }
+		      }
+		    });
+		    /* location.href="/plan/airplane"; */
+		  });
+		});
+
     </script>
 	<script>
 		new Swiper('.swiper-container', {

@@ -19,11 +19,11 @@ public interface PlaceMapper {
 	int crawinsert(PlaceDTO dto);
 	
 	// 모든 장소 좌표 마커
-	@Select(" select * from place where placeCategory = #{placeCategory}" )
+	@Select(" select * from place where placeCategory = #{placeCategory} order by placeGood desc" )
 	List<PlaceDTO> placeCategoryMarker(String category);
 	
 	// 맛집 정보
-	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc Limit 50 ")
+	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc Limit 50")
 	List<PlaceDTO> placeRestaurantList();
 
 	@Select(" select * from place ")

@@ -24,7 +24,7 @@ public class CommunityServiceImpl implements CommunityService{
 	public PagingResponse<CommunityDTO> selectCommunity(final SearchDTO params) {
 		//조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
 		int count = mapper.Count(params);
-		System.out.println("count: " + count);
+		
 		if(count < 1) {
 			return new PagingResponse<>(Collections.emptyList(),null);
 		}
@@ -82,10 +82,34 @@ public class CommunityServiceImpl implements CommunityService{
 	}
 
 	@Override
-	public PagingResponse<CommunityDTO> selectCommunityCategory(String communityCategory, SearchDTO params) {
+	public PagingResponse<CommunityDTO> selectCommunityTip(String communityCategory, SearchDTO params) {
 		//조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
-				int count = mapper.Count(params);
-				System.out.println("count: " + count);
+				
+				int count = mapper.CountTip(params);
+			
+				
+				if(count < 1) {
+					return new PagingResponse<>(Collections.emptyList(),null);
+				}
+				
+				//Pagination 객체를 생성해서 페이지 정보 계산 후 SearchDTO 타입의 객체인 params에 계산된 페이지 정보 저장
+				Pagination pagination = new Pagination(count, params);
+				params.setPagination(pagination);
+				
+				System.out.println(pagination.getTotalRecordCount());
+				
+				//계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
+				//params.setCommunityCategory(communityCategory);
+				List<CommunityDTO> list = mapper.selectCommunityCategoryList(communityCategory,params);
+				return new PagingResponse<>(list, pagination);
+	}
+	@Override
+	public PagingResponse<CommunityDTO> selectCommunityReview(String communityCategory, SearchDTO params) {
+		//조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
+				
+				int count = mapper.CountReview(params);
+			
+				
 				if(count < 1) {
 					return new PagingResponse<>(Collections.emptyList(),null);
 				}
@@ -111,6 +135,13 @@ public class CommunityServiceImpl implements CommunityService{
 	@Override
 	public int updateImg(UploadFile image) {
 		return mapper.updateImg(image);
+	}
+
+	@Override
+	public List<CommunityDTO> usermainCommunity(String userID) {
+		
+		
+		return mapper.usermainCommunity(userID);
 	}
 
 

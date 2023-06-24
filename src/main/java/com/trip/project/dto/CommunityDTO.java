@@ -19,6 +19,7 @@ public class CommunityDTO {
 	private String communityContent;
 	private Date communityDate;
 	private String communityCategory;
+	private String communityWriter;
 	
 	private MultipartFile attachFile;          // 첨부 파일
 	private List<MultipartFile> imageFiles;    // 첨부 이미지
