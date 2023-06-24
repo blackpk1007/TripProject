@@ -53,10 +53,11 @@ public class LoginController {
 			System.out.println(res.getUserPW());
 			model.addAttribute("message", "비밀번호일치하지않습니다.");
 			return "redirect:/login";
-		}
+		}else {
 		session.setAttribute("login", res.getUserID());
 		session.setMaxInactiveInterval(1800);
 		return "redirect:/";
+		}
   }
 	// 로그아웃 - 메인
 	@GetMapping("/logout")
