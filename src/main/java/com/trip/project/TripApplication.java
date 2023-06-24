@@ -39,6 +39,8 @@ public class TripApplication {
 		model.addAttribute("arriveds", aservice.jejuArrived());
 		model.addAttribute("boardings", aservice.jejuBoarding());
 		model.addAttribute("list", mainpageService.selectList());
+		model.addAttribute("animalList", mainpageService.animalList());
+		model.addAttribute("parentsList", mainpageService.parentsList());
 		return "main";
 	}
 	
