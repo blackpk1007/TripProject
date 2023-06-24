@@ -590,6 +590,8 @@ td {
 	font-size: 0.5em;
 	cursor: pointer;
 }
+.course-color-day h5:not(.active) {
+  display: none;
 #chart{
 	height: 10%;
 	width: 50%;

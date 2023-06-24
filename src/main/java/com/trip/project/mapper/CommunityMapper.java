@@ -28,14 +28,20 @@ public interface CommunityMapper {
 	@Select(" SELECT COUNT(*) FROM community ")
 	int Count(SearchDTO params);
 	
-	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}) ")
+	@Select(" SELECT COUNT(*) FROM community WHERE communityCategory='tip' ")
+	int CountTip(SearchDTO params);
+	
+	@Select(" SELECT COUNT(*) FROM community WHERE communityCategory='review' ")
+	int CountReview(SearchDTO params);
+	
+	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}, 'me') ")
 	int insert(CommunityDTO dto);
 	
 	@Select(" SELECT * FROM community WHERE communityNumber=#{communityNumber} ")
 	CommunityDTO selectOne(int communityNumber);
 	
 
-	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communityContent=#{communityContent}, communityCategory=#{communityCategory} WHERE communityNumber=#{communityNumber} ")
+	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communityContent=#{communityContent}, communityCategory=#{communityCategory}, communityWriter='me' WHERE communityNumber=#{communityNumber} ")
 	int update(CommunityDTO dto);
 	
 	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} ")
@@ -62,6 +68,9 @@ public interface CommunityMapper {
 	@Select( "SELECT * FROM community  WHERE communityCategory=#{communityCategory} ORDER BY communityNumber DESC LIMIT #{params.pagination.limitStart}, #{params.recordSize} " )
 	List<CommunityDTO> selectCommunityCategoryList(String communityCategory, SearchDTO params);
 	
+	// 마이페이지에 내 게시물 정보 들고오
+	@Select( " SELECT * FROM community WHERE communityWriter=#{userID} " )
+	List<CommunityDTO> usermainCommunity(String userID);
 	
 	
 }

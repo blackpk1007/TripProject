@@ -43,17 +43,4 @@ public class TripApplication {
 		model.addAttribute("parentsList", mainpageService.parentsList());
 		return "main";
 	}
-	
-	// 크롤링 테스트 페이지
-	@RequestMapping("/crawling")
-	public void crawling() {
-		
-		cservice.crawinsert();
-	}
-	
-	@RequestMapping("/test")
-	public String test() {
-		
-		return "test";
-	}
 }
