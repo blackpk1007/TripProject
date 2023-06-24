@@ -62,7 +62,7 @@ function updateList(data) {
 
 	  data.forEach(function (restaurant) {
 	    var listItem = document.createElement('div');
-	    listItem.id = 'list-item';
+	    listItem.id = 'left_block';
 
 	    var listImg = document.createElement('div');
 	    listImg.id = 'list-img';
@@ -117,7 +117,6 @@ function updateList(data) {
 	    reloadStylesheet(); */
 	  });
 }
-	}
 var selectedMarkerChart1 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas)
 var selectedMarkerChart2 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas2)
 
@@ -508,7 +507,7 @@ function createMarkers(data) {
   let days;
   let currentDay = 1;
 
-  // 적용 버튼 클릭 시 실행되는 함수
+//적용 버튼 클릭 시 실행되는 함수
   function applyDate() {
     if (selectedStartDate && selectedEndDate) {
       days = getDayDiff(selectedStartDate, selectedEndDate);
@@ -536,7 +535,15 @@ function createMarkers(data) {
         const inputElement = document.createElement("input");
         inputElement.type = "hidden";
         inputElement.name = "planDate";
-        inputElement.value = ""; // 여기에 날짜 값 추가
+
+        const currentDate = new Date(selectedStartDate);
+        currentDate.setDate(currentDate.getDate() + i - 1);
+        const year = currentDate.getFullYear();
+        const month = leftPad(currentDate.getMonth() + 1);
+        const day = leftPad(currentDate.getDate());
+        const selectedDate = `${year}-${month}-${day}`;
+        inputElement.value = selectedDate;
+
         courseList.appendChild(inputElement);
 
         coursePlan.appendChild(courseList);
@@ -687,7 +694,47 @@ function createMarkers(data) {
 		}
 		return value;
 	}
-	
+	function coursePreview() {
+		  function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const values = [];
+
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const Listitem = courseList.querySelectorAll('.left_block');		      
+		      const inputLonElement = Listitem.querySelector('input[name="planLon"]');
+		      const inputLatElement = Listitem.querySelector('input[name="planLat"]');
+
+		      const inputDateValue = inputDateElement.value;
+		      const inputLonValue = inputLonElement.value;
+		      const inputLatValue = inputLatElement.value;
+
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lon: inputLonValue,
+		        lat: inputLatValue
+		      });
+		    });
+
+		    return values;
+		  }
+
+		  const inputValues = getInputValues();
+		  console.log(inputValues);
+
+			    $.ajax({
+			      url: '/plan/course',
+			      type: 'GET',
+			      success: function(response) {
+			        var popupWindow = window.open('', 'Course Preview', 'width=800,height=600');
+			        popupWindow.document.open();
+			        popupWindow.document.write(response);
+			        popupWindow.document.close();
+			      }
+			    });
+		 }
+
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
@@ -728,8 +775,8 @@ function createMarkers(data) {
 					<div id="list-plus">
 						<img src="./resources/image/plus.png" alt="" id="plus">
 					</div>
-					<input type="hidden" name="placeLon" value="${restaurant.placeLon}">
-					<input type="hidden" name="placeLat" value="${restaurant.placeLat}">
+					<input type="hidden" name="planLon" th:value="${restaurant.placeLon}">
+					<input type="hidden" name="planLat" th:value="${restaurant.placeLat}">
 				</div>
 			</div>
 			
@@ -803,6 +850,7 @@ function createMarkers(data) {
 						
 					</div>
 					<div>
+						<button type="button" th:onclick="coursePreview()">미리보기</button>
 						<button type="submit">등록</button>
 					</div>
 					<div class="course-color-check">
