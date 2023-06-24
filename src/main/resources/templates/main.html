@@ -339,37 +339,18 @@ header {
 	</div>
 	<div align="center" id="tag1">#반려동물동반</div>
 	<div id="tag1_img">
-		<div class="insta">
-			<!-- <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a> -->
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+		<div th:each="animalList:${animalList}" class="insta">
+			<a href="#"><img th:src="@{/resources/image/place/__${animalList.placeName}__.jpg}" class="insta_2" ></a>
+			<div th:text="${animalList.placeName}"></div>
 		</div>
 	</div>
 
 	<div align="center" id="tag1">#부모님동반</div>
 	<div id="tag1_img">
-		<div class="insta">
+		<div th:each="parentsList:${parentsList}" class="insta">
 			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
+			<a href="#"><img th:src="@{/resources/image/place/__${parentsList.placeName}__.jpg}" class="insta_2" ></a>
+			<div th:text="${parentsList.placeName}"></div>
 		</div>
 	</div>
 	<script th:inline="javascript">

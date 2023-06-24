@@ -18,4 +18,14 @@ public class MainpageServiceImpl implements MainpageService{
 	public List<MainpageDTO> selectList() {
 		return mainpageMapper.selectList();
 	}
+	
+	@Override
+	public List<MainpageDTO> animalList() {
+		return mainpageMapper.animalList();
+	}
+	
+	@Override
+	public List<MainpageDTO> parentsList() {
+		return mainpageMapper.parentsList();
+	}
 }

@@ -35,10 +35,12 @@ public class TripApplication {
 	// 메인 페이지
 	@RequestMapping("/")
 	public String main(Model model) throws IOException {
-	
-		model.addAttribute("list", mainpageService.selectList());
 		
+		model.addAttribute("arriveds", aservice.jejuArrived());
+		model.addAttribute("boardings", aservice.jejuBoarding());
+		model.addAttribute("list", mainpageService.selectList());
+		model.addAttribute("animalList", mainpageService.animalList());
+		model.addAttribute("parentsList", mainpageService.parentsList());
 		return "main";
 	}
-	
 }
