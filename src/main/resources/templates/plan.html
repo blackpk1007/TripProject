@@ -11,6 +11,58 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
+
+//영수증인증 팝업창
+function openPopup() {
+    var popupContainer = document.createElement("div");
+    popupContainer.setAttribute("id", "ocr_popupContainer");
+    popupContainer.setAttribute("class", "ocr_popup-container");
+    
+    var popup = document.createElement("div");
+    popup.setAttribute("class", "ocr_popup");
+    
+    // 팝업 내용 추가
+    popup.innerHTML = `
+        <h1>영수증 인증</h1>
+        <form action="/review/reveiwwrite" method="post" enctype="multipart/form-data">
+            <div class="filebox">
+                <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
+                <input type="submit" value="인증하기" id="submitBT">
+                <br>
+                <img id="preview" />
+                <input type="hidden" name="placeNumber" value="" id="placeNumber">
+            </div>
+        </form>
+        <span class="ocr_popup-close" onclick="closePopup()">X</span>
+    `;
+    
+    popupContainer.appendChild(popup);
+    document.body.appendChild(popupContainer);
+}
+
+function closePopup() {
+    var popupContainer = document.getElementById("ocr_popupContainer");
+    if (popupContainer) {
+        popupContainer.parentNode.removeChild(popupContainer);
+    }
+}
+
+// 파일 미리보기 함수
+function readURL(input) {
+    var session = sessionStorage.getItem('placeNumber');
+    document.getElementById("placeNumber").value = session;
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('preview').src = "";
+    }
+}
+
+
 var loginchk = [[${session.login}]];
 console.log(loginchk);
 var markers = []; // 마커를 담을 배열
@@ -502,7 +554,7 @@ function createMarkers(data) {
 				<button>x</button>
 			</div>
 			<div id="placemenu_heart">
-				<a href="/review">추천하기</a>
+				<a href="javascript:void(0);" onclick="openPopup();">추천하기</a>
 			</div>
 			<div id="datatest1"></div>
 			<div id="datatest2"></div>
