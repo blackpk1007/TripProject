@@ -78,7 +78,16 @@ public class PlanController {
 	@PostMapping("/createplan")
 	public String createPlan(PlanDTO plandto) {
 		
+		System.out.println("controller : "+plandto);
 		return "main"; 
+	}
+	
+	@GetMapping("/course")
+	public String course(@RequestParam("date") String date, @RequestParam("lon") String Lon, @RequestParam("lat") String Lat) {
+		System.out.println("controller : "+date);
+		System.out.println("controller : "+Lon);
+		System.out.println("controller : "+Lat);
+		return "course";
 	}
 //	@ResponseBody
 //	@GetMapping("/fetchMarkers")
