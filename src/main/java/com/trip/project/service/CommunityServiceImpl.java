@@ -42,6 +42,7 @@ public class CommunityServiceImpl implements CommunityService{
 
 	@Override
 	public int insert(CommunityDTO dto) {
+		
 		return mapper.insert(dto);
 	}
 

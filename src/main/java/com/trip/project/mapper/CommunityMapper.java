@@ -34,7 +34,7 @@ public interface CommunityMapper {
 	@Select(" SELECT COUNT(*) FROM community WHERE communityCategory='review' ")
 	int CountReview(SearchDTO params);
 	
-	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}, 'me') ")
+	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}, #{communityWriter}) ")
 	int insert(CommunityDTO dto);
 	
 	@Select(" SELECT * FROM community WHERE communityNumber=#{communityNumber} ")

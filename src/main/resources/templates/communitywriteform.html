@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -260,6 +260,7 @@ $(document).ready(function() {
         게시글 작성
     </div>
     <form action="/community/communitywrite" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="communityWriter" name="communityWriter" th:value="${session.login}">
         <div id="kategorie" class="div">
             <div id="write_kg">카테고리</div>
             <div id="tag">
