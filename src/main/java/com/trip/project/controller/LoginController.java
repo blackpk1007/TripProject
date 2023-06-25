@@ -43,7 +43,7 @@ public class LoginController {
 		if (dto.getUserID() == null) {
 			model.addAttribute("message", "유저없음");
 			System.out.println("idcheck");
-			return "redirect:/login";
+			return (String)model.getAttribute("message");
 		}
 
 		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
@@ -52,11 +52,11 @@ public class LoginController {
 			System.out.println(dto.getUserPW());
 			System.out.println(res.getUserPW());
 			model.addAttribute("message", "비밀번호일치하지않습니다.");
-			return "redirect:/login";
+			return (String)model.getAttribute("message");
 		}else {
-		session.setAttribute("login", res.getUserID());
+		session.setAttribute("login", res.getUserName());
 		session.setMaxInactiveInterval(1800);
-		return "redirect:/";
+		return res.getUserName();
 		}
   }
 	// 로그아웃 - 메인
