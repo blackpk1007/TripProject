@@ -102,6 +102,7 @@
 			var useridvalue = document.getElementById("userID").value;
 			var userpwvalue = document.getElementById("userPW").value;
 			
+			
 			if (userID.value == "") {
 		         alert("아이디를 입력해 주세요.");
 		         userID.focus();
@@ -120,12 +121,12 @@
 		                 userPW : userpwvalue}
 		       })
 		       		.done(function (result) {
-		       		   alert(result);
-		               location.href="/";
+	                      alert(result);
+	                      location.href="/";
 		            })
 		            .fail(function(jqXHR) {
 		                console.log(jqXHR);
-		                alert([[${message}]]);
+		                alert(jqXHR);
 		            })
 			
 		}

@@ -35,15 +35,19 @@ public class LoginController {
 
 		return "login";
 	}
-
+	
+	@ResponseBody
 	@PostMapping("/logincheck")
 	public String login(HttpSession session, Model model, LoginDTO dto) {
 		LoginDTO res = lservice.login(dto);
 
-		if (res.getUserID() == null) {
-			
-			return "user없음";
-		}
+		try {
+	         if (!dto.getUserID().equals(res.getUserID())) {
+	         }
+	      }catch(NullPointerException e) {
+	         return "ID 없음";
+	      }
+
 		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
 		if (!passwordEncoder.matches(dto.getUserPW(), res.getUserPW())) {
 			System.out.println("password.");
@@ -55,7 +59,7 @@ public class LoginController {
 			session.setAttribute("login", res.getUserName());
 			session.setMaxInactiveInterval(1800);
 		
-			return res.getUserID()+" 로그인 되었습니다.";
+			return res.getUserName()+"님 로그인 되었습니다.";
 		}
 		
   }
