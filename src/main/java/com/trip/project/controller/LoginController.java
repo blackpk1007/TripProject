@@ -40,24 +40,24 @@ public class LoginController {
 	public String login(HttpSession session, Model model, LoginDTO dto) {
 		LoginDTO res = lservice.login(dto);
 
-		if (dto.getUserID() == null) {
-			model.addAttribute("message", "유저없음");
-			System.out.println("idcheck");
-			return (String)model.getAttribute("message");
+		if (res.getUserID() == null) {
+			
+			return "user없음";
 		}
-
 		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
 		if (!passwordEncoder.matches(dto.getUserPW(), res.getUserPW())) {
 			System.out.println("password.");
 			System.out.println(dto.getUserPW());
 			System.out.println(res.getUserPW());
-			model.addAttribute("message", "비밀번호일치하지않습니다.");
-			return (String)model.getAttribute("message");
+			
+			return "비밀번호일치하지않습니다.";
 		}else {
-		session.setAttribute("login", res.getUserName());
-		session.setMaxInactiveInterval(1800);
-		return res.getUserName();
+			session.setAttribute("login", res.getUserName());
+			session.setMaxInactiveInterval(1800);
+		
+			return res.getUserID()+" 로그인 되었습니다.";
 		}
+		
   }
 	// 로그아웃 - 메인
 	@GetMapping("/logout")
@@ -84,10 +84,11 @@ public class LoginController {
 	      System.out.println("controller :"+dto.getUserEmail());
 	      
 	      LoginDTO res = lservice.idfind(dto);
-	      
-	      System.out.println(res);
-	      
-	        return res.getUserID();
+	      if(res == null) {
+	    	  return "아이디와 이메일이 일치하지 않습니다.";
+	      }else {
+	    	  return res.getUserID()+"";
+	      }
 	      
 	   }
 
