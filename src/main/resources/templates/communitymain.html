@@ -160,14 +160,24 @@ p{margin:0;}
 window.onload = () => {
     // 페이지가 로드되었을 때, 딱 한 번만 함수를 실행
     let obj = [[ ${response} ]];
-    console.log("onload");
-    console.log(obj.pagination);
+    
     findAllPost(obj.list, obj.pagination);
     
-    $("#select").change(function(){		
-    	drawListCategory();	
+    $("#select").change(function(){
+    	
+    	drawListCategory();
+    	movePage(1)
     });
-	
+	$("#button").click(function(event){
+		let session = [[ ${session.login} ]];
+		
+		if(session == null || session == ""){
+			alert("로그인 후 이용하여 주세요");
+			location.href='/login';
+		}else{
+			location.href='/community/communitywriteform';
+		}
+	});
 }
 //게시글 리스트 조회
 function findAllPost(list, pagination) {
@@ -213,7 +223,6 @@ function drawList(list, num) {
     	const communityDate = new Date(row.communityDate);
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-\s*$/, '').replace(/\s/g, '');
-        console.log(formattedDate)
         html += `
             <dl>
                 <dd class="num">
@@ -424,7 +433,7 @@ function drawListCategory(){
 		<div class="paging"></div>
 		<div id="write">
 			<input type="button" value="글쓰기" id="button"
-				onclick="location.href='/community/communitywriteform'">
+				onclick="#">
 		</div>
 	</div>
 </body>
