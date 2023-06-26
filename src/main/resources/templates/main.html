@@ -123,58 +123,9 @@ header {
 	margin-top: 8vh;
 	margin-bottom: 2vh;
 }
-
-#tag1_img {
-	width: 90%;
-	height: 50vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-left: 10vh;
-}
-/* #tag1_img > div {
-            display:flex;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-        } */
-/* #tag1_img img{
-            width: 70%;
-            height: 75%;
-        } */
 .a {
 	width: 100%;
 	height: 20vh;
-}
-
-.insta {
-	position: relative;
-	margin-left: 3vh;
-	width: 100%;
-	height: 100%;
-	background-image: url("./img/insta.png");
-	background-repeat: no-repeat;
-	background-size: contain;
-	/* width: 350px;
-            height: 380px; */
-	/* object-fit: cover; */
-	box-shadow: 5px 5px 5px #595959;
-}
-
-/* .insta_1{
-            position: relative;
-            z-index: 1;
-            width: 70%;
-            height: 75%;
-            box-shadow: 5px 5px 5px #595959;
-        } */
-.insta_2 {
-	position: absolute;
-	top: 26%;
-	left: 17%;
-	z-index: 2;
-	width: 66%;
-	height: 40%;
 }
 
 .popup-container {
@@ -237,6 +188,75 @@ header {
     color: white;
     transform: translate(-50%, -50%);
   }
+    .instagram-feed-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 95%; /* 최대 너비 설정 */
+        margin: 0 auto; /* 가운데 정렬을 위해 필요한 스타일 */
+    }
+
+    .instagram-feed {
+        width: 22%;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 5px 5px 5px #595959;
+        margin-right: 1%;
+    }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%; /* 1:1 비율로 설정 */
+            overflow: hidden;
+            margin-bottom: 10px; /* 이미지와 아이콘 간격 조정 */
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .icons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* 아이콘들을 수직 가운데로 정렬 */
+            margin-bottom: 10px; /* 아이콘과 해시태그 간격 조정 */
+            width: 100%;
+        }
+
+        .icons img {
+            width: 30px; /* 아이콘 크기 조정 */
+            height: 30px;
+            margin-right: 5px; /* 아이콘들 간의 간격 설정 */
+        }
+
+        .hashtags {
+        	width: 100%;
+            font-size: 14px;
+            text-align: left; /* 해시태그를 왼쪽 정렬로 변경 */
+            font-weight: bold;
+        }
+        .hashtags a {
+		    color: black; /* a 태그의 글자색을 검정으로 설정 */
+		}
+        .left-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .right-icons {
+            display: flex;
+            align-items: center;
+        }
 </style>
 </head>
 <body>
@@ -338,21 +358,50 @@ header {
 		<br> <br>
 	</div>
 	<div align="center" id="tag1">#반려동물동반</div>
-	<div id="tag1_img">
-		<div th:each="animalList:${animalList}" class="insta">
-			<a href="#"><img th:src="@{/resources/image/place/__${animalList.placeName}__.jpg}" class="insta_2" ></a>
-			<div th:text="${animalList.placeName}"></div>
-		</div>
+	<div class="instagram-feed-container">
+        <div th:each="animalList: ${animalList}" class="instagram-feed">
+            <div class="image-container">
+                <a href="#"><img th:src="@{/resources/image/place/__${animalList.placeName}__.jpg}" alt="Instagram Feed Image"></a>
+            </div>
+            <div class="icons">
+                <div class="left-icons">
+                    <img src="/resources/image/insta_heart.png" alt="Heart Icon" class="fas fa-heart">
+                    <img src="/resources/image/insta_chat.png" alt="Comment Icon" class="fas fa-comment">
+                    <img src="/resources/image/insta_share.png" alt="Share Icon" class="fas fa-share">
+                </div>
+                <div class="right-icons">
+                    <img src="/resources/image/insta_store.png" alt="Bookmark Icon" class="fas fa-bookmark">
+                </div>
+            </div>
+            <div class="hashtags">
+                <a href="#"><div>#<span th:text="${animalList.placeName}"></span></div></a>
+            </div>
+        </div>
 	</div>
 
+
 	<div align="center" id="tag1">#부모님동반</div>
-	<div id="tag1_img">
-		<div th:each="parentsList:${parentsList}" class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img th:src="@{/resources/image/place/__${parentsList.placeName}__.jpg}" class="insta_2" ></a>
-			<div th:text="${parentsList.placeName}"></div>
-		</div>
+		<div class="instagram-feed-container">
+        <div th:each="parentsList:${parentsList}" class="instagram-feed">
+            <div class="image-container">
+                <a href="#"><img th:src="@{/resources/image/place/__${parentsList.placeName}__.jpg}" alt="Instagram Feed Image"></a>
+            </div>
+            <div class="icons">
+                <div class="left-icons">
+                    <img src="/resources/image/insta_heart.png" alt="Heart Icon" class="fas fa-heart">
+                    <img src="/resources/image/insta_chat.png" alt="Comment Icon" class="fas fa-comment">
+                    <img src="/resources/image/insta_share.png" alt="Share Icon" class="fas fa-share">
+                </div>
+                <div class="right-icons">
+                    <img src="/resources/image/insta_store.png" alt="Bookmark Icon" class="fas fa-bookmark">
+                </div>
+            </div>
+            <div class="hashtags">
+                <a href="#"><div>#<span th:text="${parentsList.placeName}"></span></div></a>
+            </div>
+        </div>
 	</div>
+
 	<script th:inline="javascript">
 	var loginchk = [[${session.login}]];
 	console.log(loginchk); 
