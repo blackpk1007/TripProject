@@ -63,6 +63,18 @@ function updateList(data) {
 	  data.forEach(function (restaurant) {
 	    var listItem = document.createElement('div');
 	    listItem.id = 'left_block';
+		
+	    var inputLon = document.createElement('input');
+	    inputLon.type = 'hidden';
+	    inputLon.name = 'planLon';
+	    inputLon.value = restaurant.placeLon;
+	    listItem.appendChild(inputLon);
+
+	    var inputLat = document.createElement('input');
+	    inputLat.type = 'hidden';
+	    inputLat.name = 'planLat';
+	    inputLat.value = restaurant.placeLat;
+	    listItem.appendChild(inputLat);
 
 	    var listImg = document.createElement('div');
 	    listImg.id = 'list-img';
@@ -113,6 +125,7 @@ function updateList(data) {
 	    listItem.appendChild(listPlus);
 
 	    listContainer.appendChild(listItem);
+	    
 	 /* // CSS 스타일시트 재로드
 	    reloadStylesheet(); */
 	  });
@@ -419,7 +432,7 @@ function createMarkers(data) {
 
 	      // 복사한 main-left div에 list-minus div 추가
 	      clonedMainLeft.appendChild(listMinusDiv);
-
+	      
 	      // 현재 Day에 해당하는 course-list에만 복사된 main-left div 추가
 	      var currentCourseList = document.getElementById(`course-list-${currentDay}`);
 	      var clonedMainLeftCopy = clonedMainLeft.cloneNode(true);
@@ -428,14 +441,17 @@ function createMarkers(data) {
 	      // 현재 Day에 해당하는 course-list 다시 표시
 	      showCurrentDay();
 
-	      // list-minus 이미지 클릭 시 해당 main-left div 삭제
-	      listMinusDiv.addEventListener('click', function() {
-	        var parentMainLeft = this.parentNode;
-	        parentMainLeft.remove();
-	        showCurrentDay();
-	      });
 	    });
 	  });
+	  // minus 버튼 클릭 이벤트 처리
+	  var coursePlan = document.querySelector('.course-plan');
+	  coursePlan.addEventListener('click', function(event) {
+	    if (event.target.parentNode && event.target.parentNode.id === 'list-minus') {
+	      var parentMainLeft = event.target.parentNode.parentNode;
+	      parentMainLeft.remove();
+	      showCurrentDay();
+	    }
+	    });
 	}
 
   let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
@@ -701,38 +717,49 @@ function createMarkers(data) {
 
 		    courseLists.forEach((courseList, index) => {
 		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
-		      const Listitem = courseList.querySelectorAll('.left_block');		      
-		      const inputLonElement = Listitem.querySelector('input[name="planLon"]');
-		      const inputLatElement = Listitem.querySelector('input[name="planLat"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
 
 		      const inputDateValue = inputDateElement.value;
-		      const inputLonValue = inputLonElement.value;
-		      const inputLatValue = inputLatElement.value;
+		      const lonLatPairs = [];
+
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
+
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
 
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
-		        lon: inputLonValue,
-		        lat: inputLatValue
+		        lonLatPairs: lonLatPairs
 		      });
 		    });
 
 		    return values;
 		  }
-
+		  
 		  const inputValues = getInputValues();
 		  console.log(inputValues);
 
-			    $.ajax({
-			      url: '/plan/course',
-			      type: 'GET',
-			      success: function(response) {
-			        var popupWindow = window.open('', 'Course Preview', 'width=800,height=600');
-			        popupWindow.document.open();
-			        popupWindow.document.write(response);
-			        popupWindow.document.close();
-			      }
-			    });
+		  $.ajax({
+			    url: '/plan/course',
+			    type: 'POST',
+			    data: JSON.stringify(inputValues),
+			    contentType: 'application/json',
+			    success: function(response) {
+			      var popupWindow = window.open('', 'Course Preview', 'width=800,height=600');
+			      popupWindow.document.open();
+			      popupWindow.document.write(response);
+			      popupWindow.document.close();
+			    }
+			  });
 		 }
 
 	window.onload = function () {

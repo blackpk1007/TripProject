@@ -225,287 +225,33 @@
 	/* 마우스 올렸을때 손모양 처리 */
 }
 
-.circle1:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
+.circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #333;
+  border-radius: 50%;
+  position: relative;
+  top: 4px;
+  cursor: pointer;
 }
 
-.circle2 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
+.circle:before {
+  content: '';
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #333;
 }
 
-.circle2:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
+input[type="checkbox"]:checked + label .circle:before {
+  display: block;
 }
-
-.circle3 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle3:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle4 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle4:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle5 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle5:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle6 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle6:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle7 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle7:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle1 {
-	background-color: red;
-}
-
-.circle2 {
-	background-color: orange;
-}
-
-.circle3 {
-	background-color: yellow;
-}
-
-.circle4 {
-	background-color: green;
-}
-
-.circle5 {
-	background-color: blue;
-}
-
-.circle6 {
-	background-color: navy;
-}
-
-.circle7 {
-	background-color: purple;
-}
-
-/* input이 체크되면 특수문자 보이게 처리 */
-#chk1:checked+.circle1:after {
-	opacity: 1;
-}
-
-#chk2:checked+.circle2:after {
-	opacity: 1;
-}
-
-#chk3:checked+.circle3:after {
-	opacity: 1;
-}
-
-#chk4:checked+.circle4:after {
-	opacity: 1;
-}
-
-#chk5:checked+.circle5:after {
-	opacity: 1;
-}
-
-#chk6:checked+.circle6:after {
-	opacity: 1;
-}
-
-#chk7:checked+.circle7:after {
-	opacity: 1;
-}
-
-/* 체크박스는 display:none;을 주면 데이터 처리가 안됨 */
-#chk1 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk2 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk3 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk4 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk5 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk6 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk7 {
-	position: absolute;
-	left: -999em;
-}
-
 h5 {
 	margin: 0px;
 }
