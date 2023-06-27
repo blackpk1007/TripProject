@@ -105,28 +105,79 @@ select {
 	cursor: pointer;
 }
 #gt{
-	float:right
+	width:30%;
+	float:left;
 }
-.paging{
-	clear:both;
+#lt{
+	width:30%;
+	float:left;
 }
+#pagingNumber{
+	width:30%;
+	float:left;
+}
+p{margin:0;}
+#menu{
+	width: 100%;
+	height: 40px;
+}
+
+#menu ul li{
+	background-color: #ffffff;
+	list-style: none;
+	text-align: center;
+}
+
+#menu .linka{
+	float: left;
+}
+
+#menu .linkb{
+	float: right;
+}
+
+#menu .link{
+	width: 120px;
+	text-decoration: none;
+	display: block;
+	color: #000000;
+	font-weight: bold;
+}
+
+#logo {
+	width: 200px;
+	height: 100px;
+	}
+
+
+
+
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<th:block layout:fragment="script">
 	<script th:inline="javascript">
         /*<![CDATA[*/
 
 window.onload = () => {
     // 페이지가 로드되었을 때, 딱 한 번만 함수를 실행
     let obj = [[ ${response} ]];
-    console.log("onload");
-    console.log(obj.pagination);
+    
     findAllPost(obj.list, obj.pagination);
     
-    $("#select").change(function(){		
-    	drawListCategory();	
+    $("#select").change(function(){
+    	
+    	drawListCategory();
+    	movePage(1)
     });
-	
+	$("#button").click(function(event){
+		let session = [[ ${session.login} ]];
+		
+		if(session == null || session == ""){
+			alert("로그인 후 이용하여 주세요");
+			location.href='/login';
+		}else{
+			location.href='/community/communitywriteform';
+		}
+	});
 }
 //게시글 리스트 조회
 function findAllPost(list, pagination) {
@@ -171,8 +222,7 @@ function drawList(list, num) {
     list.forEach(row => {
     	const communityDate = new Date(row.communityDate);
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-$/, '');
-        
+        const formattedDate = communityDate.toLocaleDateString('ko-KR', options).replace(/\./g, '-').replace(/-\s*$/, '').replace(/\s/g, '');
         html += `
             <dl>
                 <dd class="num">
@@ -181,7 +231,7 @@ function drawList(list, num) {
                 <dd class="subject">
                     <a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityTitle}</a>
                 </dd>
-                <dd class="name">홍길동</dd>
+                <dd class="name">${row.communityWriter}</dd>
                 <dd class="created"> ${formattedDate} </dd>
             </dl>
         `;
@@ -208,28 +258,41 @@ function drawList(list, num) {
             // 3. 이전 페이지가 있는 경우, 즉 시작 페이지(startPage)가 1이 아닌 경우 첫 페이지 버튼과 이전 페이지 버튼을 HTML에 추가
             if (pagination.existPrevPage) {
                 html += `
-                    <a href="javascript:void(0);" onclick="movePage(1)" class="page_bt first">&lt;&lt;</a>
-                    <a href="javascript:void(0);" onclick="movePage(${pagination.startPage - 1})" class="page_bt prev">&lt;</a>
+                    <div id="lt"><a href="javascript:void(0);" onclick="movePage(1)" class="page_bt first">&lt;&lt;</a>
+                    <a href="javascript:void(0);" onclick="movePage(${pagination.startPage - 1})" class="page_bt prev">&lt;</a></div>
                 `;
+            }else{
+            	html += `
+                    <div id="lt"><a href="javascript:void(0);" class="page_bt first">&lt;&lt;</a>
+                    <a href="javascript:void(0);"  class="page_bt prev">&lt;</a></div>
+                `;
+            	
             }
 
             /*
              * 4. 시작 페이지(startPage)와 끝 페이지(endPage) 사이의 페이지 번호(i)를 넘버링 하는 로직
              *    페이지 번호(i)와 현재 페이지 번호(params.page)가 동일한 경우, 페이지 번호(i)를 활성화(on) 처리
              */
-            html += '<p>';
-            for (let i = pagination.startPage; i <= pagination.endPage; i++) {
-                html += (i !== params.page)
-                    ? `<a href="javascript:void(0);" onclick="movePage(${i});">${i}</a>`
-                    : `<span class="on">${i}</span>`
-            }
-            html += '</p>';
-
+	            html += '<div id="pagingNumber">';
+	            html += '<p>';
+	            for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+	                html += (i !== params.page)
+	                    ? `<a href="javascript:void(0);" onclick="movePage(${i});">${i}</a>`
+	                    : `<span class="on">${i}</span>`
+	            }
+	            html += '</p>';
+	            html += '</div>';
+           
             // 5. 현재 위치한 페이지 뒤에 데이터가 더 있는 경우, 다음 페이지 버튼과 끝 페이지 버튼을 HTML에 추가
             if (pagination.existNextPage) {
                 html += `
                     <div id="gt"><a href="javascript:void(0);" onclick="movePage(${pagination.endPage + 1});" class="page_bt next">&gt;</a>
                     <a href="javascript:void(0);" onclick="movePage(${pagination.totalPageCount});" class="page_bt last">&gt;&gt;</a></div>
+                `;
+            }else{
+            	html += `
+                    <div id="gt"><a href="javascript:void(0);"  class="page_bt next">&gt;</a>
+                    <a href="javascript:void(0);"  class="page_bt last">&gt;&gt;</a></div>
                 `;
             }
 
@@ -240,12 +303,17 @@ function drawList(list, num) {
 
         // 페이지 이동
         function movePage(page) {
+	
+        	//value 가져오기.
+        	let select = document.getElementById("select");
+        	let value = (select.options[select.selectedIndex].value);
 
             // 1. drawPage( )의 각 버튼에 선언된 onclick 이벤트를 통해 전달받는 page(페이지 번호)를 기준으로 객체 생성
             const queryParams = {
                 page: (page) ? page : 1,
                 recordSize: 10,
-                pageSize: 10
+                pageSize: 10,
+                communityCategory:value	
             }
 
             /*
@@ -254,7 +322,7 @@ function drawList(list, num) {
              *    URI + 쿼리 스트링에 해당하는 주소로 이동
              *    (해당 함수가 리턴해주는 값을 브라우저 콘솔(console)에 찍어보시면 쉽게 이해하실 수 있습니다.)
              */
-            location.href = location.pathname + '?' + new URLSearchParams(queryParams).toString();
+            location.href = '/community/pagingSelect?' + new URLSearchParams(queryParams).toString();
              
         }
         /*]]>*/
@@ -311,15 +379,26 @@ function drawListCategory(){
 </th:block>
 </head>
 <body>
+	<nav id="menu">
+		<div style="text-align: center;">
+			<img id="logo" src="/resources/image/logo.png">
+		</div>
+		<ul>
+			<li class="linka" ><a class="link" href="#">일정생성</a></li>
+			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linkb" ><a class="link" href="/login/userupdateform">마이페이지</a></li>
+		</ul>
+	</nav>
 	<div id="community">
 		<div id="top_title">커뮤니티</div>
 		<div id="tag">
 
-			<select id="select">
-				<option value="all" id="all" name="select">전체</option>
-				<option value="tip" id="tip" name="select">팁</option>
-				<option value="review" id="review" name="select">후기</option>
-			</select>
+				<select id="select">
+					<option value="all" id="all" name="select" th:selected="${communityCategory}  == 'all'">전체</option>
+					<option value="tip" id="tip" name="select" th:selected="${communityCategory}  == 'tip'">팁</option>
+					<option value="review" id="review" name="select" th:selected="${communityCategory}  == 'review'">후기</option>
+				</select>
 
 		</div>
 		<div id="community_list">
@@ -354,7 +433,7 @@ function drawListCategory(){
 		<div class="paging"></div>
 		<div id="write">
 			<input type="button" value="글쓰기" id="button"
-				onclick="location.href='/community/communitywriteform'">
+				onclick="#">
 		</div>
 	</div>
 </body>

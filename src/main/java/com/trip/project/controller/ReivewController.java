@@ -1,8 +1,8 @@
 package com.trip.project.controller;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.trip.project.dto.RecommandDTO;
 import com.trip.project.service.CommunityService;
 import com.trip.project.service.Ocr;
 import com.trip.project.service.OcrTest;
@@ -36,11 +37,6 @@ public class ReivewController {
 	
 	@Autowired
 	private OcrTest OcrTest;
-	@RequestMapping
-	public String reviewmain() {
-		
-		return "mypagetest";
-	}
 	
 	@PostMapping("/reveiwwrite")
     public String review(@RequestParam("attachFile") MultipartFile file, Model model, Integer placeNumber, HttpSession session) throws IOException {
@@ -52,6 +48,7 @@ public class ReivewController {
         model.addAttribute("res", obj);
         model.addAttribute("num", OcrTest.selectByPlaceNumber(placeNumber));
         model.addAttribute("userCheck", OcrTest.selectRecommandPlaceNumber(placeNumber));
+
 
         return "ocr";
     }

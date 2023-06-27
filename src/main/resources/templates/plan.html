@@ -11,11 +11,65 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
+
+//영수증인증 팝업창
+function openPopup() {
+    var popupContainer = document.createElement("div");
+    popupContainer.setAttribute("id", "ocr_popupContainer");
+    popupContainer.setAttribute("class", "ocr_popup-container");
+    
+    var popup = document.createElement("div");
+    popup.setAttribute("class", "ocr_popup");
+    
+    // 팝업 내용 추가
+    popup.innerHTML = `
+        <h1>영수증 인증</h1>
+        <form action="/review/reveiwwrite" method="post" enctype="multipart/form-data">
+            <div class="filebox">
+                <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
+                <input type="submit" value="인증하기" id="submitBT">
+                <br>
+                <img id="preview" />
+                <input type="hidden" name="placeNumber" value="" id="placeNumber">
+            </div>
+        </form>
+        <span class="ocr_popup-close" onclick="closePopup()">X</span>
+    `;
+    
+    popupContainer.appendChild(popup);
+    document.body.appendChild(popupContainer);
+}
+
+function closePopup() {
+    var popupContainer = document.getElementById("ocr_popupContainer");
+    if (popupContainer) {
+        popupContainer.parentNode.removeChild(popupContainer);
+    }
+}
+
+// 파일 미리보기 함수
+function readURL(input) {
+    var session = sessionStorage.getItem('placeNumber');
+    document.getElementById("placeNumber").value = session;
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('preview').src = "";
+    }
+}
+
+
 var loginchk = [[${session.login}]];
 console.log(loginchk);
 var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
+//체크박스 선택 상태를 저장할 객체
+const checkboxStates = {};
 // 초기 마커 생성
 var placeList = [[${placeRestaurantList}]];
 /* function reloadStylesheet() {
@@ -62,7 +116,19 @@ function updateList(data) {
 
 	  data.forEach(function (restaurant) {
 	    var listItem = document.createElement('div');
-	    listItem.id = 'list-item';
+	    listItem.id = 'left_block';
+		
+	    var inputLon = document.createElement('input');
+	    inputLon.type = 'hidden';
+	    inputLon.name = 'planLon';
+	    inputLon.value = restaurant.placeLon;
+	    listItem.appendChild(inputLon);
+
+	    var inputLat = document.createElement('input');
+	    inputLat.type = 'hidden';
+	    inputLat.name = 'planLat';
+	    inputLat.value = restaurant.placeLat;
+	    listItem.appendChild(inputLat);
 
 	    var listImg = document.createElement('div');
 	    listImg.id = 'list-img';
@@ -113,11 +179,11 @@ function updateList(data) {
 	    listItem.appendChild(listPlus);
 
 	    listContainer.appendChild(listItem);
+	    
 	 /* // CSS 스타일시트 재로드
 	    reloadStylesheet(); */
 	  });
 }
-	}
 var selectedMarkerChart1 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas)
 var selectedMarkerChart2 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas2)
 
@@ -420,7 +486,7 @@ function createMarkers(data) {
 
 	      // 복사한 main-left div에 list-minus div 추가
 	      clonedMainLeft.appendChild(listMinusDiv);
-
+	      
 	      // 현재 Day에 해당하는 course-list에만 복사된 main-left div 추가
 	      var currentCourseList = document.getElementById(`course-list-${currentDay}`);
 	      var clonedMainLeftCopy = clonedMainLeft.cloneNode(true);
@@ -429,14 +495,17 @@ function createMarkers(data) {
 	      // 현재 Day에 해당하는 course-list 다시 표시
 	      showCurrentDay();
 
-	      // list-minus 이미지 클릭 시 해당 main-left div 삭제
-	      listMinusDiv.addEventListener('click', function() {
-	        var parentMainLeft = this.parentNode;
-	        parentMainLeft.remove();
-	        showCurrentDay();
-	      });
 	    });
 	  });
+	  // minus 버튼 클릭 이벤트 처리
+	  var coursePlan = document.querySelector('.course-plan');
+	  coursePlan.addEventListener('click', function(event) {
+	    if (event.target.parentNode && event.target.parentNode.id === 'list-minus') {
+	      var parentMainLeft = event.target.parentNode.parentNode;
+	      parentMainLeft.remove();
+	      showCurrentDay();
+	    }
+	    });
 	}
 
   let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
@@ -508,25 +577,81 @@ function createMarkers(data) {
   let days;
   let currentDay = 1;
 
-  // 적용 버튼 클릭 시 실행되는 함수
+//적용 버튼 클릭 시 실행되는 함수
   function applyDate() {
     if (selectedStartDate && selectedEndDate) {
       days = getDayDiff(selectedStartDate, selectedEndDate);
       const courseColorDay = document.querySelector(".course-color-day");
       courseColorDay.innerHTML = ""; // 기존의 Day 숫자 초기화
-
+      
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+      // 체크박스 선택 상태 초기화
+      
+	  
+    // 7개의 checkbox 생성
+    for (let i = 1; i <= days; i++) {
+    	
+    	const courseColor = document.createElement("div");
+  	  courseColor.className = "course-color-check";
+  	  
+  	courseColor.id = `course-color-check-${i}`; // 고유한 ID 설정
+  	courseColor.style.display = i === 1 ? "block" : "none"; // 첫 번째 day에 해당하는 course-list는 보여주기, 나머지는 숨김
+  	  const colorh5 = document.createElement("div");
+  	  const colorh5Element = document.createElement("h5");
+  	  colorh5Element.textContent = '경로색상';
+  	  colorh5.appendChild(colorh5Element);
+  	  courseColor.appendChild(colorh5);
+  	  
+      // 복원할 체크박스 선택 상태가 있는 경우 복원
+      if (checkboxStates[i]) {
+        restoreCheckboxStates(i);
+      }
+    	for (let j = 1; j <= 7; j++) {
+      // div 요소 생성
+      	const divElement = document.createElement("div");
+      
+      // label 요소 생성
+	      const labelElement = document.createElement("label");
+    	  labelElement.setAttribute("for", `chk${i}-${j}`);
 
-      for (let i = 1; i <= days; i++) {
+      // checkbox 요소 생성
+const checkboxElement = document.createElement("input");
+checkboxElement.setAttribute("type", "checkbox");
+checkboxElement.setAttribute("id", `chk${i}-${j}`);
+    // 이벤트 핸들러 할당
+    checkboxElement.addEventListener("click", function () {
+      handleCheckboxClick(i, j); // 체크박스의 고유한 정보 전달
+    });
+
+      // i 요소 생성
+	      const iElement = document.createElement("i");
+    	  iElement.classList.add(`circle${j}`);
+
+      // label 요소에 checkbox와 i 요소 추가
+	      labelElement.appendChild(checkboxElement);
+    	  labelElement.appendChild(iElement);
+      
+          divElement.appendChild(labelElement);
+      
+     	  courseColor.appendChild(divElement);
+      
+      	  coursePlan.appendChild(courseColor);
+    	}
+      
+    	const daydivElement = document.createElement("div");
         const dayElement = document.createElement("h5");
         dayElement.textContent = `Day${i}`;
         dayElement.dataset.day = i; // 데이터 속성으로 day 값 설정
         dayElement.addEventListener("click", function () {
           changeCurrentDay(parseInt(this.dataset.day)); // day 값을 정수로 변환하여 전달
         });
-        courseColorDay.appendChild(dayElement);
-
+        
+        
+		daydivElement.appendChild(dayElement);
+		
+        courseColorDay.appendChild(daydivElement);
+		
         const courseList = document.createElement("div");
         courseList.className = "course-list";
         courseList.id = `course-list-${i}`; // 고유한 ID 설정
@@ -536,12 +661,39 @@ function createMarkers(data) {
         const inputElement = document.createElement("input");
         inputElement.type = "hidden";
         inputElement.name = "planDate";
-        inputElement.value = ""; // 여기에 날짜 값 추가
+
+        const currentDate = new Date(selectedStartDate);
+        currentDate.setDate(currentDate.getDate() + i - 1);
+        const year = currentDate.getFullYear();
+        const month = leftPad(currentDate.getMonth() + 1);
+        const day = leftPad(currentDate.getDate());
+        const selectedDate = `${year}-${month}-${day}`;
+        inputElement.value = selectedDate;
+
         courseList.appendChild(inputElement);
 
         coursePlan.appendChild(courseList);
       }
+	  
+      const daybuttondiv = document.createElement("div");
+   	  // 미리보기 버튼 생성
+      const previewButton = document.createElement("button");
+      previewButton.setAttribute("type", "button");
+      previewButton.setAttribute("onclick", "coursePreview()");
+      previewButton.textContent = "미리보기";
 
+      // 등록 버튼 생성
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "submit");
+      submitButton.textContent = "등록";
+	  
+      daybuttondiv.appendChild(previewButton);
+      daybuttondiv.appendChild(submitButton);
+      
+      courseColorDay.appendChild(daybuttondiv);
+      
+      initializeCheckboxStates();	
+      
       // Day 숫자 초기 설정 (첫 번째 Day를 선택한 상태로 설정)
       const firstDayElement = document.querySelector(".course-color-day h5");
       firstDayElement.classList.add("active");
@@ -554,15 +706,21 @@ function createMarkers(data) {
     }
   }
 
+//초기화 함수 호출
+  initializeCheckboxStates();
   // 다음날 버튼 클릭 시 실행되는 함수
   function nextDay() {
     if (currentDay < days) {
       const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      const currentCourseColor = document.getElementById(`course-color-check-${currentDay}`);
       currentCourseList.style.display = "none";
+      currentCourseColor.style.display = "none";
       currentDay++;
 
       const nextCourseList = document.getElementById(`course-list-${currentDay}`);
+      const nextCourseColor = document.getElementById(`course-color-check-${currentDay}`);
       nextCourseList.style.display = "block";
+      nextCourseColor.style.display = "block";
 
       // Day 숫자 변경
       const courseColorDay = document.querySelector(".course-color-day");
@@ -582,11 +740,15 @@ function createMarkers(data) {
   function previousDay() {
     if (currentDay > 1) {
       const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      const currentCourseColor = document.getElementById(`course-color-check-${currentDay}`);
       currentCourseList.style.display = "none";
+      currentCourseColor.style.display = "none";
       currentDay--;
 
       const previousCourseList = document.getElementById(`course-list-${currentDay}`);
+      const previousCourseColor = document.getElementById(`course-color-check-${currentDay}`);
       previousCourseList.style.display = "block";
+      previousCourseColor.style.display = "block";
 
       // Day 숫자 변경
       const courseColorDay = document.querySelector(".course-color-day");
@@ -687,7 +849,108 @@ function createMarkers(data) {
 		}
 		return value;
 	}
-	
+	function coursePreview() {
+		  function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const values = [];
+
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
+
+		      const inputDateValue = inputDateElement.value;
+		      const lonLatPairs = [];
+
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
+
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
+
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lonLatPairs: lonLatPairs
+		      });
+		    });
+
+		    return values;
+		  }
+		  
+		  const inputValues = getInputValues();
+		  console.log(inputValues);
+
+		  $.ajax({
+			    url: '/plan/course',
+			    type: 'POST',
+			    data: JSON.stringify(inputValues),
+			    contentType: 'application/json',
+			    success: function(response) {
+			      var popupWindow = window.open('', 'Course Preview', 'width=800,height=600');
+			      popupWindow.document.open();
+			      popupWindow.document.write(response);
+			      popupWindow.document.close();
+			    }
+			  });
+		 }
+
+	// 체크박스 클릭 이벤트 핸들러
+	function handleCheckboxClick(day, index) {
+	  const checkboxElement = document.getElementById(`chk${day}-${index}`);
+	  const checkboxes = document.querySelectorAll(`.course-color-check-${day} input[type="checkbox"]`);
+
+	  checkboxes.forEach(function (checkbox) {
+	    checkbox.checked = (checkbox === checkboxElement);
+	  });
+	}
+		function convertRGBToColorName(rgbValue) {
+		  var colorMap = {
+		    'rgb(255, 0, 0)': 'Red',
+		    'rgb(255, 165, 0)': 'Orange',
+		    'rgb(255, 255, 0)': 'Yellow',
+		    'rgb(0, 128, 0)': 'Green',
+		    'rgb(0, 0, 255)': 'Blue',
+		    'rgb(0, 0, 128)': 'Navy',
+		    'rgb(128, 0, 128)': 'Purple'
+		  };
+
+		  return colorMap[rgbValue] || 'Unknown';
+		}
+
+		// 체크박스 선택 상태 초기화 함수
+		function initializeCheckboxStates() {
+		  for (let i = 1; i <= days; i++) {
+		    checkboxStates[i] = {};
+		    for (let j = 1; j <= 7; j++) {
+		      checkboxStates[i][j] = false;
+		    }
+		  }
+		}
+
+		// 체크박스 선택 상태를 복원하는 함수
+		function restoreCheckboxStates(day) {
+		  for (let j = 1; j <= 7; j++) {
+		    const checkboxElement = document.getElementById(`chk${day}-${j}`);
+		    if (checkboxElement) {
+		      checkboxElement.checked = checkboxStates[day][j];
+		    }
+		  }
+		}
+
+		// 체크박스 클릭 이벤트 핸들러
+		function handleCheckboxClick(day, index) {
+		  const checkboxElement = document.getElementById(`chk${day}-${index}`);
+		  if (checkboxElement) {
+		    checkboxStates[day][index] = checkboxElement.checked;
+		  }
+		}
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
@@ -700,8 +963,8 @@ function createMarkers(data) {
 		<div class="header-category">
 			<label id="label-left-course">코스추천</label> <label
 				id="label-left-community">커뮤니티</label> <label id="label-left-chat">채팅방</label>
-			<img src="./resources/image/logo.png" alt="" id="logimg"> <label
-				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
+			<img src="./resources/image/logo.png" alt="" id="logimg"> 
+			<label id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
 		</div>
 	</div>
 	<div class="main"> 
@@ -728,8 +991,8 @@ function createMarkers(data) {
 					<div id="list-plus">
 						<img src="./resources/image/plus.png" alt="" id="plus">
 					</div>
-					<input type="hidden" name="placeLon" value="${restaurant.placeLon}">
-					<input type="hidden" name="placeLat" value="${restaurant.placeLat}">
+					<input type="hidden" name="planLon" th:value="${restaurant.placeLon}">
+					<input type="hidden" name="planLat" th:value="${restaurant.placeLat}">
 				</div>
 			</div>
 			
@@ -739,7 +1002,7 @@ function createMarkers(data) {
 				<button>x</button>
 			</div>
 			<div id="placemenu_heart">
-				<a href="/review">추천하기</a>
+				<a href="javascript:void(0);" onclick="openPopup();">추천하기</a>
 			</div>
 			<div id="datatest1"></div>
 			<div id="datatest2"></div>
@@ -798,56 +1061,11 @@ function createMarkers(data) {
 			</div>
 			<form action="/plan/createplan" method="post">
 			<div class="course">
-				<div class="course-color">
-					<div class="course-color-day">
+				<div class="course-color-day">
 						
-					</div>
-					<div>
-						<button type="submit">등록</button>
-					</div>
-					<div class="course-color-check">
-						<div>
-							<h5>마커색상</h5>
-						</div>
-						<div>
-							<label for="chk1"> <input type="checkbox" id="chk1">
-								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle1"></i>
-							</label>
-						</div>
-						<div>
-							<label for="chk2"> <input type="checkbox" id="chk2">
-								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle2"></i>
-							</label>
-						</div>
-						<div>
-							<label for="chk3"> <input type="checkbox" id="chk3">
-								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle3"></i>
-							</label>
-						</div>
-						<div>
-							<label for="chk4"> <input type="checkbox" id="chk4">
-								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle4"></i>
-							</label>
-						</div>
-						<div>
-							<label for="chk5"> <input type="checkbox" id="chk5">
-								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle5"></i>
-							</label>
-						</div>
-						<div>
-							<label for="chk6"> <input type="checkbox" id="chk6">
-								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle6"></i>
-							</label>
-						</div>
-						<div>
-							<label for="chk7"> <input type="checkbox" id="chk7">
-								<!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용--> <i class="circle7"></i>
-							</label>
-						</div>
-					</div>
 				</div>
-
 				<div class="course-plan">
+					<div class="course-color-check"></div>
 				</div>
 					<div>
   						<button type="button" onclick="previousDay()">이전날</button>

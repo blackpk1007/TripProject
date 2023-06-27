@@ -5,7 +5,9 @@
 <title>Mypage</title>
 <link rel="stylesheet" href="#"	type="text/css">
 <link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
+
 <style type="text/css">
+
 #logo{
 width:300px;
 height:200px;
@@ -23,14 +25,18 @@ height:200px;
     width: 150px;
     height: 150px; 
     border-radius: 70%;
+    border: solid;
+    border-width:4px;
+    border-color: #B8E9FF;
     overflow: hidden;
-    background: #BDBDBD;
+    background: white;
     margin-right:1rem;
 }
 .profilepic {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    
     
 }
 .profile{
@@ -42,14 +48,14 @@ height:200px;
 }
 
 #profilefix{
+	height:5vh;
 	font-size: 1.5rem;
 	background-color: #BDBDBD;	
-	border: solid;
-	border-width:2px;
-	border-color:#BDBDBD;
+	border: none;
 	border-radius: 0.5rem;
 	padding:0.4rem;
 	margin-left:1rem;
+	
 }
 
 
@@ -97,6 +103,7 @@ height:200px;
 /* main */
 .mymain_text{
 	font-size:1.8rem;
+	margin-left:10vw;
 }
 
 .mymain{
@@ -202,27 +209,25 @@ height:200px;
 		<div class="imagebox">
 	    	<img class="profilepic" id="profilepic" src="/resources/image/stonepapa.png">
 		</div>
-		<div class="profile">
-		
+		<div class="profile" th:text="${session.login}">
 			내 프로필
 			<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
-			<button id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
 		</div>
+			<button class="profile" id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
 	</div>
 	
 	<div class="status">
 		<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
 		<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
-		<div class="user_status" id="plan" onclick="#">나의 일정
-			<div class="num">갯수 끌고오기 </div>
+		<div class="user_status" id="plan" onclick="mymain();">나의 일정
+			<div class="num" onclick="mymain();" th:text="${communitycount}"> 갯수 끌고오기 </div>
 		</div>
-		<img id="3dots" src="/resources/image/3dots.png">
-		<div class="user_status" id="review" onclick="#">나의 리뷰
-			<div class="num">갯수 끌고오기 </div>
+
+		<div class="user_status" id="review" onclick="mymain();">나의 리뷰
+			<div class="num" onclick="mymain();">갯수 끌고오기 </div>
 		</div>
-		<img id="3dots" src="/resources/image/3dots.png">
-		<div class="user_status" id="post" onclick="#">나의 게시물
-			<div class="num">갯수 끌고오기 </div>
+		<div class="user_status" id="post" onclick="mymain();">나의 게시물
+			<div class="num" onclick="mymain();">갯수 끌고오기 </div>
 		</div>
 	</div>
 	
@@ -237,7 +242,8 @@ height:200px;
 					<img id="location1" src="#">
 				</div>
 				<div id="loc2">
-				여행이름 여행일자를p로 나눠야되려나?
+					<div> 여행이름 </div>
+					<div> 여행일자 </div>
 				</div>
 				<div id="loc3">
 					<button id="share">공유</button>
@@ -253,7 +259,8 @@ height:200px;
 					<img id="location2" src="#">
 				</div>
 				<div id="loc2">
-					내용 
+					<div> 여행이름 </div>
+					<div> 여행일자 </div>
 				</div>
 				<div id="loc3">
 					<button id="share">공유</button>
@@ -296,6 +303,12 @@ height:200px;
 			<button>삭제</button>
 		</div>
 	</div> -->
+	
+	<script th:inline="javascript">
+		function mymain(){
+			
+		}
+	</script>
 
 </body>
 </html>

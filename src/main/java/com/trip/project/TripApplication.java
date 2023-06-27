@@ -39,19 +39,8 @@ public class TripApplication {
 		model.addAttribute("arriveds", aservice.jejuArrived());
 		model.addAttribute("boardings", aservice.jejuBoarding());
 		model.addAttribute("list", mainpageService.selectList());
+		model.addAttribute("animalList", mainpageService.animalList());
+		model.addAttribute("parentsList", mainpageService.parentsList());
 		return "main";
-	}
-	
-	// 크롤링 테스트 페이지
-	@RequestMapping("/crawling")
-	public void crawling() {
-		
-		cservice.crawinsert();
-	}
-	
-	@RequestMapping("/test")
-	public String test() {
-		
-		return "test";
 	}
 }
