@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trip.project.dto.MainpageDTO;
+import com.trip.project.dto.PlaceDTO;
 import com.trip.project.mapper.MainpageMapper;
 
 @Service
@@ -28,4 +29,9 @@ public class MainpageServiceImpl implements MainpageService{
 	public List<MainpageDTO> parentsList() {
 		return mainpageMapper.parentsList();
 	}
+	
+	@Override
+    public PlaceDTO getPlaceInfo(String placeName) {
+        return mainpageMapper.getPlaceInfo(placeName);
+    }
 }
