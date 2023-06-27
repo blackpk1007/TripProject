@@ -11,16 +11,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
-
+var loginchk = [[${session.login}]];
+console.log(loginchk);
+var markers = []; // 마커를 담을 배열
+var placeData=[];
+var map; // map 객체 선언
+// 초기 마커 생성
+var placeList = [[${placeRestaurantList}]];
+let colorSelections = {};
 //영수증인증 팝업창
 function openPopup() {
     var popupContainer = document.createElement("div");
     popupContainer.setAttribute("id", "ocr_popupContainer");
     popupContainer.setAttribute("class", "ocr_popup-container");
-    
+
     var popup = document.createElement("div");
     popup.setAttribute("class", "ocr_popup");
-    
+
     // 팝업 내용 추가
     popup.innerHTML = `
         <h1>영수증 인증</h1>
@@ -35,7 +42,7 @@ function openPopup() {
         </form>
         <span class="ocr_popup-close" onclick="closePopup()">X</span>
     `;
-    
+
     popupContainer.appendChild(popup);
     document.body.appendChild(popupContainer);
 }
@@ -62,16 +69,6 @@ function readURL(input) {
     }
 }
 
-
-var loginchk = [[${session.login}]];
-console.log(loginchk);
-var markers = []; // 마커를 담을 배열
-var placeData=[];
-var map; // map 객체 선언
-//체크박스 선택 상태를 저장할 객체
-const checkboxStates = {};
-// 초기 마커 생성
-var placeList = [[${placeRestaurantList}]];
 /* function reloadStylesheet() {
 	  var links = document.getElementsByTagName('link');
 	  for (var i = 0; i < links.length; i++) {
@@ -445,24 +442,23 @@ function createMarkers(data) {
 	      // 클릭한 plus 요소의 부모인 main-left div를 찾아 복사
 	      var mainLeft = this.parentNode;
 	      var coursePlan = document.querySelector('.course-plan');
-
 	      // main-left div 복사
 	      var clonedMainLeft = mainLeft.cloneNode(true);
 
 	      // course-plan div에서 기존의 list div를 찾아 가져옴
-	      var listContainer = coursePlan.querySelector('.course-list');
+	      var listContainer = coursePlan.querySelector(`#course-list-${currentDay}`);
 
-	      var isDuplicate = Array.from(listContainer.querySelectorAll('.main-left')).some(function(listItem) {
-	        var listItemLabel = listItem.querySelector('#list-name-label label');
-	        var listItemText = listItemLabel ? listItemLabel.textContent : '';
-	        var clonedMainLeftLabel = clonedMainLeft.querySelector('#list-name-label label');
-	        var clonedMainLeftText = clonedMainLeftLabel ? clonedMainLeftLabel.textContent : '';
-	        if (listItemText === clonedMainLeftText) {
-	          return true;  // 중복되는 경우 true 반환
-	        }
+	      var isDuplicate = Array.from(listContainer.querySelectorAll('#left_block')).some(function(listItem) {
+	    	  var listItemLabel = listItem.querySelector('#list-name-label label');
+	    	  var listItemText = listItemLabel ? listItemLabel.textContent.toLowerCase() : '';
+	    	  var clonedMainLeftLabel = clonedMainLeft.querySelector('#list-name-label label');
+	    	  var clonedMainLeftText = clonedMainLeftLabel ? clonedMainLeftLabel.textContent.toLowerCase() : '';
+	    	  if (listItemText === clonedMainLeftText) {
+	    	    return true;  // 중복되는 경우 true 반환
+	    	  }
 
-	        return false;  // 중복되지 않는 경우 false 반환
-	      });
+	    	  return false;  // 중복되지 않는 경우 false 반환
+	    	});
 	      if (isDuplicate) {
 	        alert('이미 추가된 장소입니다.'); // 중복된 장소인 경우 경고창 표시
 	        return;  // 중복되는 장소인 경우 함수 종료
@@ -574,6 +570,10 @@ function createMarkers(data) {
     if (!selectedStartDate && !selectedEndDate) {
       const courseColorDay = document.querySelector(".course-color-day");
       courseColorDay.innerHTML = "";
+      const coursePlan = document.querySelector(".course-plan");
+      coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+      const courseButtonElement = document.querySelector(".course-button");
+      courseButtonElement.innerHTML = "";
     }
   }
 //전역 변수로 days와 currentDay 선언
@@ -589,8 +589,9 @@ function createMarkers(data) {
       
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
-      // 체크박스 선택 상태 초기화
       
+      
+      // 부모 요소 선택
 	  
     // 7개의 checkbox 생성
     for (let i = 1; i <= days; i++) {
@@ -606,10 +607,6 @@ function createMarkers(data) {
   	  colorh5.appendChild(colorh5Element);
   	  courseColor.appendChild(colorh5);
   	  
-      // 복원할 체크박스 선택 상태가 있는 경우 복원
-      if (checkboxStates[i]) {
-        restoreCheckboxStates(i);
-      }
     	for (let j = 1; j <= 7; j++) {
       // div 요소 생성
       	const divElement = document.createElement("div");
@@ -619,14 +616,21 @@ function createMarkers(data) {
     	  labelElement.setAttribute("for", `chk${i}-${j}`);
 
       // checkbox 요소 생성
-const checkboxElement = document.createElement("input");
-checkboxElement.setAttribute("type", "checkbox");
-checkboxElement.setAttribute("id", `chk${i}-${j}`);
-    // 이벤트 핸들러 할당
-    checkboxElement.addEventListener("click", function () {
-      handleCheckboxClick(i, j); // 체크박스의 고유한 정보 전달
-    });
-
+    	  const checkboxElement = document.createElement("input");
+	      checkboxElement.setAttribute("type", "checkbox");
+      	checkboxElement.setAttribute("id", `chk${i}-${j}`);
+      	checkboxElement.setAttribute("onclick", `handleCheckboxClick(${i}, 'chk${i}-${j}')`);
+		
+      	const inputcss = `
+      	    #chk${i}-${j}:checked + .circle${j}::after {
+      	      opacity: 1;
+      	    }
+      	  `;
+      	  
+      	  // <style> 요소를 생성하여 CSS 스타일을 추가
+  const styleElement = document.createElement('style');
+  styleElement.innerHTML = inputcss;
+  document.head.appendChild(styleElement);
       // i 요소 생성
 	      const iElement = document.createElement("i");
     	  iElement.classList.add(`circle${j}`);
@@ -690,12 +694,27 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
       submitButton.setAttribute("type", "submit");
       submitButton.textContent = "등록";
 	  
+   // 이전날 버튼 생성
+      const previousDayButton = document.createElement("button");
+      previousDayButton.type = "button";
+      previousDayButton.innerText = "이전날";
+      previousDayButton.addEventListener("click", previousDay);
+
+      // 다음날 버튼 생성
+      const nextDayButton = document.createElement("button");
+      nextDayButton.type = "button";
+      nextDayButton.innerText = "다음날";
+      nextDayButton.addEventListener("click", nextDay);
+      
+      const courseButtonElement = document.querySelector(".course-button");
+
+      courseButtonElement.appendChild(previousDayButton);
+      courseButtonElement.appendChild(nextDayButton);
+      
       daybuttondiv.appendChild(previewButton);
       daybuttondiv.appendChild(submitButton);
       
       courseColorDay.appendChild(daybuttondiv);
-      
-      initializeCheckboxStates();	
       
       // Day 숫자 초기 설정 (첫 번째 Day를 선택한 상태로 설정)
       const firstDayElement = document.querySelector(".course-color-day h5");
@@ -709,8 +728,6 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
     }
   }
 
-//초기화 함수 호출
-  initializeCheckboxStates();
   // 다음날 버튼 클릭 시 실행되는 함수
   function nextDay() {
     if (currentDay < days) {
@@ -855,34 +872,42 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 	function coursePreview() {
 		  function getInputValues() {
 		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    
 		    const values = [];
 
 		    courseLists.forEach((courseList, index) => {
 		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
 		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
-
+  			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
 		      const inputDateValue = inputDateElement.value;
 		      const lonLatPairs = [];
-
+			  
 		      inputLonElements.forEach((inputLonElement, lonIndex) => {
 		        const inputLatElement = inputLatElements[lonIndex];
 
 		        const inputLonValue = inputLonElement.value;
 		        const inputLatValue = inputLatElement.value;
-
+		        
 		        lonLatPairs.push({
 		          lon: inputLonValue,
 		          lat: inputLatValue
 		        });
 		      });
-
+					
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
-		        lonLatPairs: lonLatPairs
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
 		      });
-		    });
+		      
+		      });
+		    
 
 		    return values;
 		  }
@@ -904,55 +929,42 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 			  });
 		 }
 
-	// 체크박스 클릭 이벤트 핸들러
-	function handleCheckboxClick(day, index) {
-	  const checkboxElement = document.getElementById(`chk${day}-${index}`);
-	  const checkboxes = document.querySelectorAll(`.course-color-check-${day} input[type="checkbox"]`);
-
-	  checkboxes.forEach(function (checkbox) {
-	    checkbox.checked = (checkbox === checkboxElement);
-	  });
-	}
-		function convertRGBToColorName(rgbValue) {
-		  var colorMap = {
-		    'rgb(255, 0, 0)': 'Red',
-		    'rgb(255, 165, 0)': 'Orange',
-		    'rgb(255, 255, 0)': 'Yellow',
-		    'rgb(0, 128, 0)': 'Green',
-		    'rgb(0, 0, 255)': 'Blue',
-		    'rgb(0, 0, 128)': 'Navy',
-		    'rgb(128, 0, 128)': 'Purple'
-		  };
-
-		  return colorMap[rgbValue] || 'Unknown';
-		}
-
-		// 체크박스 선택 상태 초기화 함수
-		function initializeCheckboxStates() {
-		  for (let i = 1; i <= days; i++) {
-		    checkboxStates[i] = {};
-		    for (let j = 1; j <= 7; j++) {
-		      checkboxStates[i][j] = false;
-		    }
+	function handleCheckboxClick(day, checkboxId) {
+		  const courseColorCheck = document.querySelector(`#course-color-check-${day}`);
+		  if (courseColorCheck.style.display === 'block') {
+		    const checkboxes = courseColorCheck.querySelectorAll('input[type="checkbox"]');
+		    checkboxes.forEach((checkbox) => {
+		      if (checkbox.id === checkboxId) {
+		        checkbox.checked = true;
+		      } else {
+		        checkbox.checked = false;
+		      }
+		    });
 		  }
 		}
+	function getCheckboxIconBackgroundColor(checkboxElement) {
+		  const labelElement = checkboxElement.parentElement; // 체크박스를 감싸는 label 요소
+		  const iconElement = labelElement.querySelector('i'); // label 요소 내의 i 태그
 
-		// 체크박스 선택 상태를 복원하는 함수
-		function restoreCheckboxStates(day) {
-		  for (let j = 1; j <= 7; j++) {
-		    const checkboxElement = document.getElementById(`chk${day}-${j}`);
-		    if (checkboxElement) {
-		      checkboxElement.checked = checkboxStates[day][j];
-		    }
-		  }
+		  const computedStyle = window.getComputedStyle(iconElement);
+		  const backgroundColor = computedStyle.backgroundColor;
+
+		  return backgroundColor;
 		}
+	
+	function convertRGBToColorName(rgbValue) {
+		const colorMap = {
+				  'rgb(255, 0, 0)': 'red',
+				  'rgb(255, 165, 0)': 'orange',
+				  'rgb(255, 255, 0)': 'yellow',
+				  'rgb(0, 128, 0)': 'green',
+				  'rgb(0, 0, 255)': 'blue',
+				  'rgb(0, 0, 128)': 'navy',
+				  'rgb(128, 0, 128)': 'purple',
+				  // 추가적인 색상 값들을 필요에 따라 계속해서 추가할 수 있습니다.
+				};
 
-		// 체크박스 클릭 이벤트 핸들러
-		function handleCheckboxClick(day, index) {
-		  const checkboxElement = document.getElementById(`chk${day}-${index}`);
-		  if (checkboxElement) {
-		    checkboxStates[day][index] = checkboxElement.checked;
-		  }
+		  return colorMap[rgbValue] || rgbValue;
 		}
 	window.onload = function () {
 		  buildCalendar();
@@ -966,8 +978,8 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 		<div class="header-category">
 			<label id="label-left-course">코스추천</label> <label
 				id="label-left-community">커뮤니티</label> <label id="label-left-chat">채팅방</label>
-			<img src="./resources/image/logo.png" alt="" id="logimg"> 
-			<label id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
+			<img src="./resources/image/logo.png" alt="" id="logimg"> <label
+				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
 		</div>
 	</div>
 	<div class="main"> 
@@ -1005,7 +1017,7 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 				<button>x</button>
 			</div>
 			<div id="placemenu_heart">
-				<a href="javascript:void(0);" onclick="openPopup();">추천하기</a>
+				<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
 			</div>
 			<div id="datatest1"></div>
 			<div id="datatest2"></div>
@@ -1065,15 +1077,13 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 			<form action="/plan/createplan" method="post">
 			<div class="course">
 				<div class="course-color-day">
-						
-				</div>
+				</div>		
 				<div class="course-plan">
-					<div class="course-color-check"></div>
-				</div>
-					<div>
-  						<button type="button" onclick="previousDay()">이전날</button>
-  						<button type="button" onclick="nextDay()">다음날</button>
+					<div class="course-color-check">
 					</div>
+				</div>
+				<div class="course-button">
+				</div>
 			</div>
 			</form>
 		</div>
