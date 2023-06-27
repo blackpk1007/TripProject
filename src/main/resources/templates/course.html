@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<script
-	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
+<!-- 버튼을 추가할 컨테이너 -->
+  <div id="button_container">
+  </div>
 <div id="map_div"></div>
-<script>
+<script
+	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+//1. 지도 띄우기
 map = new Tmapv2.Map("map_div", {
 	center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	width: "100%",
-	height: "400px"
+	height: "400px",
+	zoom: 10
 });
 
 var new_polyLine = [];
@@ -32,7 +37,7 @@ function drawData(data){
 	
 	for (var i = 0; i < data.features.length; i++) {
 		var feature = data.features[i];
-		//배열에 경로 좌표 저잘
+		//배열에 경로 좌표 저장
 		if(feature.geometry.type == "LineString"){
 			ar_line = [];
 			for (var j = 0; j < feature.geometry.coordinates.length; j++) {
@@ -86,61 +91,89 @@ function drawData(data){
 
 
 // 2. 시작, 도착 심볼찍기
-
 var markerList = [];
 var pointArray = [];
+var markers = [];
 
-	// 시작
-	addMarker("llStart",127.02810900563199,37.519892712436906,1);
-	// 도착 
-	addMarker("llEnd",127.11971717230388,37.49288934463672,2);
-	function addMarker(status, lon, lat, tag) {
-	//출도착경유구분
-	//이미지 파일 변경.
-	var markerLayer;
-	switch (status) {
-		case "llStart":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
-			break;
-		case "llPass":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png';
-			break;
-		case "llEnd":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
-			break;
-		default:
-	};
-	var marker = new Tmapv2.Marker({
-		position: new Tmapv2.LatLng(lat,lon),
-		icon: imgURL,
-		map: map
-	});
-	// 마커 드래그 설정
-	marker.tag = tag;
-	marker.addListener("dragend", function (evt) {
-	markerListenerEvent(evt);
+var inputValues = [[${inputValues}]];
+// 버튼을 추가할 컨테이너 선택
+var buttonContainer = document.getElementById('button_container');
+var AllDaybutton = document.createElement('button');
+AllDaybutton.textContent = 'All Day';
+buttonContainer.appendChild(AllDaybutton);
+AllDaybutton.addEventListener('click', showAllDayRoute);
+
+for (var i = 0; i < inputValues.length; i++) {
+    var daybutton = document.createElement('button');
+    daybutton.textContent = 'Day ' + (i + 1);
+    buttonContainer.appendChild(daybutton);
+    
+    // 클릭 이벤트 처리
+    daybutton.addEventListener('click', function(event) {
+      var buttonIndex = Array.from(buttonContainer.children).indexOf(event.target) - 1;
+      var selectedInputValue = inputValues[buttonIndex];
+      console.log('Button ' + (buttonIndex + 1) + ' clicked');
+      console.log('Selected Input Value:', selectedInputValue);
+      // 추가적인 처리 로직을 여기에 작성하세요.
+      // 경로 표시를 위한 데이터 추출
+      var date = selectedInputValue.date;
+      var lonLatPairs = selectedInputValue.lonLatPairs;
+      // 경로 표시 로직 추가
+      clearMarkers()
+      clearRoutes(); // 기존의 경로 삭제
+      drawRoute(date, lonLatPairs);
     });
-    marker.addListener("drag", function (evt) {    	
-    	markerObject = markerList[tag];
-    });
-    markerList[tag] = marker;
-	return marker;
 }
+function clearRoutes() {
+    if (new_polyLine.length > 0) {
+        for (var i = 0; i < new_polyLine.length; i++) {
+            new_polyLine[i].setMap(null);
+        }
+        new_polyLine = [];
+    }
+    if (new_Click_polyLine.length > 0) {
+        for (var i = 0; i < new_Click_polyLine.length; i++) {
+            new_Click_polyLine[i].setMap(null);
+        }
+        new_Click_polyLine = [];
+    }
+}
+function clearMarkers() {
+	  for (var i = 0; i < markers.length; i++) {
+	    markers[i].setMap(null);
+	  }
+	  markers = [];
+	}
+function showAllDayRoute() {
+	  // 기존 마커 지우기
+	  clearMarkers();
+for (var i = 0; i < inputValues.length; i++) {
+	var date = inputValues[i].date;
+	var lonLatPairs = inputValues[i].lonLatPairs;
 
+	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+	// 시작
+	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1);
+	// 도착
+	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2);
 
-// 3. 경유지 심볼 찍기
-	addMarker("llPass",127.07389565460413,37.5591696189164,3);
-	addMarker("llPass",127.13346617572014,37.52127761904626,4);
+	// 경유지 심볼 찍기
+	for (var j = 0; j < waypoints.length; j++) {
+		var waypoint = waypoints[j];
+		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3);
+	}
+	// 4. 경로탐색 API 사용요청
 
-
-// 4. 경로탐색 API 사용요청
-	var startX = 127.02810900563199;
-	var startY = 37.519892712436906;
-	var endX = 127.11971717230388;
-	var endY = 37.49288934463672;
-	var passList = "127.07389565460413,37.5591696189164_127.13346617572014,37.52127761904626";
+	var startX = lonLatPairs[0].lat;
+	var startY = lonLatPairs[0].lon;
+	var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+	var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+	var passList = waypoints.map(function(waypoint) {
+		  return waypoint.lat + ',' + waypoint.lon;
+		}).join('_');
 	var prtcl;
 	var headers = {};
+	
 	headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
 	$.ajax({
 			method:"POST", 
@@ -192,7 +225,6 @@ var pointArray = [];
 						var pointType = mData.properties.pointType;
 						if(type == "Point"){
 							var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[1],mData.geometry.coordinates[0]);
-							console.log(linePt);
 							PTbounds.extend(linePt);
 						}
 						else{
@@ -210,7 +242,139 @@ var pointArray = [];
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
-</script>
+}
+}
+	function addMarker(status, lon, lat, tag) {
+	//출도착경유구분
+	//이미지 파일 변경.
+	
+	var markerLayer;
+	switch (status) {
+		case "llStart":
+			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
+			break;
+		case "llPass":
+			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png';
+			break;
+		case "llEnd":
+			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
+			break;
+		default:
+	};
+	var marker = new Tmapv2.Marker({
+		position: new Tmapv2.LatLng(lat,lon),
+		icon: imgURL,
+		map: map
+	});
+	// 마커 드래그 설정
+	marker.tag = tag;
+	marker.addListener("dragend", function (evt) {
+	markerListenerEvent(evt);
+    });
+    marker.addListener("drag", function (evt) {    	
+    	markerObject = markerList[tag];
+    });
+    markerList[tag] = marker;
+    markers.push(marker);
+    return marker;
+}
+	
+	 function drawRoute(date, lonLatPairs) {
+			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+			// 시작
+			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1);
+			// 도착
+			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2);
 
+			// 경유지 심볼 찍기
+			for (var j = 0; j < waypoints.length; j++) {
+				var waypoint = waypoints[j];
+				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3);
+			}
+	      var startX = lonLatPairs[0].lat;
+	      var startY = lonLatPairs[0].lon;
+	      var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+	      var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+	      var passList = waypoints.map(function(waypoint) {
+	        return waypoint.lat + ',' + waypoint.lon;
+	      }).join('_');
+	      var prtcl;
+	  	  var headers = {};
+	      
+	      headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+	      // 경로 탐색 API 호출
+			$.ajax({
+				method:"POST", 
+				headers : headers, 
+				url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+				async:false,
+				data:{ 
+					startX : startX,
+					startY : startY,
+					endX : endX,
+					endY : endY,
+					passList : passList,
+					reqCoordType : "WGS84GEO",
+					resCoordType : "WGS84GEO",
+					angle : "172",
+					searchOption : "0",
+					trafficInfo : "Y"
+				},
+				success:function(response){
+				prtcl = response;
+				
+				// 5. 경로탐색 결과 Line 그리기 
+				var trafficColors = {
+					extractStyles:true,
+					/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+					trafficDefaultColor:"#636f63", //Default
+					trafficType1Color:"#19b95f", //원할
+					trafficType2Color:"#f15426", //지체
+					trafficType3Color:"#ff970e"  //정체		
+				};    			
+				var style_red = {
+					fillColor:"#FF0000",
+					fillOpacity:0.2,
+					strokeColor: "#FF0000",
+					strokeWidth: 3,
+					strokeDashstyle: "solid",
+					pointRadius: 2,
+					title: "this is a red line"
+				};
+				drawData(prtcl);
+			
+			
+				// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+				var newData = geoData[0];
+				PTbounds = new Tmapv2.LatLngBounds();
+						for (var i = 0; i < newData.length; i++) {
+							var mData = newData[i];
+							var type = mData.geometry.type;
+							var pointType = mData.properties.pointType;
+							if(type == "Point"){
+								var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[1],mData.geometry.coordinates[0]);
+								PTbounds.extend(linePt);
+							}
+							else{
+								var startPt,endPt;
+								for (var j = 0; j < mData.geometry.coordinates.length; j++) {
+									var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[j][1],mData.geometry.coordinates[j][0]);
+									PTbounds.extend(linePt);
+								}
+						}
+					}
+					map.fitBounds(PTbounds);
+			
+				},
+				error:function(request,status,error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+	    }
+	 window.onload = function() {
+			// 기본적으로 전체 경로 표시하기
+		showAllDayRoute();
+	};
+</script>
 </body>
 </html>
