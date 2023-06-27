@@ -53,10 +53,11 @@ public class LoginController {
 			System.out.println(res.getUserPW());
 			model.addAttribute("message", "비밀번호일치하지않습니다.");
 			return "redirect:/login";
-		}
+		}else {
 		session.setAttribute("login", res.getUserID());
 		session.setMaxInactiveInterval(1800);
 		return "redirect:/";
+		}
   }
 	// 로그아웃 - 메인
 	@GetMapping("/logout")
@@ -163,8 +164,10 @@ public class LoginController {
 	public String userMain(HttpSession session, Model model) {
 		String userID = (String) session.getAttribute("login");
 		model.addAttribute("community", cservice.usermainCommunity(userID));
+		model.addAttribute("communitycount",cservice.usermainCommunity(userID).size());
 		System.out.println(userID);
 		System.out.println("controller : "+cservice.usermainCommunity(userID));
+		System.out.println(cservice.usermainCommunity(userID).size());
 		return "usermain";
 		
 	}

@@ -11,4 +11,10 @@ import com.trip.project.dto.MainpageDTO;
 public interface MainpageMapper {
 	@Select(" SELECT placeName FROM place ORDER BY placeGood DESC LIMIT 6 ")
 	List<MainpageDTO> selectList();
+	
+	@Select(" SELECT placeName FROM place WHERE placeTag1='#반려동물' ORDER BY placeGood DESC LIMIT 4 ")
+	List<MainpageDTO> animalList();
+	
+	@Select(" SELECT placeName FROM place WHERE placeTag1='#부모' ORDER BY placeGood DESC LIMIT 4 ")
+	List<MainpageDTO> parentsList();
 }

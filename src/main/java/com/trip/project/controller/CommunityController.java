@@ -2,8 +2,9 @@ package com.trip.project.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.trip.project.dto.CommunityDTO;
 import com.trip.project.dto.ImageDTO;
@@ -27,7 +30,6 @@ import com.trip.project.file.FileStore;
 import com.trip.project.paging.PagingResponse;
 import com.trip.project.service.CommunityService;
 
-import io.opentelemetry.sdk.resources.Resource;
 
 @Controller
 @RequestMapping("/community")
@@ -40,40 +42,51 @@ public class CommunityController {
 
 	// 커뮤니티 메인 페이지
 	@RequestMapping("/communitymain")
-	public String cummunityMain(Model model, @ModelAttribute("params") final SearchDTO params) {
+	public String cummunityMain(Model model, @ModelAttribute("params") final SearchDTO params,HttpSession session ) {
 		logger.info("COMMUNITY MAIN");
+		session.getAttribute("login");
+		model.addAttribute("session", session);
 		model.addAttribute("response", cService.selectCommunity(params));
 		model.addAttribute("params", params);
+		model.addAttribute("communityCategory","all");
+		
 		return "communitymain";
 	}
 
 	// 커뮤니티 상세 페이지
+	
 	@RequestMapping("/communitydetail")
-	public String communityDetail(Model model, int communityNumber) {
+	public String communityDetail(Model model, int communityNumber, HttpSession session) {
 		logger.info("COMMUNITY DETAIL");
 		model.addAttribute("dto", cService.selectOne(communityNumber));
 //		model.addAttribute("image", cService.selectOneImg(communityNumber));
 
 		ImageDTO imgDto = cService.selectOneImg(communityNumber);
-		System.out.println(imgDto);
 		model.addAttribute("image", imgDto);
-
+		
+		session.getAttribute("login");
+		model.addAttribute("session", session);
+		
 		return "communitydetail";
 	}
 
 	// 커뮤니티 글쓰기 페이지
 	@RequestMapping("/communitywriteform")
-	public String communityWriteForm() {
+	public String communityWriteForm(HttpSession session, Model model) {
 		logger.info("COMMUNITY WRITE FORM");
+		session.getAttribute("login");
+		model.addAttribute("session", session);
+		
 		return "communitywriteform";
 	}
 
 	// 커뮤니티 글쓰기
 	@RequestMapping("/communitywrite")
-	public String communityWrite(CommunityDTO dto) throws IOException {
+	public String communityWrite(CommunityDTO dto, Model modelD) throws IOException {
 		logger.info("COMMUNITY WRITE");
-		System.out.println("controller : " + dto.getAttachFile());
-		System.out.println("controller : " + dto.getCommunityContent());
+		
+		
+		
 		
 		// List<UploadFile> imagefile = FileStore.storeFiles(dto.getImageFiles());
 		UploadFile file = FileStore.storeFile(dto.getAttachFile());
@@ -137,15 +150,15 @@ public class CommunityController {
 			imageUpdateRes = cService.updateImg(file);
 			
 			if (communityUpdateRes > 0 &&  imageUpdateRes> 0) {
-				return "redirect:/community/communitymain";
+				return "redirect:/community/communitydetail?communityNumber="+dto.getCommunityNumber();
 			} else {
-				return "redirect:/community/communityupdate";
+				return "redirect:/community/communityupdate?communityNumber="+dto.getCommunityNumber();
 			}
 		}else {
 			if (communityUpdateRes > 0 ) {
-				return "redirect:/community/communitymain";
+				return "redirect:/community/communitydetail?communityNumber="+dto.getCommunityNumber();
 			} else {
-				return "redirect:/community/communityupdate";
+				return "redirect:/community/communityupdate?communityNumber="+dto.getCommunityNumber();
 			}
 		}
 	}
@@ -175,10 +188,36 @@ public class CommunityController {
 		
 		if("all".equals(dto.getCommunityCategory())) {
 			data = cService.selectCommunity(params);
-		}else {
-			data = (PagingResponse<CommunityDTO>) cService.selectCommunityCategory(dto.getCommunityCategory(), params);
-		}				
+		}else if("tip".equals(dto.getCommunityCategory())) {
+			data = (PagingResponse<CommunityDTO>) cService.selectCommunityTip(dto.getCommunityCategory(), params);
+		}else if("review".equals(dto.getCommunityCategory())) {
+			data = (PagingResponse<CommunityDTO>) cService.selectCommunityReview(dto.getCommunityCategory(), params);
+		}
+		
+		
 		return data;
 	}
+	
+	@GetMapping("/pagingSelect")
+	public String pagingSelect(CommunityDTO dto, SearchDTO params,Model model) {
+		
+		PagingResponse<CommunityDTO> data = null;
+		System.out.println("pagingSelect");
+		System.out.println(dto.getCommunityCategory());
+		System.out.println(params.getPage());
+		if("all".equals(dto.getCommunityCategory())) {
+			data = cService.selectCommunity(params);
+		}else if("tip".equals(dto.getCommunityCategory())) {
+			data = (PagingResponse<CommunityDTO>) cService.selectCommunityTip(dto.getCommunityCategory(), params);
+		}else if("review".equals(dto.getCommunityCategory())) {
+			data = (PagingResponse<CommunityDTO>) cService.selectCommunityReview(dto.getCommunityCategory(), params);
+		}				
+		
+		model.addAttribute("response", data);
+		model.addAttribute("params", params);
+		model.addAttribute("communityCategory", dto.getCommunityCategory());
+		return "communitymain";
+	}
+	
 
 }
