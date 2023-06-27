@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
+import com.trip.project.dto.RecommandDTO;
 
 public interface PlanService {
 	
@@ -16,4 +17,6 @@ public interface PlanService {
 	public List<LoginDTO> genderList(int recommandPlaceNumber);
 	
 	public List<LoginDTO> birthList(int recommandPlaceNumber);
+	
+	public List<RecommandDTO> usermainRecommand(String userID);
 }

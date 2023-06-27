@@ -123,7 +123,8 @@ public class PlanController {
 	        System.out.println("controller pairs : " + lonLatPairs + "\n");
 	    }
 
-	    return "course";
+	    return "course" ;
+	}
 	
 	@RequestMapping("/airplane")
 	public String airplane(Model model) throws IOException {

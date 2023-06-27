@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mypage</title>
+<link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
+
+<style type="text/css">
+
+
+
+
+
+/* main */
+.mymain_text{
+	font-size:1.8rem;
+	margin-left:10rem;
+}
+
+.mymain{
+	padding:5rem;
+	padding-top:1rem;
+	position:relative;
+	display:flex;
+}
+	/* 세로 4개씩 반갈 왼쪽 */
+.main1{
+	/* border: solid;
+	border-color: #B8E9FF;
+	border-radius:0.5rem;
+	border-width:2px;
+	font-size: 1.8rem; */
+	flex:1;
+	padding:1rem;
+	margin-top:2rem;
+	height:65vh;
+	width:45vw;
+	position:relative;
+	/* left:2vw; */
+	display: flex;
+	flex-direction: column;
+  	align-items: center;
+	
+}
+	/* 세로 4개씩 반갈 오른쪽 div 디폴트 세로정렬이라 ㅇㅇ  */
+.main2{
+	/* border: solid;
+	border-color: #B8E9FF;
+	border-radius:0.5rem;
+	border-width:2px;
+	font-size: 1.8rem; */
+	flex:1;
+	padding:1rem;
+	margin-top:2rem;
+	height:65vh;
+	width:45vw;
+	position:relative;
+	/* right:2vw; */
+	display: flex;
+	flex-direction: column;
+  	align-items: center;
+	
+}
+	/* 개별 네모 칸 8개  */
+.plan{
+	width:80%;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius:0.5rem;
+	border-width:2px;
+	font-size: 1.8rem;
+	margin-top: 3rem;
+	display: flex;
+	justify-content: center;
+  	align-items: center;
+
+}
+	/* 안에 사진 칸  */
+.loc1{
+	flex:1;
+}
+	/* 안에 여행이름,날짜,기간 칸  */
+.loc2{
+	flex:2;
+}
+	/* loc 1 안에 사진, 1~8까지해야되나모르겠음
+	 값만 달라도 될 것 같아서 클래스로 바꿔도 될듯 */ 
+#location1{
+	width: 13rem;
+    height: 13rem; 
+    overflow: hidden;
+    background: #BDBDBD;
+}
+
+/* .myplan1{
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
+.location2{
+	width: 150px;
+    height: 150px; 
+    overflow: hidden;
+    background: #BDBDBD;
+}
+
+.myplan2{
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+} */
+
+
+</style>
+</head>
+
+<body>
+<!-- 옵션 -->
+<div>코스추천</div>
+
+
+<div class="course_set">
+	<div class="date" id="date">
+		<p>여행일</p>
+	</div>
+	<div>여행시기 </div>
+</div>
+<!-- 본 -->
+<div class="mymain_text">
+	<div>인기순</div>
+	<div>날짜순</div>
+</div>
+<div class="mymain">
+		<div class="main1"> 
+			<div class="plan">
+				<div class="loc1">
+					<img id="location1" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+		
+			<div class="plan">
+				<div class="loc1">
+					<img id="location2" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+		
+			<div class="plan">
+				<div class="loc1">
+					<img id="location3" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+		
+			<div class="plan">
+				<div class="loc1">
+					<img id="location4" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="main2">
+			<div class="plan">
+				<div class="loc1">
+					<img id="location5" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+		
+			<div class="plan">
+				<div class="loc1">
+					<img id="location6" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+		
+			<div class="plan">
+				<div class="loc1">
+					<img id="location7" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+		
+			<div class="plan">
+				<div class="loc1">
+					<img id="location8" src="#">
+				</div>
+				<div class="loc2">
+					<div> 여행이름 </div>
+					<div> 여행날짜 </div>
+					<div> 여행기간 </div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+</body>
+</html>

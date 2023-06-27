@@ -48,14 +48,12 @@ height:200px;
 }
 
 #profilefix{
-	height:5vh;
 	font-size: 1.5rem;
 	background-color: #BDBDBD;	
 	border: none;
 	border-radius: 0.5rem;
 	padding:0.4rem;
 	margin-left:1rem;
-	
 }
 
 
@@ -75,12 +73,6 @@ height:200px;
 	margin-bottom:2rem;
 	padding-top:1rem;
 	border-radius:0.5rem;
-}
-
-.3dots{
-	flex:1;
-	width:30px;
-	height:20px;
 }
 
 .num{
@@ -213,21 +205,22 @@ height:200px;
 			내 프로필
 			<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
 		</div>
-			<button class="profile" id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
+		<div class="profile">
+			<button id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
+		</div>
 	</div>
 	
 	<div class="status">
 		<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
 		<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
 		<div class="user_status" id="plan" onclick="mymain();">나의 일정
-			<div class="num" onclick="mymain();" th:text="${communitycount}"> 갯수 끌고오기 </div>
+			<div class="num" onclick="mymain();" > 일정 끌고오기 </div>
 		</div>
-
 		<div class="user_status" id="review" onclick="mymain();">나의 리뷰
-			<div class="num" onclick="mymain();">갯수 끌고오기 </div>
+			<div class="num" onclick="mymain();" th:text="${recommandcount}">리뷰 끌고오기 </div>
 		</div>
 		<div class="user_status" id="post" onclick="mymain();">나의 게시물
-			<div class="num" onclick="mymain();">갯수 끌고오기 </div>
+			<div class="num" onclick="mymain();" th:text="${communitycount}">게시물 끌고오기 </div>
 		</div>
 	</div>
 	

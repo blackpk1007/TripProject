@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
+import com.trip.project.dto.RecommandDTO;
 import com.trip.project.mapper.PlaceMapper;
 
 @Service
@@ -38,6 +39,11 @@ public class PlanServiceImpl implements PlanService{
 	public List<LoginDTO> birthList(int recommandPlaceNumber) {
 		
 		return pmapper.birthList(recommandPlaceNumber);
+	}
+
+	@Override
+	public List<RecommandDTO> usermainRecommand(String userID) {
+		return pmapper.usermainRecommand(userID);
 	}
 
 
