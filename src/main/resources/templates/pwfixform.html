@@ -31,6 +31,10 @@
 					<div class="loginForm">
                         <input type="text"	id="userPW2" name="userPW2" placeholder=" PW 확인">
 					</div>
+					
+					<input type="hidden" id="userID" th:text="${userID}">
+					<input type="hidden" id="userEmail" th:text="${userEmail}">
+					
 					<button id="findPwButton" type="button" th:onclick="fixPw();">확인</button>
 						
 					<ul class="wrap">
@@ -47,15 +51,22 @@
    <script th:inline="javascript"> 
    
    function fixPw(){
-       var dto = [[${dto}]];
-       console.log(dto.userID);
+       /* var userinfo = ${userinfo};
+       console.log(userinfo); */
+       
+       var userID = document.getElementById("userID");
+       var userEmail = document.getElementById("userEmail");
+       var useridvalue = document.getElementById("userID").value;
+       var useremailvalue = document.getElementById("userEmail").value; 
+       
+       console.log(userID);
+       console.log(useridvalue);
+       
        var userpw = document.getElementById("userPW");
        var userpw2 = document.getElementById("userPW2");
        var userpwvalue = document.getElementById("userPW").value;
        var userpw2value = document.getElementById("userPW2").value;
        
-       var userID = dto.userID;
-       var userEmail = dto.userEmail;
        
        if (userpwvalue == "") {
          alert("패스워드를 입력 해 주세요.");
@@ -67,7 +78,21 @@
          userpw2.focus();
          return false;
       }
-      // 정규식 회원가입때 해논거 나중에 끌고오자 지금바쁨.
+    //비밀번호 영문자+숫자+특수조합(8~16자리 입력) 정규식
+      var pwdCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+
+      if (!pwdCheck.test(userpw.value)) {
+        alert("비밀번호는 영문자+숫자+특수문자 조합으로 8~16자리 사용해야 합니다.");
+        userpw.focus();
+        return false;
+      };
+
+      if (userpw2.value !== userpw.value) {
+        alert("비밀번호가 일치하지 않습니다..");
+        userpw2.focus();
+        return false;
+      };
+      
        $.ajax({
           url : "/login/pwfix",
           type : "post",

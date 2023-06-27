@@ -71,13 +71,11 @@
                  userEmail : useremailvalue}
        })
        		.done(function (result) {
-                console.log(result);
-                alert("아이디는"+result+"입니다.");
+                alert(result);
                 location.href="/login";
             })
             .fail(function(jqXHR) {
                 console.log(jqXHR);
-                alert("아이디와 이메일이 일치하지 않습니다.");
             })
    }
    
