@@ -117,13 +117,16 @@ public class PlanController {
 
 	    for (Map<String, Object> inputValue : inputValues) {
 	        String date = (String) inputValue.get("date");
+	        String color = (String) inputValue.get("color");
 	        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) inputValue.get("lonLatPairs");
 
 	        System.out.println("Controller - Date: " + date);
+	        System.out.println("Controller - Color: " + color);
 	        System.out.println("controller pairs : " + lonLatPairs + "\n");
 	    }
 
 	    return "course";
+	}
 	
 	@RequestMapping("/airplane")
 	public String airplane(Model model) throws IOException {
