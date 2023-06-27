@@ -89,9 +89,9 @@ public class LoginController {
 	      
 	      LoginDTO res = lservice.idfind(dto);
 	      if(res == null) {
-	    	  return "아이디와 이메일이 일치하지 않습니다.";
+	    	  return "이름과 이메일이 일치하지 않습니다.";
 	      }else {
-	    	  return res.getUserID()+"";
+	    	  return dto.getUserName()+"님의 아이디는"+res.getUserID()+"입니다.";
 	      }
 	      
 	   }
@@ -107,20 +107,27 @@ public class LoginController {
 	// 비밀번호 찾기
 	@ResponseBody
 	@PostMapping("/pwfind")
-	public String pwfind(LoginDTO dto) {
+	public String pwfind(LoginDTO dto, Model model) {
 		LoginDTO res = lservice.pwfind(dto);
+	
 		System.out.println(res);
-		
-		return res.getUserName();
+		if(res == null) {
+			return "아이디와 이메일이 일치하지 않습니다";
+		}else {
+//			세션에 썼던 아이디 이메일 담아주고 그걸 바로 재설정페이지에서 써먹어야될 것 같은데..
+			model.addAttribute("userID", dto.getUserID() );
+			model.addAttribute("userEmail", dto.getUserEmail());
+		return res.getUserName()+"님의 비밀번호 재설정 페이지로 이동합니다.";
+		}
 	}
 	
 	// 비밀번호 재설정페이지
-	@PostMapping("/pwfixform")
-	public String pwfixform(Model model , LoginDTO dto) {
-		System.out.println(dto.getUserID());
+	@RequestMapping("/pwfixform")
+	public String pwfixform(HttpSession session, Model model , LoginDTO dto) {
+		System.out.println(session.getAttribute("pwfind"));
 		System.out.println(dto.getUserEmail());
 		
-		model.addAttribute("dto",dto);
+		//model.addAttribute("dto",dto);
 		return "pwfixform";
 	}
 	
@@ -210,6 +217,8 @@ public class LoginController {
 			return "redirect:/usermain";
 		}
 	}
+	
+	// email 인증 관련
 	
 	@RequestMapping("/userinserttest")
 	public String userinserttest() {
