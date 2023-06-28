@@ -42,9 +42,8 @@
                     check+=res.images[0].fields[i].inferText;
                     
                 }
-                
                 console.log(check);
-                
+
                 var date;
                 var regex = /(200[0-9]|201[0-9]|202[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g;
                 var result = check.match(regex);
@@ -61,7 +60,6 @@
                 } else {
                     console.log("placeAddress 값이 포함되어 있지 않습니다.");
                 }
-
                 if (check.includes(placeName)) {
                     console.log("placeName 값이 포함되어 있습니다.");
                     placeCheckcnt++;
@@ -70,6 +68,7 @@
                 }
                 console.log(dateCheckdata);
     			console.log(date);
+
                 if(placeCheckcnt==2){
                 	if(userCheckcnt==0){
                 		alert("첫번째 영수증 인증이 완료되었습니다");
