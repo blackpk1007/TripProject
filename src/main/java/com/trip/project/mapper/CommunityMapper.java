@@ -41,7 +41,7 @@ public interface CommunityMapper {
 	CommunityDTO selectOne(int communityNumber);
 	
 
-	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communityContent=#{communityContent}, communityCategory=#{communityCategory}, communityWriter='me' WHERE communityNumber=#{communityNumber} ")
+	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communityContent=#{communityContent}, communityCategory=#{communityCategory} WHERE communityNumber=#{communityNumber} ")
 	int update(CommunityDTO dto);
 	
 	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} ")
