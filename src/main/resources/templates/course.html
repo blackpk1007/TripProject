@@ -156,14 +156,14 @@ for (var i = 0; i < inputValues.length; i++) {
 	
 	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
 	// 시작
-	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1);
+	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
 	// 도착
-	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2);
+	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
 
 	// 경유지 심볼 찍기
 	for (var j = 0; j < waypoints.length; j++) {
 		var waypoint = waypoints[j];
-		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3);
+		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
 	}
 	// 4. 경로탐색 API 사용요청
 
@@ -247,26 +247,26 @@ for (var i = 0; i < inputValues.length; i++) {
 	});
 }
 }
-	function addMarker(status, lon, lat, tag) {
+	function addMarker(status, lon, lat, tag, color) {
 	//출도착경유구분
 	//이미지 파일 변경.
-	
+	console.log("addMarker : "+color);
 	var markerLayer;
 	switch (status) {
 		case "llStart":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
+			img = '/resources/image/marker/'+color+'start.png';
 			break;
 		case "llPass":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png';
+			img = '/resources/image/marker/'+color+'pass.png';
 			break;
 		case "llEnd":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
+			img = '/resources/image/marker/'+color+'end.png';
 			break;
 		default:
 	};
 	var marker = new Tmapv2.Marker({
 		position: new Tmapv2.LatLng(lat,lon),
-		icon: imgURL,
+		icon: img,
 		map: map
 	});
 	// 마커 드래그 설정
@@ -285,14 +285,14 @@ for (var i = 0; i < inputValues.length; i++) {
 	 function drawRoute(date, lonLatPairs, color) {
 			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
 			// 시작
-			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1);
+			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
 			// 도착
-			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2);
+			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
 
 			// 경유지 심볼 찍기
 			for (var j = 0; j < waypoints.length; j++) {
 				var waypoint = waypoints[j];
-				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3);
+				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
 			}
 	      var startX = lonLatPairs[0].lat;
 	      var startY = lonLatPairs[0].lon;
