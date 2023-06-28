@@ -619,6 +619,7 @@ function createMarkers(data) {
     	  const checkboxElement = document.createElement("input");
 	      checkboxElement.setAttribute("type", "checkbox");
       	checkboxElement.setAttribute("id", `chk${i}-${j}`);
+      	checkboxElement.setAttribute("name", "planColor");
       	checkboxElement.setAttribute("onclick", `handleCheckboxClick(${i}, 'chk${i}-${j}')`);
 		
       	const inputcss = `
