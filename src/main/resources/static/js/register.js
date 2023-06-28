@@ -10,7 +10,7 @@ function regist_check() {
   var userPhone = document.getElementById("userPhone");
   var userEmail = document.getElementById("userEmail");
   var userBirth = document.getElementById("userBirth");
-
+  var bDate = new Date();
   
   if (userName.value == "") {
     alert("이름을 입력하세요.");
@@ -18,10 +18,27 @@ function regist_check() {
     return false;
   };
   
+   // 한글만, 글자수제한은 없음..
+ 	var namecheck = /^[가-힣]{2,5}$/;
+  if (!namecheck.test(userName.value)){
+  	alert("한글, 두글자 이상 5글자 이하 이름만 가능.");
+  	userName.focus();
+  	return false;
+  };
+  
   if (userBirth.value == ""){
 	  alert("생년월일 입력하세요.")
 	  return false;
   }
+  
+  /*
+  if (!bDate.test(userBirth.value)) {
+  	alert("오늘태어났니?");
+  	userBirth.focus();
+  	return false;
+  }
+  */
+  
   
   if (userID.value == "") { //해당 입력값이 없을 경우 같은말: if(!uid.value)
     alert("아이디를 입력하세요.");
@@ -29,6 +46,13 @@ function regist_check() {
     return false; //return: 반환하다 return false:  아무것도 반환하지 말아라 아래 코드부터 아무것도 진행하지 말것
   };
   
+  //아이디 영어,숫자 8~20자
+  var idcheck = /^[a-zA-Z0-9]{8,20}$/;
+  if (!idcheck.test(userID.value)) {
+  	alert("영어,숫자 8~20자로 설정해주세요.");
+  	userID.focus();
+  	return false;
+  }
   
   if (userPW.value == "") {
     alert("비밀번호를 입력하세요.");
@@ -68,19 +92,20 @@ function regist_check() {
   }
   
   var emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
-  if (!emailRegExp.test(mail)) {
+  if (!emailRegExp.test(userEmail.value)) {
       alert("이메일 형식이 올바르지 않습니다!");
-      form.mail.value = "";
-      form.mail.focus();
+      userEmail.focus();
       return false;
   }
   
+  /*
   var reg = /^[0-9]+/g; //숫자만 입력하는 정규식
   if (!reg.test(userPhone.value)) {
     alert("전화번호는 숫자만 입력할 수 있습니다.");
     userPhone.focus();
     return false;
   }
+  */
 
   /* if (!agree.checked) { //체크박스 미체크시
     alert("약관 동의를 체크하세요.");

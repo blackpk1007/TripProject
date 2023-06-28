@@ -34,14 +34,14 @@ public interface CommunityMapper {
 	@Select(" SELECT COUNT(*) FROM community WHERE communityCategory='review' ")
 	int CountReview(SearchDTO params);
 	
-	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}, 'me') ")
+	@Insert(" INSERT INTO community VALUES(NULL, #{communityTitle}, #{communityContent}, NOW(), #{communityCategory}, #{communityWriter}) ")
 	int insert(CommunityDTO dto);
 	
 	@Select(" SELECT * FROM community WHERE communityNumber=#{communityNumber} ")
 	CommunityDTO selectOne(int communityNumber);
 	
 
-	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communityContent=#{communityContent}, communityCategory=#{communityCategory}, communityWriter='me' WHERE communityNumber=#{communityNumber} ")
+	@Update(" UPDATE community SET communityTitle=#{communityTitle}, communityContent=#{communityContent}, communityCategory=#{communityCategory} WHERE communityNumber=#{communityNumber} ")
 	int update(CommunityDTO dto);
 	
 	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} ")

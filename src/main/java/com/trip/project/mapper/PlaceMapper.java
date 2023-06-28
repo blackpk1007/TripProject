@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
+import com.trip.project.dto.PlanDetailDTO;
 
 @Mapper
 public interface PlaceMapper {
@@ -28,10 +29,14 @@ public interface PlaceMapper {
 
 	@Select(" select * from place ")
 	List<PlaceDTO> placeList();
-
+	
 	@Select(" SELECT l.userGender, recommandPlaceNumber, COUNT(*) AS count FROM login AS l JOIN recommand AS r ON l.userID = r.recommandUserID WHERE r.recommandPlaceNumber =#{recommandPlaceNumber} GROUP BY l.userGender ")
 	List<LoginDTO> genderList(int recommandPlaceNumber);
 	
 	@Select(" SELECT DATE_FORMAT(l.userBirth, '%Y') AS userBirth, r.recommandPlaceNumber FROM login AS l JOIN recommand AS r ON l.userID = r.recommandUserID WHERE r.recommandPlaceNumber =#{recommandPlaceNumber} ")
 	List<LoginDTO> birthList(int recommandPlaceNumber);
+	
+	@Insert(" insert into plan values(null, #{userID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
+	
+	int planDetailInsert(PlanDetailDTO dto);
 }

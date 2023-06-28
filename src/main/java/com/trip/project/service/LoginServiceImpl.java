@@ -18,7 +18,10 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Override
 	public LoginDTO login(LoginDTO dto) {
-
+		if (loginMapper.login(dto) == null) {
+			return loginMapper.login(dto);
+		}
+			
 		return loginMapper.login(dto);
 	}
 

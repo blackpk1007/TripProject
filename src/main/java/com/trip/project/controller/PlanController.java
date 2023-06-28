@@ -2,6 +2,7 @@ package com.trip.project.controller;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -87,9 +89,43 @@ public class PlanController {
 		return "main"; 
 	}
 	
-	@GetMapping("/course")
-	public String course() {
-		return "course";
+//	@PostMapping("/course")
+//	public String course(@RequestBody List<Map<String, Object>> inputValues, Model model) {
+//	    List<String> dates = new ArrayList<>();  // 날짜 리스트
+//	    List<List<Map<String, String>>> lonLatPairsList = new ArrayList<>();  // 위치 리스트
+//
+//	    for (Map<String, Object> inputValue : inputValues) {
+//	        String date = (String) inputValue.get("date");
+//	        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) inputValue.get("lonLatPairs");
+//
+//	        dates.add(date);  // 날짜 추가
+//	        lonLatPairsList.add(lonLatPairs);  // 위치 추가
+//
+//	        System.out.println("Controller - Date: " + date);
+//	        System.out.println("controller pairs : " + lonLatPairs + "\n");
+//	    }
+//
+//	    model.addAttribute("dates", dates);  // 날짜 리스트 모델에 담기
+//	    model.addAttribute("lonLatPairsList", lonLatPairsList);  // 위치 리스트 모델에 담기
+//
+//	    return "course";
+//	}
+	
+	@PostMapping("/course")
+	public String course(@RequestBody List<Map<String, Object>> inputValues, Model model) {
+	    model.addAttribute("inputValues", inputValues);
+
+	    for (Map<String, Object> inputValue : inputValues) {
+	        String date = (String) inputValue.get("date");
+	        String color = (String) inputValue.get("color");
+	        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) inputValue.get("lonLatPairs");
+
+	        System.out.println("Controller - Date: " + date);
+	        System.out.println("Controller - Color: " + color);
+	        System.out.println("controller pairs : " + lonLatPairs + "\n");
+	    }
+
+	    return "course";
 	}
 	
 	@RequestMapping("/airplane")
