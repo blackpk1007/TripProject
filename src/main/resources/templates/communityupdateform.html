@@ -4,23 +4,26 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-	  #write{
+	   #write{
             width:50%;
        		
 	        margin:20px auto;
 	        text-align:center;
-	        height:100vh;
+	        height:90vh;
 	        min-width:800px;
-	       	margin-top:12%;
+	        margin-top:8%;
         }
         .div{
             border:solid 1px black;
         }
         #top_title{
+            width:100%;
             font-size:20pt;
+            
         }
         #write_kg{
             float: left;
+            height:4vh;
             margin:1% auto;
             margin-left: 8.3%;
             margin-right: 1.7%;
@@ -34,15 +37,16 @@
             margin-right: 3%;
         }
         #kategorie{
-        	
+        	width:100%;
             height:6vh;
             margin-top:3%;
         }
         #write_ti{
             float: left;
+            height:4vh;
             margin:1% auto;
             margin-left: 10%;
-            margin-right: 2.5%;
+            margin-right: 4%;
             line-height:220%;
             
         }
@@ -50,31 +54,34 @@
         	
             float: left;
             margin:1% auto;
-            margin-left: 9.8%;
+            margin-left: 8.3%;
             width: 70%;
             height:3vh;
             padding:3px;
         }
         #title{
             height: 6vh;
-            
+            width:100%;
+        }
+        #contents{
+        	width:100%;
+        	height:60vh;
         }
         #write_con{
             float: left;
             margin: 20% auto;
             margin-left: 10%;
             line-height: 500%;
-            
         }
+      
         #contentText{
         	
 
             width:70%;
             margin-left:26%;
-            margin-top:1%;
             margin-bottom: 1%;
             border: solid 1px black;
-            height:60vh;
+            height:53vh;
            	text-align:left;
            	padding:3px;
            	overflow: auto;
@@ -99,8 +106,8 @@
             border-color: #B8E9FF;
             border-radius: 7px;
             float:right;
-            margin-right:0.5%; 
-            cursor:pointer;
+            margin-right:0.5%;
+			cursor:pointer;
         }
         #listBT{
         	width:10%;
@@ -111,11 +118,53 @@
             float:right;
             cursor:pointer;
         }
-        .editor-menu{
+        
+    	.editor-menu{
     		margin-top:1%;
-    		
+    		width:70%;
+    		margin-left:16%;
+    		height:4vh;
     	}
-    	#menu{
+    	.editor-menu button{
+    		float:right;
+    		height:3vh;
+    		border-radius:5px;
+    		padding: 1px 10px;
+    		width:6%;
+    		margin-right:1%;
+    		border:none;
+    		cursor:pointer;
+    		background-color:white;
+    	}
+    	.editor-menu p {float:right;}
+    	#btn-unordered-list,#btn-ordered-list{
+    		font-size:10%;
+    	}
+    	#buttonContour{
+    		color:#868E96;
+    		padding:0px;
+    		width:1%;
+    		cursor:default;
+    	}
+    	#buttonContourTwo{
+    		color:#868E96;
+    		padding:0px;
+    		width:1%;
+    		cursor:default;
+    		margin-right:2%;
+    	}
+    	#attachFile{float:right;}
+    	input[type=file]::file-selector-button {
+		  width: 40%;
+		  height: 3vh;
+		  border: solid 1px black;
+		  border-radius: 5px;
+		  cursor: pointer;
+		  background-color:white;
+		  
+		}
+    	
+		#menu{
 			width: 100%;
 			height: 40px;
 		}
@@ -125,15 +174,15 @@
 			list-style: none;
 			text-align: center;
 		}
-
+		
 		#menu .linka{
 			float: left;
 		}
-
+		
 		#menu .linkb{
 			float: right;
 		}
-
+		
 		#menu .link{
 			width: 120px;
 			text-decoration: none;
@@ -141,12 +190,19 @@
 			color: #000000;
 			font-weight: bold;
 		}
-
+		
 		#logo {
 			width: 200px;
 			height: 100px;
 			}
-        
+		   
+		button.active {
+	        color: #B8E9FF;
+	        
+    	}
+		
+
+       
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
@@ -159,6 +215,11 @@ $(document).ready(function() {
     const btnOrderedList = document.getElementById('btn-ordered-list');
     const btnUnorderedList = document.getElementById('btn-unordered-list');
 
+    const buttonContour = document.getElementById('buttonContour');
+    const buttonContourTwo = document.getElementById('buttonContourTwo');
+    buttonContourTwo.disabled = true;
+    buttonContour.disabled = true;
+    
     btnBold.addEventListener('click', function () {
     	event.preventDefault();
         setStyle('bold');
@@ -189,20 +250,65 @@ $(document).ready(function() {
         setStyle('insertUnorderedList');
     });
 
+    editor.addEventListener('keydown', function () {
+        checkStyle();
+    });
+
+    editor.addEventListener('mousedown', function () {
+        checkStyle();
+    });
+    
     function setStyle(style) {
         document.execCommand(style, false, null);
         updateHiddenInput(); // 적용된 스타일을 hidden input에 업데이트
         focusEditor();
+        checkStyle();
     }
 
     function updateHiddenInput() {
         const hiddenInput = document.querySelector('input[name="communityContent"]');
         hiddenInput.value = editor.innerHTML;
-        
     }
 
     function focusEditor() {
         editor.focus({preventScroll: true});
+    }
+    
+    function checkStyle() {
+        if (isStyle('bold')) {
+            btnBold.classList.add('active');
+        } else {
+            btnBold.classList.remove('active');
+        }
+        if (isStyle('italic')) {
+            btnItalic.classList.add('active');
+        } else {
+            btnItalic.classList.remove('active');
+        }
+        if (isStyle('underline')) {
+            btnUnderline.classList.add('active');
+        } else {
+            btnUnderline.classList.remove('active');
+        }
+        if (isStyle('strikeThrough')) {
+            btnStrike.classList.add('active');
+        } else {
+            btnStrike.classList.remove('active');
+        }
+        if (isStyle('insertOrderedList')) {
+            btnOrderedList.classList.add('active');
+        } else {
+            btnOrderedList.classList.remove('active');
+        }
+        if (isStyle('insertUnorderedList')) {
+            btnUnorderedList.classList.add('active');
+        } else {
+            btnUnorderedList.classList.remove('active');
+        }
+    }
+
+    function isStyle(style) {
+        return document.queryCommandState(style);
     }
     
     $("#submitBT").on('click', function (event) {
@@ -218,7 +324,7 @@ $(document).ready(function() {
     	console.log(contentText);
     	
     	if(communityTitle == null || communityTitle == "" || contentText == null || contentText == ""){
-    		alert("제목 혹은 내용을 입력해 주세요.");
+    		alert("제목 또는 내용을 입력하여 주세요.");
     		return false;
     		
     	}else if(communityTitleLength > titleLength){
@@ -233,10 +339,9 @@ $(document).ready(function() {
     	}
     	
     });
-   
+    
    
 });
-
 </script>
 </head>
 <body>
@@ -246,8 +351,8 @@ $(document).ready(function() {
 		</div>
 		<ul>
 			<li class="linka" ><a class="link" href="#">일정생성</a></li>
-			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linka" ><a class="link" href="/community/communitymain">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="/chatting">채팅방</a></li>
 			<li class="linkb" ><a class="link" href="/login/userupdateform">마이페이지</a></li>
 		</ul>
 	</nav>
@@ -277,25 +382,32 @@ $(document).ready(function() {
         </div>
         <div id="contents" class="div">
         	 <div class="editor-menu">
-			    <button id="btn-bold">
-			        <b>B</b>
-			    </button>
-			    <button id="btn-italic">
-			        <i>I</i>
-			    </button>
-			    <button id="btn-underline">
-			        <u>U</u>
-			    </button>
-			    <button id="btn-strike">
-			        <s>S</s>
+			    <div class="filebox">
+            		<input type="file" id="attachFile" name="attachFile">
+        		</div>
+	        	 <button id="buttonContourTwo">|</button>
+	        	 <button id="btn-unordered-list">
+			        o_<br>
+			       	o_
+			       
 			    </button>
 			    <button id="btn-ordered-list">
-			        OL
+			        1_<br>
+			         2_
 			    </button>
-			    <button id="btn-unordered-list">
-			        UL
+			   	<button id="buttonContour">|</button>
+			    <button id="btn-strike">
+			        <s>가</s>
 			    </button>
-			    <input type="file" id="attachFile" name="attachFile">
+			    <button id="btn-underline">
+			        <u>가</u>
+			    </button>
+			    <button id="btn-italic">
+			        <i>가</i>
+			    </button>
+			    <button id="btn-bold">
+			        <b>가</b>
+			    </button>
 			</div>
             <div id="write_con">내용</div>
             <div id="contentText" contenteditable="true" th:utext="${dto.communityContent}" ></div>
