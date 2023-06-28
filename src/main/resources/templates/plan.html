@@ -31,15 +31,13 @@ function openPopup() {
     // 팝업 내용 추가
     popup.innerHTML = `
         <h1>영수증 인증</h1>
-        <form action="/review/reveiwwrite" method="post" enctype="multipart/form-data">
             <div class="filebox">
                 <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
-                <input type="submit" value="인증하기" id="submitBT">
+                <input type="button" value="인증하기" id="submitBT" onclick="test()">
                 <br>
-                <img id="preview" />
+                <img id="preview" width="400px" height="500px"/>
                 <input type="hidden" name="placeNumber" value="" id="placeNumber">
             </div>
-        </form>
         <span class="ocr_popup-close" onclick="closePopup()">X</span>
     `;
 
@@ -68,6 +66,178 @@ function readURL(input) {
         document.getElementById('preview').src = "";
     }
 }
+
+function test(){
+	   var fileInput = document.getElementById("attachFile");
+	     var placeNumberInput = document.getElementById("placeNumber");
+
+	     var file = fileInput.files[0];
+	     var placeNumber = placeNumberInput.value;
+
+	     var formData = new FormData();
+	     formData.append("attachFile", file);
+	     formData.append("placeNumber", placeNumber);
+
+	   $.ajax({
+	      url: '/review/reviewwrite',
+	      type: 'POST',
+	      data: formData,
+	      processData: false,
+	      contentType: false,
+	      success:function(data){
+	          console.log(data);
+	          var loginchk = [[${session.login}]];
+	          console.log(loginchk);
+	          		let res=data[0];
+	          		let num=data[1];
+	          		let userCheck=data[2];
+	          		console.log(res);
+	          		console.log(num);
+	          		console.log(userCheck);
+	                var placeNumber2 = num.placeNumber;
+	                var placeName2 = num.placeName;
+	                var placeAddress2 = num.placeAddress;
+	             	// 공백 제거
+	                placeName2 = placeName2.replace(/\s/g, '');
+	                placeAddress2 = placeAddress2.replace(/\s/g, '');
+
+	                console.log(placeNumber2);
+	                console.log(placeName2);
+	                console.log(placeAddress2);
+	                  //let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
+	                  //let num = '[(${num})]';
+	                  //let userCheck = [[(${userCheck})]];
+	                  var userCheckcnt=0;
+	                  var dateCheckcnt=-1;
+	                  var dateCheckdata;
+	                  
+	                  for(var i=0;i<userCheck.length;i++){
+	                  	dateCheckcnt++;
+	                      if (loginchk == userCheck[i].recommandUserID) {
+	                          userCheckcnt++;
+	                          dateCheckdata=userCheck[i].recommandDate;
+	                          console.log(dateCheckdata);
+	                      }
+	                  }
+	                  /*
+	                  let placeNumber = num.match(/placeNumber=([^,]+)/)[1];
+	                  let placeName = num.match(/placeName=([^,]+)/)[1];
+	                  let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
+	                  console.log(placeNumber);
+	                  let check="";
+	                  
+	      	        // 괄호 제거하기
+	      	        placeAddress = placeAddress.replace(/\(|\)/g, '');
+	      	        placeAddress = placeAddress.replace(/\s/g, '');
+	                  console.log(placeName);
+	                  console.log(placeAddress);*/
+	                  let check="";
+	                  if (res) {
+	                      res = JSON.parse(res); // JSON 문자열을 JavaScript 객체로 변환
+	                      for (let i = 0; i < res.images[0].fields.length; i++) {
+	                          check+=res.images[0].fields[i].inferText;
+	                      }
+	                      console.log(check);
+
+	                      var date;
+	                      var regex = /(200[0-9]|201[0-9]|202[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g;
+	                      var result = check.match(regex);
+	                      if (result) {
+	                      	  date = new Date(result[0]);
+	                      	}
+	                      
+	                      
+	                      var placeCheckcnt=0;
+	                  
+	                      if (check.includes(placeAddress2)) {
+	                          console.log("placeAddress 값이 포함되어 있습니다.");
+	                          placeCheckcnt++;
+	                      } else {
+	                          console.log("placeAddress 값이 포함되어 있지 않습니다.");
+	                      }
+	                      if (check.includes(placeName2)) {
+	                          console.log("placeName 값이 포함되어 있습니다.");
+	                          placeCheckcnt++;
+	                      } else {
+	                          console.log("placeName 값이 포함되어 있지 않습니다.");
+	                      }
+	                      console.log(dateCheckdata);
+	          			console.log(date);
+
+	                      if(placeCheckcnt==2){
+	                      	if(userCheckcnt==0){
+	                      		alert("첫번째 영수증 인증이 완료되었습니다");
+	                      		closePopup();
+	                      		// 데이터를 서버로 전송하여 DB에 삽입
+	                              $.ajax({
+	                                  url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+	                                  type: 'POST',
+	                                  data: {
+	                                      userID: loginchk,
+	                                      placeNumber: placeNumber2,
+	                                      date: date
+	                                  },
+	                                  success: function(response) {
+	                                      console.log(response);
+	                                  },
+	                                  error: function(error) {
+	                                      console.log(error);
+	                                  }
+	                              });
+	                      	}
+	                      	else if(userCheckcnt==1){
+	                      		if(dateCheckdata!=date){
+	                      			console.log(dateCheckdata);
+	                      			console.log(date);
+	                      			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
+	                      			closePopup();
+	                      			
+	                      			 // 데이터를 서버로 전송하여 DB에 삽입
+	                                  $.ajax({
+	                                      url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+	                                      type: 'POST',
+	                                      data: {
+	                                          userID: loginchk,
+	                                          placeNumber: placeNumber2,
+	                                          date: date
+	                                      },
+	                                      success: function(response) {
+	                                          console.log(response);
+	                                      },
+	                                      error: function(error) {
+	                                          console.log(error);
+	                                      }
+	                                  });
+	                      		}
+	                      		else{
+	                      			alert("이전에 인증한 날짜 영수증입니다");
+	                      			closePopup();
+	                      		}
+	                      	}
+	                      	else if(userCheckcnt>1){
+	                      		alert("두번 이상 인증하셨습니다");
+	                      		closePopup();
+	                      	}
+	                      }
+	                      else alert("영수증과 장소가 일치하지 않습니다");
+	                      closePopup();
+	                  }
+	                  
+	       },
+	       error:function(data){
+	          alert("실패");
+	       }
+	   });
+	}
+	
+
+var loginchk = [[${session.login}]];
+console.log(loginchk);
+var markers = []; // 마커를 담을 배열
+var placeData=[];
+var map; // map 객체 선언
+// 초기 마커 생성
+var placeList = [[${placeRestaurantList}]];
 
 /* function reloadStylesheet() {
 	  var links = document.getElementsByTagName('link');
