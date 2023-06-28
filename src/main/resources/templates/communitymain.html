@@ -9,10 +9,12 @@
 	margin: 20px auto;
 	text-align: center;
 	min-width: 1000px;
+	margin-top:8%;
 }
 
 #top_title {
 	font-size: 20pt;
+	width:100%;
 }
 
 #tag {
@@ -105,18 +107,41 @@ select {
 	cursor: pointer;
 }
 #gt{
-	width:30%;
+	width:10%;
 	float:left;
+	margin-right:30%;
 }
+
 #lt{
-	width:30%;
+	width:10%;
 	float:left;
+	margin-left:30%;
 }
 #pagingNumber{
-	width:30%;
+	width:20%;
 	float:left;
 }
 p{margin:0;}
+
+.paging {
+	width:100%;
+	margin-top:2%;
+	
+}
+
+#gt a{text-decoration: none; color: black;}
+#lt a{text-decoration: none; color: black;}
+#pagingNumber a{
+	text-decoration: none; 
+	color:black; 
+	width:10%;
+	display: inline-block; }
+.on{
+	width:10%;
+	background-color:#B8E9FF; 
+	border-radius:50%; 
+	display: inline-block;}
+
 #menu{
 	width: 100%;
 	height: 40px;
@@ -148,7 +173,10 @@ p{margin:0;}
 	width: 200px;
 	height: 100px;
 	}
-
+.subject a {
+	text-decoration: none;
+	color: black;
+}
 
 
 
@@ -226,7 +254,7 @@ function drawList(list, num) {
         html += `
             <dl>
                 <dd class="num">
-                    <a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityNumber}</a>
+                    ${row.communityNumber}
                 </dd>
                 <dd class="subject">
                     <a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityTitle}</a>
@@ -385,8 +413,8 @@ function drawListCategory(){
 		</div>
 		<ul>
 			<li class="linka" ><a class="link" href="#">일정생성</a></li>
-			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linka" ><a class="link" href="/community/communitymain">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="/chatting">채팅방</a></li>
 			<li class="linkb" ><a class="link" href="/login/userupdateform">마이페이지</a></li>
 		</ul>
 	</nav>
