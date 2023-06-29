@@ -760,9 +760,6 @@ function createMarkers(data) {
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
       
-      
-      // 부모 요소 선택
-	  
     // 7개의 checkbox 생성
     for (let i = 1; i <= days; i++) {
     	
@@ -862,9 +859,16 @@ function createMarkers(data) {
 
       // 등록 버튼 생성
       const submitButton = document.createElement("button");
-      submitButton.setAttribute("type", "submit");
+      submitButton.setAttribute("type", "button");
+      submitButton.setAttribute("onclick", "courseInsert()");
       submitButton.textContent = "등록";
 	  
+      const courseName = document.querySelector(".course-name");
+      const courseNameInput = document.createElement("input");
+      courseNameInput.type = "text";
+      courseNameInput.name = "planName";
+      courseNameInput.id = "planName";
+      courseNameInput.placeholder = '제목';
    // 이전날 버튼 생성
       const previousDayButton = document.createElement("button");
       previousDayButton.type = "button";
@@ -878,10 +882,10 @@ function createMarkers(data) {
       nextDayButton.addEventListener("click", nextDay);
       
       const courseButtonElement = document.querySelector(".course-button");
-
+	  
       courseButtonElement.appendChild(previousDayButton);
       courseButtonElement.appendChild(nextDayButton);
-      
+      courseName.appendChild(courseNameInput);
       daybuttondiv.appendChild(previewButton);
       daybuttondiv.appendChild(submitButton);
       
@@ -1137,6 +1141,88 @@ function createMarkers(data) {
 
 		  return colorMap[rgbValue] || rgbValue;
 		}
+	
+	function courseInsert(){
+		function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    
+		    const values = [];
+
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
+  			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
+		      const inputDateValue = inputDateElement.value;
+		      const lonLatPairs = [];
+			  
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
+
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+		        
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
+					
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
+		      });
+		      
+		      });
+		    
+
+		    return values;
+		  }
+		const inputValues = getInputValues();
+		const planName = document.querySelector('input[name="planName"]');
+		const planNameValue = planName.value;
+
+		  $.ajax({
+			    url: '/plan/createplan',
+			    type: 'POST',
+			    data: JSON.stringify({
+			    	   inputValues: inputValues,
+			    	   userID: loginchk,
+			    	   planName: planNameValue
+			    	}),
+			    contentType: 'application/json',
+			    success: function(data) {
+			      location.href="/login/usermain";
+			    },
+			    error: function(data){
+			    	alert("실패");
+			    }
+			  });
+	}
+	
+	function search(){
+		const searchInput = document.querySelector('input[name="keyword"]');
+		const keyword = encodeURIComponent(searchInput.value);
+		
+		$.ajax({
+			url:'/plan/search',
+			type: 'POST',
+			data: {keyword: keyword},
+			success: function(data){
+				updateList(data);
+				createMarkers(data);
+			},
+			error: function(data){
+				alert("실패");
+			}
+		});
+	}
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
@@ -1147,15 +1233,20 @@ function createMarkers(data) {
 <body>
 	<div class="header">
 		<div class="header-category">
-			<label id="label-left-course">코스추천</label> <label
-				id="label-left-community">커뮤니티</label> <label id="label-left-chat">채팅방</label>
-			<img src="./resources/image/logo.png" alt="" id="logimg"> <label
-				id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
+			<a href="/course" id="label-left-course">코스추천</a>
+			 <a href="/community" id="label-left-community">커뮤니티</a> 
+			 <a href="/chat" id="label-left-chat">채팅방</a>
+			<img src="./resources/image/logo.png" alt="" id="logimg"> 
+			<a href="/login" id="label-right-login">로그인</a>
+			 <a href="/register" id="label-right-register">회원가입</a>
 		</div>
 	</div>
 	<div class="main"> 
 		<div class="main-left">
-			<h2>사용자 추천</h2>
+			<div class="search-div">
+				<input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요">
+				<button type="button" id="search-button" onclick="search()">검색</button>
+			</div>
 			<div class="list">
 				<div id="left_block" th:each="restaurant : ${placeRestaurantList}">
 					<div id="list-img">
@@ -1245,9 +1336,10 @@ function createMarkers(data) {
 					<button type="button" th:onclick="applyDate()">적용</button>
 				</div>
 			</div>
-			<form action="/plan/createplan" method="post">
 			<div class="course">
 				<div class="course-color-day">
+				</div>
+				<div class="course-name">
 				</div>		
 				<div class="course-plan">
 					<div class="course-color-check">
@@ -1256,7 +1348,6 @@ function createMarkers(data) {
 				<div class="course-button">
 				</div>
 			</div>
-			</form>
 		</div>
 	</div>
 </body>
