@@ -128,7 +128,38 @@
 	/* 안에 여행이름,날짜,기간 칸  */
 .loc2{
 	flex:2;
+	display: flex;
+  	align-items: center;
 }
+/* 세로로 여행이름날짜기간 사용자id / 데이이터 3개,조회수(view)로 나 */  
+/*왼쪽*/
+.col1{
+	display: flex;
+	flex:1;
+	flex-direction: column;
+	justify-content: center;
+  	align-items: center;
+}
+.category{
+	margin:0.2rem;
+}
+.username{
+	margin:0.2rem;
+}
+/*오른쪽*/
+.col2{
+	display: flex;
+	flex:2;
+	flex-direction:column;
+	justify-content: center;
+}
+.data{
+	margin:0.2rem;
+}
+.userview{
+	margin:0.2rem;
+}
+
 	/* loc 1 안에 사진, 1~8까지해야되나모르겠음
 	 값만 달라도 될 것 같아서 클래스로 바꿔도 될듯 */ 
 #location{
@@ -213,12 +244,21 @@
 		<div class="main1"> 
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img id="location" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 		
@@ -227,9 +267,18 @@
 					<img id="location" src="#">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 		
@@ -238,9 +287,18 @@
 					<img id="location" src="#">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 		
@@ -249,9 +307,18 @@
 					<img id="location" src="#">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 			
@@ -263,9 +330,18 @@
 					<img id="location" src="#">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 		
@@ -274,9 +350,18 @@
 					<img id="location" src="#">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 		
@@ -285,9 +370,18 @@
 					<img id="location" src="#">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 		
@@ -296,9 +390,18 @@
 					<img id="location" src="#">
 				</div>
 				<div class="loc2">
-					<div> 여행이름 </div>
-					<div> 여행날짜 </div>
-					<div> 여행기간 </div>
+					<div class="col1">
+						<div class="category"> 여행이름 </div>
+						<div class="category"> 여행날짜 </div>
+						<div class="category"> 여행기간 </div>
+						<div class="username"> 사용자id </div>
+					</div>
+					<div class="col2">
+						<div class="data"> 여행이름 </div>
+						<div class="data"> 여행날짜 </div>
+						<div class="data"> 여행기간 </div>
+						<div class="userview"> 사용자id </div>
+					</div>
 				</div>
 			</div>
 		</div>
