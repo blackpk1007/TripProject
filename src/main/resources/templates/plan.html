@@ -430,6 +430,7 @@ function createMarkers(data) {
 	      mainLeft.style.display = 'none';
 	      placeMenu.style.display = 'block';
 	      
+	      document.getElementById("placeImage").src = "/resources/image/place/" + placedata.placeName + ".jpg"; // 이미지 경로를 이미지 요소에 할당
 	      document.getElementById("datatest1").innerText = placedata.placeName;
 	      document.getElementById("datatest2").innerText = placedata.placeAddress;
 	      document.getElementById("datatest3").innerText = placedata.placePhone;
@@ -1278,13 +1279,20 @@ function createMarkers(data) {
 			<div id="placemenu_button">
 				<button>x</button>
 			</div>
-			<div id="placemenu_heart">
+			<div id="datatest">
+			  <img id="placeImage" src="" alt="장소 이미지">
+			</div><br>
+			<div id="datatest1"></div><br>
+			<div id="ocr_button">
+				<img src="/resources/image/insta_heart.png" id="heartimg2"/>
+				<div id="datatest4"></div>
+				<img src="/resources/image/goood.png" id="heartimg2"/>
+				<div id="placemenu_heart">
 				<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
+				</div><br>
 			</div>
-			<div id="datatest1"></div>
 			<div id="datatest2"></div>
 			<div id="datatest3"></div>
-			<div id="datatest4"></div>
 			<div id="datatest5"></div>
 			<div id="datatest6"></div>
 			<div id="datatest7"></div>
