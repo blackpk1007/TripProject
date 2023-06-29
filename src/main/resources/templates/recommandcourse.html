@@ -16,6 +16,7 @@
 	text-align:center;
 	width:80vw;
 	height:10vh;
+	height:100%;
   	justify-content: center;
   	align-items: center;
   	border:solid;
@@ -25,32 +26,39 @@
 	top: 2vw;
 }
 .date{
-	padding:1rem;
+	margin-top:1rem;
+	margin-bottom:1rem;
 	width:100%;
 	height:30%;
 	display: flex;
   	justify-content: center;
+	align-items: center;
 }
 .dates{
 	display: flex;
 	text-align: center;
-	justify-content: center;
   	align-items: center;
   	font-size:1.8rem;
+  	margin-left:1rem;
+  	margin-right:1rem;
 }
 .season{
-	padding:1rem;
+	margin-top:1rem;
+	margin-bottom:1rem;
 	width:100%;
 	height:30%;
 	display: flex;
   	justify-content: center;
+  	align-items: center;
+  	
 }
 .seasons{
 	display:flex;
 	text-align:center;
-	justify-content: center;
   	align-items: center;
   	font-size:1.8rem;
+  	margin-left:2.7rem;
+  	margin-right:2.7rem;
 }
 
 
@@ -63,7 +71,7 @@
 	top: 5vh;
 	display:flex;
 }
-
+/* 큰틀 */
 .mymain{
 	padding:2rem;
 	padding-top:1rem;
@@ -80,6 +88,7 @@
 	font-size: 1.8rem; */
 	flex:1;
 	padding:1rem;
+	padding-top:0;
 	height:65vh;
 	width:45vw;
 	position:relative;
@@ -98,6 +107,7 @@
 	font-size: 1.8rem; */
 	flex:1;
 	padding:1rem;
+	padding-top:0;	
 	height:65vh;
 	width:45vw;
 	position:relative;
@@ -124,7 +134,22 @@
 	/* 안에 사진 칸  */
 .loc1{
 	flex:1;
+	display:flex;
 }
+
+	/* loc 1 안에 사진, 1~8까지해야되나모르겠음
+	 값만 달라도 될 것 같아서 클래스로 바꿔도 될듯 */ 
+.coursepic{
+	width: 13rem;
+    height: 13rem; 
+    overflow: hidden;
+    background: #BDBDBD;
+    margin:0.2rem;
+    justify-content: center;
+  	align-items: center;
+}
+
+
 	/* 안에 여행이름,날짜,기간 칸  */
 .loc2{
 	flex:2;
@@ -135,39 +160,67 @@
 /*왼쪽*/
 .col1{
 	display: flex;
-	flex:1;
+	flex:2;
 	flex-direction: column;
 	justify-content: center;
   	align-items: center;
 }
 .category{
 	margin:0.2rem;
+	margin-top:0.4rem;
+	margin-bottom:0.4rem;
+}
+.usernamelogo{
+	width: 1.8rem;
+    height: 1.8rem; 
+    border-radius: 70%;
+    border: solid;
+    border-width:0.2rem;
+    border-color: #B8E9FF;
+    overflow: hidden;
+    background: white;
+    margin-right:0.1rem;
+    display:flex;
+    justify-content: center;
+  	align-items: center;
 }
 .username{
 	margin:0.2rem;
+	margin-top:0.4rem;
+	margin-bottom:0.4rem;
+	display:flex;
+    justify-content: center;
+  	align-items: center;
 }
 /*오른쪽*/
 .col2{
 	display: flex;
-	flex:2;
+	flex:3;
 	flex-direction:column;
 	justify-content: center;
 }
 .data{
-	margin:0.2rem;
+	margin-top:0.4rem;
+	margin-bottom:0.4rem;
 }
-.userview{
-	margin:0.2rem;
+.viewlogo{
+	width: 1.8rem;
+    height: 1.8rem; 
+    overflow: hidden;
+    background: white;
+    margin-right:0.1rem;
+    display:flex;
+    justify-content: center;
+  	align-items: center;
 }
 
-	/* loc 1 안에 사진, 1~8까지해야되나모르겠음
-	 값만 달라도 될 것 같아서 클래스로 바꿔도 될듯 */ 
-#location{
-	width: 13rem;
-    height: 13rem; 
-    overflow: hidden;
-    background: #BDBDBD;
+.userview{
+	margin:0.2rem;
+	margin-top:0.4rem;
+	margin-bottom:0.4rem;
+	display:flex;
 }
+
 
 /* .myplan1{
 	display: flex;
@@ -244,80 +297,88 @@
 		<div class="main1"> 
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="/resources/image/course1.png">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png"> 
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
 		
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
 		
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
 		
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
@@ -327,80 +388,88 @@
 		<div class="main2">
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
 		
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
 		
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
 		
 			<div class="plan">
 				<div class="loc1">
-					<img id="location" src="#">
+					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
 						<div class="category"> 여행이름 </div>
 						<div class="category"> 여행날짜 </div>
 						<div class="category"> 여행기간 </div>
-						<div class="username"> 사용자id </div>
+						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
+						사용자id </div>
 					</div>
 					<div class="col2">
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"> view </div>
+						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
+						 view </div>
 					</div>
 				</div>
 			</div>
