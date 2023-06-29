@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlanDetailDTO {
 	
-	private int planDetailNumber;
+	private Integer planDetailNumber;
 	private String userID;
 	private String PlanName;
 	private String planDetailDate;

@@ -2,6 +2,7 @@ package com.trip.project.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -9,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
+import com.trip.project.dto.PlanDTO;
 import com.trip.project.dto.PlanDetailDTO;
 
 @Mapper
@@ -30,6 +32,9 @@ public interface PlaceMapper {
 	@Select(" select * from place ")
 	List<PlaceDTO> placeList();
 	
+	@Select(" select * from place where placeName like '%${keyword}%' order by placeGood desc")
+	List<PlaceDTO> placeSearch(@Param("keyword") String keyword);
+	
 	@Select(" SELECT l.userGender, recommandPlaceNumber, COUNT(*) AS count FROM login AS l JOIN recommand AS r ON l.userID = r.recommandUserID WHERE r.recommandPlaceNumber =#{recommandPlaceNumber} GROUP BY l.userGender ")
 	List<LoginDTO> genderList(int recommandPlaceNumber);
 	
@@ -37,6 +42,20 @@ public interface PlaceMapper {
 	List<LoginDTO> birthList(int recommandPlaceNumber);
 	
 	@Insert(" insert into plan values(null, #{userID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
+	int planInsert(PlanDTO dto);
 	
+	@Insert(" insert into planDetail values(null, #{userID}, #{planName}, #{planDetailDate}, #{planDetailLon}, #{planDetailLat}, #{planDetailColor}) ")
 	int planDetailInsert(PlanDetailDTO dto);
+	
+	@Select(" select * from plan where userID = #{userID} ")
+	PlanDTO userPlan(String userID);
+	
+	@Select(" select * from planDetail where userID = #{userID} and planName = #{planName} ")
+	List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto);
+	
+	@Delete(" delete from plan where userID = #{userID} and planName = #{planName} ")
+	int planDelete(PlanDTO dto);
+	
+	
+	
 }

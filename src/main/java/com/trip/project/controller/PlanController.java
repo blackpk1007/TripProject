@@ -1,6 +1,8 @@
 package com.trip.project.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDTO;
+import com.trip.project.dto.PlanDetailDTO;
 import com.trip.project.service.AirPlaneService;
 import com.trip.project.service.PlanServiceImpl;
 
@@ -45,19 +48,6 @@ public class PlanController {
 		return "plan";
 	}
 	
-//	@ResponseBody
-//	@GetMapping("/fetchPlaceList")
-//	public Map<String, List> planMarker() {
-//		List<PlaceDTO> placeList = pservice.placeList();
-////		List<LoginDTO> genderList = pservice.genderList();
-//		
-//		Map<String,List> map = new HashMap<String, List>();
-//		map.put("placeList", placeList);
-////		map.put("genderList", genderList);
-//		
-//		return map;
-//	}
-  
 	@ResponseBody
 	@GetMapping("/genderList")
 	public List<LoginDTO> genderList(@RequestParam int recommandPlaceNumber) {
@@ -82,34 +72,44 @@ public class PlanController {
 		return placeList;
 	}
 	
+	@ResponseBody
 	@PostMapping("/createplan")
-	public String createPlan(PlanDTO plandto) {
+	public String createPlan(@RequestBody Map<String, Object> requestData, Model model) {
+	    List<Map<String, Object>> inputValues = (List<Map<String, Object>>) requestData.get("inputValues");
+	    String userID = (String) requestData.get("userID");
+	    String planName = (String) requestData.get("planName");
+	    String firstDate = null;
+	    String lastDate = null;
+		for (Map<String, Object> inputValue : inputValues) {
+	        String date = (String) inputValue.get("date");
+	        String color = (String) inputValue.get("color");
+	        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) inputValue.get("lonLatPairs");
+	     // 첫 번째 요소의 date 값을 가져오기
+	        if (firstDate == null) {
+	            firstDate = date;
+	        }
+
+	        // 매번 반복마다 마지막 요소의 date 값을 갱신하기
+	        lastDate = date;
+	        for (Map<String, String> lonLatPair : lonLatPairs) {
+	            String lon = lonLatPair.get("lon");
+	            String lat = lonLatPair.get("lat");
+	            PlanDetailDTO detaildto = new PlanDetailDTO(null, userID, planName, date, lon, lat, color);	           
+	            pservice.planDetailInsert(detaildto);
+	            // 데이터베이스에 저장 로직 구현
+	            // 예: saveDataToDatabase(userID, planName, date, color, lon, lat);
+	        }
+	        System.out.println("controller - user : "+userID);
+	        System.out.println("controller - name : "+planName);
+	        System.out.println("Controller - Date: " + date);
+	        System.out.println("Controller - Color: " + color);
+	        System.out.println("controller pairs : " + lonLatPairs + "\n");
+	    }
+		PlanDTO dto = new PlanDTO(null, userID, planName, firstDate, lastDate, 0);
+		pservice.planInsert(dto);
 		
-		System.out.println("controller : "+plandto);
 		return "main"; 
 	}
-	
-//	@PostMapping("/course")
-//	public String course(@RequestBody List<Map<String, Object>> inputValues, Model model) {
-//	    List<String> dates = new ArrayList<>();  // 날짜 리스트
-//	    List<List<Map<String, String>>> lonLatPairsList = new ArrayList<>();  // 위치 리스트
-//
-//	    for (Map<String, Object> inputValue : inputValues) {
-//	        String date = (String) inputValue.get("date");
-//	        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) inputValue.get("lonLatPairs");
-//
-//	        dates.add(date);  // 날짜 추가
-//	        lonLatPairsList.add(lonLatPairs);  // 위치 추가
-//
-//	        System.out.println("Controller - Date: " + date);
-//	        System.out.println("controller pairs : " + lonLatPairs + "\n");
-//	    }
-//
-//	    model.addAttribute("dates", dates);  // 날짜 리스트 모델에 담기
-//	    model.addAttribute("lonLatPairsList", lonLatPairsList);  // 위치 리스트 모델에 담기
-//
-//	    return "course";
-//	}
 	
 	@PostMapping("/course")
 	public String course(@RequestBody List<Map<String, Object>> inputValues, Model model) {
@@ -136,14 +136,15 @@ public class PlanController {
 		
 		return "airplane";
 	}
-//	@ResponseBody
-//	@GetMapping("/fetchMarkers")
-//	public String planMarker(@RequestParam String category, Model model){
-//		System.out.println("category 들어옴?" +category); 
-//		List<PlaceDTO> categoryList = pservice.placeCategoryMarker(category);
-//
-//		model.addAttribute("placeCategoryList", categoryList);
-//		System.out.println("list 나감?"+categoryList);
-//		return "plan";
-//	}
+	
+	@ResponseBody
+	@PostMapping("/search")
+	public List<PlaceDTO> search(@RequestParam("keyword") String keyword) throws UnsupportedEncodingException {
+		String KeywordDecode = URLDecoder.decode(keyword, "UTF-8");
+		System.out.println("controller search: "+KeywordDecode);
+		
+		List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode);
+		System.out.println("controller search : "+dto);
+		return dto;
+	}
 }
