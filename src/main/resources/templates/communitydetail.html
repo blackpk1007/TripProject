@@ -6,10 +6,11 @@
 <style type="text/css">
 	#detail{
             width:50%;
+           	height:90vh;
             min-width:800px;
 	        margin:20px auto;
 	        text-align:center;
-	        
+	        margin-top:8%;
         }
         #img{
             width:5%;
@@ -83,49 +84,59 @@
         #contentImg{
         	float: left;
         	width-max:100%;
-        	width: 50%;
-        	
+        	width: 60%;
+        	hegith:10vh;
         }
         #contentAndImg{
         	border: solid 1px black;
         	margin-top:1%;
         	margin-bottom:1%;
         	padding: 1%;
-        	height:80vh;
+        	height:60vh;
         	overflow: auto;
+        	padding-left:5%;
+        	padding-top:5%;
         }
         #menu{
-	width: 100%;
-	height: 40px;
-}
+			width: 100%;
+			height: 40px;
+		}
 
-#menu ul li{
-	background-color: #ffffff;
-	list-style: none;
-	text-align: center;
-}
-
-#menu .linka{
-	float: left;
-}
-
-#menu .linkb{
-	float: right;
-}
-
-#menu .link{
-	width: 120px;
-	text-decoration: none;
-	display: block;
-	color: #000000;
-	font-weight: bold;
-}
-
-#logo {
-	width: 200px;
-	height: 100px;
-	}
+		#menu ul li{
+			background-color: #ffffff;
+			list-style: none;
+			text-align: center;
+		}
+		
+		#menu .linka{
+			float: left;
+		}
+		
+		#menu .linkb{
+			float: right;
+		}
+		
+		#menu .link{
+			width: 120px;
+			text-decoration: none;
+			display: block;
+			color: #000000;
+			font-weight: bold;
+		}
+		
+		#logo {
+			width: 200px;
+			height: 100px;
+			}
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+#(document).ready(function(){
+	$("#deleteBT").on('click', function(){
+		alert("게시글을 삭제 하시겠습니까?");
+	});
+});
+</script>
 </head>
 <body>
 	<nav id="menu">
@@ -134,8 +145,8 @@
 		</div>
 		<ul>
 			<li class="linka" ><a class="link" href="#">일정생성</a></li>
-			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka" ><a class="link" href="#">채팅방</a></li>
+			<li class="linka" ><a class="link" href="/community/communitymain">커뮤니티</a></li>
+			<li class="linka" ><a class="link" href="/chatting">채팅방</a></li>
 			<li class="linkb" ><a class="link" href="/login/userupdateform">마이페이지</a></li>
 		</ul>
 	</nav>
@@ -168,10 +179,11 @@
 		
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
-            <div >
+            <div th:if="${dto.communityWriter == session.login}">
             	<input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
             	<input type="button" value="수정" id="updateBT" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
             </div>
+            <div th:unless="${dto.communityWriter == session.login}"></div>
         </div>
         
     </div>

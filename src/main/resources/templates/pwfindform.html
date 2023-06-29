@@ -24,7 +24,6 @@
 				<div id="signin">패스워드 찾기</div>
 				
 			</div>
-			<form id="pwfind" method="post">
 			<div class="signup_body">
 					<div class="loginForm">
                         <input type="text"	id="userID" name="userID" placeholder=" ID 입력">  
@@ -34,7 +33,10 @@
 					</div>
 					<button id="findPwButton" type="button" th:onclick="findPw();">확인</button>
 			</div>
-			</form>
+			<!-- <form name="userInfo" method="post" action="/login/pwfixform">
+				<input type="hidden" name="userID" value="${userID}">
+				<input type="hidden" name="userEmail" value="${userEmail}">
+			</form> -->
 					<ul class="wrap">
 						<hr class="line">
 						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
@@ -51,13 +53,14 @@
    
    function findPw(){
       
-       var userid = document.getElementById("userID");
-       var useremail = document.getElementById("userEmail");
+       var userID = document.getElementById("userID");
+       var userEmail = document.getElementById("userEmail");
        var useridvalue = document.getElementById("userID").value;
        var useremailvalue = document.getElementById("userEmail").value;
-       var pwform = document.getElementById("pwfind");
-       console.log(userid);
+
+       console.log(userID);
        console.log(useridvalue);
+       
        if (useridvalue == "") {
          alert("아이디를 입력해 주세요.");
          userid.focus();
@@ -68,10 +71,25 @@
          useremail.focus();
          return false;
       }
-      
-      //pwform.attr("action", "/login/pwfixform").submit();
-      pwform.action = "/login/pwfixform";
-      pwform.submit();
+      $.ajax({
+          url : "/login/pwfind",
+          type : "post",
+          data : { userID : useridvalue,
+                 userEmail : useremailvalue}
+       })
+       		.done(function (result) {
+                  alert(result);
+                  if(result == "아이디와 이메일이 일치하지 않습니다"){
+                	  return false;
+                  }else{
+                	  location.href="/login/pwfixform";  
+                  }
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+                alert(jqXHR);
+            })
+     
    }
       
    </script>

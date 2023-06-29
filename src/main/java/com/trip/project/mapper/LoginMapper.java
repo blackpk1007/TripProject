@@ -11,7 +11,7 @@ import com.trip.project.dto.LoginDTO;
 @Mapper
 public interface LoginMapper {
 		
-		@Select(" SELECT * FROM login WHERE userID=#{userID}  ")
+		@Select(" SELECT * FROM login WHERE userID=#{userID} ")
 		public LoginDTO login(LoginDTO dto);
 		
 		//아이디찾기 

@@ -3,6 +3,7 @@ package com.trip.project.controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.trip.project.dto.CommunityDTO;
 import com.trip.project.dto.ImageDTO;
@@ -26,6 +29,7 @@ import com.trip.project.dto.UploadFile;
 import com.trip.project.file.FileStore;
 import com.trip.project.paging.PagingResponse;
 import com.trip.project.service.CommunityService;
+
 
 @Controller
 @RequestMapping("/community")
@@ -38,43 +42,51 @@ public class CommunityController {
 
 	// 커뮤니티 메인 페이지
 	@RequestMapping("/communitymain")
-	public String cummunityMain(Model model, @ModelAttribute("params") final SearchDTO params ) {
+	public String cummunityMain(Model model, @ModelAttribute("params") final SearchDTO params,HttpSession session ) {
 		logger.info("COMMUNITY MAIN");
+		session.getAttribute("login");
+		model.addAttribute("session", session);
 		model.addAttribute("response", cService.selectCommunity(params));
 		model.addAttribute("params", params);
 		model.addAttribute("communityCategory","all");
+		
 		return "communitymain";
 	}
 
 	// 커뮤니티 상세 페이지
+	
 	@RequestMapping("/communitydetail")
-	public String communityDetail(Model model, int communityNumber) {
+	public String communityDetail(Model model, int communityNumber, HttpSession session) {
 		logger.info("COMMUNITY DETAIL");
 		model.addAttribute("dto", cService.selectOne(communityNumber));
 //		model.addAttribute("image", cService.selectOneImg(communityNumber));
 
 		ImageDTO imgDto = cService.selectOneImg(communityNumber);
-		System.out.println(imgDto);
 		model.addAttribute("image", imgDto);
 		
+		session.getAttribute("login");
+		model.addAttribute("session", session);
 		
-
 		return "communitydetail";
 	}
 
 	// 커뮤니티 글쓰기 페이지
 	@RequestMapping("/communitywriteform")
-	public String communityWriteForm() {
+	public String communityWriteForm(HttpSession session, Model model) {
 		logger.info("COMMUNITY WRITE FORM");
+		session.getAttribute("login");
+		model.addAttribute("session", session);
+		
 		return "communitywriteform";
 	}
 
 	// 커뮤니티 글쓰기
 	@RequestMapping("/communitywrite")
-	public String communityWrite(CommunityDTO dto) throws IOException {
+	public String communityWrite(CommunityDTO dto, Model modelD) throws IOException {
 		logger.info("COMMUNITY WRITE");
-		System.out.println("controller : " + dto.getAttachFile());
-		System.out.println("controller : " + dto.getCommunityContent());
+		
+		
+		
 		
 		// List<UploadFile> imagefile = FileStore.storeFiles(dto.getImageFiles());
 		UploadFile file = FileStore.storeFile(dto.getAttachFile());
