@@ -37,14 +37,22 @@
 	  popup.setAttribute("class", "place_popup");
 
 	  popup.innerHTML = `
+	  <br>
+	  <div class="popup_imgcontainer">
 		<img src="${imagePath}">
+		</div>
+		<br><hr><br><br>
 	    <h1>${placeName}</h1>
-	    <p>${placeAddress}</p>
-	    <p>${placePhone}</p>
-	    <p>${placeContent}</p>
-	    <p>${placeInfo}</p>
-	    	  <p class="recommend"><img src="/resources/image/insta_heart.png"/><span>추천수: ${placeGood}</span></p>
-	    	  <span class="place_popup-close" onclick="closePopup()">X</span>
+	    <br>
+	    <p>📍 ${placeAddress}</p>
+	    <p>📞 ${placePhone}</p>
+	    <p>✔️ ${placeInfo}</p>
+	    <br>
+
+	    <p>${placeContent}</p><br><br><hr>
+	    <br>
+	    <p class="recommend"><img src="/resources/image/insta_heart.png"/><span>추천수: ${placeGood}</span></p>
+	    <span class="place_popup-close" onclick="closePopup()">X </span>
 	    	`;
 
 	  popupContainer.appendChild(popup);
