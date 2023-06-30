@@ -27,6 +27,7 @@ import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDTO;
 import com.trip.project.dto.PlanDetailDTO;
+import com.trip.project.dto.placePagination;
 import com.trip.project.service.AirPlaneService;
 import com.trip.project.service.PlanServiceImpl;
 
@@ -41,10 +42,11 @@ public class PlanController {
 	private AirPlaneService aservice;
 	
 	@RequestMapping
-	public String planMain(Model model){
+	public String planMain(Model model, placePagination paging){
 
-		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList());
-
+		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList(paging));
+		model.addAttribute("placeListCount", pservice.placeRestaurantListCount());
+		
 		return "plan";
 	}
 	
@@ -65,9 +67,13 @@ public class PlanController {
 	
 	@ResponseBody
 	@GetMapping("/fetchMarkers") 
-	public List<PlaceDTO> planMarker(@RequestParam("category") String category) { 
+	public List<PlaceDTO> planMarker(@RequestParam("category")String category, @RequestParam("pageNum") int pageNum) {
+		System.out.println("pageNum : "+pageNum);
+		System.out.println("Category : "+category);
+		placePagination paging = new placePagination(pageNum, 20);
 		
-		List<PlaceDTO> placeList = pservice.placeCategoryMarker(category);
+		List<PlaceDTO> placeList = pservice.placeCategoryMarker(category, paging);
+		
 		
 		return placeList;
 	}
@@ -139,12 +145,12 @@ public class PlanController {
 	
 	@ResponseBody
 	@PostMapping("/search")
-	public List<PlaceDTO> search(@RequestParam("keyword") String keyword) throws UnsupportedEncodingException {
+	public List<PlaceDTO> search(@RequestParam("keyword") String keyword, @RequestParam("pageNum") int pageNum) throws UnsupportedEncodingException {
 		String KeywordDecode = URLDecoder.decode(keyword, "UTF-8");
-		System.out.println("controller search: "+KeywordDecode);
+		placePagination paging = new placePagination(pageNum, 20);
 		
-		List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode);
-		System.out.println("controller search : "+dto);
+		List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
+
 		return dto;
 	}
 }
