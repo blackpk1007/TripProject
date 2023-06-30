@@ -10,6 +10,7 @@ import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDTO;
 import com.trip.project.dto.PlanDetailDTO;
+import com.trip.project.dto.placePagination;
 import com.trip.project.mapper.PlaceMapper;
 
 @Service
@@ -19,15 +20,15 @@ public class PlanServiceImpl implements PlanService{
 	private PlaceMapper pmapper;
 	
 	@Override
-	public List<PlaceDTO> placeCategoryMarker(String categoey) {
+	public List<PlaceDTO> placeCategoryMarker(String categoey, placePagination paging) {
 		
-		return pmapper.placeCategoryMarker(categoey);
+		return pmapper.placeCategoryMarker(categoey, paging);
 	}
 
 	@Override
-	public List<PlaceDTO> placeRestaurantList() {
+	public List<PlaceDTO> placeRestaurantList(placePagination paging) {
 
-		return pmapper.placeRestaurantList();
+		return pmapper.placeRestaurantList(paging);
 	}
 
 	@Override
@@ -73,9 +74,15 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public List<PlaceDTO> placeSearch(String keyword) {
+	public List<PlaceDTO> placeSearch(String keyword, placePagination paging) {
 
-		return pmapper.placeSearch(keyword);
+		return pmapper.placeSearch(keyword, paging);
+	}
+
+	@Override
+	public int placeRestaurantListCount() {
+
+		return pmapper.placeRestaurantListCount();
 	}
 
 

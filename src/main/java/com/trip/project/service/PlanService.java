@@ -8,15 +8,18 @@ import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDTO;
 import com.trip.project.dto.PlanDetailDTO;
+import com.trip.project.dto.placePagination;
 
 public interface PlanService {
 	
-	public List<PlaceDTO> placeCategoryMarker(String categoey);
+	public List<PlaceDTO> placeCategoryMarker(String categoey, placePagination pageing);
 	
-	public List<PlaceDTO> placeRestaurantList();
+	public List<PlaceDTO> placeRestaurantList(placePagination paging);
 	
-	public List<PlaceDTO> placeSearch(String keyword);
-
+	public int placeRestaurantListCount();
+	
+	public List<PlaceDTO> placeSearch(String keyword, placePagination pageing);
+	
 	public List<LoginDTO> genderList(int recommandPlaceNumber);
 	
 	public List<LoginDTO> birthList(int recommandPlaceNumber);

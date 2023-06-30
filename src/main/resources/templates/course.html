@@ -153,8 +153,11 @@ for (var i = 0; i < inputValues.length; i++) {
 	var date = inputValues[i].date;
 	var color = inputValues[i].color;
 	var lonLatPairs = inputValues[i].lonLatPairs;
-	
 	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+	if(lonLatPairs.length === 1){
+		addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+	}else{
+
 	// 시작
 	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
 	// 도착
@@ -166,7 +169,7 @@ for (var i = 0; i < inputValues.length; i++) {
 		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
 	}
 	// 4. 경로탐색 API 사용요청
-
+	}
 	var startX = lonLatPairs[0].lat;
 	var startY = lonLatPairs[0].lon;
 	var endX = lonLatPairs[lonLatPairs.length - 1].lat;
@@ -219,33 +222,17 @@ for (var i = 0; i < inputValues.length; i++) {
 			drawData(prtcl, color);
 		
 		
-			// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
-			var newData = geoData[0];
-			PTbounds = new Tmapv2.LatLngBounds();
-					for (var i = 0; i < newData.length; i++) {
-						var mData = newData[i];
-						var type = mData.geometry.type;
-						var pointType = mData.properties.pointType;
-						if(type == "Point"){
-							var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[1],mData.geometry.coordinates[0]);
-							PTbounds.extend(linePt);
-						}
-						else{
-							var startPt,endPt;
-							for (var j = 0; j < mData.geometry.coordinates.length; j++) {
-								var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[j][1],mData.geometry.coordinates[j][0]);
-								PTbounds.extend(linePt);
-							}
-					}
-				}
-				map.fitBounds(PTbounds);
-		
+ 			// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+			  var center = new Tmapv2.LatLng(33.3616666, 126.5291666);
+			  var zoom = 10; // 현재 줌 레벨 가져오기
+			  map.setCenter(center);
+			  map.setZoom(zoom);
 			},
 			error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
-}
+	}
 }
 	function addMarker(status, lon, lat, tag, color) {
 	//출도착경유구분
@@ -284,6 +271,11 @@ for (var i = 0; i < inputValues.length; i++) {
 	
 	 function drawRoute(date, lonLatPairs, color) {
 			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+			if(lonLatPairs.length === 1){
+				addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+				
+			}else{
+
 			// 시작
 			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
 			// 도착
@@ -293,6 +285,8 @@ for (var i = 0; i < inputValues.length; i++) {
 			for (var j = 0; j < waypoints.length; j++) {
 				var waypoint = waypoints[j];
 				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
+			}
+			// 4. 경로탐색 API 사용요청
 			}
 	      var startX = lonLatPairs[0].lat;
 	      var startY = lonLatPairs[0].lon;
@@ -321,7 +315,7 @@ for (var i = 0; i < inputValues.length; i++) {
 					resCoordType : "WGS84GEO",
 					angle : "172",
 					searchOption : "0",
-					trafficInfo : "Y"
+					trafficInfo : "N"
 				},
 				success:function(response){
 				prtcl = response;

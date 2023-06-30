@@ -19,6 +19,9 @@ var map; // map 객체 선언
 // 초기 마커 생성
 var placeList = [[${placeRestaurantList}]];
 let colorSelections = {};
+var pageNum = 1;
+var totalPages = 5; // 전체 페이지 수
+
 //영수증인증 팝업창
 function openPopup() {
     var popupContainer = document.createElement("div");
@@ -237,7 +240,6 @@ var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
 // 초기 마커 생성
-var placeList = [[${placeRestaurantList}]];
 
 /* function reloadStylesheet() {
 	  var links = document.getElementsByTagName('link');
@@ -260,15 +262,17 @@ function initTmap() {
 	  createMarkers(placeList);
 	}
 
-function fetchUpdatedMarkers(category) {
+function fetchUpdatedMarkers(category, pageNum) {
 	
     $.ajax({
       url: '/plan/fetchMarkers',
       method: 'GET',
-      data: { category: category },
+      data: { category: category,
+    	      pageNum: pageNum},
       success: function (data) {
     	  updateList(data);
     	  createMarkers(data);
+    	  pageNum = pageNum; // 현재 페이지 번호 업데이트
     	  
       },
       error: function () {
@@ -285,6 +289,12 @@ function updateList(data) {
 	    var listItem = document.createElement('div');
 	    listItem.id = 'left_block';
 		
+	    var inputCategory = document.createElement('input');
+	    inputCategory.type = 'hidden';
+	    inputCategory.name = 'placeCategory';
+	    inputCategory.value = restaurant.placeCategory;
+	    listItem.appendChild(inputCategory);
+	    
 	    var inputLon = document.createElement('input');
 	    inputLon.type = 'hidden';
 	    inputLon.name = 'planLon';
@@ -581,27 +591,27 @@ function createMarkers(data) {
   document.addEventListener('DOMContentLoaded', function () {
     var restaurantBtn = document.getElementById('restaurant-btn');
     restaurantBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('restaurant');
+      fetchUpdatedMarkers('restaurant', pageNum);
     });
 
     var youtubeBtn = document.getElementById('youtube-btn');
     youtubeBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('youtube');
+      fetchUpdatedMarkers('youtube', pageNum);
     });
 
     var touristBtn = document.getElementById('tourist-btn');
     touristBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('tourist');
+      fetchUpdatedMarkers('tourist', pageNum);
     });
 
     var hillBtn = document.getElementById('hill-btn');
     hillBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('hill');
+      fetchUpdatedMarkers('hill', pageNum);
     });
 
     var ollegilBtn = document.getElementById('ollegil-btn');
     ollegilBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('ollegil');
+      fetchUpdatedMarkers('ollegil', pageNum);
     });
   });
   function createPlusClickEvent() {
@@ -1213,7 +1223,8 @@ function createMarkers(data) {
 		$.ajax({
 			url:'/plan/search',
 			type: 'POST',
-			data: {keyword: keyword},
+			data: {keyword: keyword,
+				   pageNum: pageNum},
 			success: function(data){
 				updateList(data);
 				createMarkers(data);
@@ -1223,9 +1234,63 @@ function createMarkers(data) {
 			}
 		});
 	}
+	// 페이지 번호 클릭 이벤트 처리
+	function handlePageClick(pageNumber) {
+      const categoryInput = document.querySelector('input[name="placeCategory"]').value;
+	  fetchUpdatedMarkers(categoryInput, pageNumber);
+	}
+	
+		function updatePagination(totalItems, itemsPerPage, pageNum) {
+			  var totalPages = Math.ceil(totalItems / itemsPerPage);
+			  var paginationContainer = document.querySelector('#pagination');
+			  paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+
+			  var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
+			  var startPage = Math.max(1, pageNum - Math.floor(pageRange / 2));
+			  var endPage = Math.min(totalPages, startPage + pageRange - 1);
+
+			  // 이전 버튼 생성
+			  var prevButton = document.createElement('a');
+			  prevButton.href = 'javascript:void(0)';
+			  prevButton.textContent = '이전';
+			  prevButton.setAttribute('onclick', 'fetchData(' + (pageNum - 1) + ')');
+			  paginationContainer.appendChild(prevButton);
+
+			  // 페이지 번호 생성
+			  for (var i = startPage; i <= endPage; i++) {
+			    var pageLink = document.createElement('a');
+			    pageLink.href = 'javascript:void(0)';
+			    pageLink.textContent = i;
+			    pageLink.setAttribute('onclick', 'fetchData(' + i + ')');
+
+			    if (i === pageNum) {
+			      pageLink.classList.add('active');
+			    }
+
+			    paginationContainer.appendChild(pageLink);
+			  }
+
+			  // 다음 버튼 생성
+			  var nextButton = document.createElement('a');
+			  nextButton.href = 'javascript:void(0)';
+			  nextButton.textContent = '다음';
+			  nextButton.setAttribute('onclick', 'fetchData(' + (pageNum + 1) + ')');
+			  paginationContainer.appendChild(nextButton);
+		}
+	// 서버로부터 전체 데이터 수를 가져와서 페이지 번호 업데이트
+	function fetchTotalItems() {
+	  // 서버로부터 전체 데이터 수를 가져오는 API 요청을 수행하세요.
+	  // 예시: AJAX 요청 등을 사용하여 전체 데이터 수를 가져옵니다.
+	  var totalItems = [[${placeListCount}]];
+		console.log(totalItems);
+	  var itemsPerPage = 20; // 페이지당 출력할 데이터 수
+
+	  updatePagination(totalItems, itemsPerPage, pageNum);
+	}
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
+		  fetchTotalItems();
 	};	
 </script>
 <title>Insert title here</title>
@@ -1247,8 +1312,10 @@ function createMarkers(data) {
 				<input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요">
 				<button type="button" id="search-button" onclick="search()">검색</button>
 			</div>
+			<div class="list-scroll">
 			<div class="list">
 				<div id="left_block" th:each="restaurant : ${placeRestaurantList}">
+				<input type="hidden" name="placeCategory" th:value="${restaurant.placeCategory}">
 					<div id="list-img">
 						<img th:src="@{/resources/image/place/__${restaurant.placeName}__.jpg}" alt="">
 					</div>
@@ -1272,7 +1339,8 @@ function createMarkers(data) {
 					<input type="hidden" name="planLat" th:value="${restaurant.placeLat}">
 				</div>
 			</div>
-			
+			</div>
+			<div id="pagination"></div>
 		</div>
 		<div class="placemenu" style="display: none;">
 			<div id="placemenu_button">

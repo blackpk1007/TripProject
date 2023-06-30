@@ -12,6 +12,7 @@ import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDTO;
 import com.trip.project.dto.PlanDetailDTO;
+import com.trip.project.dto.placePagination;
 
 @Mapper
 public interface PlaceMapper {
@@ -22,18 +23,21 @@ public interface PlaceMapper {
 	int crawinsert(PlaceDTO dto);
 	
 	// 모든 장소 좌표 마커
-	@Select(" select * from place where placeCategory = #{placeCategory} order by placeGood desc" )
-	List<PlaceDTO> placeCategoryMarker(String category);
+	@Select(" select * from place where placeCategory = #{category} order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}" )
+	List<PlaceDTO> placeCategoryMarker(@Param("category")String category, @Param("paging")placePagination paging);
 	
 	// 맛집 정보
-	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc Limit 50")
-	List<PlaceDTO> placeRestaurantList();
+	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}")
+	List<PlaceDTO> placeRestaurantList(@Param("paging")placePagination paging);
 
+	@Select(" select count(*) from place where placeCategory = 'restaurant' order by placeGood")
+	int placeRestaurantListCount();
+	
 	@Select(" select * from place ")
 	List<PlaceDTO> placeList();
 	
-	@Select(" select * from place where placeName like '%${keyword}%' order by placeGood desc")
-	List<PlaceDTO> placeSearch(@Param("keyword") String keyword);
+	@Select(" select * from place where placeName like '%${keyword}%' order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}")
+	List<PlaceDTO> placeSearch(@Param("keyword") String keyword, @Param("paging")placePagination paging);
 	
 	@Select(" SELECT l.userGender, recommandPlaceNumber, COUNT(*) AS count FROM login AS l JOIN recommand AS r ON l.userID = r.recommandUserID WHERE r.recommandPlaceNumber =#{recommandPlaceNumber} GROUP BY l.userGender ")
 	List<LoginDTO> genderList(int recommandPlaceNumber);
