@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlanDTO {
 	
-	private int planNumber;
+	private Integer planNumber;
 	private String userID;
-	private String planDate;
-	private String planLon;
-	private String planLat;
-	private String planColor;
-	
+	private String planName;
+	private String planFirstDate;
+	private String planLastDate;
+	private int planCount;
 }
