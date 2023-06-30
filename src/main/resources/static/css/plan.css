@@ -92,7 +92,7 @@
 }
 
 .main-left {
-	width: 20vw;
+	width: 25vw;
 	height: 80vh;
 }
 
@@ -105,12 +105,12 @@
 
 
 .main-center {
-	width: 60vw;
+	width: 50vw;
 	height: 80vh;
 }
 
 .main-right {
-	width: 20vw;
+	width: 25vw;
 	height: 80vh;
 }
 
@@ -392,13 +392,29 @@ td {
 .course-color-day h5:not(.active) {
   display: none;
 }
+#chart_set{
+        display: flex;	
+        padding-left: 0.4vw;	
+        margin-bottom : 2vh;
+        			margin-right: 0.7vw;
+}
+#chart_title{
+		margin-top : 3vh;
+		margin-bottom : 1vh;
+	  	font-size: 0.8em;	
+	  	vertical-align: middle;	
+}
 #chart{
-	height: 10%;
-	width: 50%;
+	display: inline-block;
+	height: auto;
+	width: 8vw;
+		margin-right: 0.5vw;
 }
 #chart2{
-	height: 10%;
-	width: 90%;
+	padding-top: 4vh;
+	display: inline-block;
+	height: auto;
+	width: 12.5vw;
 }
     .ocr_popup-container {
         display: flex;
@@ -427,26 +443,41 @@ td {
 }
 .placemenu {
   display: none;
-
-	padding: 20px;
-	margin: 0 auto;
-	border: 1px solid #B8E9FF;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  
+	border: 2px solid #B8E9FF;
 	border-radius: 5px;
 	margin-bottom: 1vh;
   box-sizing: border-box;
-	width: 17vw;
+	width: 23vw;
 	height: auto;
-	max-height: 80vh;
+	max-height: 90vh;
+	margin-right: 1vw;
+	margin-left: 1vw;
+		overflow-y: auto;
+			overflow-x: hidden;
+}
+#placemenu_top{
+	padding-right: 2vw;
+	padding-left: 2vw;	
 }
 #datatest{
-	width: 100%;
+	width: 19vw;
+	padding-right: 2vw;
+	padding-left: 2vw;
+	margin-bottom: 0.8vh;
 }
 #placeImage{
-	width: 100%;
+	margin: 0;
+	width: 15vw;
+	display: flex;
+    justify-content: center;
 }
 #datatest1{
 	text-align: center;
-	font-size: 2em;
+	font-size: 1.2em;
+	margin-bottom: 0.7vh;
 }
 #datatest4,
 #placemenu_heart {
@@ -454,18 +485,87 @@ td {
   vertical-align: middle;
 }
 #heartimg2{
-	
-	width: 20px;
-  height: 20px;
+	width: 1.5vw;
   vertical-align: middle;
+  	margin-right: 0.3vw;
 }
 #datatest4{
-	font-size: 1.5em;
+	font-size: 0.8em;
 	  vertical-align: middle;
+	margin-right: 1.2vw;
 }
 #placemenu_heart a{
   vertical-align: middle;
-  	font-size: 1.5em;
+  	font-size: 0.8em;
   	  text-decoration: none;
 	color: black;
+}
+#ocr_button{
+	margin-bottom : 0.7vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#hr_css{
+    background: #B8E9FF;
+    height: 1px;
+    border: 0;
+}
+
+#placemenu_button{
+		display: flex;
+    justify-content: flex-end;
+}
+#placemenu_button button{
+	background-color: transparent;
+	margin-bottom : 1vh;
+	border: 1px solid #C2C2C2;
+}
+#placemenu_pin{
+	margin-top : 2vh;
+	display: flex;
+	align-items: center;
+}
+#placemenu_number{
+	margin-top : 1vh;
+	display: flex;
+	align-items: center;	
+}
+#datatest2{
+	  	font-size: 0.8em;
+	  	display: inline-block;
+
+}
+#pin_img{
+	display: inline-block;
+	margin-right: 0.5vw;
+  	width: 1.5vw;
+	  	vertical-align: middle;
+}
+#datatest3{
+	  	font-size: 0.8em;
+	  	display: inline-block;
+	  	vertical-align: middle;
+}
+#datatest5{
+	  	font-size: 0.8em;
+	  		  	vertical-align: middle;
+}
+#datatest6{
+	display: inline-block;
+	  	font-size: 0.8em;
+	  		  	vertical-align: middle;
+}
+#datatest7{
+	display: inline-block;
+	  	font-size: 0.8em;
+	  		  	vertical-align: middle;
+}
+#datatest8{
+	display: inline-block;
+	  	font-size: 0.8em;
+	  		  	vertical-align: middle;
+}
+#data_tag{
+		  	vertical-align: middle;
 }
