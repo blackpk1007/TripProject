@@ -7,18 +7,24 @@
 	type="text/css">
 </head>
 <body>
-	<nav id="menu">
-		<div style="text-align: center;">
-			<img id="logo" src="/resources/image/logo.png">
+	<div class="header">
+		<div class="header-category">
+			<a href="/course" id="label-left-course">코스추천</a>
+			 <a href="/community" id="label-left-community">커뮤니티</a> 
+			 <a href="/chat" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
 		</div>
-		<ul>
-			<li class="linka"><a class="link" href="#">일정생성</a></li>
-			<li class="linka"><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka"><a class="link" href="#">채팅방</a></li>
-			<li class="linkb"><a class="link" href="#">마이페이지</a></li>
-		</ul>
-	</nav>
-
+	</div>
 	<div class="signup1">
 		<div class="signup2">
 			<div class="signup_header">
