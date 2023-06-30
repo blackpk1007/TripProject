@@ -56,10 +56,10 @@ public class LoginController {
 			
 			return "비밀번호일치하지않습니다.";
 		}else {
-			session.setAttribute("login", res.getUserName());
+			session.setAttribute("login", res.getUserID());
 			session.setMaxInactiveInterval(1800);
 		
-			return res.getUserName()+"님 로그인 되었습니다.";
+			return res.getUserID()+"님 로그인 되었습니다.";
 		}
 		
   }

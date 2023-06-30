@@ -103,6 +103,7 @@
 	margin-top: 0vw;
 }
 
+
 .main-center {
 	width: 60vw;
 	height: 80vh;
@@ -423,4 +424,48 @@ td {
         position: absolute;
         top: 10px;
         right: 10px;
+}
+.placemenu {
+  display: none;
+
+	padding: 20px;
+	margin: 0 auto;
+	border: 1px solid #B8E9FF;
+	border-radius: 5px;
+	margin-bottom: 1vh;
+  box-sizing: border-box;
+	width: 17vw;
+	height: auto;
+	max-height: 80vh;
+}
+#datatest{
+	width: 100%;
+}
+#placeImage{
+	width: 100%;
+}
+#datatest1{
+	text-align: center;
+	font-size: 2em;
+}
+#datatest4,
+#placemenu_heart {
+  display: inline-block;
+  vertical-align: middle;
+}
+#heartimg2{
+	
+	width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+#datatest4{
+	font-size: 1.5em;
+	  vertical-align: middle;
+}
+#placemenu_heart a{
+  vertical-align: middle;
+  	font-size: 1.5em;
+  	  text-decoration: none;
+	color: black;
 }
