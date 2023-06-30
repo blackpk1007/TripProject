@@ -111,7 +111,7 @@
 	  <div class="swiper-wrapper">
 	    <div th:each="list : ${list}" class="swiper-slide">
 	      <div class="hot_img">
-	        <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${list.placeName}" th:data-image-path="@{/resources/image/__${list.placeName}__.jpg}">
+	        <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${list.placeName}" th:data-image-path="@{/resources/image/place/__${list.placeName}__.jpg}">
 	          <img th:src="@{/resources/image/place/__${list.placeName}__.jpg}">
 	        </a>
 	      </div>
@@ -199,7 +199,7 @@
 
 
 	<div align="center" id="tag1">#부모님동반</div>
-		<div class="instagram-feed-container">
+		<div class="instagram-feed-container" id="instagram-feed-container2">
         <div th:each="parentsList:${parentsList}" class="instagram-feed">
             <div class="image-container">
                 <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${parentsList.placeName}" th:data-image-path="@{/resources/image/place/__${parentsList.placeName}__.jpg}"><img th:src="@{/resources/image/place/__${parentsList.placeName}__.jpg}" alt="Instagram Feed Image"></a>
