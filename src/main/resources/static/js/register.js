@@ -18,10 +18,10 @@ function regist_check() {
     return false;
   };
   
-   // 한글만, 글자수제한은 없음..
- 	var namecheck = /^[가-힣]{2,5}$/;
+   // 한글영어,두글자이상12글자이
+ 	var namecheck = /^[가-힣a-zA-Z]{2,12}$/;
   if (!namecheck.test(userName.value)){
-  	alert("한글, 두글자 이상 5글자 이하 이름만 가능.");
+  	alert("한글, 두글자 이상 12글자 이하 이름만 가능.");
   	userName.focus();
   	return false;
   };
@@ -49,7 +49,7 @@ function regist_check() {
   //아이디 영어,숫자 8~20자
   var idcheck = /^[a-zA-Z0-9]{8,20}$/;
   if (!idcheck.test(userID.value)) {
-  	alert("영어,숫자 8~20자로 설정해주세요.");
+  	alert("아이디는 영어,숫자 8~20자로 설정해주세요.");
   	userID.focus();
   	return false;
   }
@@ -113,10 +113,11 @@ function regist_check() {
     return false;
   } */
   
-  alert("dd");
+  alert("회원가입이 완료되었습니다!");
 
   //입력 값 전송
-  document.registerform.submit(); //유효성 검사의 포인트 
+  document.registerform.submit(); //유효성 검사의 포인트
+  location.href="/login";
 }
 
 //아이디 중복체크 팝업창(현재 공백문서)
