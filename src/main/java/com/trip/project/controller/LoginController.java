@@ -49,7 +49,7 @@ public class LoginController {
 	         if (!dto.getUserID().equals(res.getUserID())) {
 	         }
 	      }catch(NullPointerException e) {
-	         return "ID 없음";
+	         return "ID일치하지않습니다.";
 	      }
 
 		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
@@ -92,6 +92,7 @@ public class LoginController {
 	      System.out.println("controller :"+dto.getUserEmail());
 	      
 	      LoginDTO res = lservice.idfind(dto);
+	      System.out.println("res = "+res);
 	      if(res == null) {
 	    	  return "이름과 이메일이 일치하지 않습니다.";
 	      }else {
