@@ -69,6 +69,17 @@
 width:300px;
 height:200px;
 }
+
+.body{
+	width: 98vw;
+	height: 78vh;
+	position:relative;
+	left:1vw;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+}
+
 /*  프로필 */
 .profilearea{
 	display:flex;
@@ -156,9 +167,14 @@ height:200px;
 }
 
 .mymain{
+
 	padding:5vw;
 	padding-top:1rem;
 	position:relative;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
 }
 
 .main{
@@ -172,7 +188,6 @@ height:200px;
 	height:15vh;
 	width:80vw;
 	position:relative;
-	left:4.25vw;
 }
 
 #location1{
@@ -206,13 +221,22 @@ height:200px;
   	justify-content: center;
   	align-items: center;
 }
-#loc1{
+.loc1{
 	flex: 1 0 auto;
 }
-#loc2{
-	flex: 4 0 auto;
+.loc2{
+	flex: 3 0 auto;
 }
-#loc3{
+
+.tripname{
+	margin:1rem;
+}
+
+.tripdate{
+	margin:1rem;
+}
+
+.loc3{
 	flex: 1 0 auto;
 }
 
@@ -266,72 +290,74 @@ height:200px;
 				</div> 
 		</div>
 	</div>
-	<div class="profilearea">
-		<div class="imagebox">
-	    	<img class="profilepic" id="profilepic" src="/resources/image/stonepapa.png">
-		</div>
-		<div class="profile" th:text="${session.login}">
-			내 프로필
-			<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
-		</div>
-		<div class="profile">
-			<button id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
-		</div>
-	</div>
-	
-	<div class="status">
-		<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
-		<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
-		<div class="user_status" id="plan" onclick="mymain();">나의 일정
-			<div class="num" onclick="mymain();" > 일정 끌고오기 </div>
-		</div>
-		<div class="user_status" id="review" onclick="mymain();">나의 리뷰
-			<div class="num" onclick="mymain();" th:text="${recommandcount}">리뷰 끌고오기 </div>
-		</div>
-		<div class="user_status" id="post" onclick="mymain();">나의 게시물
-			<div class="num" onclick="mymain();" th:text="${communitycount}">게시물 끌고오기 </div>
-		</div>
-	</div>
-	
-	<div class="mymain_text">
-		나의 일정 or 나의 리뷰 or 나의 게시물 	끌고오기 
-	</div>
-	
-	<div class="mymain">
-		<div class="main">
-			<div class="myplan1">
-				<div id="loc1">
-					<img id="location1" src="#">
-				</div>
-				<div id="loc2">
-					<div> 여행이름 </div>
-					<div> 여행일자 </div>
-				</div>
-				<div id="loc3">
-					<button id="share">공유</button>
-					<button id="fix">수정</button>
-					<button id="delete">삭제</button>
-				</div>
+	<div class="body">	
+		<div class="profilearea">
+			<div class="imagebox">
+		    	<img class="profilepic" id="profilepic" src="/resources/image/stonepapa.png">
+			</div>
+			<div class="profile" th:text="${session.login}">
+				내 프로필
+				<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
+			</div>
+			<div class="profile">
+				<button id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
 			</div>
 		</div>
 		
-		<div class="main">
-			<div class="myplan2">
-				<div id="loc1">
-					<img id="location2" src="#">
-				</div>
-				<div id="loc2">
-					<div> 여행이름 </div>
-					<div> 여행일자 </div>
-				</div>
-				<div id="loc3">
-					<button id="share">공유</button>
-					<button id="fix">수정</button>
-					<button id="delete">삭제</button>
-				</div>
+		<div class="status">
+			<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
+			<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
+			<div class="user_status" id="plan" onclick="mymain();">나의 일정
+				<div class="num" onclick="mymain();" > 일정 끌고오기 </div>
+			</div>
+			<div class="user_status" id="review" onclick="mymain();">나의 리뷰
+				<div class="num" onclick="mymain();" th:text="${recommandcount}">리뷰 끌고오기 </div>
+			</div>
+			<div class="user_status" id="post" onclick="mymain();">나의 게시물
+				<div class="num" onclick="mymain();" th:text="${communitycount}">게시물 끌고오기 </div>
 			</div>
 		</div>
 		
+		<div class="mymain_text">
+			나의 일정 or 나의 리뷰 or 나의 게시물 	끌고오기 
+		</div>
+		
+		<div class="mymain">
+			<div class="main">
+				<div class="myplan1">
+					<div class="loc1">
+						<img id="location1" src="#">
+					</div>
+					<div class="loc2">
+						<div class="tripname"> 여행이름 </div>
+						<div class="tripdate"> 여행일자 </div>
+					</div>
+					<div class="loc3">
+						<button id="share">공유</button>
+						<button id="fix">수정</button>
+						<button id="delete">삭제</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="main">
+				<div class="myplan2">
+					<div class="loc1">
+						<img id="location2" src="#">
+					</div>
+					<div class="loc2">
+						<div class="tripname"> 여행이름 </div>
+						<div class="tripdate"> 여행일자 </div>
+					</div>
+					<div class="loc3">
+						<button id="share">공유</button>
+						<button id="fix">수정</button>
+						<button id="delete">삭제</button>
+					</div>
+				</div>
+			</div>
+			
+		</div>
 	</div>
 	
 	<!-- 나의 일정, 나의 리뷰, 나의 게시물 누를때 바뀌는용, ui 안정함.나중에. 
