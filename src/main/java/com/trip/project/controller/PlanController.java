@@ -43,7 +43,7 @@ public class PlanController {
 	
 	@RequestMapping
 	public String planMain(Model model, placePagination paging){
-
+		System.out.println("controller main : "+paging);
 		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList(paging));
 		model.addAttribute("placeListCount", pservice.placeRestaurantListCount());
 		

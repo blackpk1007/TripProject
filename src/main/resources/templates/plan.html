@@ -1235,13 +1235,10 @@ function createMarkers(data) {
 			}
 		});
 	}
-	// 페이지 번호 클릭 이벤트 처리
-	function handlePageClick(pageNumber) {
-      const categoryInput = document.querySelector('input[name="placeCategory"]').value;
-	  fetchUpdatedMarkers(categoryInput, pageNumber);
-	}
 	
 		function updatePagination(totalItems, itemsPerPage, pageNum) {
+			const categoryInput = document.querySelector('input[name="placeCategory"]').value;
+			console.log(categoryInput);
 			  var totalPages = Math.ceil(totalItems / itemsPerPage);
 			  var paginationContainer = document.querySelector('#pagination');
 			  paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
@@ -1254,7 +1251,7 @@ function createMarkers(data) {
 			  var prevButton = document.createElement('a');
 			  prevButton.href = 'javascript:void(0)';
 			  prevButton.textContent = '이전';
-			  prevButton.setAttribute('onclick', 'fetchData(' + (pageNum - 1) + ')');
+			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 1)+')');
 			  paginationContainer.appendChild(prevButton);
 
 			  // 페이지 번호 생성
@@ -1262,7 +1259,7 @@ function createMarkers(data) {
 			    var pageLink = document.createElement('a');
 			    pageLink.href = 'javascript:void(0)';
 			    pageLink.textContent = i;
-			    pageLink.setAttribute('onclick', 'fetchData(' + i + ')');
+			    pageLink.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+i+')');
 
 			    if (i === pageNum) {
 			      pageLink.classList.add('active');
@@ -1275,7 +1272,7 @@ function createMarkers(data) {
 			  var nextButton = document.createElement('a');
 			  nextButton.href = 'javascript:void(0)';
 			  nextButton.textContent = '다음';
-			  nextButton.setAttribute('onclick', 'fetchData(' + (pageNum + 1) + ')');
+			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 1)+')');
 			  paginationContainer.appendChild(nextButton);
 		}
 	// 서버로부터 전체 데이터 수를 가져와서 페이지 번호 업데이트
