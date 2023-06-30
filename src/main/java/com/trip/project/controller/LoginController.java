@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.service.CommunityService;
 import com.trip.project.service.LoginService;
+import com.trip.project.service.PlanService;
 
 @Controller
 @RequestMapping("/login")
@@ -25,6 +26,9 @@ public class LoginController {
 	
 	@Autowired
 	private CommunityService cservice;
+	
+	@Autowired
+	private PlanService pservice;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -178,8 +182,14 @@ public class LoginController {
 		model.addAttribute("community", cservice.usermainCommunity(userID));
 		model.addAttribute("communitycount",cservice.usermainCommunity(userID).size());
 		System.out.println(userID);
-		System.out.println("controller : "+cservice.usermainCommunity(userID));
+		System.out.println("게시물 : "+cservice.usermainCommunity(userID));
 		System.out.println(cservice.usermainCommunity(userID).size());
+		model.addAttribute("recommand", pservice.usermainRecommand(userID) );
+		model.addAttribute("recommandcount", pservice.usermainRecommand(userID).size());
+		System.out.println("리뷰 : "+ pservice.usermainRecommand(userID));
+		System.out.println(pservice.usermainRecommand(userID).size());
+		
+		
 		return "usermain";
 		
 	}
@@ -220,7 +230,17 @@ public class LoginController {
 		}
 	}
 	
-	// email 인증 관련
+	// 코스 추천
+	@RequestMapping("/recommandcourse")
+	public String recommandcourse() {
+		return "recommandcourse";
+	}
+	
+	// 코스 상세
+	@RequestMapping("/coursedetail")
+	public String coursedetail(){
+		return "coursedetail";
+	}
 	
 	@RequestMapping("/userinserttest")
 	public String userinserttest() {
