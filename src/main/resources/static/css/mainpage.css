@@ -64,7 +64,7 @@
 }
 
 .swiper-container {
-	width: 80%;
+	width: 80%; 
 	height: 420px;
 }
 
@@ -163,17 +163,26 @@ header {
 #place_text {
 	text-align: center;
 }
+#place_text_korean{/*(양)*/
+	font-size: 23px;
+	font-weight: bold;
+}
+#place_text_english{/*(양)*/
+	font-size: 23px;
+	color: #d3d3d3;	
+}
 
 #tag1 {
-	width: 150px;
+	width: 200px; /*150 -> 200 (양)*/
 	height: 30px;
 	border: 1px solid #B8E9FF;
 	border-radius: 8px;
 	background-color: #B8E9FF;
 	color: white;
-	margin-left: 20vh;
+	margin-left: 5vh; /*20 -> 5 (양)*/
 	margin-top: 8vh;
 	margin-bottom: 2vh;
+	font-size:20px; /* new (양)*/
 }
 .a {
 	width: 100%;
@@ -206,9 +215,10 @@ header {
             right: 10px;
         }
         .swiper-container {
-    height: 65%;
+    height: 60vh; /*80% -> 60vh (양)*/
     width: 80%;
   }
+  
         
   .swiper-wrapper {
     position: relative;
@@ -225,6 +235,7 @@ header {
     width: 400px; /* 원하는 너비로 조정 */
     height: 300px; /* 원하는 높이로 조정 */
     overflow: hidden;
+    opacity: 0.7; /*(양)*/
   }
 
   .hot_img img {
