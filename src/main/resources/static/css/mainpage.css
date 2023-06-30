@@ -85,16 +85,22 @@
 }
 
 .swiper-slide {
+	width:38vw;
+	height: 50vh;
 	text-align: center;
 	display: flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
 	align-items: center; /* 위아래 기준 중앙정렬 */
 	justify-content: center; /* 좌우 기준 중앙정렬 */
+	
 }
 
 .swiper-slide img {
+	width:95%;
+	height:95%;
 	box-shadow: 0 0 5px #555;
 	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
 	/* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
+	opacity: 0.7;
 }
 
 * {
@@ -231,39 +237,75 @@ header {
             right: 10px;
         }
         .swiper-container {
-    height: 60vh; /*80% -> 60vh (양)*/
-    width: 80%;
+    /* height: 60vh; 80% -> 60vh (양) */
+    width: 90%;
   }
-  #swiper-container-hotPlace
+  
+  #swiper-container-hotPlace{
+  	width:90%;
+  	height:70vh;
+  }
+  #swiper-container-course{
+  	width:90%;
+  	height:70vh;
+  }
+  #swiper-button-next-hotPlace{
+  	top:35%;
+  	color:gray;
+  }
+  #swiper-button-prev-hotPlace{
+  	top:35%;
+  }
+  #swiper-button-next-course{
+  	top:38%;
+  }
+  #swiper-button-prev-course{
+  	top:38%;
+  }
   #swiper-pagination-hotPlace{/*new (양)*/
-  	margin-bottom: 13%;
+  	margin-bottom: 7%;
   }
   
   #swiper-pagination-course{/*new (양)*/
-  	margin-bottom: 5%;
-  }  
+  	margin-bottom: 3.5%;
+  }
+  .hot_text{
+  	font-size:25px;
+  } 
+  .swiper-pagination-bullet-active{
+  	background:#B8E9FF;
+  }
+  .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+  	background-image: url(/resources/image/mainArrowleft.png);
+  	
+  }
+  .swiper-button-next, .swiper-container-rtl .swiper-button-next {
+  	background-image: url(/resources/image/mainArrowRight.png);
+  	
+  }
   .swiper-wrapper {
     position: relative;
   }
 
   .swiper-slide {
     position: relative;
-    height: 60%;
+    height: 50vh;
   }
 
   .hot_img {
     position: relative;
     text-align: center;
-    width: 400px; /* 원하는 너비로 조정 */
-    height: 300px; /* 원하는 높이로 조정 */
+    width: 39vw; /* 원하는 너비로 조정 */
+    height: 50vh; /* 원하는 높이로 조정 */
     overflow: hidden;
-    opacity: 0.7; /*(양)*/
+    
   }
 
   .hot_img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0.7; /*(양)*/
   }
 
   .hot_text {
