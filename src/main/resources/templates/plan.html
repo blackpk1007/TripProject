@@ -272,6 +272,7 @@ function fetchUpdatedMarkers(category, pageNum) {
       success: function (data) {
     	  updateList(data);
     	  createMarkers(data);
+    	  fetchTotalItems();
     	  pageNum = pageNum; // 현재 페이지 번호 업데이트
     	  
       },
@@ -1377,9 +1378,7 @@ function createMarkers(data) {
 			<div id="chart2">
 				<canvas id="chartCanvas2"></canvas>
 			</div>
-
 		</div>
-
 		<div class="main-center">
 			<div id="map_div"></div>
 			<div id="category-button">

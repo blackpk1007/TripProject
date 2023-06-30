@@ -112,7 +112,7 @@
 	    <div th:each="list : ${list}" class="swiper-slide">
 	      <div class="hot_img">
 	        <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${list.placeName}" th:data-image-path="@{/resources/image/__${list.placeName}__.jpg}">
-	          <img th:src="@{/resources/image/__${list.placeName}__.jpg}">
+	          <img th:src="@{/resources/image/place/__${list.placeName}__.jpg}">
 	        </a>
 	      </div>
 	      <div th:text="${list.placeName}" class="hot_text"></div>
@@ -227,7 +227,7 @@
 	</script>
 
 	<script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() {
+/* 	document.addEventListener('DOMContentLoaded', function() {
 		  window.addEventListener('load', function() {
 		    $.ajax({
 		      url: '/plan/airplane',
@@ -246,7 +246,7 @@
 		    });
 		    /* location.href="/plan/airplane"; */
 		  });
-		});
+		}); */
 
     </script>
 	<script>
