@@ -255,7 +255,7 @@ function initTmap() {
 	  // map 생성
 	  map = new Tmapv2.Map("map_div", {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
-	    width: "60vw", // 지도의 넓이
+	    width: "50vw", // 지도의 넓이
 	    height: "80vh", // 지도의 높이
 	    zoom: 10
 	  });
@@ -470,8 +470,8 @@ function createMarkers(data) {
 						    	  var ratio1 = count1 / total;
 						    	  var ratio2 = count2 / total;
 						    	  
-						    	  var percentage1 = (ratio1 * 100).toFixed(2) + "%";
-						    	  var percentage2 = (ratio2 * 100).toFixed(2) + "%";
+						    	  var percentage1 = (ratio1 * 100).toFixed(0) + "%";
+						    	  var percentage2 = (ratio2 * 100).toFixed(0) + "%";
 
 						    	  var ctx = document.getElementById("chartCanvas").getContext("2d");
 						    	  if (selectedMarkerChart1) {
@@ -480,7 +480,7 @@ function createMarkers(data) {
 						            selectedMarkerChart1 =new Chart(ctx, {
 						    	    type: 'pie',
 						    	    data: {
-						    	      labels: ["여성 (" + percentage1 + ")", "남성 (" + percentage2 + ")"],
+						    	      labels: ["여성(" + percentage1 + ")", "남성(" + percentage2 + ")"],
 						    	      datasets: [{
 						    	        data: [ratio1, ratio2],
 						    	        backgroundColor: ['#FF6384', '#36A2EB'],
@@ -506,8 +506,8 @@ function createMarkers(data) {
 						    		      "20대": 0,
 						    		      "30대": 0,
 						    		      "40대": 0,
-						    		      "50대": 0,
-						    		      "60대": 0
+						    		      "50대": 0
+						    		      //"60대": 0
 						    		    };
 						    	for(var i=0;i<data3.length;i++){
 						    		var birthYear = parseInt(data3[i].userBirth);
@@ -523,9 +523,7 @@ function createMarkers(data) {
 						    	        ageCategories["40대"]++;
 						    	      } else if (age >= 50 && age < 60) {
 						    	        ageCategories["50대"]++;
-						    	      } else {
-						    	        ageCategories["60대"]++;
-						    	      }
+						    	      } 
 						    	}
 						    	var ctx = document.getElementById("chartCanvas2").getContext("2d");
 						    	if (selectedMarkerChart2) {
@@ -535,13 +533,14 @@ function createMarkers(data) {
 						    	      type: 'bar',
 						    	      data: {
 						    	        labels: Object.keys(ageCategories).map(function(label) {
-						    	          return label + "(" + ageCategories[label] + "명)";
+						    	          //return label + "(" + ageCategories[label] + "명)";
+						    	        	return label ;
 						    	        }),
 						    	        datasets: [{
 						    	          label: '연령대 비율',
 						    	          data: Object.values(ageCategories),
-						    	          backgroundColor: 'rgba(0, 123, 255, 0.7)',
-						    	          borderColor: 'rgba(0, 123, 255, 1)',
+						    	          backgroundColor: '#B8E9FF',
+						    	          borderColor: 'rgba(0, 123, 255, 0.8)',
 						    	          borderWidth: 1
 						    	        }]
 						    	      },
@@ -549,6 +548,7 @@ function createMarkers(data) {
 						    	        responsive: true,
 						    	        scales: {
 						    	          y: {
+						    	        	  display: false,
 						    	            beginAtZero: true,
 						    	            ticks: {
 						    	              stepSize: 1,
@@ -1349,34 +1349,55 @@ function createMarkers(data) {
 			<div id="pagination"></div>
 		</div>
 		<div class="placemenu" style="display: none;">
-			<div id="placemenu_button">
-				<button>x</button>
+			<div id="placemenu_top">
+				<div id="placemenu_button">
+					<button>x</button>
+				</div>
+				<div id="datatest">
+				  <img id="placeImage" src="" alt="장소 이미지">
+				</div>
+				<div id="datatest1"></div>
+				<div id="ocr_button">
+					<img src="/resources/image/insta_heart.png" id="heartimg2"/>
+					<div id="datatest4"></div>
+					<img src="/resources/image/goood.png" id="heartimg2"/>
+					<div id="placemenu_heart">
+					<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
+					</div>
+				</div>
+				<hr id="hr_css">
+				<div id="placemenu_pin">
+					<img src="/resources/image/pin2.png" id="pin_img"/>
+					<div id="datatest2"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/number.png" id="pin_img"/>
+					<div id="datatest3"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/infocheck.png" id="pin_img"/>
+					<div id="datatest5"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/taaag.png" id="pin_img"/>
+					<div id="data_tag">
+						<div id="datatest6"></div>
+						<div id="datatest7"></div>
+						<div id="datatest8"></div>
+					</div>
+				</div>
+				<div id="datatest0"></div>
+				<div id="chart_title">연령별/성별 추천 비율</div>	
 			</div>
-			<div id="datatest">
-			  <img id="placeImage" src="" alt="장소 이미지">
-			</div><br>
-			<div id="datatest1"></div><br>
-			<div id="ocr_button">
-				<img src="/resources/image/insta_heart.png" id="heartimg2"/>
-				<div id="datatest4"></div>
-				<img src="/resources/image/goood.png" id="heartimg2"/>
-				<div id="placemenu_heart">
-				<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
-				</div><br>
+			<div id="chart_set">
+				<div id="chart">
+					<canvas id="chartCanvas"></canvas>
+				</div>
+				<div id="chart2">
+					<canvas id="chartCanvas2"></canvas>
+				</div>
 			</div>
-			<div id="datatest2"></div>
-			<div id="datatest3"></div>
-			<div id="datatest5"></div>
-			<div id="datatest6"></div>
-			<div id="datatest7"></div>
-			<div id="datatest8"></div>
-			<div id="datatest0"></div>
-			<div id="chart">
-				<canvas id="chartCanvas"></canvas>
-			</div>
-			<div id="chart2">
-				<canvas id="chartCanvas2"></canvas>
-			</div>
+
 
 		</div>
 
