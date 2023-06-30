@@ -19,6 +19,9 @@ var map; // map 객체 선언
 // 초기 마커 생성
 var placeList = [[${placeRestaurantList}]];
 let colorSelections = {};
+var pageNum = 1;
+var totalPages = 5; // 전체 페이지 수
+
 //영수증인증 팝업창
 function openPopup() {
     var popupContainer = document.createElement("div");
@@ -237,7 +240,6 @@ var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
 // 초기 마커 생성
-var placeList = [[${placeRestaurantList}]];
 
 /* function reloadStylesheet() {
 	  var links = document.getElementsByTagName('link');
@@ -253,22 +255,24 @@ function initTmap() {
 	  // map 생성
 	  map = new Tmapv2.Map("map_div", {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
-	    width: "60vw", // 지도의 넓이
+	    width: "50vw", // 지도의 넓이
 	    height: "80vh", // 지도의 높이
 	    zoom: 10
 	  });
 	  createMarkers(placeList);
 	}
 
-function fetchUpdatedMarkers(category) {
+function fetchUpdatedMarkers(category, pageNum) {
 	
     $.ajax({
       url: '/plan/fetchMarkers',
       method: 'GET',
-      data: { category: category },
+      data: { category: category,
+    	      pageNum: pageNum},
       success: function (data) {
     	  updateList(data);
     	  createMarkers(data);
+    	  pageNum = pageNum; // 현재 페이지 번호 업데이트
     	  
       },
       error: function () {
@@ -285,6 +289,12 @@ function updateList(data) {
 	    var listItem = document.createElement('div');
 	    listItem.id = 'left_block';
 		
+	    var inputCategory = document.createElement('input');
+	    inputCategory.type = 'hidden';
+	    inputCategory.name = 'placeCategory';
+	    inputCategory.value = restaurant.placeCategory;
+	    listItem.appendChild(inputCategory);
+	    
 	    var inputLon = document.createElement('input');
 	    inputLon.type = 'hidden';
 	    inputLon.name = 'planLon';
@@ -460,8 +470,8 @@ function createMarkers(data) {
 						    	  var ratio1 = count1 / total;
 						    	  var ratio2 = count2 / total;
 						    	  
-						    	  var percentage1 = (ratio1 * 100).toFixed(2) + "%";
-						    	  var percentage2 = (ratio2 * 100).toFixed(2) + "%";
+						    	  var percentage1 = (ratio1 * 100).toFixed(0) + "%";
+						    	  var percentage2 = (ratio2 * 100).toFixed(0) + "%";
 
 						    	  var ctx = document.getElementById("chartCanvas").getContext("2d");
 						    	  if (selectedMarkerChart1) {
@@ -470,7 +480,7 @@ function createMarkers(data) {
 						            selectedMarkerChart1 =new Chart(ctx, {
 						    	    type: 'pie',
 						    	    data: {
-						    	      labels: ["여성 (" + percentage1 + ")", "남성 (" + percentage2 + ")"],
+						    	      labels: ["여성(" + percentage1 + ")", "남성(" + percentage2 + ")"],
 						    	      datasets: [{
 						    	        data: [ratio1, ratio2],
 						    	        backgroundColor: ['#FF6384', '#36A2EB'],
@@ -496,8 +506,8 @@ function createMarkers(data) {
 						    		      "20대": 0,
 						    		      "30대": 0,
 						    		      "40대": 0,
-						    		      "50대": 0,
-						    		      "60대": 0
+						    		      "50대": 0
+						    		      //"60대": 0
 						    		    };
 						    	for(var i=0;i<data3.length;i++){
 						    		var birthYear = parseInt(data3[i].userBirth);
@@ -513,9 +523,7 @@ function createMarkers(data) {
 						    	        ageCategories["40대"]++;
 						    	      } else if (age >= 50 && age < 60) {
 						    	        ageCategories["50대"]++;
-						    	      } else {
-						    	        ageCategories["60대"]++;
-						    	      }
+						    	      } 
 						    	}
 						    	var ctx = document.getElementById("chartCanvas2").getContext("2d");
 						    	if (selectedMarkerChart2) {
@@ -525,13 +533,14 @@ function createMarkers(data) {
 						    	      type: 'bar',
 						    	      data: {
 						    	        labels: Object.keys(ageCategories).map(function(label) {
-						    	          return label + "(" + ageCategories[label] + "명)";
+						    	          //return label + "(" + ageCategories[label] + "명)";
+						    	        	return label ;
 						    	        }),
 						    	        datasets: [{
 						    	          label: '연령대 비율',
 						    	          data: Object.values(ageCategories),
-						    	          backgroundColor: 'rgba(0, 123, 255, 0.7)',
-						    	          borderColor: 'rgba(0, 123, 255, 1)',
+						    	          backgroundColor: '#B8E9FF',
+						    	          borderColor: 'rgba(0, 123, 255, 0.8)',
 						    	          borderWidth: 1
 						    	        }]
 						    	      },
@@ -539,6 +548,7 @@ function createMarkers(data) {
 						    	        responsive: true,
 						    	        scales: {
 						    	          y: {
+						    	        	  display: false,
 						    	            beginAtZero: true,
 						    	            ticks: {
 						    	              stepSize: 1,
@@ -582,27 +592,27 @@ function createMarkers(data) {
   document.addEventListener('DOMContentLoaded', function () {
     var restaurantBtn = document.getElementById('restaurant-btn');
     restaurantBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('restaurant');
+      fetchUpdatedMarkers('restaurant', pageNum);
     });
 
     var youtubeBtn = document.getElementById('youtube-btn');
     youtubeBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('youtube');
+      fetchUpdatedMarkers('youtube', pageNum);
     });
 
     var touristBtn = document.getElementById('tourist-btn');
     touristBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('tourist');
+      fetchUpdatedMarkers('tourist', pageNum);
     });
 
     var hillBtn = document.getElementById('hill-btn');
     hillBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('hill');
+      fetchUpdatedMarkers('hill', pageNum);
     });
 
     var ollegilBtn = document.getElementById('ollegil-btn');
     ollegilBtn.addEventListener('click', function () {
-      fetchUpdatedMarkers('ollegil');
+      fetchUpdatedMarkers('ollegil', pageNum);
     });
   });
   function createPlusClickEvent() {
@@ -1214,7 +1224,8 @@ function createMarkers(data) {
 		$.ajax({
 			url:'/plan/search',
 			type: 'POST',
-			data: {keyword: keyword},
+			data: {keyword: keyword,
+				   pageNum: pageNum},
 			success: function(data){
 				updateList(data);
 				createMarkers(data);
@@ -1224,9 +1235,60 @@ function createMarkers(data) {
 			}
 		});
 	}
+	
+		function updatePagination(totalItems, itemsPerPage, pageNum) {
+			const categoryInput = document.querySelector('input[name="placeCategory"]').value;
+			console.log(categoryInput);
+			  var totalPages = Math.ceil(totalItems / itemsPerPage);
+			  var paginationContainer = document.querySelector('#pagination');
+			  paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+
+			  var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
+			  var startPage = Math.max(1, pageNum - Math.floor(pageRange / 2));
+			  var endPage = Math.min(totalPages, startPage + pageRange - 1);
+
+			  // 이전 버튼 생성
+			  var prevButton = document.createElement('a');
+			  prevButton.href = 'javascript:void(0)';
+			  prevButton.textContent = '이전';
+			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 1)+')');
+			  paginationContainer.appendChild(prevButton);
+
+			  // 페이지 번호 생성
+			  for (var i = startPage; i <= endPage; i++) {
+			    var pageLink = document.createElement('a');
+			    pageLink.href = 'javascript:void(0)';
+			    pageLink.textContent = i;
+			    pageLink.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+i+')');
+
+			    if (i === pageNum) {
+			      pageLink.classList.add('active');
+			    }
+
+			    paginationContainer.appendChild(pageLink);
+			  }
+
+			  // 다음 버튼 생성
+			  var nextButton = document.createElement('a');
+			  nextButton.href = 'javascript:void(0)';
+			  nextButton.textContent = '다음';
+			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 1)+')');
+			  paginationContainer.appendChild(nextButton);
+		}
+	// 서버로부터 전체 데이터 수를 가져와서 페이지 번호 업데이트
+	function fetchTotalItems() {
+	  // 서버로부터 전체 데이터 수를 가져오는 API 요청을 수행하세요.
+	  // 예시: AJAX 요청 등을 사용하여 전체 데이터 수를 가져옵니다.
+	  var totalItems = [[${placeListCount}]];
+		console.log(totalItems);
+	  var itemsPerPage = 20; // 페이지당 출력할 데이터 수
+
+	  updatePagination(totalItems, itemsPerPage, pageNum);
+	}
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
+		  fetchTotalItems();
 	};	
 </script>
 <title>Insert title here</title>
@@ -1237,9 +1299,17 @@ function createMarkers(data) {
 			<a href="/course" id="label-left-course">코스추천</a>
 			 <a href="/community" id="label-left-community">커뮤니티</a> 
 			 <a href="/chat" id="label-left-chat">채팅방</a>
-			<img src="./resources/image/logo.png" alt="" id="logimg"> 
-			<a href="/login" id="label-right-login">로그인</a>
-			 <a href="/register" id="label-right-register">회원가입</a>
+			<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
 		</div>
 	</div>
 	<div class="main"> 
@@ -1248,8 +1318,10 @@ function createMarkers(data) {
 				<input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요">
 				<button type="button" id="search-button" onclick="search()">검색</button>
 			</div>
+			<div class="list-scroll">
 			<div class="list">
 				<div id="left_block" th:each="restaurant : ${placeRestaurantList}">
+				<input type="hidden" name="placeCategory" th:value="${restaurant.placeCategory}">
 					<div id="list-img">
 						<img th:src="@{/resources/image/place/__${restaurant.placeName}__.jpg}" alt="">
 					</div>
@@ -1273,37 +1345,59 @@ function createMarkers(data) {
 					<input type="hidden" name="planLat" th:value="${restaurant.placeLat}">
 				</div>
 			</div>
-			
+			</div>
+			<div id="pagination"></div>
 		</div>
 		<div class="placemenu" style="display: none;">
-			<div id="placemenu_button">
-				<button>x</button>
+			<div id="placemenu_top">
+				<div id="placemenu_button">
+					<button>x</button>
+				</div>
+				<div id="datatest">
+				  <img id="placeImage" src="" alt="장소 이미지">
+				</div>
+				<div id="datatest1"></div>
+				<div id="ocr_button">
+					<img src="/resources/image/insta_heart.png" id="heartimg2"/>
+					<div id="datatest4"></div>
+					<img src="/resources/image/goood.png" id="heartimg2"/>
+					<div id="placemenu_heart">
+					<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
+					</div>
+				</div>
+				<hr id="hr_css">
+				<div id="placemenu_pin">
+					<img src="/resources/image/pin2.png" id="pin_img"/>
+					<div id="datatest2"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/number.png" id="pin_img"/>
+					<div id="datatest3"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/infocheck.png" id="pin_img"/>
+					<div id="datatest5"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/taaag.png" id="pin_img"/>
+					<div id="data_tag">
+						<div id="datatest6"></div>
+						<div id="datatest7"></div>
+						<div id="datatest8"></div>
+					</div>
+				</div>
+				<div id="datatest0"></div>
+				<div id="chart_title">연령별/성별 추천 비율</div>	
 			</div>
-			<div id="datatest">
-			  <img id="placeImage" src="" alt="장소 이미지">
-			</div><br>
-			<div id="datatest1"></div><br>
-			<div id="ocr_button">
-				<img src="/resources/image/insta_heart.png" id="heartimg2"/>
-				<div id="datatest4"></div>
-				<img src="/resources/image/goood.png" id="heartimg2"/>
-				<div id="placemenu_heart">
-				<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
-				</div><br>
+			<div id="chart_set">
+				<div id="chart">
+					<canvas id="chartCanvas"></canvas>
+				</div>
+				<div id="chart2">
+					<canvas id="chartCanvas2"></canvas>
+				</div>
 			</div>
-			<div id="datatest2"></div>
-			<div id="datatest3"></div>
-			<div id="datatest5"></div>
-			<div id="datatest6"></div>
-			<div id="datatest7"></div>
-			<div id="datatest8"></div>
-			<div id="datatest0"></div>
-			<div id="chart">
-				<canvas id="chartCanvas"></canvas>
-			</div>
-			<div id="chart2">
-				<canvas id="chartCanvas2"></canvas>
-			</div>
+
 
 		</div>
 

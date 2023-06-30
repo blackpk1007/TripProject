@@ -10,12 +10,13 @@
 	font-size:2rem;
 	text-align:center;
 	margin-top:2rem;
-	
+		
 }
 .course{
+
 	width:50vw;
 	height:20vh;
-  	border:solid;
+  border:solid;
 	border-width:0.1rem;
 	position:relative;
 	left: 25vw;
@@ -225,6 +226,7 @@ hr{
     background: #BDBDBD;
     margin:0.7rem;
     justify-content: center;
+    margin: 10px;
   	align-items: center;
 }
 
@@ -330,6 +332,24 @@ hr{
 </head>
 
 <body>
+ 	<div class="header">
+		<div class="header-category">
+			<a href="/course" id="label-left-course">코스추천</a>
+			 <a href="/community" id="label-left-community">커뮤니티</a> 
+			 <a href="/chat" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
 <!-- 옵션 -->
 <div class="main_text">코스추천</div>
 <div class="course"><!-- 큰덩어리 -->
@@ -403,8 +423,8 @@ hr{
 						<div class="data"> 여행이름 </div>
 						<div class="data"> 여행날짜 </div>
 						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
+						<div class="userview">
+							<img class="viewlogo" src="/resources/image/magnifier.png"> view </div>
 					</div>
 				</div>
 			</div>

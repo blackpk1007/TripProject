@@ -1,10 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
 	 #menu{
+	 		
 			width: 100%;
 			height: 40px;
 		}
@@ -42,37 +101,43 @@
 			margin-top:8%;
 		}
 		#left{
-			width:25%;
+			
+			width:50%;
 			float:left;
 			height:50vh;
-			background-color:#ffd400;
-			margin-left:17%;
+			/* background-color:#ffd400; */
 			margin-top:5%;
 			border-radius:15%;
 		}
 		.button{
+			width:70%;
+			height:50vh;
 			background-color: transparent;
 			border:none;
 			cursor:pointer;
 			text-align:center;
 		}
-		#taxiImg{
+		
+		#taxi-button{
+		margin-left:30%;
+		}
+		/* #taxiImg{
 			width:100%;
 			height:32vh;
 			border:solid 1px black;
 			border-radius:50%;
 			margin-left:25.5%;
-		}
+		} */
 		#right{
-			width:25%;
+		
+			width:50%;
 			float:left;
 			height:50vh;
-			background-color:#9bbbd4;
+			/* background-color:#9bbbd4; */
 			margin-top:5%;
 			border-radius:15%;
-			margin-left:16%;
 		}
-		#right h1, #left h1{
+		/* #right h1, #left h1{
 			font-size:40px;
 			margin-left:48.1%;
 			margin-top:8%;
@@ -83,32 +148,41 @@
 			border:solid 1px black;
 			border-radius:50%;
 			margin-left:25.5%;
+		} */
+		.img{
+			width:70%; 
+			heigth:100%;
 		}
 </style>
 </head>
 <body>
-	<nav id="menu">
-		<div style="text-align: center;">
-			<img id="logo" src="/resources/image/logo.png">
+	<div class="header">
+		<div class="header-category">
+			<a href="/course" id="label-left-course">코스추천</a>
+			 <a href="/community" id="label-left-community">커뮤니티</a> 
+			 <a href="/chat" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
 		</div>
-		<ul>
-			<li class="linka" ><a class="link" href="#">일정생성</a></li>
-			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka" ><a class="link" href="#">채팅방</a></li>
-			<li class="linkb" ><a class="link" href="/login/userupdateform">마이페이지</a></li>
-		</ul>
-	</nav>
+	</div>
 	<div id="chattingRoom">
 		<div id="left">
-			<button class="button" onclick="location.href='/login'">
-			<h1>택시동행</h1>
-			<img id="taxiImg" src="/resources/image/taxilogo.jpg">
+			<button class="button" id="taxi-button" onclick="location.href='/login'">
+			<img id="taxiImg" class="img" src="/resources/image/taxitaxi.png">
 			</button>
 		</div>
 		<div id="right">
-			<button class="button" onclick="location.href='/login'">
-				<h1>맛집동행</h1>
-				<img id="foodImg" src="/resources/image/foodcopy.jpg">
+			<button class="button" id="food-button" onclick="location.href='/login'">
+				<img id="foodImg" class="img" src="/resources/image/foodfood.png">
 			</button>
 		</div>
 	</div>

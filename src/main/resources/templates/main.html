@@ -103,11 +103,11 @@
 	</div>
 	<div id="place_text">
 		<br> <br>
-		<p>제주도 핫플레이스</p>
-		<p>Hot Place</p>
+		<p id="place_text_korean">제주도 핫플레이스</p>
+		<p id="place_text_english">Hot Place</p>
 		<br> <br>
 	</div>
-	<div class="swiper-container">
+	<div class="swiper-container" id="swiper-container-hotPlace">
 	  <div class="swiper-wrapper">
 	    <div th:each="list : ${list}" class="swiper-slide">
 	      <div class="hot_img">
@@ -126,18 +126,18 @@
 	  <!-- 이전 버튼 -->
 	
 	  <!-- 페이징 -->
-	  <div class="swiper-pagination"></div>
+	  <div class="swiper-pagination" id="swiper-pagination-hotPlace"></div>
 	</div>
 
 
 
 	<div id="place_text">
 		<br> <br>
-		<p>코스추천</p>
-		<p>Course</p>
+		<p id="place_text_korean">코스추천</p>
+		<p id="place_text_english">Course</p>
 		<br> <br>
 	</div>
-	<div class="swiper-container">
+	<div class="swiper-container" id="swiper-container-course">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide">
 				<a href="#"><img src="/resources/image/udo.jpg"></a>
@@ -164,15 +164,15 @@
 		<!-- 이전 버튼 -->
 
 		<!-- 페이징 -->
-		<div class="swiper-pagination"></div>
+		<div class="swiper-pagination" id="swiper-pagination-course"></div>
 	</div>
 	<br>
 	<br>
 	<br>
 	<br>
 	<div id="place_text">
-		<p>어떤 여행을 계획하고 계시나요?</p>
-		<p>Hash Tag</p>
+		<p id="place_text_korean">어떤 여행을 계획하고 계시나요?</p>
+		<p id="place_text_english">Hash Tag</p>
 		<br> <br>
 	</div>
 	<div align="center" id="tag1">#반려동물동반</div>
