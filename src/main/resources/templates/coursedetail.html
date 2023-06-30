@@ -15,7 +15,10 @@
 	flex-direction: column;
 	position:relative;
 	left:1vw;
+	justify-content: center;
+	
 }
+
 .map{
 	display:flex;
 	justify-content: center;
@@ -27,24 +30,24 @@
 	margin-right:0.1rem;
 	text-align:center;
 }
-
-.placelist{
-	width:30vh;
-	height:40vh;
+/* 경로 버튼 부분 */
+.coursebtn{
+	width:50vh;
 	border:solid;
-	border-color:black;
-	border-width:0.1rem;
-	font-size:1.8rem;
-	text-align:center;
+	border-width:2px;
+	display:flex;
+	justify-content:center;
 }
 
-/* day 1 부*/
+/* day 1  텍스트 부분 */
 .mymain_text{
+	width:20vw;
 	font-size:1.8rem;
 	margin:2rem;
-	margin-left:10rem;
 	position:relative;
 	display:flex;
+	justify-content:center;
+	
 }
 .day1{
 	border: solid;
@@ -99,7 +102,7 @@ function initTmap() {
 	  // map 생성
 	  map = new Tmapv2.Map("map_div", {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
-	    width: "55vw", // 지도의 넓이
+	    width: "50vw", // 지도의 넓이
 	    height: "40vh", // 지도의 높이
 	    zoom: 10
 	  });
@@ -113,11 +116,24 @@ window.onload = function () {
 
 <body>
 	<div class="body">
+		<div><h2> 00 의 일정 제목 </h2></div>
+		<div> 
+			<div>기간 시작~기간 끝 </div>
+			<img src="#">
+		</div>
+		<!--  지도  -->
 		<div class="map">
 			<div id="map_div"></div>
-			<div class="placelist">
-			
-			</div>
+		</div>
+		<!-- 지도 밑 버튼 (경로 불러오는), 화면설계서랑 다름 -->
+		<div class="coursebtn">(경로출력)
+			<button>day1</button>
+			<button>day2</button>
+			<button>day3</button>
+			<button>day4</button>
+			<button>day5</button>
+			<button>day6</button>
+			<button>day7</button>
 		</div>
 		<!-- 밑에 리스트 -->
 		<div class="mymain_text">
@@ -174,7 +190,6 @@ window.onload = function () {
 			</div>
 		</div>
 	</div>
-		
 	
 </body>
 </html>
