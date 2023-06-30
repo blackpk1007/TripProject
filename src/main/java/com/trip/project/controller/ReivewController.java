@@ -45,7 +45,7 @@ public class ReivewController {
     public List<Object> resultList(@RequestParam("attachFile") MultipartFile file, Model model, Integer placeNumber, HttpSession session) throws IOException {
 		
        
-		Ocr ocr = new Ocr(); 
+		Ocr ocr = new Ocr();
         String res = ocr.ocr(file);
         JSONObject obj = new JSONObject(res);
         List<Object> resultList = new ArrayList<>();

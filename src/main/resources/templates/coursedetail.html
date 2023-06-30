@@ -2,246 +2,90 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Mypage</title>
+<title>코스 상세</title>
 <link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
 	rel="stylesheet">
 <style type="text/css">
-.main_text{
-	font-size:2rem;
-	text-align:center;
-	margin-top:2rem;
-	
-}
-.course{
-	text-align:center;
-	width:80vw;
-	height:10vh;
-	height:100%;
-  	justify-content: center;
-  	align-items: center;
-  	border:solid;
-	border-width:0.1rem;
+.body{
+	display: flex;
+	width: 98vw;
+	height: 78vh;
+	flex-direction: column;
 	position:relative;
-	left: 10vw;
-	top: 2vw;
+	left:1vw;
 }
-.date{
-	margin-top:1rem;
-	margin-bottom:1rem;
-	width:100%;
-	height:30%;
-	display: flex;
-  	justify-content: center;
-	align-items: center;
-}
-.dates{
-	display: flex;
-	text-align: center;
-  	align-items: center;
-  	font-size:1.8rem;
-  	margin-left:1rem;
-  	margin-right:1rem;
-}
-.season{
-	margin-top:1rem;
-	margin-bottom:1rem;
-	width:100%;
-	height:30%;
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-  	
-}
-.seasons{
+.map{
 	display:flex;
+	justify-content: center;
+}
+#map_div{
+	border:solid;
+	border-width:0.1rem;
+	border-color:#A2CCED;
+	margin-right:0.1rem;
 	text-align:center;
-  	align-items: center;
-  	font-size:1.8rem;
-  	margin-left:2.7rem;
-  	margin-right:2.7rem;
 }
 
+.placelist{
+	width:30vh;
+	height:40vh;
+	border:solid;
+	border-color:black;
+	border-width:0.1rem;
+	font-size:1.8rem;
+	text-align:center;
+}
 
-
-/* main 인기순 날짜순 */
+/* day 1 부*/
 .mymain_text{
 	font-size:1.8rem;
+	margin:2rem;
 	margin-left:10rem;
 	position:relative;
-	top: 5vh;
 	display:flex;
 }
-/* 큰틀 */
-.mymain{
-	padding:2rem;
-	padding-top:1rem;
-	position:relative;
-	display:flex;
-	top:5rem;
-}
-	/* 세로 4개씩 반갈 왼쪽 */
-.main1{
-	/* border: solid;
-	border-color: #B8E9FF;
-	border-radius:0.5rem;
-	border-width:2px;
-	font-size: 1.8rem; */
-	flex:1;
-	padding:1rem;
-	padding-top:0;
-	height:65vh;
-	width:45vw;
-	position:relative;
-	/* left:2vw; */
-	display: flex;
-	flex-direction: column;
-  	align-items: center;
-	
-}
-	/* 세로 4개씩 반갈 오른쪽 div 디폴트 세로정렬이라 ㅇㅇ  */
-.main2{
-	/* border: solid;
-	border-color: #B8E9FF;
-	border-radius:0.5rem;
-	border-width:2px;
-	font-size: 1.8rem; */
-	flex:1;
-	padding:1rem;
-	padding-top:0;	
-	height:65vh;
-	width:45vw;
-	position:relative;
-	/* right:2vw; */
-	display: flex;
-	flex-direction: column;
-  	align-items: center;
-	
-}
-	/* 개별 네모 칸 8개  */
-.plan{
-	width:80%;
+.day1{
 	border: solid;
 	border-color: #B8E9FF;
 	border-radius:0.5rem;
 	border-width:2px;
-	font-size: 1.8rem;
-	margin-top: 3rem;
+	background-color: #B8E9FF;
+	font-size: 2rem;
+	padding: 1rem;
+	padding-left:2rem;
+	padding-right:2rem;
 	display: flex;
 	justify-content: center;
   	align-items: center;
-
+	
 }
-	/* 안에 사진 칸  */
-.loc1{
-	flex:1;
-	display:flex;
-}
-
-	/* loc 1 안에 사진, 1~8까지해야되나모르겠음
-	 값만 달라도 될 것 같아서 클래스로 바꿔도 될듯 */ 
-.coursepic{
-	width: 13rem;
-    height: 13rem; 
-    overflow: hidden;
-    background: #BDBDBD;
-    margin:0.2rem;
-    justify-content: center;
-  	align-items: center;
-}
-
-
-	/* 안에 여행이름,날짜,기간 칸  */
-.loc2{
-	flex:2;
+.day2{
+	margin:0.7rem;
+	text-align:center;
 	display: flex;
-  	align-items: center;
-}
-/* 세로로 여행이름날짜기간 사용자id / 데이이터 3개,조회수(view)로 나 */  
-/*왼쪽*/
-.col1{
-	display: flex;
-	flex:2;
 	flex-direction: column;
+  	align-items: center;
+}
+.day3{
+	margin:0.2rem;
+	text-align:center;
+}
+/* 코스보여주는곳 */
+/* 큰덩어리 */
+.mymain{
+	display: flex;
 	justify-content: center;
   	align-items: center;
-}
-.category{
-	margin:0.2rem;
-	margin-top:0.4rem;
-	margin-bottom:0.4rem;
-}
-.usernamelogo{
-	width: 1.8rem;
-    height: 1.8rem; 
-    border-radius: 70%;
-    border: solid;
-    border-width:0.2rem;
-    border-color: #B8E9FF;
-    overflow: hidden;
-    background: white;
-    margin-right:0.1rem;
-    display:flex;
-    justify-content: center;
-  	align-items: center;
-}
-.username{
-	margin:0.2rem;
-	margin-top:0.4rem;
-	margin-bottom:0.4rem;
-	display:flex;
-    justify-content: center;
-  	align-items: center;
-}
-/*오른쪽*/
-.col2{
-	display: flex;
-	flex:3;
-	flex-direction:column;
-	justify-content: center;
-}
-.data{
-	margin-top:0.4rem;
-	margin-bottom:0.4rem;
-}
-.viewlogo{
-	width: 1.8rem;
-    height: 1.8rem; 
-    overflow: hidden;
-    background: white;
-    margin-right:0.1rem;
-    display:flex;
-    justify-content: center;
-  	align-items: center;
+	flex-direction: column;
+	height: 40vh;
+	border: solid;
+	border-width: 0.1rem;
+	border-color: black;
+	margin: 2rem;
 }
 
-.userview{
-	margin:0.2rem;
-	margin-top:0.4rem;
-	margin-bottom:0.4rem;
-	display:flex;
-}
-
-
-/* .myplan1{
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-}
-
-.location2{
-	width: 150px;
-    height: 150px; 
-    overflow: hidden;
-    background: #BDBDBD;
-}
-
-.myplan2{
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-} */
 
 
 </style>
@@ -255,8 +99,8 @@ function initTmap() {
 	  // map 생성
 	  map = new Tmapv2.Map("map_div", {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
-	    width: "60vw", // 지도의 넓이
-	    height: "80vh", // 지도의 높이
+	    width: "55vw", // 지도의 넓이
+	    height: "40vh", // 지도의 높이
 	    zoom: 10
 	  });
 	}
@@ -268,62 +112,68 @@ window.onload = function () {
 </head>
 
 <body>
-
-<div id="map_div"></div>
-<!-- 본 -->
-<div class="mymain_text">
-	<div class="day" >day1</div>
-	<div>
-		<div>date</div>
-		<div>제주도</div>
+	<div class="body">
+		<div class="map">
+			<div id="map_div"></div>
+			<div class="placelist">
+			
+			</div>
+		</div>
+		<!-- 밑에 리스트 -->
+		<div class="mymain_text">
+			<div class="day1">Day1</div>
+			<div class="day2">
+				<div class="day3">date</div>
+				<div class="day3">제주도</div>
+			</div>
+		</div>
+		<div class="mymain">
+			<div class="main">
+				<div class="sec1">
+					<img class="num" src="#">
+				</div>
+				<div class="sec2">
+					<img class="placepic" src="#">
+				</div>
+				<div class="sec3">
+					<div class="placename"></div>
+				</div>
+				<div class="sec4">
+					<img class="info" src="#"><img class="info" src="#">
+				</div>
+			</div>
+			<div class="dots"></div>
+			<div class="main">
+				<div class="sec1">
+					<img class="num" src="#">
+				</div>
+				<div class="sec2">
+					<img class="placepic" src="#">
+				</div>
+				<div class="sec3">
+					<div class="placename"></div>
+				</div>
+				<div class="sec4">
+					<img class="info" src="#"><img class="info" src="#">
+				</div>
+			</div>
+			<div class="dots"></div>
+			<div class="main">
+				<div class="sec1">
+					<img class="num" src="#">
+				</div>
+				<div class="sec2">
+					<img class="placepic" src="#">
+				</div>
+				<div class="sec3">
+					<div class="placename"></div>
+				</div>
+				<div class="sec4">
+					<img class="info" src="#"><img class="info" src="#">
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
-<div class="mymain">
-		<div class="main">
-			<div class="sec1">
-				<img class="num" src="#">
-			</div>
-			<div class="sec2">
-				<img class="placepic" src="#">
-			</div>
-			<div class="sec3">
-				<div class="placename"></div>
-			</div>
-			<div class="sec4">
-				<img class="info" src="#"><img class="info" src="#">
-			</div>
-		</div>
-		<div class="dots"></div>
-		<div class="main">
-			<div class="sec1">
-				<img class="num" src="#">
-			</div>
-			<div class="sec2">
-				<img class="placepic" src="#">
-			</div>
-			<div class="sec3">
-				<div class="placename"></div>
-			</div>
-			<div class="sec4">
-				<img class="info" src="#"><img class="info" src="#">
-			</div>
-		</div>
-		<div class="dots"></div>
-		<div class="main">
-			<div class="sec1">
-				<img class="num" src="#">
-			</div>
-			<div class="sec2">
-				<img class="placepic" src="#">
-			</div>
-			<div class="sec3">
-				<div class="placename"></div>
-			</div>
-			<div class="sec4">
-				<img class="info" src="#"><img class="info" src="#">
-			</div>
-		</div>
-</div>
 		
 	
 </body>
