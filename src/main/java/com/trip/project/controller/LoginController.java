@@ -236,6 +236,12 @@ public class LoginController {
 		return "recommandcourse";
 	}
 	
+	// 코스 상세
+	@RequestMapping("/coursedetail")
+	public String coursedetail(){
+		return "coursedetail";
+	}
+	
 	@RequestMapping("/userinserttest")
 	public String userinserttest() {
 		
