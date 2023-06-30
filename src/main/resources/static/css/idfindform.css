@@ -110,6 +110,7 @@
 	border: 0.7px solid rgb(185, 184, 184);
 	border-radius: 0.5rem;
 	font-size: 1.6rem;
+	padding-left:11px;
 }
 
 #findIdButton {
