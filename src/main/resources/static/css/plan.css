@@ -1,4 +1,29 @@
 @charset "UTF-8";
+   .ocr_popup-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+    }
+
+    .ocr_popup {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .ocr_popup-close {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 .header {
 	width: 90vw;
 	height: 13vh;
@@ -77,6 +102,7 @@
 	color: #595959;
 	margin-top: 0vw;
 }
+
 
 .main-center {
 	width: 60vw;
@@ -210,208 +236,6 @@
 	margin-right: 0.5vh;
 }
 
-.circle1 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle1:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle2 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle2:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle3 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle3:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle4 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle4:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle5 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle5:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle6 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle6:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
-
-.circle7 {
-	display: inline-block;
-	/* 영역적용가능해짐 */
-	width: 20px;
-	height: 20px;
-	border: 1px solid #333;
-	box-sizing: border-box;
-	border-radius: 10px;
-	/* 모서리둥글게 처리 */
-	position: relative;
-	top: 4px;
-	cursor: pointer;
-	/* 마우스 올렸을때 손모양 처리 */
-}
-
-.circle7:after {
-	content: '\2714';
-	/* 체크박스 특수문자 */
-	font-size: 24px;
-	color: #333;
-	position: absolute;
-	top: -14px;
-	left: 0;
-	opacity: 0;
-	/* 처음엔 안보이게 처리 */
-	transition: 0.2s;
-	/* CSS변화에 시간차 처리 */
-}
 
 .circle1 {
 	background-color: red;
@@ -441,71 +265,46 @@
 	background-color: purple;
 }
 
-/* input이 체크되면 특수문자 보이게 처리 */
-#chk1:checked+.circle1:after {
-	opacity: 1;
+.circle1,
+.circle2,
+.circle3,
+.circle4,
+.circle5,
+.circle6,
+.circle7 {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #333;
+  box-sizing: border-box;
+  border-radius: 10px;
+  position: relative;
+  top: 4px;
+  cursor: pointer;
 }
 
-#chk2:checked+.circle2:after {
-	opacity: 1;
+.circle1::after,
+.circle2::after,
+.circle3::after,
+.circle4::after,
+.circle5::after,
+.circle6::after,
+.circle7::after {
+  content: '\2714';
+  font-size: 24px;
+  color: #333;
+  position: absolute;
+  top: -14px;
+  left: 0;
+  opacity: 0;
+  transition: 0.2s;
 }
 
-#chk3:checked+.circle3:after {
-	opacity: 1;
+/* 체크박스 숨김 */
+input[type="checkbox"] {
+  position: absolute;
+  left: -999em;
 }
-
-#chk4:checked+.circle4:after {
-	opacity: 1;
-}
-
-#chk5:checked+.circle5:after {
-	opacity: 1;
-}
-
-#chk6:checked+.circle6:after {
-	opacity: 1;
-}
-
-#chk7:checked+.circle7:after {
-	opacity: 1;
-}
-
-/* 체크박스는 display:none;을 주면 데이터 처리가 안됨 */
-#chk1 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk2 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk3 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk4 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk5 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk6 {
-	position: absolute;
-	left: -999em;
-}
-
-#chk7 {
-	position: absolute;
-	left: -999em;
-}
-
 h5 {
 	margin: 0px;
 }
@@ -592,6 +391,7 @@ td {
 }
 .course-color-day h5:not(.active) {
   display: none;
+}
 #chart{
 	height: 10%;
 	width: 50%;
@@ -600,7 +400,7 @@ td {
 	height: 10%;
 	width: 90%;
 }
-   .ocr_popup-container {
+    .ocr_popup-container {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -624,4 +424,48 @@ td {
         position: absolute;
         top: 10px;
         right: 10px;
-    }
+}
+.placemenu {
+  display: none;
+
+	padding: 20px;
+	margin: 0 auto;
+	border: 1px solid #B8E9FF;
+	border-radius: 5px;
+	margin-bottom: 1vh;
+  box-sizing: border-box;
+	width: 17vw;
+	height: auto;
+	max-height: 80vh;
+}
+#datatest{
+	width: 100%;
+}
+#placeImage{
+	width: 100%;
+}
+#datatest1{
+	text-align: center;
+	font-size: 2em;
+}
+#datatest4,
+#placemenu_heart {
+  display: inline-block;
+  vertical-align: middle;
+}
+#heartimg2{
+	
+	width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+#datatest4{
+	font-size: 1.5em;
+	  vertical-align: middle;
+}
+#placemenu_heart a{
+  vertical-align: middle;
+  	font-size: 1.5em;
+  	  text-decoration: none;
+	color: black;
+}

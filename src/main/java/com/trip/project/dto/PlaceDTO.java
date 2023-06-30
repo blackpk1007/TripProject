@@ -1,5 +1,7 @@
 package com.trip.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class PlaceDTO {
 	
 	private int placeNumber;
+	@JsonProperty("placeName")
 	private String placeName;
 	private String placeAddress;
 	private String placeCategory;
@@ -22,6 +25,7 @@ public class PlaceDTO {
 	private String placeTag3;
 	private String placeLon;
 	private String placeLat;
+	private String keyword;
 	
 	
 	

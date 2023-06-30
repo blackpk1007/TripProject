@@ -11,31 +11,36 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
-
+var loginchk = [[${session.login}]];
+console.log(loginchk);
+var markers = []; // 마커를 담을 배열
+var placeData=[];
+var map; // map 객체 선언
+// 초기 마커 생성
+var placeList = [[${placeRestaurantList}]];
+let colorSelections = {};
 //영수증인증 팝업창
 function openPopup() {
     var popupContainer = document.createElement("div");
     popupContainer.setAttribute("id", "ocr_popupContainer");
     popupContainer.setAttribute("class", "ocr_popup-container");
-    
+
     var popup = document.createElement("div");
     popup.setAttribute("class", "ocr_popup");
-    
+
     // 팝업 내용 추가
     popup.innerHTML = `
         <h1>영수증 인증</h1>
-        <form action="/review/reveiwwrite" method="post" enctype="multipart/form-data">
             <div class="filebox">
                 <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
-                <input type="submit" value="인증하기" id="submitBT">
+                <input type="button" value="인증하기" id="submitBT" onclick="test()">
                 <br>
-                <img id="preview" />
+                <img id="preview" width="400px" height="500px"/>
                 <input type="hidden" name="placeNumber" value="" id="placeNumber">
             </div>
-        </form>
         <span class="ocr_popup-close" onclick="closePopup()">X</span>
     `;
-    
+
     popupContainer.appendChild(popup);
     document.body.appendChild(popupContainer);
 }
@@ -62,16 +67,178 @@ function readURL(input) {
     }
 }
 
+function test(){
+	   var fileInput = document.getElementById("attachFile");
+	     var placeNumberInput = document.getElementById("placeNumber");
+
+	     var file = fileInput.files[0];
+	     var placeNumber = placeNumberInput.value;
+
+	     var formData = new FormData();
+	     formData.append("attachFile", file);
+	     formData.append("placeNumber", placeNumber);
+
+	   $.ajax({
+	      url: '/review/reviewwrite',
+	      type: 'POST',
+	      data: formData,
+	      processData: false,
+	      contentType: false,
+	      success:function(data){
+	          console.log(data);
+	          var loginchk = [[${session.login}]];
+	          console.log(loginchk);
+	          		let res=data[0];
+	          		let num=data[1];
+	          		let userCheck=data[2];
+	          		console.log(res);
+	          		console.log(num);
+	          		console.log(userCheck);
+	                var placeNumber2 = num.placeNumber;
+	                var placeName2 = num.placeName;
+	                var placeAddress2 = num.placeAddress;
+	             	// 공백 제거
+	                placeName2 = placeName2.replace(/\s/g, '');
+	                placeAddress2 = placeAddress2.replace(/\s/g, '');
+
+	                console.log(placeNumber2);
+	                console.log(placeName2);
+	                console.log(placeAddress2);
+	                  //let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
+	                  //let num = '[(${num})]';
+	                  //let userCheck = [[(${userCheck})]];
+	                  var userCheckcnt=0;
+	                  var dateCheckcnt=-1;
+	                  var dateCheckdata;
+	                  
+	                  for(var i=0;i<userCheck.length;i++){
+	                  	dateCheckcnt++;
+	                      if (loginchk == userCheck[i].recommandUserID) {
+	                          userCheckcnt++;
+	                          dateCheckdata=userCheck[i].recommandDate;
+	                          console.log(dateCheckdata);
+	                      }
+	                  }
+	                  /*
+	                  let placeNumber = num.match(/placeNumber=([^,]+)/)[1];
+	                  let placeName = num.match(/placeName=([^,]+)/)[1];
+	                  let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
+	                  console.log(placeNumber);
+	                  let check="";
+	                  
+	      	        // 괄호 제거하기
+	      	        placeAddress = placeAddress.replace(/\(|\)/g, '');
+	      	        placeAddress = placeAddress.replace(/\s/g, '');
+	                  console.log(placeName);
+	                  console.log(placeAddress);*/
+	                  let check="";
+	                  if (res) {
+	                      res = JSON.parse(res); // JSON 문자열을 JavaScript 객체로 변환
+	                      for (let i = 0; i < res.images[0].fields.length; i++) {
+	                          check+=res.images[0].fields[i].inferText;
+	                      }
+	                      console.log(check);
+
+	                      var date;
+	                      var regex = /(200[0-9]|201[0-9]|202[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g;
+	                      var result = check.match(regex);
+	                      if (result) {
+	                      	  date = new Date(result[0]);
+	                      	}
+	                      
+	                      
+	                      var placeCheckcnt=0;
+	                  
+	                      if (check.includes(placeAddress2)) {
+	                          console.log("placeAddress 값이 포함되어 있습니다.");
+	                          placeCheckcnt++;
+	                      } else {
+	                          console.log("placeAddress 값이 포함되어 있지 않습니다.");
+	                      }
+	                      if (check.includes(placeName2)) {
+	                          console.log("placeName 값이 포함되어 있습니다.");
+	                          placeCheckcnt++;
+	                      } else {
+	                          console.log("placeName 값이 포함되어 있지 않습니다.");
+	                      }
+	                      console.log(dateCheckdata);
+	          			console.log(date);
+
+	                      if(placeCheckcnt==2){
+	                      	if(userCheckcnt==0){
+	                      		alert("첫번째 영수증 인증이 완료되었습니다");
+	                      		closePopup();
+	                      		// 데이터를 서버로 전송하여 DB에 삽입
+	                              $.ajax({
+	                                  url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+	                                  type: 'POST',
+	                                  data: {
+	                                      userID: loginchk,
+	                                      placeNumber: placeNumber2,
+	                                      date: date
+	                                  },
+	                                  success: function(response) {
+	                                      console.log(response);
+	                                  },
+	                                  error: function(error) {
+	                                      console.log(error);
+	                                  }
+	                              });
+	                      	}
+	                      	else if(userCheckcnt==1){
+	                      		if(dateCheckdata!=date){
+	                      			console.log(dateCheckdata);
+	                      			console.log(date);
+	                      			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
+	                      			closePopup();
+	                      			
+	                      			 // 데이터를 서버로 전송하여 DB에 삽입
+	                                  $.ajax({
+	                                      url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+	                                      type: 'POST',
+	                                      data: {
+	                                          userID: loginchk,
+	                                          placeNumber: placeNumber2,
+	                                          date: date
+	                                      },
+	                                      success: function(response) {
+	                                          console.log(response);
+	                                      },
+	                                      error: function(error) {
+	                                          console.log(error);
+	                                      }
+	                                  });
+	                      		}
+	                      		else{
+	                      			alert("이전에 인증한 날짜 영수증입니다");
+	                      			closePopup();
+	                      		}
+	                      	}
+	                      	else if(userCheckcnt>1){
+	                      		alert("두번 이상 인증하셨습니다");
+	                      		closePopup();
+	                      	}
+	                      }
+	                      else alert("영수증과 장소가 일치하지 않습니다");
+	                      closePopup();
+	                  }
+	                  
+	       },
+	       error:function(data){
+	          alert("실패");
+	       }
+	   });
+	}
+	
 
 var loginchk = [[${session.login}]];
 console.log(loginchk);
 var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
-//체크박스 선택 상태를 저장할 객체
-const checkboxStates = {};
 // 초기 마커 생성
 var placeList = [[${placeRestaurantList}]];
+
 /* function reloadStylesheet() {
 	  var links = document.getElementsByTagName('link');
 	  for (var i = 0; i < links.length; i++) {
@@ -231,6 +398,9 @@ function createMarkers(data) {
                 selectedMarker.setIcon("/resources/image/mk.png");
           }
       };
+      
+
+    
     // 마커 클릭 이벤트 등록
     for (var i = 0; i < markers.length; i++) {
 	  (function(index) {
@@ -260,6 +430,7 @@ function createMarkers(data) {
 	      mainLeft.style.display = 'none';
 	      placeMenu.style.display = 'block';
 	      
+	      document.getElementById("placeImage").src = "/resources/image/place/" + placedata.placeName + ".jpg"; // 이미지 경로를 이미지 요소에 할당
 	      document.getElementById("datatest1").innerText = placedata.placeName;
 	      document.getElementById("datatest2").innerText = placedata.placeAddress;
 	      document.getElementById("datatest3").innerText = placedata.placePhone;
@@ -442,24 +613,23 @@ function createMarkers(data) {
 	      // 클릭한 plus 요소의 부모인 main-left div를 찾아 복사
 	      var mainLeft = this.parentNode;
 	      var coursePlan = document.querySelector('.course-plan');
-
 	      // main-left div 복사
 	      var clonedMainLeft = mainLeft.cloneNode(true);
 
 	      // course-plan div에서 기존의 list div를 찾아 가져옴
-	      var listContainer = coursePlan.querySelector('.course-list');
+	      var listContainer = coursePlan.querySelector(`#course-list-${currentDay}`);
 
-	      var isDuplicate = Array.from(listContainer.querySelectorAll('.main-left')).some(function(listItem) {
-	        var listItemLabel = listItem.querySelector('#list-name-label label');
-	        var listItemText = listItemLabel ? listItemLabel.textContent : '';
-	        var clonedMainLeftLabel = clonedMainLeft.querySelector('#list-name-label label');
-	        var clonedMainLeftText = clonedMainLeftLabel ? clonedMainLeftLabel.textContent : '';
-	        if (listItemText === clonedMainLeftText) {
-	          return true;  // 중복되는 경우 true 반환
-	        }
+	      var isDuplicate = Array.from(listContainer.querySelectorAll('#left_block')).some(function(listItem) {
+	    	  var listItemLabel = listItem.querySelector('#list-name-label label');
+	    	  var listItemText = listItemLabel ? listItemLabel.textContent.toLowerCase() : '';
+	    	  var clonedMainLeftLabel = clonedMainLeft.querySelector('#list-name-label label');
+	    	  var clonedMainLeftText = clonedMainLeftLabel ? clonedMainLeftLabel.textContent.toLowerCase() : '';
+	    	  if (listItemText === clonedMainLeftText) {
+	    	    return true;  // 중복되는 경우 true 반환
+	    	  }
 
-	        return false;  // 중복되지 않는 경우 false 반환
-	      });
+	    	  return false;  // 중복되지 않는 경우 false 반환
+	    	});
 	      if (isDuplicate) {
 	        alert('이미 추가된 장소입니다.'); // 중복된 장소인 경우 경고창 표시
 	        return;  // 중복되는 장소인 경우 함수 종료
@@ -571,6 +741,10 @@ function createMarkers(data) {
     if (!selectedStartDate && !selectedEndDate) {
       const courseColorDay = document.querySelector(".course-color-day");
       courseColorDay.innerHTML = "";
+      const coursePlan = document.querySelector(".course-plan");
+      coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+      const courseButtonElement = document.querySelector(".course-button");
+      courseButtonElement.innerHTML = "";
     }
   }
 //전역 변수로 days와 currentDay 선언
@@ -586,9 +760,7 @@ function createMarkers(data) {
       
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
-      // 체크박스 선택 상태 초기화
       
-	  
     // 7개의 checkbox 생성
     for (let i = 1; i <= days; i++) {
     	
@@ -603,10 +775,6 @@ function createMarkers(data) {
   	  colorh5.appendChild(colorh5Element);
   	  courseColor.appendChild(colorh5);
   	  
-      // 복원할 체크박스 선택 상태가 있는 경우 복원
-      if (checkboxStates[i]) {
-        restoreCheckboxStates(i);
-      }
     	for (let j = 1; j <= 7; j++) {
       // div 요소 생성
       	const divElement = document.createElement("div");
@@ -616,14 +784,22 @@ function createMarkers(data) {
     	  labelElement.setAttribute("for", `chk${i}-${j}`);
 
       // checkbox 요소 생성
-const checkboxElement = document.createElement("input");
-checkboxElement.setAttribute("type", "checkbox");
-checkboxElement.setAttribute("id", `chk${i}-${j}`);
-    // 이벤트 핸들러 할당
-    checkboxElement.addEventListener("click", function () {
-      handleCheckboxClick(i, j); // 체크박스의 고유한 정보 전달
-    });
-
+    	  const checkboxElement = document.createElement("input");
+	      checkboxElement.setAttribute("type", "checkbox");
+      	checkboxElement.setAttribute("id", `chk${i}-${j}`);
+      	checkboxElement.setAttribute("name", "planColor");
+      	checkboxElement.setAttribute("onclick", `handleCheckboxClick(${i}, 'chk${i}-${j}')`);
+		
+      	const inputcss = `
+      	    #chk${i}-${j}:checked + .circle${j}::after {
+      	      opacity: 1;
+      	    }
+      	  `;
+      	  
+      	  // <style> 요소를 생성하여 CSS 스타일을 추가
+  const styleElement = document.createElement('style');
+  styleElement.innerHTML = inputcss;
+  document.head.appendChild(styleElement);
       // i 요소 생성
 	      const iElement = document.createElement("i");
     	  iElement.classList.add(`circle${j}`);
@@ -684,15 +860,37 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 
       // 등록 버튼 생성
       const submitButton = document.createElement("button");
-      submitButton.setAttribute("type", "submit");
+      submitButton.setAttribute("type", "button");
+      submitButton.setAttribute("onclick", "courseInsert()");
       submitButton.textContent = "등록";
 	  
+      const courseName = document.querySelector(".course-name");
+      const courseNameInput = document.createElement("input");
+      courseNameInput.type = "text";
+      courseNameInput.name = "planName";
+      courseNameInput.id = "planName";
+      courseNameInput.placeholder = '제목';
+   // 이전날 버튼 생성
+      const previousDayButton = document.createElement("button");
+      previousDayButton.type = "button";
+      previousDayButton.innerText = "이전날";
+      previousDayButton.addEventListener("click", previousDay);
+
+      // 다음날 버튼 생성
+      const nextDayButton = document.createElement("button");
+      nextDayButton.type = "button";
+      nextDayButton.innerText = "다음날";
+      nextDayButton.addEventListener("click", nextDay);
+      
+      const courseButtonElement = document.querySelector(".course-button");
+	  
+      courseButtonElement.appendChild(previousDayButton);
+      courseButtonElement.appendChild(nextDayButton);
+      courseName.appendChild(courseNameInput);
       daybuttondiv.appendChild(previewButton);
       daybuttondiv.appendChild(submitButton);
       
       courseColorDay.appendChild(daybuttondiv);
-      
-      initializeCheckboxStates();	
       
       // Day 숫자 초기 설정 (첫 번째 Day를 선택한 상태로 설정)
       const firstDayElement = document.querySelector(".course-color-day h5");
@@ -706,8 +904,6 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
     }
   }
 
-//초기화 함수 호출
-  initializeCheckboxStates();
   // 다음날 버튼 클릭 시 실행되는 함수
   function nextDay() {
     if (currentDay < days) {
@@ -852,34 +1048,42 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 	function coursePreview() {
 		  function getInputValues() {
 		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    
 		    const values = [];
 
 		    courseLists.forEach((courseList, index) => {
 		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
 		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
-
+  			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
 		      const inputDateValue = inputDateElement.value;
 		      const lonLatPairs = [];
-
+			  
 		      inputLonElements.forEach((inputLonElement, lonIndex) => {
 		        const inputLatElement = inputLatElements[lonIndex];
 
 		        const inputLonValue = inputLonElement.value;
 		        const inputLatValue = inputLatElement.value;
-
+		        
 		        lonLatPairs.push({
 		          lon: inputLonValue,
 		          lat: inputLatValue
 		        });
 		      });
-
+					
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
-		        lonLatPairs: lonLatPairs
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
 		      });
-		    });
+		      
+		      });
+		    
 
 		    return values;
 		  }
@@ -901,56 +1105,125 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 			  });
 		 }
 
-	// 체크박스 클릭 이벤트 핸들러
-	function handleCheckboxClick(day, index) {
-	  const checkboxElement = document.getElementById(`chk${day}-${index}`);
-	  const checkboxes = document.querySelectorAll(`.course-color-check-${day} input[type="checkbox"]`);
+	function handleCheckboxClick(day, checkboxId) {
+		  const courseColorCheck = document.querySelector(`#course-color-check-${day}`);
+		  if (courseColorCheck.style.display === 'block') {
+		    const checkboxes = courseColorCheck.querySelectorAll('input[type="checkbox"]');
+		    checkboxes.forEach((checkbox) => {
+		      if (checkbox.id === checkboxId) {
+		        checkbox.checked = true;
+		      } else {
+		        checkbox.checked = false;
+		      }
+		    });
+		  }
+		}
+	function getCheckboxIconBackgroundColor(checkboxElement) {
+		  const labelElement = checkboxElement.parentElement; // 체크박스를 감싸는 label 요소
+		  const iconElement = labelElement.querySelector('i'); // label 요소 내의 i 태그
 
-	  checkboxes.forEach(function (checkbox) {
-	    checkbox.checked = (checkbox === checkboxElement);
-	  });
+		  const computedStyle = window.getComputedStyle(iconElement);
+		  const backgroundColor = computedStyle.backgroundColor;
+
+		  return backgroundColor;
+		}
+	
+	function convertRGBToColorName(rgbValue) {
+		const colorMap = {
+				  'rgb(255, 0, 0)': 'red',
+				  'rgb(255, 165, 0)': 'orange',
+				  'rgb(255, 255, 0)': 'yellow',
+				  'rgb(0, 128, 0)': 'green',
+				  'rgb(0, 0, 255)': 'blue',
+				  'rgb(0, 0, 128)': 'navy',
+				  'rgb(128, 0, 128)': 'purple',
+				  // 추가적인 색상 값들을 필요에 따라 계속해서 추가할 수 있습니다.
+				};
+
+		  return colorMap[rgbValue] || rgbValue;
+		}
+	
+	function courseInsert(){
+		function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    
+		    const values = [];
+
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
+  			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
+		      const inputDateValue = inputDateElement.value;
+		      const lonLatPairs = [];
+			  
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
+
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+		        
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
+					
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
+		      });
+		      
+		      });
+		    
+
+		    return values;
+		  }
+		const inputValues = getInputValues();
+		const planName = document.querySelector('input[name="planName"]');
+		const planNameValue = planName.value;
+
+		  $.ajax({
+			    url: '/plan/createplan',
+			    type: 'POST',
+			    data: JSON.stringify({
+			    	   inputValues: inputValues,
+			    	   userID: loginchk,
+			    	   planName: planNameValue
+			    	}),
+			    contentType: 'application/json',
+			    success: function(data) {
+			      location.href="/login/usermain";
+			    },
+			    error: function(data){
+			    	alert("실패");
+			    }
+			  });
 	}
-		function convertRGBToColorName(rgbValue) {
-		  var colorMap = {
-		    'rgb(255, 0, 0)': 'Red',
-		    'rgb(255, 165, 0)': 'Orange',
-		    'rgb(255, 255, 0)': 'Yellow',
-		    'rgb(0, 128, 0)': 'Green',
-		    'rgb(0, 0, 255)': 'Blue',
-		    'rgb(0, 0, 128)': 'Navy',
-		    'rgb(128, 0, 128)': 'Purple'
-		  };
-
-		  return colorMap[rgbValue] || 'Unknown';
-		}
-
-		// 체크박스 선택 상태 초기화 함수
-		function initializeCheckboxStates() {
-		  for (let i = 1; i <= days; i++) {
-		    checkboxStates[i] = {};
-		    for (let j = 1; j <= 7; j++) {
-		      checkboxStates[i][j] = false;
-		    }
-		  }
-		}
-
-		// 체크박스 선택 상태를 복원하는 함수
-		function restoreCheckboxStates(day) {
-		  for (let j = 1; j <= 7; j++) {
-		    const checkboxElement = document.getElementById(`chk${day}-${j}`);
-		    if (checkboxElement) {
-		      checkboxElement.checked = checkboxStates[day][j];
-		    }
-		  }
-		}
-
-		// 체크박스 클릭 이벤트 핸들러
-		function handleCheckboxClick(day, index) {
-		  const checkboxElement = document.getElementById(`chk${day}-${index}`);
-		  if (checkboxElement) {
-		    checkboxStates[day][index] = checkboxElement.checked;
-		  }
-		}
+	
+	function search(){
+		const searchInput = document.querySelector('input[name="keyword"]');
+		const keyword = encodeURIComponent(searchInput.value);
+		
+		$.ajax({
+			url:'/plan/search',
+			type: 'POST',
+			data: {keyword: keyword},
+			success: function(data){
+				updateList(data);
+				createMarkers(data);
+			},
+			error: function(data){
+				alert("실패");
+			}
+		});
+	}
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
@@ -961,15 +1234,20 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 <body>
 	<div class="header">
 		<div class="header-category">
-			<label id="label-left-course">코스추천</label> <label
-				id="label-left-community">커뮤니티</label> <label id="label-left-chat">채팅방</label>
+			<a href="/course" id="label-left-course">코스추천</a>
+			 <a href="/community" id="label-left-community">커뮤니티</a> 
+			 <a href="/chat" id="label-left-chat">채팅방</a>
 			<img src="./resources/image/logo.png" alt="" id="logimg"> 
-			<label id="label-right-login">로그인</label> <label id="label-right-register">회원가입</label>
+			<a href="/login" id="label-right-login">로그인</a>
+			 <a href="/register" id="label-right-register">회원가입</a>
 		</div>
 	</div>
 	<div class="main"> 
 		<div class="main-left">
-			<h2>사용자 추천</h2>
+			<div class="search-div">
+				<input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요">
+				<button type="button" id="search-button" onclick="search()">검색</button>
+			</div>
 			<div class="list">
 				<div id="left_block" th:each="restaurant : ${placeRestaurantList}">
 					<div id="list-img">
@@ -1001,13 +1279,20 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 			<div id="placemenu_button">
 				<button>x</button>
 			</div>
-			<div id="placemenu_heart">
-				<a href="javascript:void(0);" onclick="openPopup();">추천하기</a>
+			<div id="datatest">
+			  <img id="placeImage" src="" alt="장소 이미지">
+			</div><br>
+			<div id="datatest1"></div><br>
+			<div id="ocr_button">
+				<img src="/resources/image/insta_heart.png" id="heartimg2"/>
+				<div id="datatest4"></div>
+				<img src="/resources/image/goood.png" id="heartimg2"/>
+				<div id="placemenu_heart">
+				<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
+				</div><br>
 			</div>
-			<div id="datatest1"></div>
 			<div id="datatest2"></div>
 			<div id="datatest3"></div>
-			<div id="datatest4"></div>
 			<div id="datatest5"></div>
 			<div id="datatest6"></div>
 			<div id="datatest7"></div>
@@ -1059,20 +1344,18 @@ checkboxElement.setAttribute("id", `chk${i}-${j}`);
 					<button type="button" th:onclick="applyDate()">적용</button>
 				</div>
 			</div>
-			<form action="/plan/createplan" method="post">
 			<div class="course">
 				<div class="course-color-day">
-						
 				</div>
+				<div class="course-name">
+				</div>		
 				<div class="course-plan">
-					<div class="course-color-check"></div>
-				</div>
-					<div>
-  						<button type="button" onclick="previousDay()">이전날</button>
-  						<button type="button" onclick="nextDay()">다음날</button>
+					<div class="course-color-check">
 					</div>
+				</div>
+				<div class="course-button">
+				</div>
 			</div>
-			</form>
 		</div>
 	</div>
 </body>

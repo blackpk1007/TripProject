@@ -24,7 +24,7 @@ map = new Tmapv2.Map("map_div", {
 var new_polyLine = [];
 var new_Click_polyLine = [];
 
-function drawData(data){
+function drawData(data, color){
 	// 지도위에 선은 다 지우기
 	routeData = data;
 	var resultStr = "";
@@ -34,6 +34,7 @@ function drawData(data){
 	var equalData = [];
 	var pointId1 = "-1234567";
 	var ar_line = [];
+	
 	
 	for (var i = 0; i < data.features.length; i++) {
 		var feature = data.features[i];
@@ -47,8 +48,8 @@ function drawData(data){
 			}
 			var polyline = new Tmapv2.Polyline({
 		        path: ar_line,
-		        strokeColor: "#ff0000", 
-		        strokeWeight: 6,
+		        strokeColor: color, 
+		        strokeWeight: 3,
 		        map: map
 		    });
 			new_polyLine.push(polyline);
@@ -117,11 +118,12 @@ for (var i = 0; i < inputValues.length; i++) {
       // 추가적인 처리 로직을 여기에 작성하세요.
       // 경로 표시를 위한 데이터 추출
       var date = selectedInputValue.date;
+      var color = selectedInputValue.color;
       var lonLatPairs = selectedInputValue.lonLatPairs;
       // 경로 표시 로직 추가
       clearMarkers()
       clearRoutes(); // 기존의 경로 삭제
-      drawRoute(date, lonLatPairs);
+      drawRoute(date, lonLatPairs, color);
     });
 }
 function clearRoutes() {
@@ -149,18 +151,19 @@ function showAllDayRoute() {
 	  clearMarkers();
 for (var i = 0; i < inputValues.length; i++) {
 	var date = inputValues[i].date;
+	var color = inputValues[i].color;
 	var lonLatPairs = inputValues[i].lonLatPairs;
-
+	
 	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
 	// 시작
-	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1);
+	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
 	// 도착
-	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2);
+	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
 
 	// 경유지 심볼 찍기
 	for (var j = 0; j < waypoints.length; j++) {
 		var waypoint = waypoints[j];
-		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3);
+		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
 	}
 	// 4. 경로탐색 API 사용요청
 
@@ -190,7 +193,7 @@ for (var i = 0; i < inputValues.length; i++) {
 				resCoordType : "WGS84GEO",
 				angle : "172",
 				searchOption : "0",
-				trafficInfo : "Y"
+				trafficInfo : "N"
 			},
 			success:function(response){
 			prtcl = response;
@@ -213,7 +216,7 @@ for (var i = 0; i < inputValues.length; i++) {
 				pointRadius: 2,
 				title: "this is a red line"
 			};
-			drawData(prtcl);
+			drawData(prtcl, color);
 		
 		
 			// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
@@ -244,26 +247,26 @@ for (var i = 0; i < inputValues.length; i++) {
 	});
 }
 }
-	function addMarker(status, lon, lat, tag) {
+	function addMarker(status, lon, lat, tag, color) {
 	//출도착경유구분
 	//이미지 파일 변경.
-	
+	console.log("addMarker : "+color);
 	var markerLayer;
 	switch (status) {
 		case "llStart":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
+			img = '/resources/image/marker/'+color+'start.png';
 			break;
 		case "llPass":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_b_m_p.png';
+			img = '/resources/image/marker/'+color+'pass.png';
 			break;
 		case "llEnd":
-			imgURL = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
+			img = '/resources/image/marker/'+color+'end.png';
 			break;
 		default:
 	};
 	var marker = new Tmapv2.Marker({
 		position: new Tmapv2.LatLng(lat,lon),
-		icon: imgURL,
+		icon: img,
 		map: map
 	});
 	// 마커 드래그 설정
@@ -279,17 +282,17 @@ for (var i = 0; i < inputValues.length; i++) {
     return marker;
 }
 	
-	 function drawRoute(date, lonLatPairs) {
+	 function drawRoute(date, lonLatPairs, color) {
 			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
 			// 시작
-			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1);
+			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
 			// 도착
-			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2);
+			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
 
 			// 경유지 심볼 찍기
 			for (var j = 0; j < waypoints.length; j++) {
 				var waypoint = waypoints[j];
-				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3);
+				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
 			}
 	      var startX = lonLatPairs[0].lat;
 	      var startY = lonLatPairs[0].lon;
@@ -341,7 +344,7 @@ for (var i = 0; i < inputValues.length; i++) {
 					pointRadius: 2,
 					title: "this is a red line"
 				};
-				drawData(prtcl);
+				drawData(prtcl, color);
 			
 			
 				// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
