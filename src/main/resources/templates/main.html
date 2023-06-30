@@ -107,7 +107,7 @@
 		<p id="place_text_english">Hot Place</p>
 		<br> <br>
 	</div>
-	<div class="swiper-container">
+	<div class="swiper-container" id="swiper-container-hotPlace">
 	  <div class="swiper-wrapper">
 	    <div th:each="list : ${list}" class="swiper-slide">
 	      <div class="hot_img">
@@ -126,7 +126,7 @@
 	  <!-- 이전 버튼 -->
 	
 	  <!-- 페이징 -->
-	  <div class="swiper-pagination"></div>
+	  <div class="swiper-pagination" id="swiper-pagination-hotPlace"></div>
 	</div>
 
 
@@ -137,7 +137,7 @@
 		<p id="place_text_english">Course</p>
 		<br> <br>
 	</div>
-	<div class="swiper-container">
+	<div class="swiper-container" id="swiper-container-course">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide">
 				<a href="#"><img src="/resources/image/udo.jpg"></a>
@@ -164,7 +164,7 @@
 		<!-- 이전 버튼 -->
 
 		<!-- 페이징 -->
-		<div class="swiper-pagination"></div>
+		<div class="swiper-pagination" id="swiper-pagination-course"></div>
 	</div>
 	<br>
 	<br>

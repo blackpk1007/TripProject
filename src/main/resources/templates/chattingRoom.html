@@ -101,22 +101,25 @@
 			margin-top:8%;
 		}
 		#left{
-			position:fixed;
-			top:20.5%;
-			left:1%;
-			width:25%;
+			
+			width:50%;
 			float:left;
 			height:50vh;
 			/* background-color:#ffd400; */
-			margin-left:17%;
 			margin-top:5%;
 			border-radius:15%;
 		}
 		.button{
+			width:70%;
+			height:50vh;
 			background-color: transparent;
 			border:none;
 			cursor:pointer;
 			text-align:center;
+		}
+		
+		#taxi-button{
+		margin-left:30%;
 		}
 		/* #taxiImg{
 			width:100%;
@@ -126,16 +129,13 @@
 			margin-left:25.5%;
 		} */
 		#right{
-		position:fixed;
-		top: 20.5%;
-		left:41%;
-			width:25%;
+		
+			width:50%;
 			float:left;
 			height:50vh;
 			/* background-color:#9bbbd4; */
 			margin-top:5%;
 			border-radius:15%;
-			margin-left:16%;
 		}
 		/* #right h1, #left h1{
 			font-size:40px;
@@ -149,6 +149,10 @@
 			border-radius:50%;
 			margin-left:25.5%;
 		} */
+		.img{
+			width:70%; 
+			heigth:100%;
+		}
 </style>
 </head>
 <body>
@@ -172,13 +176,13 @@
 	</div>
 	<div id="chattingRoom">
 		<div id="left">
-			<button class="button" onclick="location.href='/login'">
-			<img id="taxiImg" src="/resources/image/taxitaxi.png">
+			<button class="button" id="taxi-button" onclick="location.href='/login'">
+			<img id="taxiImg" class="img" src="/resources/image/taxitaxi.png">
 			</button>
 		</div>
 		<div id="right">
-			<button class="button" onclick="location.href='/login'">
-				<img id="foodImg" src="/resources/image/foodfood.png">
+			<button class="button" id="food-button" onclick="location.href='/login'">
+				<img id="foodImg" class="img" src="/resources/image/foodfood.png">
 			</button>
 		</div>
 	</div>
