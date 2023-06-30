@@ -234,8 +234,14 @@ header {
     height: 60vh; /*80% -> 60vh (양)*/
     width: 80%;
   }
+  #swiper-container-hotPlace
+  #swiper-pagination-hotPlace{/*new (양)*/
+  	margin-bottom: 13%;
+  }
   
-        
+  #swiper-pagination-course{/*new (양)*/
+  	margin-bottom: 5%;
+  }  
   .swiper-wrapper {
     position: relative;
   }
