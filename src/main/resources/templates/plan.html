@@ -33,12 +33,14 @@ function openPopup() {
 
     // 팝업 내용 추가
     popup.innerHTML = `
-        <h1>영수증 인증</h1>
+        <div id="ocr_title">📝영수증 인증</div>
+        <div id="ocr_notice">* 2회 이상 방문 인증시에 추천수가 올라갑니다</div>
             <div class="filebox">
-                <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
-                <input type="button" value="인증하기" id="submitBT" onclick="test()">
-                <br>
-                <img id="preview" width="400px" height="500px"/>
+            	<div id="file_button">
+	                <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
+	                <input type="button" value="인증하기" id="submitBT" onclick="test()">
+            	</div>
+                <img id="preview"/>
                 <input type="hidden" name="placeNumber" value="" id="placeNumber">
             </div>
         <span class="ocr_popup-close" onclick="closePopup()">X</span>
