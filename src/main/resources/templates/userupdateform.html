@@ -82,17 +82,60 @@
 				
 			</div>
 			<div class="signup_body">
-                    <div class="loginForm">비밀번호<br>
-                        <input type="text"	id="userPW" name="userPW" >
+					<div class="body">
+						<div class="fixed">이름</div>
+						<div class="info">
+							<input type="text" id="userName">
+						</div>
 					</div>
-                    <div class="loginForm">비밀번호 확인<br>
-                        <input type="password"	id="userPW2" name="userPW2" >
+					<div class="body">
+						<div class="fixed">생년월일</div>
+						<div class="info">
+							<input type="text" id="userName">
+						</div>
 					</div>
+					<div class="body">
+						<div class="fixed">성별</div>
+						<div class="info">
+							<input type="text" id="userName">
+						</div>
+					</div>
+					<div class="body">
+						<div class="fixed">아이디</div>
+						<div class="info">
+							<input type="text" id="userName">
+						</div>
+					</div>
+					<div class="body">
+						<div class="fixed">비밀번호</div>
+						<div class="info">
+							<div class="loginForm">새 비밀번호<br>
+	                        	<input type="text"	id="userPW" name="userPW" >
+							</div>
+							<div class="loginForm">비밀번호 재입력<br>
+                        		<input type="password"	id="userPW2" name="userPW2" >
+							</div>
+							<button id="updateButton" type="submit" th:onclick="pass_check()">비밀번호 변경</button>
+						</div>
+					</div>
+					<div class="body">
+						<div class="fixed">이메일</div>
+						<div class="info">
+							<input type="text" id="userName">
+						</div>
+					</div>
+					<div class="body">
+						<div class="fixed">전화번호</div>
+						<div class="info">
+							<input type="text" id="userName">
+						</div>
+					</div>
+                    
                     <!-- <div class="loginForm">이메일<br>
                         <input type="text"	id="userEmail" name="userEmail" >
 					</div>
  					-->
-                    <button id="updateButton" type="submit" th:onclick="pass_check()">회원정보 변경</button>
+                    
 					<button id="deleteButton" type="submit" formaction="/login/userdelete">회원탈퇴</button>
 
 			</div>
