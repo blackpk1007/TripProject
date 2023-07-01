@@ -5,7 +5,56 @@
 <meta charset="UTF-8">
 <title>UserUpdate</title>
 <link rel="stylesheet" href="/resources/css/userupdateform.css" type="text/css">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   <script th:inline="javascript">
+   function pass_check() {
+	   var userPW = document.getElementById("userPW");
+	   var userPW2 = document.getElementById("userPW2");
+	   var userpwvalue = document.getElementById("userPW").value;
+	   var userpw2value = document.getElementById("userPW2").value;
+	   
+	   if (userPW.value == "") {
+		    alert("비밀번호를 입력하세요.");
+		    userPW.focus();
+		    return false;
+		  };
 
+		  //비밀번호 영문자+숫자+특수조합(8~16자리 입력) 정규식
+		  var pwdCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+
+		  if (!pwdCheck.test(userPW.value)) {
+		    alert("비밀번호는 영문자+숫자+특수문자 조합으로 8~16자리 사용해야 합니다.");
+		    userPW.focus();
+		    return false;
+		  };
+
+		  if (userPW2.value !== userPW.value) {
+		    alert("비밀번호가 일치하지 않습니다..");
+		    userPW2.focus();
+		    return false;
+		  };
+		  
+		  // 잠깐중지 값 가져오는거 질문.
+		  $.ajax({
+	          url : "/login/userupdate",
+	          type : "post",
+	          data : { userPW : userpwvalue,
+	                 userPW2 : userepw2value}
+	       })
+	       		.done(function (result) {
+	                  alert(result);
+	                  if(result == "아이디와 이메일이 일치하지 않습니다"){
+	                	  return false;
+	                  }else{
+	                	  location.href="/login/userupdateform";  
+	                  }
+	            })
+	            .fail(function(jqXHR) {
+	                console.log(jqXHR);
+	                alert(jqXHR);
+	            })
+   }
+   </script>
 </head>
 <body>
 	<div class="header">
@@ -33,22 +82,19 @@
 				
 			</div>
 			<div class="signup_body">
-				<form method="post">
-					
                     <div class="loginForm">비밀번호<br>
-                        <input type="text"	id="userPw" name="userPw" >
+                        <input type="text"	id="userPW" name="userPW" >
 					</div>
                     <div class="loginForm">비밀번호 확인<br>
-                        <input type="password"	id="userPwcheck" name="userPwcheck" >
+                        <input type="password"	id="userPW2" name="userPW2" >
 					</div>
                     <!-- <div class="loginForm">이메일<br>
                         <input type="text"	id="userEmail" name="userEmail" >
 					</div>
  					-->
-                    <button id="updateButton" type="submit" formaction="/login/userupdate">회원정보 변경</button>
+                    <button id="updateButton" type="submit" th:onclick="pass_check()">회원정보 변경</button>
 					<button id="deleteButton" type="submit" formaction="/login/userdelete">회원탈퇴</button>
 
-				</form>
 			</div>
 		</div>
 	</div>
