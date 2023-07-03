@@ -34,9 +34,11 @@ public class LoginServiceImpl implements LoginService {
 
 	}
 
+	//회원정보 수정 - 비밀번호 재설정 
 	@Override
 	public int update(LoginDTO dto) {
-		
+		String encodedPassword= passwordEncoder.encode(dto.getUserPW());
+		dto.setUserPW(encodedPassword);
 		return loginMapper.update(dto);
 	}
 
@@ -62,6 +64,12 @@ public class LoginServiceImpl implements LoginService {
 		String encodedPassword= passwordEncoder.encode(dto.getUserPW());
 		dto.setUserPW(encodedPassword);
 		return loginMapper.newpw(dto);
+	}
+
+	@Override
+	public LoginDTO userinfo(String userID) {
+		
+		return loginMapper.userinfo(userID);
 	}
 	
 }

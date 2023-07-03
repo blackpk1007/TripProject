@@ -9,9 +9,15 @@
    <script th:inline="javascript">
    function pass_check() {
 	   var userPW = document.getElementById("userPW");
-	   var userPW2 = document.getElementById("userPW2");
+	   /*var userPW2 = document.getElementById("userPW2");*/
 	   var userpwvalue = document.getElementById("userPW").value;
-	   var userpw2value = document.getElementById("userPW2").value;
+	   /*var userpw2value = document.getElementById("userPW2").value; */
+	   
+	   var userID = [[${userinfo.userID}]];
+	   
+	   console.log(userID);
+	   console.log(userPW);
+	   console.log(userpwvalue);
 	   
 	   if (userPW.value == "") {
 		    alert("비밀번호를 입력하세요.");
@@ -39,19 +45,15 @@
 	          url : "/login/userupdate",
 	          type : "post",
 	          data : { userPW : userpwvalue,
-	                 userPW2 : userepw2value}
+	                 userID : userID}
 	       })
 	       		.done(function (result) {
-	                  alert(result);
-	                  if(result == "아이디와 이메일이 일치하지 않습니다"){
-	                	  return false;
-	                  }else{
-	                	  location.href="/login/userupdateform";  
-	                  }
+	                  alert(result+"님의 비밀번호 수정이 완료되었습니다.");
+	                	  location.href="/login/usermain";
 	            })
 	            .fail(function(jqXHR) {
 	                console.log(jqXHR);
-	                alert(jqXHR);
+	                alert("재로그인 후 다시 시도해주세요.");
 	            })
    }
    </script>
@@ -85,25 +87,33 @@
 					<div class="body">
 						<div class="fixed">이름</div>
 						<div class="info">
-							<input type="text" id="userName">
+							<input type="text" id="userName" th:value="${userinfo.userName}" >
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">생년월일</div>
 						<div class="info">
-							<input type="text" id="userName">
+							<input type="text" id="userBirth" th:value="${userinfo.userBirth}">
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">성별</div>
 						<div class="info">
-							<input type="text" id="userName">
+							<!-- <input type="text" id="userGender" th:value="${userinfo.getUserGender()}"> -->
+							<div class="gender" th:if="${userinfo.userGender} == 'M'">
+							남자<input id="male" type="radio" name="userGender" value="M" checked />
+							여자<input id="female" type="radio" name="userGender" value="F" />
+							</div>
+							<div class="gender" th:if="${userinfo.userGender} == 'F'">
+							남자<input id="male" type="radio" name="userGender" value="M" />
+							여자<input id="female" type="radio" name="userGender" value="F" checked />
+							</div>
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">아이디</div>
 						<div class="info">
-							<input type="text" id="userName">
+							<input type="text" id="userID" th:value="${userinfo.userID}">
 						</div>
 					</div>
 					<div class="body">
@@ -115,28 +125,28 @@
 							<div class="loginForm">비밀번호 재입력<br>
                         		<input type="password"	id="userPW2" name="userPW2" >
 							</div>
-							<button id="updateButton" type="submit" th:onclick="pass_check()">비밀번호 변경</button>
+							<button id="updateButton" type="submit" th:onclick="pass_check();">비밀번호 변경</button>
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">이메일</div>
 						<div class="info">
-							<input type="text" id="userName">
+							<input type="text" id="userEmail" th:value="${userinfo.userEmail}">
 						</div>
 					</div>
-					<div class="body">
+					<!-- <div class="body">
 						<div class="fixed">전화번호</div>
 						<div class="info">
-							<input type="text" id="userName">
+							<input type="text" id="userPhone">
 						</div>
-					</div>
+					</div> -->
                     
                     <!-- <div class="loginForm">이메일<br>
                         <input type="text"	id="userEmail" name="userEmail" >
 					</div>
  					-->
                     
-					<button id="deleteButton" type="submit" formaction="/login/userdelete">회원탈퇴</button>
+					<button id="deleteButton" type="submit" onclick="location.href'=/login/userdelete'">회원탈퇴</button>
 
 			</div>
 		</div>

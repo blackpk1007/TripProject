@@ -119,8 +119,8 @@ public class LoginController {
 			return "아이디와 이메일이 일치하지 않습니다";
 		}else {
 //			세션에 썼던 아이디 이메일 담아주고 그걸 바로 재설정페이지에서 써먹어야될 것 같은데..
-			model.addAttribute("userID", dto.getUserID() );
-			model.addAttribute("userEmail", dto.getUserEmail());
+//			model.addAttribute("userID", dto.getUserID() );
+//			model.addAttribute("userEmail", dto.getUserEmail());
 		return res.getUserName()+"님의 비밀번호 재설정 페이지로 이동합니다.";
 		}
 	}
@@ -196,23 +196,25 @@ public class LoginController {
 
 	// 사용자 회원 정보 수정 페이지
 	@RequestMapping("/userupdateform")
-	public String userUpdateForm() {
+	public String userUpdateForm(HttpSession session, Model model, LoginDTO dto) {
+		String userID = (String) session.getAttribute("login");
+//		LoginDTO res = lservice.login(dto);
+		model.addAttribute("userinfo", lservice.userinfo(userID));
+//		model.addAttribute("userName", lservice.login(dto).getUserName());
+//		model.addAttribute("userBirth", lservice.login(dto).getUserBirth());
+//		model.addAttribute("userGender", lservice.login(dto).getUserGender());
+		
 		return "userupdateform";
 	}
 
 	// 사용자 회원 정보 수정
+	@ResponseBody
 	@RequestMapping("/userupdate")
 	public String userupdate(Model model, LoginDTO dto) {
+		
 		int res = lservice.update(dto);
-
-		if (res != 0) {
-			System.out.println(dto.getUserName());
-			model.addAttribute("message", "회원정보 수정 완료.");
-			return "redirect:/usermain";
-		} else {
-			model.addAttribute("error", "회원정보 수정 실패.");
-			return "redirect:/userupdateform";
-		}
+		System.out.println(res);
+		return dto.getUserName();
 	}
 
 	// 사용자 회원 탈퇴
