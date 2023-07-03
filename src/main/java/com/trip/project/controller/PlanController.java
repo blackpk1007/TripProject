@@ -30,6 +30,7 @@ import com.trip.project.dto.PlanDetailDTO;
 import com.trip.project.dto.placePagination;
 import com.trip.project.service.AirPlaneService;
 import com.trip.project.service.PlanServiceImpl;
+import com.trip.project.service.WeatherService;
 
 @Controller
 @RequestMapping("/plan")
@@ -41,9 +42,21 @@ public class PlanController {
 	@Autowired
 	private AirPlaneService aservice;
 	
+	@Autowired
+	private WeatherService wservice;
+	
 	@RequestMapping
 	public String planMain(Model model, placePagination paging){
 		System.out.println("controller main : "+paging);
+		try {
+			model.addAttribute("jeju", wservice.Jeju());
+			model.addAttribute("Seogwipo", wservice.Seogwipo());
+			System.out.println("controller plan main jeju : "+wservice.Jeju());
+			System.out.println("controller plan main seogwipo : "+wservice.Seogwipo());
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
 		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList(paging));
 		model.addAttribute("placeListCount", pservice.placeRestaurantListCount());
 		
@@ -153,4 +166,5 @@ public class PlanController {
 
 		return dto;
 	}
+	
 }
