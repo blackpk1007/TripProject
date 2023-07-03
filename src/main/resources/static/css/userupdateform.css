@@ -117,6 +117,21 @@
 	border-radius: 0.5rem;
 	font-size: 1.6rem;
 	background-color: #EEEEEE;
+	padding-left: 2rem;
+}
+.gender{
+	display:flex;
+	align-items: center;
+	font-size: 1.6rem;
+	padding-left: 1rem;
+}
+#male{
+	display:flex;
+	align-items: center;
+}
+#female{
+	display:flex;
+	align-items: center;
 }
 
 #signin {
@@ -140,6 +155,7 @@
 	border-radius: 0.5rem;
 	font-size: 1.6rem;
 	background-color: #EEEEEE;
+	padding-left: 2rem;
 }
 
 #updateButton {
@@ -176,8 +192,8 @@
 }
 
 #userEmail{
-	width: 100%;
-	background-color: rgb(222, 222, 222);
+	width: 80%;
+	background-color: #EEEEEE;
 }
 
 #menu{
