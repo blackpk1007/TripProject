@@ -1316,7 +1316,7 @@ function createMarkers(data) {
 			  var prevButton = document.createElement('a');
 			  prevButton.href = 'javascript:void(0)';
 			  prevButton.textContent = '이전';
-			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 1)+')');
+			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 5)+')');
 			  paginationContainer.appendChild(prevButton);
 
 			  // 페이지 번호 생성
@@ -1337,7 +1337,7 @@ function createMarkers(data) {
 			  var nextButton = document.createElement('a');
 			  nextButton.href = 'javascript:void(0)';
 			  nextButton.textContent = '다음';
-			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 1)+')');
+			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 5)+')');
 			  paginationContainer.appendChild(nextButton);
 		}
 	// 서버로부터 전체 데이터 수를 가져와서 페이지 번호 업데이트
@@ -1349,6 +1349,22 @@ function createMarkers(data) {
 	  var itemsPerPage = 20; // 페이지당 출력할 데이터 수
 
 	  updatePagination(totalItems, itemsPerPage, pageNum);
+	}
+	
+	function weather(){
+		
+		$.ajax({
+			url:'/weather',
+			type: 'POST',
+			success: function(data){
+				updateList(data);
+				createMarkers(data);
+			},
+			error: function(data){
+				alert("실패");
+			}
+			
+		});
 	}
 	window.onload = function () {
 		  buildCalendar();
@@ -1472,6 +1488,10 @@ function createMarkers(data) {
 				<button id="tourist-btn">관광지</button>
 				<button id="hill-btn">오름</button>
 				<button id="ollegil-btn">올레길</button>
+			</div>
+			
+			<div id="weather">
+				
 			</div>
 		</div>
 		<div class="main-right">
