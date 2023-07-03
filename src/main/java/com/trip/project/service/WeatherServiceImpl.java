@@ -112,6 +112,7 @@ public class WeatherServiceImpl implements WeatherService{
 		
 		System.out.println("weather service baseDate : "+baseDate);
         System.out.println("weather service baseTime : "+baseTime);
+        
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /* URL */
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
@@ -159,14 +160,14 @@ public class WeatherServiceImpl implements WeatherService{
 	    JSONObject body = response.getJSONObject("body");
 	    JSONObject items = body.getJSONObject("items");
 	    JSONArray weatherArray = items.getJSONArray("item");
-
+	    String category = weatherObj.getString("fcstTime");
 	    List<WeatherDTO> weatherList = new ArrayList<>();
 	    
 	    for (int i = 0; i < weatherArray.length(); i++) {
 	        JSONObject weatherObj = weatherArray.getJSONObject(i);
 
 	        // 현재 시간과 base_time이 일치하는 경우에만 처리
-	        if (isCurrentTimeMatchBaseTime(currentTime, baseDate, baseTime)) {
+	        if (fcstTime) {
 	            String category = weatherObj.getString("category");
 	            String minimumtemp = weatherObj.getString("fcstValue");
 	            String highesttemp = weatherObj.getString("fcstValue");
@@ -182,22 +183,4 @@ public class WeatherServiceImpl implements WeatherService{
 		return weatherList;
 	}
 	
-	// 현재 시간과 base_time 비교
-	private boolean isCurrentTimeMatchBaseTime(Date currentTime, String baseDate, String baseTime) {
-	    // baseDate와 baseTime을 합쳐서 Date 객체로 변환
-	    Calendar cal = Calendar.getInstance();
-	    cal.set(Calendar.YEAR, Integer.parseInt(baseDate.substring(0, 4)));
-	    cal.set(Calendar.MONTH, Integer.parseInt(baseDate.substring(4, 6)) - 1);
-	    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(baseDate.substring(6, 8)));
-	    cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(baseTime.substring(0, 2)));
-	    cal.set(Calendar.MINUTE, Integer.parseInt(baseTime.substring(2, 4)));
-	    cal.set(Calendar.SECOND, 0);
-	    cal.set(Calendar.MILLISECOND, 0);
-	    Date baseDateTime = cal.getTime();
-	    System.out.println("weather service basedate : "+baseDateTime);
-	    System.out.println("weather service cal : "+cal);
-	    // 현재 시간과 base_time 비교
-	    return currentTime.equals(baseDateTime);
-	}
-
 }
