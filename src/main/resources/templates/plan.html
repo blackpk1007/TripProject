@@ -238,9 +238,9 @@ function test(){
 
 var loginchk = [[${session.login}]];
 console.log(loginchk);
-var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
+var map2;
 // 초기 마커 생성
 
 /* function reloadStylesheet() {
@@ -261,9 +261,26 @@ function initTmap() {
 	    height: "80vh", // 지도의 높이
 	    zoom: 10
 	  });
+	  
 	  createMarkers(placeList);
+	  
 	}
-
+function previewTmap(){
+	  map2 = new Tmapv2.Map("preview_div", {
+			center: new Tmapv2.LatLng(33.3616666, 126.5291666),
+			width: "100%",
+			height: "400px",
+			zoom: 10
+		});
+}
+function insertTmap(){
+	  map2 = new Tmapv2.Map("insert_div", {
+			center: new Tmapv2.LatLng(33.3616666, 126.5291666),
+			width: "100%",
+			height: "400px",
+			zoom: 10
+		});
+}
 function fetchUpdatedMarkers(category, pageNum) {
 	
     $.ajax({
@@ -752,13 +769,19 @@ function createMarkers(data) {
     }
     // 선택된 날짜가 없을 때 Day 초기화
     if (!selectedStartDate && !selectedEndDate) {
+    	const applyButton = document.querySelector("#applyButton");
+    	applyButton.style.display = 'none';
       const courseColorDay = document.querySelector(".course-color-day");
       courseColorDay.innerHTML = "";
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
       const courseButtonElement = document.querySelector(".course-button");
       courseButtonElement.innerHTML = "";
+    }else{
+    	const applyButton = document.querySelector("#applyButton");
+    	applyButton.style.display = 'block';
     }
+    
   }
 //전역 변수로 days와 currentDay 선언
   let days;
@@ -766,6 +789,8 @@ function createMarkers(data) {
 
 //적용 버튼 클릭 시 실행되는 함수
   function applyDate() {
+	const applyButton = document.querySelector("#applyButton");
+	applyButton.style.display = 'none';
     if (selectedStartDate && selectedEndDate) {
       days = getDayDiff(selectedStartDate, selectedEndDate);
       const courseColorDay = document.querySelector(".course-color-day");
@@ -868,21 +893,15 @@ function createMarkers(data) {
    	  // 미리보기 버튼 생성
       const previewButton = document.createElement("button");
       previewButton.setAttribute("type", "button");
-      previewButton.setAttribute("onclick", "coursePreview()");
+      previewButton.setAttribute("onclick", "coursePreviewPopup()");
       previewButton.textContent = "미리보기";
 
       // 등록 버튼 생성
       const submitButton = document.createElement("button");
       submitButton.setAttribute("type", "button");
-      submitButton.setAttribute("onclick", "courseInsert()");
+      submitButton.setAttribute("onclick", "courseInsertPopup()");
       submitButton.textContent = "등록";
 	  
-      const courseName = document.querySelector(".course-name");
-      const courseNameInput = document.createElement("input");
-      courseNameInput.type = "text";
-      courseNameInput.name = "planName";
-      courseNameInput.id = "planName";
-      courseNameInput.placeholder = '제목';
    // 이전날 버튼 생성
       const previousDayButton = document.createElement("button");
       previousDayButton.type = "button";
@@ -899,7 +918,6 @@ function createMarkers(data) {
 	  
       courseButtonElement.appendChild(previousDayButton);
       courseButtonElement.appendChild(nextDayButton);
-      courseName.appendChild(courseNameInput);
       daybuttondiv.appendChild(previewButton);
       daybuttondiv.appendChild(submitButton);
       
@@ -1058,7 +1076,7 @@ function createMarkers(data) {
 		}
 		return value;
 	}
-	function coursePreview() {
+	function coursePreviewPopup() {
 		  function getInputValues() {
 		    const courseLists = document.querySelectorAll('.course-plan .course-list');
 		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
@@ -1097,41 +1115,81 @@ function createMarkers(data) {
 		      
 		      });
 		    
-
 		    return values;
 		  }
 		  
 		  const inputValues = getInputValues();
-		  console.log(inputValues);
 
-		  $.ajax({
-			    url: '/plan/course',
-			    type: 'POST',
-			    data: JSON.stringify(inputValues),
-			    contentType: 'application/json',
-			    success: function(response) {
-			      var popupWindow = window.open('', 'Course Preview', 'width=800,height=600');
-			      popupWindow.document.open();
-			      popupWindow.document.write(response);
-			      popupWindow.document.close();
-			    }
-			  });
+		  previewOpenPopup(inputValues);
+
 		 }
+		
+	function courseInsertPopup() {
+		  function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    
+		    const values = [];
 
-	function handleCheckboxClick(day, checkboxId) {
-		  const courseColorCheck = document.querySelector(`#course-color-check-${day}`);
-		  if (courseColorCheck.style.display === 'block') {
-		    const checkboxes = courseColorCheck.querySelectorAll('input[type="checkbox"]');
-		    checkboxes.forEach((checkbox) => {
-		      if (checkbox.id === checkboxId) {
-		        checkbox.checked = true;
-		      } else {
-		        checkbox.checked = false;
-		      }
-		    });
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
+			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
+		      const inputDateValue = inputDateElement.value;
+		      const lonLatPairs = [];
+			  
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
+
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+		        
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
+					
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
+		      });
+		      
+		      });
+		    
+		    return values;
 		  }
-		}
+		  
+		  const inputValues = getInputValues();
+
+		  insertOpenPopup(inputValues);
+
+		 }
+	
+	function handleCheckboxClick(day, checkboxId) {
+			const courseColorCheck = document.querySelector(`#course-color-check-${day}`);
+			  if (courseColorCheck.style.display === 'block') {
+			    const checkboxes = courseColorCheck.querySelectorAll('input[type="checkbox"]');
+			    checkboxes.forEach((checkbox) => {
+			      if (checkbox.id === checkboxId) {
+			        checkbox.checked = true;
+			      } else {
+			        checkbox.checked = false;
+			      }
+			    });	
+			}
+		  }
 	function getCheckboxIconBackgroundColor(checkboxElement) {
+		if(checkboxElement === "" || checkboxElement === null){
+			alert("색상을 선택해 주세요");
+			return false;
+		}else{
 		  const labelElement = checkboxElement.parentElement; // 체크박스를 감싸는 label 요소
 		  const iconElement = labelElement.querySelector('i'); // label 요소 내의 i 태그
 
@@ -1140,7 +1198,7 @@ function createMarkers(data) {
 
 		  return backgroundColor;
 		}
-	
+	}	
 	function convertRGBToColorName(rgbValue) {
 		const colorMap = {
 				  'rgb(255, 0, 0)': 'red',
@@ -1198,11 +1256,15 @@ function createMarkers(data) {
 
 		    return values;
 		  }
-		const inputValues = getInputValues();
+		
+ 		const inputValues = getInputValues();
 		const planName = document.querySelector('input[name="planName"]');
 		const planNameValue = planName.value;
-
-		  $.ajax({
+		if(planNameValue == "" || planNameValue == null){
+			alert("일정 제목을 입력해 주세요");
+			return false;
+		}else{
+			$.ajax({
 			    url: '/plan/createplan',
 			    type: 'POST',
 			    data: JSON.stringify({
@@ -1217,7 +1279,9 @@ function createMarkers(data) {
 			    error: function(data){
 			    	alert("실패");
 			    }
-			  });
+			  });	
+		}
+		   
 	}
 	
 	function search(){
@@ -1254,7 +1318,7 @@ function createMarkers(data) {
 			  var prevButton = document.createElement('a');
 			  prevButton.href = 'javascript:void(0)';
 			  prevButton.textContent = '이전';
-			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 1)+')');
+			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 5)+')');
 			  paginationContainer.appendChild(prevButton);
 
 			  // 페이지 번호 생성
@@ -1275,7 +1339,7 @@ function createMarkers(data) {
 			  var nextButton = document.createElement('a');
 			  nextButton.href = 'javascript:void(0)';
 			  nextButton.textContent = '다음';
-			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 1)+')');
+			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 5)+')');
 			  paginationContainer.appendChild(nextButton);
 		}
 	// 서버로부터 전체 데이터 수를 가져와서 페이지 번호 업데이트
@@ -1287,6 +1351,22 @@ function createMarkers(data) {
 	  var itemsPerPage = 20; // 페이지당 출력할 데이터 수
 
 	  updatePagination(totalItems, itemsPerPage, pageNum);
+	}
+	
+	function weather(){
+		
+		$.ajax({
+			url:'/weather',
+			type: 'POST',
+			success: function(data){
+				updateList(data);
+				createMarkers(data);
+			},
+			error: function(data){
+				alert("실패");
+			}
+			
+		});
 	}
 	window.onload = function () {
 		  buildCalendar();
@@ -1403,12 +1483,109 @@ function createMarkers(data) {
 		</div>
 		<div class="main-center">
 			<div id="map_div"></div>
+			
 			<div id="category-button">
 				<button id="restaurant-btn">음식점</button>
 				<button id="youtube-btn">유튜브맛집</button>
 				<button id="tourist-btn">관광지</button>
 				<button id="hill-btn">오름</button>
 				<button id="ollegil-btn">올레길</button>
+			</div>
+			
+			<div id="weather">
+				<div id="jejuweather">
+					<div id="wether-current">
+						<h5>제주시</h5>
+						<h2>[[${jeju.currenttemp}]]℃</h2>
+					</div>
+					<div id="wether-temp">
+						<div id="wether-state">
+							<div th:if="${jeju.sky == 1 && jeju.pty == 0}" >
+								<div th:if="${jeju.day == 'day'}">
+									<h5>맑음(낮)</h5>
+									<img alt="" src="/resources/image/weather/clearday.png">
+								</div>
+								<div th:if="${jeju.day == 'night'}">
+									<h5>맑음(밤)</h5>
+									<img alt="" src="/resources/image/weather/clearnight.png">
+								</div>
+							</div>
+							<div th:if="${jeju.sky == 3 && jeju.pty == 0}" >
+								<h5>흐림</h5>
+								<img alt="" src="/resources/image/weather/cloud.png">
+							</div>
+							<div th:if="${jeju.sky == 4 && jeju.pty == 0}" >
+								<div th:if="${jeju.day == 'day'}">
+									<h5>구름많음(낮)</h5>
+									<img alt="" src="/resources/image/weather/cloudyday.png">
+								</div>
+								<div th:if="${jeju.day == 'night'}">
+									<h5>구름많음(밤)</h5>
+									<img alt="" src="/resources/image/weather/cloudynight.png">
+								</div>
+							</div>
+							<div th:if="${jeju.sky == 4 && jeju.pty == 1}" >
+								<h5>비</h5>
+								<img alt="" src="/resources/image/weather/rain.png">
+							</div>
+							<div th:if="${jeju.sky == 4 && jeju.pty == 3}" >
+								<h5>눈</h5>
+								<img alt="" src="/resources/image/weather/snow.png">
+							</div>
+						</div>
+						<div id="wether-temp">
+							<h5>최저:[[${jeju.minimumtemp}]]℃</h5>
+							<h5>최고:[[${jeju.highesttemp}]]℃</h5>
+						</div>
+					</div>
+				</div>
+				
+				<div id="seogwipoweather">
+					<div id="wether-current">
+						<h5>서귀포시</h5>
+						<h2>[[${seogwipo.currenttemp}]]℃</h2>
+					</div>
+					<div id="wether-temp">
+						<div id="wether-state">
+							<div th:if="${seogwipo.sky == 1 && seogwipo.pty == 0}" >
+								<div th:if="${seogwipo.day == 'day'}">
+									<h5>맑음(낮)</h5>
+									<img alt="" src="/resources/image/weather/clearday.png">
+								</div>
+								<div th:if="${seogwipo.day == 'night'}">
+									<h5>맑음(밤)</h5>
+									<img alt="" src="/resources/image/weather/clearnight.png">
+								</div>
+							</div>
+							<div th:if="${seogwipo.sky == 3 && seogwipo.pty == 0}" >
+								<h5>흐림</h5>
+								<img alt="" src="/resources/image/weather/cloud.png">
+							</div>
+							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 0}" >
+								<div th:if="${seogwipo.day == 'day'}">
+									<h5>구름많음(낮)</h5>
+									<img alt="" src="/resources/image/weather/cloudyday.png">
+								</div>
+								<div th:if="${seogwipo.day == 'night'}">
+									<h5>구름많음(밤)</h5>
+									<img alt="" src="/resources/image/weather/cloudynight.png">
+								</div>
+							</div>
+							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 1}" >
+								<h5>비</h5>
+								<img alt="" src="/resources/image/weather/rain.png">
+							</div>
+							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 3}" >
+								<h5>눈</h5>
+								<img alt="" src="/resources/image/weather/snow.png">
+							</div>
+						</div>
+						<div id="wether-temp">
+							<h5>최저:[[${seogwipo.minimumtemp}]]℃</h5>
+							<h5>최고:[[${seogwipo.highesttemp}]]℃</h5>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="main-right">
@@ -1435,7 +1612,7 @@ function createMarkers(data) {
 					</tbody>
 				</table>
 				<div>
-					<button type="button" th:onclick="applyDate()">적용</button>
+					<button type="button" id="applyButton" th:onclick="applyDate()" style="display: none">적용</button>
 				</div>
 			</div>
 			<div class="course">
@@ -1452,5 +1629,550 @@ function createMarkers(data) {
 			</div>
 		</div>
 	</div>
+	<div id="previewPopupContainer" class="preview-popup-container" style="display: none">
+  		<div class="preview-popup-content">
+    <!-- 팝업 내용 -->
+    		<div id="preivew_button_container">
+    		</div>
+			<div id="preview_div"></div>
+  	</div>
+  	</div>
+  	<div id="insertPopupContainer" class="insert-popup-container" style="display: none">
+  		<div class="insert-popup-content">
+    <!-- 팝업 내용 -->
+    		<div id="input_button_container">
+    		</div>
+			<div id="insert_div"></div>
+  	</div>
+</div>
+	
 </body>
+<script th:inline="javascript">
+var new_polyLine = [];
+var new_Click_polyLine = [];
+var markerList = [];
+var pointArray = [];
+var markers2 = [];
+
+function previewOpenPopup(inputValues) {
+	  var previewPopupContainer = document.getElementById('previewPopupContainer');
+	// 팝업 내용 설정
+	  var previewPopupContent = previewPopupContainer.querySelector('.preview-popup-content');
+	  var preivewMapContainer = previewPopupContent.querySelector('#preview_div');
+	  preivewMapContainer.innerHTML="";
+	  previewPopupContainer.style.display = 'block';
+	  
+	  previewTmap();
+	  createPreviewButton(inputValues);
+	  showAllDayRoute(inputValues);
+	}
+
+	function preivewClosePopup() {
+	  var previewPopupContainer = document.getElementById('previewPopupContainer');
+	  previewPopupContainer.style.display = 'none';
+	}
+	
+	function insertOpenPopup(inputValues) {
+		  var insertPopupContainer = document.getElementById('insertPopupContainer');
+		// 팝업 내용 설정
+		  var insertPopupContent = insertPopupContainer.querySelector('.insert-popup-content');
+		  var insertMapContainer = insertPopupContent.querySelector('#insert_div');
+		  insertMapContainer.innerHTML="";
+		  insertPopupContainer.style.display = 'block';
+		  
+		  insertTmap();
+		  createInsertButton(inputValues);
+		  showAllDayRoute(inputValues);
+		}
+
+		function insertClosePopup() {
+		  var insertPopupContainer = document.getElementById('insertPopupContainer');
+		  insertPopupContainer.style.display = 'none';
+		}
+		
+		// 2. 시작, 도착 심볼찍기
+
+
+		function createPreviewButton(inputValues){
+		// 버튼을 추가할 컨테이너 선택
+		 var previewPopupContainer = document.getElementById('previewPopupContainer');
+		var previewPopupContent = previewPopupContainer.querySelector('.preview-popup-content');
+		 var previewButtonContainer = previewPopupContent.querySelector('#preivew_button_container');
+		 previewButtonContainer.innerHTML="";
+		 
+		 var closeButtonDiv = document.createElement("div");
+		 closeButtonDiv.className = "close-Button-div";
+			var inputCloseButton = document.createElement('button');
+			inputCloseButton.textContent = 'X';
+			inputCloseButton.addEventListener('click', preivewClosePopup);
+			closeButtonDiv.appendChild(inputCloseButton);
+			previewButtonContainer.appendChild(closeButtonDiv);
+			
+		var AllDaybutton = document.createElement('button');
+		AllDaybutton.textContent = 'All Day';
+		previewButtonContainer.appendChild(AllDaybutton);
+		AllDaybutton.addEventListener('click', function() {
+			  showAllDayRoute(inputValues);
+			});
+			
+		var closeButton = document.createElement('button');
+		closeButton.textContent = 'X';
+		closeButton.addEventListener('click', preivewClosePopup);
+
+
+		for (var i = 0; i < inputValues.length; i++) {
+		    var daybutton = document.createElement('button');
+		    daybutton.textContent = 'Day ' + (i + 1);
+		    previewButtonContainer.appendChild(daybutton);
+		    
+		    // 클릭 이벤트 처리
+		    daybutton.addEventListener('click', function(event) {
+		      var buttonIndex = Array.from(previewButtonContainer.children).indexOf(event.target) - 2;
+		      var selectedInputValue = inputValues[buttonIndex];
+		      console.log('Button ' + (buttonIndex + 2) + ' clicked');
+		      console.log('Selected Input Value:', selectedInputValue);
+		      // 경로 표시를 위한 데이터 추출
+		      var date = selectedInputValue.date;
+		      var color = selectedInputValue.color;
+		      var lonLatPairs = selectedInputValue.lonLatPairs;
+		      // 경로 표시 로직 추가
+		      clearMarkers()
+		      clearRoutes(); // 기존의 경로 삭제
+		      drawRoute(date, lonLatPairs, color);
+		    });
+		}
+		}
+
+		function createInsertButton(inputValues){
+			// 버튼을 추가할 컨테이너 선택
+			 var inputPopupContainer = document.getElementById('insertPopupContainer');
+			var inputPopupContent = inputPopupContainer.querySelector('.insert-popup-content');
+			 var inputButtonContainer = inputPopupContent.querySelector('#input_button_container');
+			 inputButtonContainer.innerHTML="";
+			 var closeButtonDiv = document.createElement("div");
+			 closeButtonDiv.className = "close-Button-div";
+				var inputCloseButton = document.createElement('button');
+				inputCloseButton.textContent = 'X';
+				inputCloseButton.addEventListener('click', insertClosePopup);
+				closeButtonDiv.appendChild(inputCloseButton);
+				inputButtonContainer.appendChild(closeButtonDiv);
+			 
+			var AllDaybutton = document.createElement('button');
+			AllDaybutton.textContent = 'All Day';
+			
+			AllDaybutton.addEventListener('click', function() {
+				  showAllDayRoute(inputValues);
+				});
+			inputButtonContainer.appendChild(AllDaybutton);
+			for (var i = 0; i < inputValues.length; i++) {
+			    var daybutton = document.createElement('button');
+			    daybutton.textContent = 'Day ' + (i + 1);
+			    inputButtonContainer.appendChild(daybutton);
+			    
+			    // 클릭 이벤트 처리
+			    daybutton.addEventListener('click', function(event) {
+			      var buttonIndex = Array.from(inputButtonContainer.children).indexOf(event.target) - 2;
+			      var selectedInputValue = inputValues[buttonIndex];
+			      console.log('Button ' + (buttonIndex + 1) + ' clicked');
+			      console.log('Selected Input Value:', selectedInputValue);
+			      // 경로 표시를 위한 데이터 추출
+			      var date = selectedInputValue.date;
+			      var color = selectedInputValue.color;
+			      var lonLatPairs = selectedInputValue.lonLatPairs;
+			      // 경로 표시 로직 추가
+			      clearMarkers()
+			      clearRoutes(); // 기존의 경로 삭제
+			      drawRoute(date, lonLatPairs, color);
+			    });
+			}
+		    const courseNameInput = document.createElement("input");
+		    courseNameInput.type = "text";
+		    courseNameInput.name = "planName";
+		    courseNameInput.id = "planName";
+		    courseNameInput.placeholder = '제목';
+		    const couseInsertInput = document.createElement("button");
+		    couseInsertInput.type ="button";
+		    couseInsertInput.setAttribute("onclick", "courseInsert()");
+		    couseInsertInput.textContent = "등록";
+		    
+		    inputButtonContainer.appendChild(courseNameInput);
+		    inputButtonContainer.appendChild(couseInsertInput);
+		    
+			}
+function drawData(data, color){
+	// 지도위에 선은 다 지우기
+	routeData = data;
+	var resultStr = "";
+	var distance = 0;
+	var idx = 1;
+	var newData = [];
+	var equalData = [];
+	var pointId1 = "-1234567";
+	var ar_line = [];
+	
+	
+	for (var i = 0; i < data.features.length; i++) {
+		var feature = data.features[i];
+		//배열에 경로 좌표 저장
+		if(feature.geometry.type == "LineString"){
+			ar_line = [];
+			for (var j = 0; j < feature.geometry.coordinates.length; j++) {
+				var startPt = new Tmapv2.LatLng(feature.geometry.coordinates[j][1],feature.geometry.coordinates[j][0]);
+				ar_line.push(startPt);
+				pointArray.push(feature.geometry.coordinates[j]);
+			}
+			var polyline = new Tmapv2.Polyline({
+		        path: ar_line,
+		        strokeColor: color, 
+		        strokeWeight: 3,
+		        map: map2
+		    });
+			new_polyLine.push(polyline);
+		}
+		var pointId2 = feature.properties.viaPointId;
+		if (pointId1 != pointId2) {
+			equalData = [];
+			equalData.push(feature);
+			newData.push(equalData);
+			pointId1 = pointId2;
+		}
+		else {
+			equalData.push(feature);
+		}
+	}
+	geoData = newData;
+	var markerCnt = 1;
+	for (var i = 0; i < newData.length; i++) {
+		var mData = newData[i];
+		var type = mData[0].geometry.type;
+		var pointType = mData[0].properties.pointType;
+		var pointTypeCheck = false; // 경유지 일때만 true
+		if (mData[0].properties.pointType == "S") {
+			var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
+			var lon = mData[0].geometry.coordinates[0];
+			var lat = mData[0].geometry.coordinates[1];
+		}
+		else if (mData[0].properties.pointType == "E") {
+			var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
+			var lon = mData[0].geometry.coordinates[0];
+			var lat = mData[0].geometry.coordinates[1];
+		}
+		else {
+			markerCnt=i;
+			var lon = mData[0].geometry.coordinates[0];
+			var lat = mData[0].geometry.coordinates[1];
+		}	
+	}
+}
+
+
+
+function clearRoutes() {
+    if (new_polyLine.length > 0) {
+        for (var i = 0; i < new_polyLine.length; i++) {
+            new_polyLine[i].setMap(null);
+        }
+        new_polyLine = [];
+    }
+    if (new_Click_polyLine.length > 0) {
+        for (var i = 0; i < new_Click_polyLine.length; i++) {
+            new_Click_polyLine[i].setMap(null);
+        }
+        new_Click_polyLine = [];
+    }
+}
+function clearMarkers() {
+	  for (var i = 0; i < markers2.length; i++) {
+	    markers2[i].setMap(null);
+	  }
+	  markers2 = [];
+	}
+function showAllDayRoute(inputValues) {
+	  // 기존 마커 지우기
+	  clearMarkers();
+for (var i = 0; i < inputValues.length; i++) {
+	var date = inputValues[i].date;
+	var color = inputValues[i].color;
+	var lonLatPairs = inputValues[i].lonLatPairs;
+	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+	if(lonLatPairs.length === 1){
+		addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+	}else{
+
+	// 시작
+	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+	// 도착
+	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
+
+	// 경유지 심볼 찍기
+	for (var j = 0; j < waypoints.length; j++) {
+		var waypoint = waypoints[j];
+		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
+	}
+	// 4. 경로탐색 API 사용요청
+	}
+	var startX = lonLatPairs[0].lat;
+	var startY = lonLatPairs[0].lon;
+	var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+	var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+	var passList = waypoints.map(function(waypoint) {
+		  return waypoint.lat + ',' + waypoint.lon;
+		}).join('_');
+	var prtcl;
+	var headers = {};
+	
+	headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+	$.ajax({
+			method:"POST", 
+			headers : headers, 
+			url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+			async:false,
+			data:{ 
+				startX : startX,
+				startY : startY,
+				endX : endX,
+				endY : endY,
+				passList : passList,
+				reqCoordType : "WGS84GEO",
+				resCoordType : "WGS84GEO",
+				angle : "172",
+				searchOption : "0",
+				trafficInfo : "N"
+			},
+			success:function(response){
+			prtcl = response;
+			
+			// 5. 경로탐색 결과 Line 그리기 
+			var trafficColors = {
+				extractStyles:true,
+				/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+				trafficDefaultColor:"#636f63", //Default
+				trafficType1Color:"#19b95f", //원할
+				trafficType2Color:"#f15426", //지체
+				trafficType3Color:"#ff970e"  //정체		
+			};    			
+			var style_red = {
+				fillColor:"#FF0000",
+				fillOpacity:0.2,
+				strokeColor: "#FF0000",
+				strokeWidth: 3,
+				strokeDashstyle: "solid",
+				pointRadius: 2,
+				title: "this is a red line"
+			};
+			drawData(prtcl, color);
+		
+		
+ 			// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+			  var center = new Tmapv2.LatLng(33.3616666, 126.5291666);
+			  var zoom = 10; // 현재 줌 레벨 가져오기
+			  map2.setCenter(center);
+			  map2.setZoom(zoom);
+			},
+			error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	}
+}
+	function addMarker(status, lon, lat, tag, color) {
+	//출도착경유구분
+	//이미지 파일 변경.
+	console.log("addMarker : "+color);
+	var markerLayer;
+	switch (status) {
+		case "llStart":
+			img = '/resources/image/marker/'+color+'start.png';
+			break;
+		case "llPass":
+			img = '/resources/image/marker/'+color+'pass.png';
+			break;
+		case "llEnd":
+			img = '/resources/image/marker/'+color+'end.png';
+			break;
+		default:
+	};
+	var marker = new Tmapv2.Marker({
+		position: new Tmapv2.LatLng(lat,lon),
+		icon: img,
+		map: map2
+	});
+	// 마커 드래그 설정
+	marker.tag = tag;
+	marker.addListener("dragend", function (evt) {
+	markerListenerEvent(evt);
+    });
+    marker.addListener("drag", function (evt) {    	
+    	markerObject = markerList[tag];
+    });
+    markerList[tag] = marker;
+    markers2.push(marker);
+    return marker;
+}
+	
+	 function drawRoute(date, lonLatPairs, color) {
+			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+			if(lonLatPairs.length === 1){
+				addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+				
+				// 4. 경로탐색 API 사용요청
+			      var startX = lonLatPairs[0].lat;
+			      var startY = lonLatPairs[0].lon;
+			      var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+			      var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+			      var passList = waypoints.map(function(waypoint) {
+			        return waypoint.lat + ',' + waypoint.lon;
+			      }).join('_');
+			      var prtcl;
+			  	  var headers = {};
+			      
+			      headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+			      // 경로 탐색 API 호출
+					$.ajax({
+						method:"POST", 
+						headers : headers, 
+						url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+						async:false,
+						data:{ 
+							startX : startX,
+							startY : startY,
+							endX : endX,
+							endY : endY,
+							passList : passList,
+							reqCoordType : "WGS84GEO",
+							resCoordType : "WGS84GEO",
+							angle : "172",
+							searchOption : "0",
+							trafficInfo : "N"
+						},
+						success:function(response){
+						prtcl = response;
+						
+						// 5. 경로탐색 결과 Line 그리기 
+						var trafficColors = {
+							extractStyles:true,
+							/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+							trafficDefaultColor:"#636f63", //Default
+							trafficType1Color:"#19b95f", //원할
+							trafficType2Color:"#f15426", //지체
+							trafficType3Color:"#ff970e"  //정체		
+						};    			
+						var style_red = {
+							fillColor:"#FF0000",
+							fillOpacity:0.2,
+							strokeColor: "#FF0000",
+							strokeWidth: 3,
+							strokeDashstyle: "solid",
+							pointRadius: 2,
+							title: "this is a red line"
+						};
+						drawData(prtcl, color);
+					
+					
+						// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+						  var center = new Tmapv2.LatLng(lonLatPairs[0].lon, lonLatPairs[0].lat);
+						  var zoom = 16; // 현재 줌 레벨 가져오기
+						  map2.setCenter(center);
+						  map2.setZoom(zoom);
+						},
+						error:function(request,status,error){
+						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					}
+				});
+				
+			}else{
+
+			// 시작
+			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+			// 도착
+			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
+
+			// 경유지 심볼 찍기
+			for (var j = 0; j < waypoints.length; j++) {
+				var waypoint = waypoints[j];
+				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
+			}
+			// 4. 경로탐색 API 사용요청
+	      var startX = lonLatPairs[0].lat;
+	      var startY = lonLatPairs[0].lon;
+	      var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+	      var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+	      var passList = waypoints.map(function(waypoint) {
+	        return waypoint.lat + ',' + waypoint.lon;
+	      }).join('_');
+	      var prtcl;
+	  	  var headers = {};
+	      
+	      headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+	      // 경로 탐색 API 호출
+			$.ajax({
+				method:"POST", 
+				headers : headers, 
+				url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+				async:false,
+				data:{ 
+					startX : startX,
+					startY : startY,
+					endX : endX,
+					endY : endY,
+					passList : passList,
+					reqCoordType : "WGS84GEO",
+					resCoordType : "WGS84GEO",
+					angle : "172",
+					searchOption : "0",
+					trafficInfo : "N"
+				},
+				success:function(response){
+				prtcl = response;
+				
+				// 5. 경로탐색 결과 Line 그리기 
+				var trafficColors = {
+					extractStyles:true,
+					/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+					trafficDefaultColor:"#636f63", //Default
+					trafficType1Color:"#19b95f", //원할
+					trafficType2Color:"#f15426", //지체
+					trafficType3Color:"#ff970e"  //정체		
+				};    			
+				var style_red = {
+					fillColor:"#FF0000",
+					fillOpacity:0.2,
+					strokeColor: "#FF0000",
+					strokeWidth: 3,
+					strokeDashstyle: "solid",
+					pointRadius: 2,
+					title: "this is a red line"
+				};
+				drawData(prtcl, color);
+			
+			
+				// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+				var newData = geoData[0];
+				PTbounds = new Tmapv2.LatLngBounds();
+						for (var i = 0; i < newData.length; i++) {
+							var mData = newData[i];
+							var type = mData.geometry.type;
+							var pointType = mData.properties.pointType;
+							if(type == "Point"){
+								var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[1],mData.geometry.coordinates[0]);
+								PTbounds.extend(linePt);
+							}
+							else{
+								var startPt,endPt;
+								for (var j = 0; j < mData.geometry.coordinates.length; j++) {
+									var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[j][1],mData.geometry.coordinates[j][0]);
+									PTbounds.extend(linePt);
+								}
+						}
+					}
+						map2.fitBounds(PTbounds);
+			
+				},
+				error:function(request,status,error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+			}
+	    }
+</script>
 </html>
