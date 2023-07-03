@@ -50,9 +50,7 @@ public class PlanController {
 		System.out.println("controller main : "+paging);
 		try {
 			model.addAttribute("jeju", wservice.Jeju());
-			model.addAttribute("Seogwipo", wservice.Seogwipo());
-			System.out.println("controller plan main jeju : "+wservice.Jeju());
-			System.out.println("controller plan main seogwipo : "+wservice.Seogwipo());
+			model.addAttribute("seogwipo", wservice.Seogwipo());
 		} catch (IOException e) {
 			
 			e.printStackTrace();

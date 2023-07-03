@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WeatherDTO {
 	
-	private String category;
+	private String day;
 	//최저기온
-	private String minimumtemp;
+	private int minimumtemp;
 	//최고기온
-	private String highesttemp;
+	private int highesttemp;
 	//현쟈기온
-	private String currenttemp;
+	private int currenttemp;
 	//하늘상태 ﻿맑음(1), 구름많음(3), 흐림(4)
-	private String sky;
+	private int sky;
 	//강수상태 ﻿없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4)
-	private String pty;
+	private int pty;
 }
