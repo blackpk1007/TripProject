@@ -1,6 +1,8 @@
 package com.trip.project;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.trip.project.dto.FlightStatusDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.service.AirPlaneService;
 import com.trip.project.service.CrawlingService;
@@ -40,6 +43,7 @@ public class TripApplication {
 	@RequestMapping("/")
 	public String main(Model model) {
 		
+
 		try {
 			model.addAttribute("arriveds", aservice.jejuArrived());
 			model.addAttribute("boardings", aservice.jejuBoarding());
@@ -47,7 +51,6 @@ public class TripApplication {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
 		model.addAttribute("list", mainpageService.selectList());
 		model.addAttribute("animalList", mainpageService.animalList());
 		model.addAttribute("parentsList", mainpageService.parentsList());

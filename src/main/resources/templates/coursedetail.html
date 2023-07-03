@@ -21,32 +21,30 @@
 
 .map{
 	display:flex;
+	position:relative;
 	justify-content: center;
+	margin:1rem;
 }
 #map_div{
-	border:solid;
-	border-width:0.1rem;
-	border-color:#A2CCED;
-	margin-right:0.1rem;
 	text-align:center;
 }
 /* 경로 버튼 부분 */
 .coursebtn{
-	width:50vh;
-	border:solid;
-	border-width:2px;
 	display:flex;
 	justify-content:center;
+	
 }
 
 /* day 1  텍스트 부분 */
 .mymain_text{
 	width:20vw;
 	font-size:1.8rem;
-	margin:2rem;
+	margin:1rem;
+	margin-bottom:0;
 	position:relative;
 	display:flex;
 	justify-content:center;
+	left:20vw;
 	
 }
 .day1{
@@ -56,6 +54,7 @@
 	border-width:2px;
 	background-color: #B8E9FF;
 	font-size: 2rem;
+	color:white;
 	padding: 1rem;
 	padding-left:2rem;
 	padding-right:2rem;
@@ -82,13 +81,73 @@
 	justify-content: center;
   	align-items: center;
 	flex-direction: column;
-	height: 40vh;
-	border: solid;
-	border-width: 0.1rem;
-	border-color: black;
+	
+	height: 48vh;
+	
 	margin: 2rem;
+	margin-top:0;
 }
 
+.main{
+	display:flex;
+	width:45vw;
+	height:12vh;
+	border:solid;
+	border-radius:1rem;
+	border-width: 0.1rem;
+	border-color: #BFBFBF;
+	margin: 2rem;
+	
+	justify-content: center;
+  	align-items: center;
+	
+}
+.sec1{
+	flex:1;
+	margin:1rem;
+	display:flex;
+	justify-content: center;
+	align-items:center;
+	
+}
+.num{
+	width:3rem;
+	height:3rem;
+	margin:1rem;
+}
+.sec2{
+	flex:1;
+	margin:1rem;
+	
+}
+.placepic{
+	width:13rem;
+	height:8rem;
+}
+.sec3{
+	flex:2;
+	margin:1rem;
+	
+}
+.placename{
+	font-size:1.6rem;
+}
+.sec4{
+	display:flex;
+	flex:1;
+	margin:1rem;
+	
+}
+.info{
+	width:4rem;
+	height:4rem;
+	margin:1rem;
+}
+.location{
+	width:4rem;
+	height:4rem;
+	margin:1rem;
+}
 
 
 </style>
@@ -103,7 +162,7 @@ function initTmap() {
 	  map = new Tmapv2.Map("map_div", {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	    width: "50vw", // 지도의 넓이
-	    height: "40vh", // 지도의 높이
+	    height: "50vh", // 지도의 높이
 	    zoom: 10
 	  });
 	}
@@ -126,7 +185,7 @@ window.onload = function () {
 			<div id="map_div"></div>
 		</div>
 		<!-- 지도 밑 버튼 (경로 불러오는), 화면설계서랑 다름 -->
-		<div class="coursebtn">(경로출력)
+		<div class="coursebtn"><!-- (경로출력) -->
 			<button>day1</button>
 			<button>day2</button>
 			<button>day3</button>
@@ -146,46 +205,49 @@ window.onload = function () {
 		<div class="mymain">
 			<div class="main">
 				<div class="sec1">
-					<img class="num" src="#">
+					<img class="num" src="/resources/image/num1.png">
 				</div>
 				<div class="sec2">
 					<img class="placepic" src="#">
 				</div>
 				<div class="sec3">
-					<div class="placename"></div>
+					<div class="placename"> 장소이름 </div>
 				</div>
 				<div class="sec4">
-					<img class="info" src="#"><img class="info" src="#">
+					<img class="info" src="/resources/image/exclamationmark.png">
+					<img class="location" src="/resources/image/positionmark.png">
 				</div>
 			</div>
 			<div class="dots"></div>
 			<div class="main">
 				<div class="sec1">
-					<img class="num" src="#">
+					<img class="num" src="/resources/image/num2.png">
 				</div>
 				<div class="sec2">
 					<img class="placepic" src="#">
 				</div>
 				<div class="sec3">
-					<div class="placename"></div>
+					<div class="placename"> 장소이름 </div>
 				</div>
 				<div class="sec4">
-					<img class="info" src="#"><img class="info" src="#">
+					<img class="info" src="/resources/image/exclamationmark.png">
+					<img class="location" src="/resources/image/positionmark.png">
 				</div>
 			</div>
 			<div class="dots"></div>
 			<div class="main">
 				<div class="sec1">
-					<img class="num" src="#">
+					<img class="num" src="/resources/image/num3.png">
 				</div>
 				<div class="sec2">
 					<img class="placepic" src="#">
 				</div>
 				<div class="sec3">
-					<div class="placename"></div>
+					<div class="placename"> 장소이름 </div>
 				</div>
 				<div class="sec4">
-					<img class="info" src="#"><img class="info" src="#">
+					<img class="info" src="/resources/image/exclamationmark.png">
+					<img class="location" src="/resources/image/positionmark.png">
 				</div>
 			</div>
 		</div>

@@ -59,13 +59,13 @@
 }
 
 .signup1 {
-	width: 25vw;
+	width:50vw;
 	min-width: 300px;
 	height: 70vh;
 	margin-inline: auto;
 	position: absolute;
 	left: 50vw;
-	top: 55vh;
+	top: 50vh;
 	transform: translate(-50%, -50%);
 	border-radius: 0.8rem;
 }
@@ -74,9 +74,6 @@
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
-	padding-bottom: 5rem;
-	padding-left: 5rem;
-	padding-right: 5rem;
 }
 
 .signup_header {
@@ -85,8 +82,56 @@
 }
 
 .signup_body {
-	height: 35rem;
 	box-sizing: border-box;
+}
+
+.body{
+	display:flex;
+	width:100%;
+}
+
+.fixed{
+/* 	width:20%; */
+	border:solid;
+	flex:1;
+	padding:2rem;
+	font-size:1.6rem;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #B8E9FF;
+	
+}
+
+.info{
+	border:solid;
+	flex:5;
+	padding:2rem;
+}
+.info>input{
+	width: 80%;
+	height: 2.6rem;
+	display: inline-block;
+	box-sizing: border-box;
+	border: 0.7px solid rgb(185, 184, 184);
+	border-radius: 0.5rem;
+	font-size: 1.6rem;
+	background-color: #EEEEEE;
+	padding-left: 2rem;
+}
+.gender{
+	display:flex;
+	align-items: center;
+	font-size: 1.6rem;
+	padding-left: 1rem;
+}
+#male{
+	display:flex;
+	align-items: center;
+}
+#female{
+	display:flex;
+	align-items: center;
 }
 
 #signin {
@@ -102,36 +147,37 @@
 }
 
 .loginForm>input {
-	width: 100%;
-	height: 40px;
+	width: 80%;
+	height: 2.6rem;
 	display: inline-block;
 	box-sizing: border-box;
 	border: 0.7px solid rgb(185, 184, 184);
 	border-radius: 0.5rem;
 	font-size: 1.6rem;
+	background-color: #EEEEEE;
+	padding-left: 2rem;
 }
 
 #updateButton {
 	cursor: pointer;
-	width: 100%;
-	height: 40px;
+	width: 40%;
+	height: 2.6rem;
 	border-radius: 0.5rem;
-	border: none;
-	margin-top: 15px;
-	font-size: 1.6rem;
+	border: solid;
+ 	font-size: 1.6rem;
 	color: black;
-	background-color: #B8E9FF;
 }
 
 #deleteButton {
 	cursor: pointer;
-	width: 100%;
+	width: 20%;
 	height: 40px;
-	border: 1px solid #B8E9FF;
+	border: 1px solid;
 	border-radius: 0.5rem;
 	font-size: 1.6rem;
 	color: black;
 	background-color: #ffffff;
+	margin-top:1rem;
 
 }
 
@@ -146,8 +192,8 @@
 }
 
 #userEmail{
-	width: 100%;
-	background-color: rgb(222, 222, 222);
+	width: 80%;
+	background-color: #EEEEEE;
 }
 
 #menu{

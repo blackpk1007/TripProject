@@ -66,7 +66,6 @@
   width: 80vh;
   height: 50vh;
 }
-    
 .header {
 	width: 90vw;
 	height: 13vh;
@@ -440,6 +439,7 @@ td {
 .course-color-day h5:not(.active) {
   display: none;
 }
+
 #chart_set{
         display: flex;	
         padding-left: 0.4vw;	
@@ -479,16 +479,37 @@ td {
 
     .ocr_popup {
         background-color: white;
-        padding: 20px;
+        padding: 3vw;
         border-radius: 5px;
+        position: relative;
+        width: 20vw;
+        height: 65vh;
     }
 
     .ocr_popup-close {
         cursor: pointer;
         position: absolute;
-        top: 10px;
-        right: 10px;
+   	 	top: 2vh; 
+    	right: 1vw;
+    }
+    #preview{
+        width: 20vw;
+        height: 52vh;
+        background-color: rgba(200, 200, 200, 0.2);
+    }
+#ocr_notice {
+    color: rgba(220,0, 0);
+        margin-bottom : 2vh;
 }
+#file_button{
+	margin-bottom : 2vh;
+}
+#ocr_title{
+	font-size: 1.5vw;
+	font-weight: 600;
+    margin-bottom : 1vh;
+}
+    
 .placemenu {
   display: none;
   padding-top: 1vh;
