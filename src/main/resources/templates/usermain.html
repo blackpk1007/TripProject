@@ -223,6 +223,7 @@ height:200px;
 }
 .loc1{
 	flex: 1 0 auto;
+	
 }
 .loc2{
 	flex: 3 0 auto;
@@ -308,7 +309,7 @@ height:200px;
 			<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
 			<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
 			<div class="user_status" id="plan" onclick="mymain();">나의 일정
-				<div class="num" onclick="mymain();" > 일정 끌고오기 </div>
+				<div class="num" onclick="mymain();" th:text="${plancount}"> 일정 끌고오기 </div>
 			</div>
 			<div class="user_status" id="review" onclick="mymain();">나의 리뷰
 				<div class="num" onclick="mymain();" th:text="${recommandcount}">리뷰 끌고오기 </div>

@@ -188,7 +188,10 @@ public class LoginController {
 		model.addAttribute("recommandcount", pservice.usermainRecommand(userID).size());
 		System.out.println("리뷰 : "+ pservice.usermainRecommand(userID));
 		System.out.println(pservice.usermainRecommand(userID).size());
-		
+		model.addAttribute("plan", pservice.userplan(userID));
+		model.addAttribute("plancount", pservice.userPlancount(userID).size());
+		System.out.println("일정 : "+ pservice.userPlancount(userID));
+		System.out.println(pservice.userPlancount(userID).size());
 		
 		return "usermain";
 		
