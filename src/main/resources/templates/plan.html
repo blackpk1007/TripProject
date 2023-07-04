@@ -289,10 +289,9 @@ function fetchUpdatedMarkers(category, pageNum) {
       data: { category: category,
     	      pageNum: pageNum},
       success: function (data) {
-    	  updateList(data);
-    	  createMarkers(data);
-    	  fetchTotalItems();
-    	  pageNum = pageNum; // 현재 페이지 번호 업데이트
+    	  updateList(data.placeList);
+    	  createMarkers(data.placeList);
+    	  updatePagination(data.totalPages, data.currentPage);
     	  
       },
       error: function () {
@@ -1303,75 +1302,55 @@ function createMarkers(data) {
 		});
 	}
 	
-		function updatePagination(totalItems, itemsPerPage, pageNum) {
-			const categoryInput = document.querySelector('input[name="placeCategory"]').value;
-			console.log(categoryInput);
-			  var totalPages = Math.ceil(totalItems / itemsPerPage);
-			  var paginationContainer = document.querySelector('#pagination');
-			  paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+	function updatePagination(totalPages, currentPage) {
+	    var paginationContainer = document.querySelector('#pagination');
+	    paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+	    var category = document.querySelector('input[name="placeCategory"]').value;
+	    var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
+	    var startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+	    var endPage = Math.min(totalPages, startPage + pageRange - 1);
 
-			  var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
-			  var startPage = Math.max(1, pageNum - Math.floor(pageRange / 2));
-			  var endPage = Math.min(totalPages, startPage + pageRange - 1);
+	    // 이전 버튼 생성
+	    var prevButton = document.createElement('a');
+	    prevButton.href = 'javascript:void(0)';
+	    prevButton.textContent = '이전';
+	    prevButton.addEventListener('click', function () {
+	    	fetchUpdatedMarkers(category, currentPage - 5);
+	    });
+	    paginationContainer.appendChild(prevButton);
 
-			  // 이전 버튼 생성
-			  var prevButton = document.createElement('a');
-			  prevButton.href = 'javascript:void(0)';
-			  prevButton.textContent = '이전';
-			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 5)+')');
-			  paginationContainer.appendChild(prevButton);
+	    // 페이지 번호 생성
+	    for (var i = startPage; i <= endPage; i++) {
+	        var pageLink = document.createElement('a');
+	        pageLink.href = 'javascript:void(0)';
+	        pageLink.textContent = i;
+	        pageLink.addEventListener('click', function () {
+	        	fetchUpdatedMarkers(category, Number(this.textContent));
+	        });
 
-			  // 페이지 번호 생성
-			  for (var i = startPage; i <= endPage; i++) {
-			    var pageLink = document.createElement('a');
-			    pageLink.href = 'javascript:void(0)';
-			    pageLink.textContent = i;
-			    pageLink.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+i+')');
+	        if (i === currentPage) {
+	            pageLink.classList.add('active');
+	        }
 
-			    if (i === pageNum) {
-			      pageLink.classList.add('active');
-			    }
+	        paginationContainer.appendChild(pageLink);
+	    }
 
-			    paginationContainer.appendChild(pageLink);
-			  }
-
-			  // 다음 버튼 생성
-			  var nextButton = document.createElement('a');
-			  nextButton.href = 'javascript:void(0)';
-			  nextButton.textContent = '다음';
-			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 5)+')');
-			  paginationContainer.appendChild(nextButton);
-		}
-	// 서버로부터 전체 데이터 수를 가져와서 페이지 번호 업데이트
-	function fetchTotalItems() {
-	  // 서버로부터 전체 데이터 수를 가져오는 API 요청을 수행하세요.
-	  // 예시: AJAX 요청 등을 사용하여 전체 데이터 수를 가져옵니다.
-	  var totalItems = [[${placeListCount}]];
-		console.log(totalItems);
-	  var itemsPerPage = 20; // 페이지당 출력할 데이터 수
-
-	  updatePagination(totalItems, itemsPerPage, pageNum);
+	    // 다음 버튼 생성
+	    var nextButton = document.createElement('a');
+	    nextButton.href = 'javascript:void(0)';
+	    nextButton.textContent = '다음';
+	    nextButton.addEventListener('click', function () {
+	    	fetchUpdatedMarkers(category, currentPage + 5);
+	    });
+	    paginationContainer.appendChild(nextButton);
 	}
+
+
 	
-	function weather(){
-		
-		$.ajax({
-			url:'/weather',
-			type: 'POST',
-			success: function(data){
-				updateList(data);
-				createMarkers(data);
-			},
-			error: function(data){
-				alert("실패");
-			}
-			
-		});
-	}
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
-		  fetchTotalItems();
+		  fetchUpdatedMarkers('restaurant', 1);
 	};	
 </script>
 <title>Insert title here</title>

@@ -89,5 +89,11 @@ public class PlanServiceImpl implements PlanService{
 		return pmapper.placeRestaurantListCount();
 	}
 
+	@Override
+	public int placeCategoryCount(String categoey) {
+
+		return pmapper.placeCategoryCount(categoey);
+	}
+
 
 }

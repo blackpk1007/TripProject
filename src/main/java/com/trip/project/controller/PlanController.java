@@ -78,15 +78,29 @@ public class PlanController {
 	
 	@ResponseBody
 	@GetMapping("/fetchMarkers") 
-	public List<PlaceDTO> planMarker(@RequestParam("category")String category, @RequestParam("pageNum") int pageNum) {
-		System.out.println("pageNum : "+pageNum);
-		System.out.println("Category : "+category);
-		placePagination paging = new placePagination(pageNum, 20);
+	public Map<String, Object> planMarker(@RequestParam("category")String category, @RequestParam("pageNum") int pageNum, Model model) {
+		int totalItems = pservice.placeCategoryCount(category);
+		System.out.println("controller category : "+category);
+		System.out.println("controller totalitem: "+totalItems);
+        int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
+
+        // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
+        if (pageNum < 1) {
+            pageNum = 1;
+        } else if (pageNum > totalPages) {
+        	pageNum = totalPages;
+        }
+        placePagination paging = new placePagination(pageNum, 20);
+        
+        // 현재 페이지에 해당하는 데이터 조회
+        List<PlaceDTO> placeList = pservice.placeCategoryMarker(category, paging);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("placeList", placeList);
+        responseData.put("totalPages", totalPages);
+        responseData.put("currentPage", pageNum);
 		
-		List<PlaceDTO> placeList = pservice.placeCategoryMarker(category, paging);
-		
-		
-		return placeList;
+		return responseData;
 	}
 	
 	@ResponseBody
@@ -159,7 +173,7 @@ public class PlanController {
 	public List<PlaceDTO> search(@RequestParam("keyword") String keyword, @RequestParam("pageNum") int pageNum) throws UnsupportedEncodingException {
 		String KeywordDecode = URLDecoder.decode(keyword, "UTF-8");
 		placePagination paging = new placePagination(pageNum, 20);
-		
+
 		List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
 
 		return dto;

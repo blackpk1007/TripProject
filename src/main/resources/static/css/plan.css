@@ -219,8 +219,14 @@
 }
 
 .course {
-	width: 20vw;
+	width: 80%;
 	height: 44vh;
+	margin: 0px;
+	padding: 20px;
+	margin: 0 auto;
+	border: 1px solid #B8E9FF;
+	border-radius: 5px;
+	margin-bottom: 1vh;
 }
 
 .course-color {
@@ -241,13 +247,6 @@
 .course-plan {
 	width: 19vw;
 	height: 33vh;
-	border: 0.1vw solid #B8E9FF;
-	border-top: 0vw;
-	border-radius: 0.5vw;
-	border-top-left-radius: 0vw;
-	border-top-right-radius: 0vw;
-	margin: 0vw;
-	margin: 0 auto;
 }
 
 .course-plan>img {
