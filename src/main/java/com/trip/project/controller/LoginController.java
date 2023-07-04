@@ -119,9 +119,10 @@ public class LoginController {
 		if(res == null) {
 			return "아이디와 이메일이 일치하지 않습니다";
 		}else {
-//			세션에 썼던 아이디 이메일 담아주고 그걸 바로 재설정페이지에서 써먹어야될 것 같은데..
-//			model.addAttribute("userID", dto.getUserID() );
-//			model.addAttribute("userEmail", dto.getUserEmail());
+			model.addAttribute("userID", dto.getUserID());
+			model.addAttribute("userEmail", dto.getUserEmail());
+			System.out.println(dto.getUserID());
+			System.out.println(dto.getUserEmail());
 		return res.getUserName()+"님의 비밀번호 재설정 페이지로 이동합니다.";
 		}
 	}
@@ -129,8 +130,10 @@ public class LoginController {
 	// 비밀번호 재설정페이지
 	@RequestMapping("/pwfixform")
 	public String pwfixform(HttpSession session, Model model , LoginDTO dto) {
-		System.out.println(session.getAttribute("pwfind"));
-		System.out.println(dto.getUserEmail());
+		String userID = (String) model.getAttribute("userID");
+		String userEmail = (String) model.getAttribute("userEmail");
+		System.out.println(userID);
+		System.out.println(userEmail);
 		
 		//model.addAttribute("dto",dto);
 		return "pwfixform";
@@ -139,11 +142,11 @@ public class LoginController {
 	//비밀번호 재설정
 	@ResponseBody
 	@PostMapping("/pwfix")
-	public String pwfix( LoginDTO dto) {
+	public String newpw( LoginDTO dto) {
 		int res = lservice.newpw(dto);
 		System.out.println(res);
 		
-		return dto.getUserName();
+	    	  return dto.getUserName()+"님의 패스워드가 수정되었니다.";
 	}
 
 	// 회원가입 페이지
@@ -189,7 +192,10 @@ public class LoginController {
 		model.addAttribute("recommandcount", pservice.usermainRecommand(userID).size());
 		System.out.println("리뷰 : "+ pservice.usermainRecommand(userID));
 		System.out.println(pservice.usermainRecommand(userID).size());
-		
+		model.addAttribute("plan", pservice.userPlancount(userID));
+		model.addAttribute("plancount", pservice.userPlancount(userID).size());
+		System.out.println("일정 : "+ pservice.userPlancount(userID));
+		System.out.println(pservice.userPlancount(userID).size());
 		
 		return "usermain";
 		

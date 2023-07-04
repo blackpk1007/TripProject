@@ -64,6 +64,12 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.userPlan(userID);
 	}
+	
+	@Override
+	public List<PlanDTO> userPlancount(String userID) {
+
+		return pmapper.userPlancount(userID);
+	}
 
 	@Override
 	public List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto) {

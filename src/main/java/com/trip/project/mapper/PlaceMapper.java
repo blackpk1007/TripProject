@@ -62,6 +62,10 @@ public interface PlaceMapper {
 	@Select(" select * from plan where userID = #{userID} ")
 	PlanDTO userPlan(String userID);
 	
+	//마이페이지 갯수
+	@Select(" select * from plan where userID = #{userID} ")
+	public List<PlanDTO> userPlancount(String userID);
+	
 	@Select(" select * from planDetail where userID = #{userID} and planName = #{planName} ")
 	List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto);
 	

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Mypage</title>
-<link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
+<link rel="stylesheet" href="/resources/css/reset.css" type="text/css">
 
 <style type="text/css">
 .header {
@@ -65,211 +65,272 @@
 	margin-left: 3vw;
 }
 
-#logo{
-width:300px;
-height:200px;
+#logo {
+	width: 300px;
+	height: 200px;
 }
 
-.body{
+.body {
 	width: 98vw;
 	height: 78vh;
-	position:relative;
-	left:1vw;
-	display:flex;
-	flex-direction:column;
-	justify-content:center;
+	left: 1vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 /*  프로필 */
-.profilearea{
-	display:flex;
-	position:relative;
-	padding:1rem;
-	margin-left:8.8rem;
+.profilearea {
+	display: flex;
+	padding: 1rem;
+	margin-left: 8.8rem;
 }
-
 
 .imagebox {
-    width: 15rem;
-    height: 15rem; 
-    border-radius: 70%;
-    border: solid;
-    border-width:4px;
-    border-color: #B8E9FF;
-    overflow: hidden;
-    background: white;
-    margin-right:1rem;
-}
-.profilepic {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    
-    
-}
-.profile{
-	text-align:center;
-	font-size:1.8rem;
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
+	width: 15rem;
+	height: 15rem;
+	border-radius: 70%;
+	border: solid;
+	border-width: 4px;
+	border-color: #B8E9FF;
+	overflow: hidden;
+	background: white;
+	margin-right: 1rem;
 }
 
-#profilefix{
+.profilepic {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.profile {
+	text-align: center;
+	font-size: 1.8rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#profilefix {
 	font-size: 1.5rem;
-	background-color: #BDBDBD;	
+	background-color: #BDBDBD;
 	border: none;
 	border-radius: 0.5rem;
-	padding:0.4rem;
-	margin-left:1rem;
+	padding: 0.4rem;
+	margin-left: 1rem;
 }
-
 
 /* 일정 3개 */
-.status{
-	display:flex;
-	
+.status {
+	display: flex;
 }
-.user_status{
-	flex:5;
+
+.user_status {
+	flex: 5;
 	text-align: center;
 	background-color: #B8E9FF;
 	font-size: 1.8rem;
 	color: white;
-	margin:7vw;
-	margin-top:2rem;
-	margin-bottom:2rem;
-	padding-top:1rem;
-	border-radius:0.5rem;
+	margin: 7vw;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	padding-top: 1rem;
+	border-radius: 0.5rem;
 }
 
-.num{
+.num {
 	text-align: center;
 	border: solid;
-	border-width:2px;
-	border-color:grey;
-	border-top-color:#B8E9FF;
-	background-color:white;
+	border-width: 2px;
+	border-color: grey;
+	border-top-color: #B8E9FF;
+	background-color: white;
 	font-size: 1.8rem;
 	color: black;
-	padding-top:0.5rem;
-	padding-bottom:1rem;
+	padding-top: 0.5rem;
+	padding-bottom: 1rem;
 	border-color: #ECECEC;
-	border-bottom-left-radius:0.5rem;
-	border-bottom-right-radius:0.5rem;
+	border-bottom-left-radius: 0.5rem;
+	border-bottom-right-radius: 0.5rem;
 }
-
 
 /* main */
-.mymain_text{
-	font-size:1.8rem;
-	margin-left:10vw;
+.mymain_text {
+	font-size: 1.8rem;
+	margin-left: 10vw;
 }
 
-.mymain{
-
-	padding:5vw;
-	padding-top:1rem;
-	position:relative;
-	display:flex;
-	flex-direction:column;
-	align-items:center;
-	justify-content:center;
+.mymain {
+	display: flex;
+	padding: 5vw;
+	padding-top: 1rem;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
-.main{
+.list-scroll {
+	width: 90vw;
+	height: 35vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	-ms-overflow-style: none;
+}
+
+.list-scroll::-webkit-scrollbar {
+	display: none;
+}
+
+.main {
 	border: solid;
 	border-color: #B8E9FF;
-	border-radius:0.5rem;
-	border-width:2px;
+	border-radius: 0.5rem;
+	border-width: 2px;
 	font-size: 1.8rem;
-	padding:1rem;
-	margin-top:2rem;
-	height:15vh;
-	width:80vw;
-	position:relative;
+	padding: 1rem;
+	margin-top: 2rem;
+	height: 15vh;
+	/* 	width:80vw; */
+	justify-content: center;
+	align-items: center;
 }
 
-#location1{
+#location1 {
 	width: 18rem;
-    height: 14rem; 
-    overflow: hidden;
-    background: #BDBDBD;
-    display: flex;
-  	justify-content: center;
-  	align-items: center;
-}
-
-.myplan1{
+	height: 15rem;
+	overflow: hidden;
+	background: #BDBDBD;
 	display: flex;
-  	justify-content: center;
-  	align-items: center;
+	justify-content: center;
+	align-items: center;
 }
 
-#location2{
+.myplan1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#location2 {
 	width: 18rem;
-    height: 14rem; 
-    overflow: hidden;
-    background: #BDBDBD;
-    display: flex;
-  	justify-content: center;
-  	align-items: center;
+	height: 15rem;
+	overflow: hidden;
+	background: #BDBDBD;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.myplan2{
+.myplan2 {
 	display: flex;
-  	justify-content: center;
-  	align-items: center;
+	justify-content: center;
+	align-items: center;
 }
-.loc1{
+
+.loc1 {
 	flex: 1 0 auto;
 }
-.loc2{
+
+.loc2 {
 	flex: 3 0 auto;
 }
 
-.tripname{
-	margin:1rem;
+.tripname {
+	margin: 1rem;
 }
 
-.tripdate{
-	margin:1rem;
+.tripdate {
+	margin: 1rem;
 }
 
-.loc3{
+.loc3 {
 	flex: 1 0 auto;
 }
 
 /*공 수 삭 */
-#share{
+#share1 {
 	font-size: 2rem;
-	color: #B8E9FF;	
+	color: #B8E9FF;
 	border: solid;
-	border-width:2px;
-	border-color:#B8E9FF;
+	border-width: 2px;
+	border-color: #B8E9FF;
 	border-radius: 0.5rem;
-	margin:1rem;
+	margin: 1rem;
 }
-#fix{
+
+#share2 {
 	font-size: 2rem;
-	color: #78A84E;	
+	color: #B8E9FF;
 	border: solid;
-	border-width:2px;
-	border-color:#78A84E;
+	border-width: 2px;
+	border-color: #B8E9FF;
 	border-radius: 0.5rem;
-	margin:1rem;
-	
+	margin: 1rem;
 }
-#delete{
+
+#fix1 {
 	font-size: 2rem;
-	color: #EFA174;	
-	border: solid;	
-	border-width:2px;
-	border-color:#EFA174;
+	color: #78A84E;
+	border: solid;
+	border-width: 2px;
+	border-color: #78A84E;
 	border-radius: 0.5rem;
-	margin:1rem;
+	margin: 1rem;
+}
+
+#fix2 {
+	font-size: 2rem;
+	color: #78A84E;
+	border: solid;
+	border-width: 2px;
+	border-color: #78A84E;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+
+#delete1 {
+	font-size: 2rem;
+	color: #EFA174;
+	border: solid;
+	border-width: 2px;
+	border-color: #EFA174;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+
+#delete2 {
+	font-size: 2rem;
+	color: #EFA174;
+	border: solid;
+	border-width: 2px;
+	border-color: #EFA174;
+	border-radius: 0.5rem;
+	margin: 1rem;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script th:inline="javascript">
+	function myplan() {
+		document.getElementById("plan").style.display = "block";
+		document.getElementById("myplan").style.display = "block";
+		document.getElementById("review").style.display = "none";
+		document.getElementById("community").style.display = "none";
+	}
+	function myreview() {
+		document.getElementById("review").style.display = "block";
+		document.getElementById("plan").style.display = "none";
+		document.getElementById("community").style.display = "none";
+	}
+	function mycommunity() {
+		document.getElementById("community").style.display = "block";
+		document.getElementById("plan").style.display = "none";
+		document.getElementById("review").style.display = "none";
+	}
+</script>
 </head>
 <body>
 	<div class="header">
@@ -290,79 +351,100 @@ height:200px;
 				</div> 
 		</div>
 	</div>
-	<div class="body">	
+	<div class="body">
 		<div class="profilearea">
 			<div class="imagebox">
-		    	<img class="profilepic" id="profilepic" src="/resources/image/stonepapa.png">
+				<img class="profilepic" id="profilepic"
+					src="/resources/image/stonepapa.png">
 			</div>
 			<div class="profile" th:text="${session.login}">
 				내 프로필
 				<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
 			</div>
 			<div class="profile">
-				<button id="profilefix" onclick="location.href='/login/userupdateform'">프로필 수정</button>
+				<button id="profilefix"
+					onclick="location.href='/login/userupdateform'">프로필 수정</button>
 			</div>
 		</div>
-		
+
 		<div class="status">
 			<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
 			<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
-			<div class="user_status" id="plan" onclick="mymain();">나의 일정
-				<div class="num" onclick="mymain();" > 일정 끌고오기 </div>
+			<div class="user_status" onclick="myplan();">
+				나의 일정
+				<div class="num" th:text="${plancount}">일정 끌고오기</div>
 			</div>
-			<div class="user_status" id="review" onclick="mymain();">나의 리뷰
-				<div class="num" onclick="mymain();" th:text="${recommandcount}">리뷰 끌고오기 </div>
+			<div class="user_status" onclick="myreview();">
+				나의 리뷰
+				<div class="num" th:text="${recommandcount}">리뷰 끌고오기</div>
 			</div>
-			<div class="user_status" id="post" onclick="mymain();">나의 게시물
-				<div class="num" onclick="mymain();" th:text="${communitycount}">게시물 끌고오기 </div>
+			<div class="user_status" onclick="mycommunity();">
+				나의 게시물
+				<div class="num" th:text="${communitycount}">게시물 끌고오기</div>
 			</div>
 		</div>
-		
+
 		<div class="mymain_text">
-			나의 일정 or 나의 리뷰 or 나의 게시물 	끌고오기 
+			<div id="plan" style="display: none;">나의 일정</div>
+			<div id="review" style="display: none;">나의 리뷰</div>
+			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
-		
-		<div class="mymain">
-			<div class="main">
-				<div class="myplan1">
-					<div class="loc1">
-						<img id="location1" src="#">
-					</div>
-					<div class="loc2">
-						<div class="tripname"> 여행이름 </div>
-						<div class="tripdate"> 여행일자 </div>
-					</div>
-					<div class="loc3">
-						<button id="share">공유</button>
-						<button id="fix">수정</button>
-						<button id="delete">삭제</button>
+
+		<div class="mymain" id="myplan" style="display: none;">
+			<div class="list-scroll">
+				<div class="main" th:each="userplan : ${plan}">
+					<div class="myplan1">
+						<div class="loc1">
+							<img id="location1" src="#">
+						</div>
+						<div class="loc2">
+							<div class="tripname">
+								여행이름 &nbsp; <label th:text="${userplan.planName}"></label>
+							</div>
+							<div class="tripdate">
+								여행일자 &nbsp; <label th:text="${userplan.planFirstDate}"></label>
+								~ <label th:text="${userplan.planLastDate}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="share1">공유</button>
+							<button id="fix1">수정</button>
+							<button id="delete1">삭제</button>
+						</div>
 					</div>
 				</div>
 			</div>
-			
-			<div class="main">
+			<!-- <div class="main">
 				<div class="myplan2">
 					<div class="loc1">
 						<img id="location2" src="#">
 					</div>
 					<div class="loc2">
-						<div class="tripname"> 여행이름 </div>
-						<div class="tripdate"> 여행일자 </div>
+						<div class="tripname">
+						 여행이름 &nbsp;
+						 <label th:text="${userplan.planName}"></label> 
+						 </div>
+						<div class="tripdate">
+						 여행일자 &nbsp;
+						 <label th:text="${userplan.planFirstDate}"></label>
+						  ~ 
+						 <label th:text="${userplan.planLastDate}"></label> 
+						 </div>
 					</div>
 					<div class="loc3">
-						<button id="share">공유</button>
-						<button id="fix">수정</button>
-						<button id="delete">삭제</button>
+						<button id="share2">공유</button>
+						<button id="fix2">수정</button>
+						<button id="delete2">삭제</button>
 					</div>
 				</div>
-			</div>
-			
+			</div> -->
+
 		</div>
 	</div>
-	
+
 	<!-- 나의 일정, 나의 리뷰, 나의 게시물 누를때 바뀌는용, ui 안정함.나중에. 
 	
-	<div class="mymain">
+	<div class="mymain" id="myreview">
 		<div class="main">
 			<img id="location1" src="#">
 			<button>공유</button>
@@ -377,7 +459,7 @@ height:200px;
 		</div>
 	</div>
 	
-	<div class="mymain">
+	<div class="mymain" id="mycommunity">
 		<div class="main">
 			<img id="location1" src="#">
 			<button>공유</button>
@@ -391,12 +473,8 @@ height:200px;
 			<button>삭제</button>
 		</div>
 	</div> -->
-	
-	<script th:inline="javascript">
-		function mymain(){
-			
-		}
-	</script>
+
+
 
 </body>
 </html>

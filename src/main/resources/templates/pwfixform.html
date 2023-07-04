@@ -109,12 +109,12 @@
        })
        		.done(function (result) {
                 console.log(result);
-                alert(result+"님의 비밀번호 수정이 완료되었습니다.");
+                alert(result);
                 location.href="/login";
             })
             .fail(function(jqXHR) {
                 console.log(jqXHR);
-                alert("아이디와 이메일을 확인해주세요.");
+                alert(jqXHR);
             }) 
    }
    </script>
