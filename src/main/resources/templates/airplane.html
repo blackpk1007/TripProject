@@ -300,6 +300,7 @@
     		<img id="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
     	</div>
     </div>
+    <div th:if="${not #lists.isEmpty(boardings)}">
     <table id="flightTable">
         <tr>
         	<th class="airplane-flightDate">날짜</th>
@@ -389,8 +390,12 @@
             	</div>
             </td>
             
-        </tr> 		 
+        </tr> 	
     </table>
+  </div>
+  <div th:if="${#lists.isEmpty(boardings) or boardings == null}">
+  		<h5>나옴?</h5>
+  </div>	 
 </div>
 </body>
 </html>

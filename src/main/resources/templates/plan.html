@@ -354,7 +354,7 @@ function updateList(data) {
 
 	    var heartImg = document.createElement('div');
 	    var imgHeart = document.createElement('img');
-	    imgHeart.src = '/resources/image/insta_heart.png';
+	    imgHeart.src = '/resources/image/place_heart.png';
 	    imgHeart.alt = '';
 	    imgHeart.id = 'heart';
 	    heartImg.appendChild(imgHeart);
@@ -1520,8 +1520,8 @@ function createMarkers(data) {
 				<button id="hill-btn">오름</button>
 				<button id="ollegil-btn">올레길</button>
 			</div>
-			
 			<div id="weather">
+			<div th:if="${not #lists.isEmpty(jeju) or jeju != null}">
 				<div id="jejuweather">
 					<div id="wether-current">
 						<h5>제주시</h5>
@@ -1570,7 +1570,9 @@ function createMarkers(data) {
 						
 					</div>
 				</div>
-				
+				</div>
+				<div th:if="${#lists.isEmpty(jeju) or jeju == null}"></div>
+				<div th:if="${not #lists.isEmpty(seogwipo) or seogwipo != null}">
 				<div id="seogwipoweather">
 					<div id="wether-current">
 						<h5>서귀포시</h5>
@@ -1616,8 +1618,10 @@ function createMarkers(data) {
 								<h5>최고:[[${seogwipo.highesttemp}]]℃</h5>
 							</div>
 						</div>
-						
+						</div>
 					</div>
+				</div>
+				<div th:if="${#lists.isEmpty(seogwipo) or seogwipo == null}">
 				</div>
 			</div>
 		</div>

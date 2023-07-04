@@ -46,15 +46,9 @@ public class PlanController {
 	private WeatherService wservice;
 	
 	@RequestMapping
-	public String planMain(Model model, placePagination paging){
-		System.out.println("controller main : "+paging);
-		try {
-			model.addAttribute("jeju", wservice.Jeju());
-			model.addAttribute("seogwipo", wservice.Seogwipo());
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+	public String planMain(Model model, placePagination paging) throws IOException{
+		model.addAttribute("jeju", wservice.Jeju());
+		model.addAttribute("seogwipo", wservice.Seogwipo());
 		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList(paging));
 		model.addAttribute("placeListCount", pservice.placeRestaurantListCount());
 		
@@ -162,8 +156,8 @@ public class PlanController {
 	@RequestMapping("/airplane")
 	public String airplane(Model model) throws IOException {
 		
-			model.addAttribute("arriveds", aservice.jejuArrived());
-			model.addAttribute("boardings", aservice.jejuBoarding());
+		model.addAttribute("arriveds", aservice.jejuArrived());
+		model.addAttribute("boardings", aservice.jejuBoarding());
 		
 		return "airplane";
 	}

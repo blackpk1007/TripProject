@@ -73,6 +73,9 @@ public class WeatherServiceImpl implements WeatherService{
 		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
 	    JSONObject json = new JSONObject(sb.toString());
 	    JSONObject response = json.getJSONObject("response");
+	    if (!response.has("body")) {
+			return null;
+		}
 	    JSONObject body = response.getJSONObject("body");
 	    JSONObject items = body.getJSONObject("items");
 	    JSONArray weatherArray = items.getJSONArray("item");
@@ -191,6 +194,9 @@ public class WeatherServiceImpl implements WeatherService{
 		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
 	    JSONObject json = new JSONObject(sb.toString());
 	    JSONObject response = json.getJSONObject("response");
+	    if (!response.has("body")) {
+			return null;
+		}
 	    JSONObject body = response.getJSONObject("body");
 	    JSONObject items = body.getJSONObject("items");
 	    JSONArray weatherArray = items.getJSONArray("item");

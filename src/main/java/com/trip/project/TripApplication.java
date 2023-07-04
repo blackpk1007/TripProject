@@ -44,13 +44,18 @@ public class TripApplication {
 	public String main(Model model) {
 		
 
-		try {
-			model.addAttribute("arriveds", aservice.jejuArrived());
-			model.addAttribute("boardings", aservice.jejuBoarding());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			if(!aservice.jejuArrived().isEmpty() &&) {
+//				model.addAttribute("arriveds", aservice.jejuArrived());
+//				model.addAttribute("boardings", aservice.jejuBoarding());
+//			}else {
+//				model.addAttribute("test", "test");
+//				model.addAttribute("test", "test");
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		model.addAttribute("list", mainpageService.selectList());
 		model.addAttribute("animalList", mainpageService.animalList());
 		model.addAttribute("parentsList", mainpageService.parentsList());
