@@ -55,12 +55,29 @@
 	                alert("재로그인 후 다시 시도해주세요.");
 	            })
    }
+   function userDelete(){
+	   var userID = [[${userinfo.userID}]];
+	   
+	   $.ajax({
+	          url : "/login/userdelete",
+	          type : "post",
+	          data : {userID : userID}
+	       })
+	       		.done(function (result) {
+	                alert(result);
+	                location.href="/login/logout";
+	            })
+	            .fail(function(jqXHR) {
+	                console.log(jqXHR);
+	                alert("재로그인 후 다시 시도해주세요.");
+	            })
+   }
    </script>
 </head>
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
@@ -117,7 +134,7 @@
 						<div class="fixed">비밀번호</div>
 						<div class="info">
 							<div class="loginForm">새 비밀번호<br>
-	                        	<input type="text"	id="userPW" name="userPW" >
+	                        	<input type="password"	id="userPW" name="userPW" >
 							</div>
 							<div class="loginForm">비밀번호 재입력<br>
                         		<input type="password"	id="userPW2" name="userPW2" >
@@ -143,7 +160,7 @@
 					</div>
  					-->
                     
-					<button id="deleteButton" type="submit" onclick="location.href'=/login/userdelete'">회원탈퇴</button>
+					<button id="deleteButton" type="submit" th:onclick="userDelete();">회원탈퇴</button>
 
 			</div>
 		</div>

@@ -77,5 +77,15 @@ public class LoginServiceImpl implements LoginService {
 
 		return loginMapper.idEmail(dto);
 	}
+
+	@Override
+	public int idcheck(LoginDTO dto) {
+			if (0 != loginMapper.idcheck(dto)) {
+				//중복
+				return 1;
+			}else {
+				return 0;
+			}
+	}
 	
 }

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style type="text/css">
 .header {
 	width: 90vw;
@@ -311,7 +312,7 @@ function drawList(list, num) {
         html += `
             <dl>
                 <dd class="num">
-               		${row.communityNumber}
+               		${num--}
                 </dd>
                 <dd class="subject">
                     <a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityTitle}</a>
@@ -466,7 +467,7 @@ function drawListCategory(){
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>

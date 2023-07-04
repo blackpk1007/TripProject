@@ -46,4 +46,7 @@ public interface LoginMapper {
 		@Insert(" UPDATE login SET userPW=#{userPW} WHERE userID=#{userID} and userEmail=#{userEmail} ")
 		public int newpw(LoginDTO dto);
 		
+		//idcheck 중복확인 
+		@Select(" SELECT COUNT(*) FROM login WHERE userID=#{userID}")
+		public int idcheck(LoginDTO dto);
 }
