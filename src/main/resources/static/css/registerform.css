@@ -121,7 +121,6 @@
 	padding:0.3rem;
 	font-size: 1.6rem;
 	display: inline-block;
-	
 }
 
 .loginForm>input {
@@ -134,7 +133,12 @@
 	margin-top:1rem;
 	font-size: 1.6rem;
 }
-
+.idcheck{
+	margin-left:6vw;
+	border:solid;
+	border-width:0.1rem;
+	border-radius: 0.5rem;
+}
 #AuthButton {
 	cursor: pointer;
 	width: 100%;

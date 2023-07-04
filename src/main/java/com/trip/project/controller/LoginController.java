@@ -174,6 +174,14 @@ public class LoginController {
 		}
 
 	}
+	
+	//아이디중복체크  
+	@ResponseBody
+	@RequestMapping("/idcheck")
+	public int idcheck(LoginDTO dto) {
+		int res = lservice.idcheck(dto);
+		return res;
+	}
 
 	// 사용자 마이페이지 메인
 	@RequestMapping("/usermain")

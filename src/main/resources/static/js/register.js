@@ -142,3 +142,29 @@ function change_email() {
 function search_address() {
   window.open("", "b", "width=600, height=300, left=200, top=100");
 }
+function idCheck(){
+	var userID = document.getElementById("userID");
+	var useridvalue = document.getElementById("userID").value;
+	
+	$.ajax({
+          url : "/login/idcheck",
+          type : "post",
+          data : { userID : useridvalue
+          }
+       })
+       		.done(function (result) {
+       		console.log(result);
+                if(result == 0 ){
+                alert(useridvalue+"는 사용가능한 아이디입니다");
+				}else{
+				alert("중복된 아이디가 존재합니다!");
+				userID.focus();
+				return false;
+				}                
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+                alert(jqXHR);
+            })
+	
+}

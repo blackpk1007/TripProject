@@ -22,4 +22,6 @@ public interface LoginService {
 	public int newpw(LoginDTO dto);
 	// userid로 유저 정보 들고오기 userupdateform
 	public LoginDTO userinfo(String userID);
+	
+	public int idcheck(LoginDTO dto);
 }
