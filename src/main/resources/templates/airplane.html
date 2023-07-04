@@ -7,6 +7,7 @@
  	#AirplaneInformation{
  		resize:none;
  		overflow:auto;
+ 		width:100%;
  	}
  	table{
  		border: solid 1px #d3d3d3;
@@ -14,14 +15,14 @@
  	}
  	th {
  		border: solid 1px #d3d3d3;
- 		height:10vh;
+ 		height:7vh;
  		background-color:#B8E9FF;
  		color:black;
  	}
  	
  	td{
  		border: solid 1px #d3d3d3;
- 		height:10vh;
+ 		height:7vh;
  		text-align:center;
  	}
  	
@@ -68,14 +69,14 @@
 		font-size: 16px;
  	}
  	.airplane-rmkKor-ifdiv-div{
- 		width:17vh;
+ 		width:12vh;
  		height:5vh;
  		color:white;
  		display: flex;
 		justify-content: center;
 		align-items: center;
 		border-radius:10px;
-		font-size:14px;
+		font-size:12px;
  	}
  	.airplane-rmkKor-ifdiv{
  		width:100%;
@@ -113,6 +114,7 @@
 		margin-bottom: 3vh;
 		margin-top: 3rvh;
  	}
+ 	
  </style>
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  <script th:inline="javascript">
@@ -276,8 +278,8 @@
  			color = '#0067a3';
  		}else if(rmkKor == '지연' || rmkKor == '결항') {
  			color = '#dc143c';
- 		}else if(rmkKor == '') {
- 			color = 'transparent';
+ 		}else if(rmkKor == '' || rmkKor== 'null') {
+ 			color = 'white';
  		}else{
  			color = '#32cd32';
  		} 
@@ -289,6 +291,7 @@
  </script>
 </head>
 <body>
+
 <div id="AirplaneInformation">
     <div id="airplane-title">
     	<!-- <h1>Airplane Information</h1> -->
@@ -382,9 +385,9 @@
             		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color: #dc143c;"></div>
             	</div>
             	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor == ''} or ${boarding.rmkKor == null}">
-            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color: transparent;"></div>
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color:white;"></div>
             	</div>
-            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor != '출발'} and ${boarding.rmkKor != '도착'} and ${boarding.rmkKor != '지연'} and ${boarding.rmkKor != '결항'}">
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor != '출발'} and ${boarding.rmkKor != '도착'} and ${boarding.rmkKor != '지연'} and ${boarding.rmkKor != '결항' } and ${boarding.rmkKor != ''} and ${boarding.rmkKor != null}">
             		<div class="airplane-rmkKor-ifdiv-div"  th:text="${boarding.rmkKor}" style="background-color: #32cd32;"></div>
             	</div>
             </td>
@@ -392,5 +395,6 @@
         </tr> 		 
     </table>
 </div>
+
 </body>
 </html>
