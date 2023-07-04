@@ -46,10 +46,10 @@ function regist_check() {
     return false; //return: 반환하다 return false:  아무것도 반환하지 말아라 아래 코드부터 아무것도 진행하지 말것
   };
   
-  //아이디 영어,숫자 8~20자
-  var idcheck = /^[a-zA-Z0-9]{8,20}$/;
+  //아이디 영어,숫자 6~20자
+  var idcheck = /^[a-zA-Z0-9]{6,20}$/;
   if (!idcheck.test(userID.value)) {
-  	alert("아이디는 영어,숫자 8~20자로 설정해주세요.");
+  	alert("아이디는 영어,숫자 6~20자로 설정해주세요.");
   	userID.focus();
   	return false;
   }
