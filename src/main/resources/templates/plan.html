@@ -264,7 +264,7 @@ function initTmap() {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	    width: "50vw", // 지도의 넓이
 	    height: "80vh", // 지도의 높이
-	    zoom: 11
+	    zoom: 10
 	  });
 	  
 	  createMarkers(placeList);
@@ -354,7 +354,7 @@ function updateList(data) {
 
 	    var heartImg = document.createElement('div');
 	    var imgHeart = document.createElement('img');
-	    imgHeart.src = './resources/image/heart.png';
+	    imgHeart.src = '/resources/image/insta_heart.png';
 	    imgHeart.alt = '';
 	    imgHeart.id = 'heart';
 	    heartImg.appendChild(imgHeart);
@@ -775,12 +775,17 @@ function createMarkers(data) {
     if (!selectedStartDate && !selectedEndDate) {
     	const applyButton = document.querySelector("#applyButton");
     	applyButton.style.display = 'none';
+    	const info = document.querySelector(".info");
+  	  info.style.display = 'block';
       const courseColorDay = document.querySelector(".course-color-day");
       courseColorDay.innerHTML = "";
+      courseColorDay.style.display = 'none'
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+      coursePlan.style.display = 'none'
       const courseButtonElement = document.querySelector(".course-button");
       courseButtonElement.innerHTML = "";
+      courseButtonElement.style.display = 'none'
     }else{
     	const applyButton = document.querySelector("#applyButton");
     	applyButton.style.display = 'block';
@@ -793,8 +798,21 @@ function createMarkers(data) {
 
 //적용 버튼 클릭 시 실행되는 함수
   function applyDate() {
+	  const info = document.querySelector(".info");
+	  info.style.display = 'none';
 	const applyButton = document.querySelector("#applyButton");
 	applyButton.style.display = 'none';
+	const courseColorDay = document.querySelector(".course-color-day");
+	courseColorDay.innerHTML = "";
+    courseColorDay.style.display = 'block';
+    const coursePlan = document.querySelector(".course-plan");
+    coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+    coursePlan.style.display = 'block';
+    const courseButtonElement = document.querySelector(".course-button");
+    courseButtonElement.innerHTML = "";
+    courseButtonElement.style.display = 'block';
+    
+    
     if (selectedStartDate && selectedEndDate) {
       days = getDayDiff(selectedStartDate, selectedEndDate);
       const courseColorDay = document.querySelector(".course-color-day");
@@ -803,6 +821,9 @@ function createMarkers(data) {
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
       
+      const coursedaydiv = document.createElement("div");
+      coursedaydiv.className = "course-day";
+      courseColorDay.appendChild(coursedaydiv);
     // 7개의 checkbox 생성
     for (let i = 1; i <= days; i++) {
     	
@@ -856,8 +877,8 @@ function createMarkers(data) {
       
       	  coursePlan.appendChild(courseColor);
     	}
-      
-    	const daydivElement = document.createElement("div");
+        
+    	const daydivElement = document.createElement("div");	
         const dayElement = document.createElement("h5");
         dayElement.textContent = `Day${i}`;
         dayElement.dataset.day = i; // 데이터 속성으로 day 값 설정
@@ -865,10 +886,8 @@ function createMarkers(data) {
           changeCurrentDay(parseInt(this.dataset.day)); // day 값을 정수로 변환하여 전달
         });
         
-        
 		daydivElement.appendChild(dayElement);
-		
-        courseColorDay.appendChild(daydivElement);
+        coursedaydiv.appendChild(daydivElement);
 		
         const courseList = document.createElement("div");
         courseList.className = "course-list";
@@ -895,14 +914,17 @@ function createMarkers(data) {
 	  
       const daybuttondiv = document.createElement("div");
    	  // 미리보기 버튼 생성
+   	  daybuttondiv.className = "daybutton";
       const previewButton = document.createElement("button");
       previewButton.setAttribute("type", "button");
+      previewButton.id = "previewButton";
       previewButton.setAttribute("onclick", "coursePreviewPopup()");
       previewButton.textContent = "미리보기";
 
       // 등록 버튼 생성
       const submitButton = document.createElement("button");
       submitButton.setAttribute("type", "button");
+      submitButton.id = "insertButton";
       submitButton.setAttribute("onclick", "courseInsertPopup()");
       submitButton.textContent = "등록";
 	  
@@ -925,7 +947,7 @@ function createMarkers(data) {
       daybuttondiv.appendChild(previewButton);
       daybuttondiv.appendChild(submitButton);
       
-      courseColorDay.appendChild(daybuttondiv);
+      coursedaydiv.appendChild(daybuttondiv);
       
       // Day 숫자 초기 설정 (첫 번째 Day를 선택한 상태로 설정)
       const firstDayElement = document.querySelector(".course-color-day h5");
@@ -1350,6 +1372,29 @@ function createMarkers(data) {
 	    paginationContainer.appendChild(nextButton);
 	}
 
+	document.addEventListener('DOMContentLoaded', function() {
+		  const buttons = document.querySelectorAll('#category-button button');
+
+		  buttons.forEach(button => {
+		    button.addEventListener('click', function() {
+		      // 현재 클릭한 버튼의 선택 상태를 확인
+		      const isSelected = this.classList.contains('button-selected');
+
+		      if (isSelected) {
+		        // 이미 선택된 상태인 경우, 선택 상태 제거
+		        this.classList.remove('button-selected');
+		      } else {
+		        // 선택되지 않은 상태인 경우, 다른 버튼들의 선택 상태 제거 후 선택 상태 추가
+		        buttons.forEach(btn => {
+		          btn.classList.remove('button-selected');
+		        });
+
+		        this.classList.add('button-selected');
+		      }
+		    });
+		  });
+		});
+
 
 	
 	window.onload = function () {
@@ -1398,7 +1443,7 @@ function createMarkers(data) {
 						</div>
 						<div id="list-name-heartimg">
 							<div>
-								<img src="./resources/image/heart.png" alt="" id="heartimg">
+								<img src="/resources/image/insta_heart.png" alt="" id="heartimg">
 							</div>
 							<div id="list-name-heartimg-label">
 								<label th:text="${restaurant.placeGood}">456</label>
@@ -1469,7 +1514,7 @@ function createMarkers(data) {
 			<div id="map_div"></div>
 			
 			<div id="category-button">
-				<button id="restaurant-btn">음식점</button>
+				<button id="restaurant-btn" class="button-selected">음식점</button>
 				<button id="youtube-btn">유튜브맛집</button>
 				<button id="tourist-btn">관광지</button>
 				<button id="hill-btn">오름</button>
@@ -1604,10 +1649,14 @@ function createMarkers(data) {
 				</div>
 			</div>
 			<div class="course">
+				<div class="info" style="display: block">
+				<p>가나다라마바사가나다라마바사가나다라마바사<br>
+				가나다라마바사가나다라마바사가나다라마바사가나다라마바사<br>
+				가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사<br>
+				</p>
+				</div>
 				<div class="course-color-day">
 				</div>
-				<div class="course-name">
-				</div>		
 				<div class="course-plan">
 					<div class="course-color-check">
 					</div>
