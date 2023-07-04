@@ -221,18 +221,13 @@ public class LoginController {
 	}
 
 	// 사용자 회원 탈퇴
+	@ResponseBody
 	@RequestMapping("/userdelete")
 	public String userDelete(Model model, LoginDTO dto) {
 		int res = lservice.delete(dto);
-
-		if (res != 0) {
-			System.out.println(dto.getUserName());
-			model.addAttribute("message", "회원정보 삭제 완료.");
-			return "redirect:/usermain";
-		} else {
-			model.addAttribute("error", "삭제실패.");
-			return "redirect:/usermain";
-		}
+		System.out.println(res);
+		
+		return dto.getUserID()+"님의 회원탈퇴가 완료되었습니다.";
 	}
 	
 	// 코스 추천

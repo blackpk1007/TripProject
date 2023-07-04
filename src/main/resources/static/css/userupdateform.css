@@ -107,6 +107,7 @@
 	border:solid;
 	flex:5;
 	padding:2rem;
+	font-size:1.6rem;
 }
 .info>input{
 	width: 80%;
@@ -123,7 +124,6 @@
 	display:flex;
 	align-items: center;
 	font-size: 1.6rem;
-	padding-left: 1rem;
 }
 #male{
 	display:flex;
@@ -147,7 +147,7 @@
 }
 
 .loginForm>input {
-	width: 80%;
+	width: 40%;
 	height: 2.6rem;
 	display: inline-block;
 	box-sizing: border-box;
@@ -160,7 +160,7 @@
 
 #updateButton {
 	cursor: pointer;
-	width: 40%;
+	width: 35%;
 	height: 2.6rem;
 	border-radius: 0.5rem;
 	border: solid;
