@@ -344,10 +344,11 @@
 	var userID = [[${session.userID}]];
 	
 	console.log(planName);
+	
 	$.ajax({
 		url : "/login/plandelete",
 		type : "post",
-		data : { userID : userID
+		data : { userID : userID,
 				planName : planName}
 		})
 			.done(function(result){
@@ -437,7 +438,7 @@
 						<div class="loc3">
 							<button id="share1">공유</button>
 							<button id="fix1">수정</button>
-							<button id="delete1" th:onclick="plandelete('${userplan.planName}');">삭제</button>
+							<button id="delete1" th:onclick="plandelete('${userplan.planName}')">삭제</button>
 						</div>
 					</div>
 				</div>

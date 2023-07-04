@@ -78,9 +78,9 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public int planDelete(PlanDTO dto) {
+	public int planDelete(String userID, String planName) {
 
-		return pmapper.planDelete(dto);
+		return pmapper.planDelete(userID,planName);
 	}
 
 	@Override
