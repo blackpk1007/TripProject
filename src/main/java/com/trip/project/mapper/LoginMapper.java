@@ -38,6 +38,10 @@ public interface LoginMapper {
 		@Select(" SELECT userName FROM login WHERE userID=#{userID} and userEmail=#{userEmail} ")
 		public LoginDTO pwfind(LoginDTO dto);
 		
+		//비밀번호찾기- fixform
+		@Select(" SELECT userName and userEmail FROM login WHERE userID=#{userID}")
+		public LoginDTO idEmail(LoginDTO dto);
+		
 		//비밀번호찾기-재생성
 		@Insert(" UPDATE login SET userPW=#{userPW} WHERE userID=#{userID} and userEmail=#{userEmail} ")
 		public int newpw(LoginDTO dto);

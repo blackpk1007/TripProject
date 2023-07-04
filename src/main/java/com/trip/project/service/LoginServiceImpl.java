@@ -71,5 +71,11 @@ public class LoginServiceImpl implements LoginService {
 		
 		return loginMapper.userinfo(userID);
 	}
+
+	@Override
+	public LoginDTO idEmail(LoginDTO dto) {
+
+		return loginMapper.idEmail(dto);
+	}
 	
 }

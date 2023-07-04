@@ -38,8 +38,8 @@
                         <input type="password"	id="userPW2" name="userPW2" placeholder=" PW 확인">
 					</div>
 					
-					<input type="hidden" id="userID" th:text="${userID}">
-					<input type="hidden" id="userEmail" th:text="${userEmail}">
+					<!-- <input type="hidden" id="userID" th:value="${userinfo.userID}">
+					<input type="hidden" id="userEmail" th:value="${userinfo.userEmail}"> -->
 					
 					<button id="findPwButton" type="button" th:onclick="fixPw();">확인</button>
 						
@@ -57,16 +57,21 @@
    <script th:inline="javascript"> 
    
    function fixPw(){
-       /* var userinfo = ${userinfo};
-       console.log(userinfo); */
+       var userinfo = [[${userinfo}]];
+       console.log(userinfo);
        
-       var userID = document.getElementById("userID");
+       /* var userID = document.getElementById("userID");
        var userEmail = document.getElementById("userEmail");
        var useridvalue = document.getElementById("userID").value;
        var useremailvalue = document.getElementById("userEmail").value; 
        
        console.log(userID);
        console.log(useridvalue);
+       console.log(userEmail);
+       console.log(useremailvalue); */
+       
+       var userID = userinfo.userID;
+       var userEmail = userinfo.userEmail; 
        
        var userpw = document.getElementById("userPW");
        var userpw2 = document.getElementById("userPW2");

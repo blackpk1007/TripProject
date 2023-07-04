@@ -64,6 +64,8 @@
        var useridvalue = document.getElementById("userID").value;
        var useremailvalue = document.getElementById("userEmail").value;
 
+       console.log(useremailvalue);
+       console.log(userEmail);
        console.log(useridvalue);
        console.log(userID);
        
@@ -88,7 +90,7 @@
                   if(result == "아이디와 이메일이 일치하지 않습니다"){
                 	  return false;
                   }else{
-                	  location.href="/login/pwfixform";  
+                	  location.href="/login/pwfixform?userID="+useridvalue+"&userEmail="+useremailvalue;  
                   }
             })
             .fail(function(jqXHR) {
