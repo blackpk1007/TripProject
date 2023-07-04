@@ -86,13 +86,13 @@
 					<div class="body">
 						<div class="fixed">이름</div>
 						<div class="info">
-							<input type="text" id="userName" th:value="${userinfo.userName}" >
+							[[${userinfo.userName}]]
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">생년월일</div>
 						<div class="info">
-							${userinfo.userBirth}
+							[[${userinfo.userBirth}]]
 						</div>
 					</div>
 					<div class="body">
@@ -100,19 +100,17 @@
 						<div class="info">
 							<!-- <input type="text" id="userGender" th:value="${userinfo.getUserGender()}"> -->
 							<div class="gender" th:if="${userinfo.userGender} == 'M'">
-							남자<input id="male" type="radio" name="userGender" value="M" checked />
-							여자<input id="female" type="radio" name="userGender" value="F" />
+							남자
 							</div>
 							<div class="gender" th:if="${userinfo.userGender} == 'F'">
-							남자<input id="male" type="radio" name="userGender" value="M" />
-							여자<input id="female" type="radio" name="userGender" value="F" checked />
+							여자
 							</div>
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">아이디</div>
 						<div class="info">
-							<input type="text" id="userID" th:value="${userinfo.userID}">
+							[[${userinfo.userID}]]
 						</div>
 					</div>
 					<div class="body">
@@ -130,7 +128,7 @@
 					<div class="body">
 						<div class="fixed">이메일</div>
 						<div class="info">
-							<input type="text" id="userEmail" th:value="${userinfo.userEmail}">
+							[[${userinfo.userEmail}]]
 						</div>
 					</div>
 					<!-- <div class="body">

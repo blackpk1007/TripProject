@@ -64,6 +64,8 @@
        var useridvalue = document.getElementById("userID").value;
        var useremailvalue = document.getElementById("userEmail").value;
 
+       console.log(useremailvalue);
+       console.log(userEmail);
        console.log(useridvalue);
        console.log(userID);
        
@@ -90,7 +92,7 @@
                 	  $("#userEmail").val('');
                 	  return false;
                   }else{
-                	  location.href="/login/pwfixform";  
+                	  location.href="/login/pwfixform?userID="+useridvalue+"&userEmail="+useremailvalue;  
                   }
             })
             .fail(function(jqXHR) {
