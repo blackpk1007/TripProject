@@ -73,6 +73,7 @@
 .body {
 	width: 98vw;
 	height: 78vh;
+	position: relative;
 	left: 1vw;
 	display: flex;
 	flex-direction: column;
@@ -83,7 +84,7 @@
 .profilearea {
 	display: flex;
 	padding: 1rem;
-	margin-left: 8.8rem;
+	margin-left: 20vw;
 }
 
 .imagebox {
@@ -124,15 +125,17 @@
 /* 일정 3개 */
 .status {
 	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .user_status {
-	flex: 5;
+	width: 12vw;
 	text-align: center;
 	background-color: #B8E9FF;
 	font-size: 1.8rem;
 	color: white;
-	margin: 7vw;
+	margin: 5vw;
 	margin-top: 2rem;
 	margin-bottom: 2rem;
 	padding-top: 1rem;
@@ -172,7 +175,7 @@
 
 .list-scroll {
 	width: 90vw;
-	height: 35vh;
+	/* height: 35vh; */
 	overflow: auto;
 	display: flex;
 	flex-direction: column;
@@ -186,6 +189,7 @@
 }
 
 .main {
+	display:flex;
 	border: solid;
 	border-color: #B8E9FF;
 	border-radius: 0.5rem;
@@ -194,7 +198,8 @@
 	padding: 1rem;
 	margin-top: 2rem;
 	height: 15vh;
-	/* 	width:80vw; */
+	box-sizing: content-box;
+	width:55vw;
 	justify-content: center;
 	align-items: center;
 }
@@ -233,6 +238,8 @@
 
 .loc1 {
 	flex: 1 0 auto;
+	margin-left:0;
+	margin-right:auto;
 }
 
 .loc2 {
@@ -390,7 +397,7 @@
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
 
-		<div class="mymain" id="myplan" style="display: none;">
+		<div class="mymain" id="myplan" >
 			<div class="list-scroll">
 				<div class="main" th:each="userplan : ${plan}">
 					<div class="myplan1">

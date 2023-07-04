@@ -18,8 +18,8 @@
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
 			<!-- 로그인전 --> 
 				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
+					<a href="/login" id="label-right-login"></a> 
+					<a href="/login/registerform" id="label-right-login"></a>
 				</div>
 				<!-- 로그인 후 -->
 				<div th:if="${session.login != null}" >
