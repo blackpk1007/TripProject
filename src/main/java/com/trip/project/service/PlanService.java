@@ -15,6 +15,8 @@ public interface PlanService {
 	
 	public List<PlaceDTO> placeCategoryMarker(String categoey, placePagination pageing);
 	
+	public int placeCategoryCount(String categoey);
+	
 	public List<PlaceDTO> placeRestaurantList(placePagination paging);
 	
 	public int placeRestaurantListCount();

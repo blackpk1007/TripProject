@@ -27,6 +27,9 @@ public interface PlaceMapper {
 	@Select(" select * from place where placeCategory = #{category} order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}" )
 	List<PlaceDTO> placeCategoryMarker(@Param("category")String category, @Param("paging")placePagination paging);
 	
+	@Select(" select count(*) from place where placeCategory = #{category} " )
+	int placeCategoryCount(@Param("category")String category);
+	
 	// 맛집 정보
 	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}")
 	List<PlaceDTO> placeRestaurantList(@Param("paging")placePagination paging);

@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
 <body>
 <!-- 버튼을 추가할 컨테이너 -->
   <div id="button_container">
   </div>
-<div id="map_div"></div>
-<script
-	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div id="preview_div"></div>
 <script th:inline="javascript">
 //1. 지도 띄우기
-map = new Tmapv2.Map("map_div", {
+map = new Tmapv2.Map("preview_div", {
 	center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	width: "100%",
 	height: "400px",
@@ -374,4 +365,3 @@ for (var i = 0; i < inputValues.length; i++) {
 	};
 </script>
 </body>
-</html>
