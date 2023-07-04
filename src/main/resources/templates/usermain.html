@@ -317,12 +317,18 @@
 	function myplan() {
 		document.getElementById("plan").style.display = "block";
 		document.getElementById("myplan").style.display = "block";
+		document.getElementById("review").style.display = "none";
+		document.getElementById("community").style.display = "none";
 	}
 	function myreview() {
 		document.getElementById("review").style.display = "block";
+		document.getElementById("plan").style.display = "none";
+		document.getElementById("community").style.display = "none";
 	}
 	function mycommunity() {
 		document.getElementById("community").style.display = "block";
+		document.getElementById("plan").style.display = "none";
+		document.getElementById("review").style.display = "none";
 	}
 </script>
 </head>
