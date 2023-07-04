@@ -153,7 +153,9 @@ function test(){
 	                      
 	                      
 	                      var placeCheckcnt=0;
+	                      var db_check=0;
 	                  
+	                   
 	                      if (check.includes(placeAddress2)) {
 	                          console.log("placeAddress 값이 포함되어 있습니다.");
 	                          placeCheckcnt++;
@@ -173,6 +175,7 @@ function test(){
 	                      	if(userCheckcnt==0){
 	                      		alert("첫번째 영수증 인증이 완료되었습니다");
 	                      		closePopup();
+	                      		db_check=1;
 	                      		// 데이터를 서버로 전송하여 DB에 삽입
 	                              $.ajax({
 	                                  url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
@@ -180,7 +183,8 @@ function test(){
 	                                  data: {
 	                                      userID: loginchk,
 	                                      placeNumber: placeNumber2,
-	                                      date: date
+	                                      date: date,
+	                                      db_check: db_check
 	                                  },
 	                                  success: function(response) {
 	                                      console.log(response);
@@ -196,7 +200,7 @@ function test(){
 	                      			console.log(date);
 	                      			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
 	                      			closePopup();
-	                      			
+	                      			db_check=2;
 	                      			 // 데이터를 서버로 전송하여 DB에 삽입
 	                                  $.ajax({
 	                                      url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
@@ -204,7 +208,8 @@ function test(){
 	                                      data: {
 	                                          userID: loginchk,
 	                                          placeNumber: placeNumber2,
-	                                          date: date
+	                                          date: date,
+	                                          db_check: db_check
 	                                      },
 	                                      success: function(response) {
 	                                          console.log(response);

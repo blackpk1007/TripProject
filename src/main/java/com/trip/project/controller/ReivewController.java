@@ -59,7 +59,8 @@ public class ReivewController {
 	
 	@ResponseBody
 	@PostMapping("/insertRecommandData")
-	public void insertRecommandData(@RequestParam String userID, @RequestParam int placeNumber, @RequestParam String date) {
+	public void insertRecommandData(@RequestParam String userID, @RequestParam int placeNumber, @RequestParam String date, @RequestParam int db_check) {
 	    OcrTest.insertRecommandData(userID, placeNumber, date);
+	    if(db_check==2)OcrTest.updatePlaceGood(placeNumber);
 	}
 }
