@@ -66,6 +66,48 @@
   width: 80vh;
   height: 50vh;
 }
+  #map_div {
+    position: relative;
+  }
+  
+  #category-button {
+    position: absolute;
+    top: 22%;
+    left: 27%;
+    z-index: 999;
+  }
+  #weather{
+  	position: absolute;
+    top: 85%;
+    left: 45%;
+    z-index: 999;
+    display: flex;
+    color: white;
+  }
+  #wether-current{
+  	display: flex;
+  }
+  #wether-current > h5{
+  	margin-right: 7vw;
+  }
+  #wether-current > h2{
+  	margin-top: 0;
+  	margin-right: 3vw;
+  }
+  #wether-state{
+  	display:flex;
+  }
+  #wether-temp{
+  	display: flex;
+  }
+  #wether-temp > h5{
+  	margin-right: 1vw;
+  }
+  
+  #weatherImg{
+  	width: 4vw;
+  	height: 4.5vh;
+  }
 .header {
 	width: 90vw;
 	height: 13vh;
@@ -74,7 +116,7 @@
 	margin-right: auto;
 	margin-bottom: 5vh;
 	/* display: flex;
-            justify-content: center; */
+       justify-content: center; */
 }
 
 .header-category {
@@ -224,7 +266,7 @@
 	margin: 0px;
 	padding: 20px;
 	margin: 0 auto;
-	border: 1px solid #B8E9FF;
+	border: 2px solid #B8E9FF;
 	border-radius: 5px;
 	margin-bottom: 1vh;
 }
@@ -365,7 +407,7 @@ h5 {
 	margin: 0px;
 	padding: 20px;
 	margin: 0 auto;
-	border: 1px solid #B8E9FF;
+	border: 2px solid #B8E9FF;
 	border-radius: 5px;
 	margin-bottom: 1vh;
 	/* box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3); */
