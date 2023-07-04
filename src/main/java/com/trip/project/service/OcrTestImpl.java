@@ -35,4 +35,9 @@ public class OcrTestImpl implements OcrTest{
     public void insertRecommandData(String userID, int placeNumber, String date) {
         ocrMapper.insertRecommandData(userID, placeNumber, date);
     }
+	
+	@Override
+	public void updatePlaceGood(int placeNumber) {
+		ocrMapper.updatePlaceGood(placeNumber);
+	}
 }

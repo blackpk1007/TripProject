@@ -97,8 +97,8 @@
 			
 		#chattingRoom{
 			width:100%;
-			height:78vh;
-			margin-top:8%;
+			height:60vh;
+			margin-top:4%;
 		}
 		#left{
 			
@@ -109,17 +109,21 @@
 			margin-top:5%;
 			border-radius:15%;
 		}
-		.button{
-			width:70%;
-			height:50vh;
+		.chattingRoom-button{
+			width:45%;
+			height:45vh;
 			background-color: transparent;
 			border:none;
 			cursor:pointer;
 			text-align:center;
+			padding:0px;
 		}
 		
 		#taxi-button{
-		margin-left:30%;
+		margin-left:45%;
+		}
+		#food-button{
+			margin-left:6%;
 		}
 		/* #taxiImg{
 			width:100%;
@@ -149,18 +153,30 @@
 			border-radius:50%;
 			margin-left:25.5%;
 		} */
-		.img{
-			width:70%; 
-			heigth:100%;
+		.chattingRoom-img{
+			width:100%; 
+			height:100%;
+			border-radius:15%;
 		}
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+	function foodUrl(){
+		alert("맛집동행 채팅방 비밀번호는 1234 입니다.");
+		window.location.href="https://open.kakao.com/o/gKjzPmsf";
+	}
+	function taxiUrl(){
+		alert("택시동행 채팅방 비밀번호는 1234 입니다.");
+		window.location.href="https://open.kakao.com/o/gssGRmsf";
+	}
+</script>
 </head>
 <body>
 	<div class="header">
 		<div class="header-category">
 			<a href="/course" id="label-left-course">코스추천</a>
-			 <a href="/community" id="label-left-community">커뮤니티</a> 
-			 <a href="/chat" id="label-left-chat">채팅방</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>
 			<!-- 로그인전 --> 
 				<div th:if="${session.login == null}">
@@ -176,13 +192,13 @@
 	</div>
 	<div id="chattingRoom">
 		<div id="left">
-			<button class="button" id="taxi-button" onclick="location.href='/login'">
-			<img id="taxiImg" class="img" src="/resources/image/taxitaxi.png">
+			<button class="chattingRoom-button" id="taxi-button" onclick="taxiUrl();">
+			<img id="taxiImg" class="chattingRoom-img" src="/resources/image/taxitaxi.png">
 			</button>
 		</div>
 		<div id="right">
-			<button class="button" id="food-button" onclick="location.href='/login'">
-				<img id="foodImg" class="img" src="/resources/image/foodfood.png">
+			<button class="chattingRoom-button" id="food-button" onclick="foodUrl();">
+				<img id="foodImg" class="chattingRoom-img" src="/resources/image/foodfood.png">
 			</button>
 		</div>
 	</div>

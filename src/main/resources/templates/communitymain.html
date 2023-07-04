@@ -311,7 +311,7 @@ function drawList(list, num) {
         html += `
             <dl>
                 <dd class="num">
-                    ${row.communityNumber}
+               		${row.communityNumber}
                 </dd>
                 <dd class="subject">
                     <a href="/community/communitydetail?communityNumber=${row.communityNumber}">${row.communityTitle}</a>
@@ -467,8 +467,8 @@ function drawListCategory(){
 	<div class="header">
 		<div class="header-category">
 			<a href="/course" id="label-left-course">코스추천</a>
-			 <a href="/community" id="label-left-community">커뮤니티</a> 
-			 <a href="/chat" id="label-left-chat">채팅방</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
 			<!-- 로그인전 --> 
 				<div th:if="${session.login == null}">

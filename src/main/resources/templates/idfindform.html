@@ -12,8 +12,8 @@
  	<div class="header">
 		<div class="header-category">
 			<a href="/course" id="label-left-course">코스추천</a>
-			 <a href="/community" id="label-left-community">커뮤니티</a> 
-			 <a href="/chat" id="label-left-chat">채팅방</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
 			<!-- 로그인전 --> 
 				<div th:if="${session.login == null}">
@@ -35,10 +35,10 @@
          </div>
          <div class="signup_body">
                <div class="loginForm" >
-                        <input type="text"   id="userName" name="userName" placeholder=" 이름 입력">  
+                        <input type="text"   id="userName" name="userName" placeholder="이름 입력">  
                </div>
                <div class="loginForm">
-                        <input type="text"   id="userEmail" name="userEmail" placeholder=" 이메일 입력">
+                        <input type="text"   id="userEmail" name="userEmail" placeholder="이메일 입력">
                </div>
                <button id="findIdButton" th:onclick="findId();">확인</button>
                <ul class="wrap">
@@ -77,8 +77,12 @@
                  userEmail : useremailvalue}
        })
        		.done(function (result) {
-                alert(result);
-                location.href="/login";
+       			if(result=="이름과 이메일이 일치하지 않습니다."){
+       				alert(result);
+       			}else{
+       				alert(result);
+       				location.href="/login";
+       			}
             })
             .fail(function(jqXHR) {
                 console.log(jqXHR);
