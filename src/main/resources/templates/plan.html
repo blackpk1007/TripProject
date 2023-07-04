@@ -264,7 +264,7 @@ function initTmap() {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	    width: "50vw", // 지도의 넓이
 	    height: "80vh", // 지도의 높이
-	    zoom: 10
+	    zoom: 11
 	  });
 	  
 	  createMarkers(placeList);
@@ -1487,40 +1487,42 @@ function createMarkers(data) {
 							<div th:if="${jeju.sky == 1 && jeju.pty == 0}" >
 								<div th:if="${jeju.day == 'day'}">
 									<h5>맑음(낮)</h5>
-									<img alt="" src="/resources/image/weather/clearday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearday.png">
 								</div>
 								<div th:if="${jeju.day == 'night'}">
 									<h5>맑음(밤)</h5>
-									<img alt="" src="/resources/image/weather/clearnight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearnight.png">
 								</div>
 							</div>
 							<div th:if="${jeju.sky == 3 && jeju.pty == 0}" >
 								<h5>흐림</h5>
-								<img alt="" src="/resources/image/weather/cloud.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/cloud.png">
 							</div>
 							<div th:if="${jeju.sky == 4 && jeju.pty == 0}" >
 								<div th:if="${jeju.day == 'day'}">
 									<h5>구름많음(낮)</h5>
-									<img alt="" src="/resources/image/weather/cloudyday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudyday.png">
 								</div>
 								<div th:if="${jeju.day == 'night'}">
 									<h5>구름많음(밤)</h5>
-									<img alt="" src="/resources/image/weather/cloudynight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudynight.png">
 								</div>
 							</div>
 							<div th:if="${jeju.sky == 4 && jeju.pty == 1}" >
 								<h5>비</h5>
-								<img alt="" src="/resources/image/weather/rain.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/rain.png">
 							</div>
 							<div th:if="${jeju.sky == 4 && jeju.pty == 3}" >
 								<h5>눈</h5>
-								<img alt="" src="/resources/image/weather/snow.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/snow.png">
+							</div>
+							
+							<div id="wether-temp">
+								<h5>최저:[[${jeju.minimumtemp}]]℃</h5>
+								<h5>최고:[[${jeju.highesttemp}]]℃</h5>
 							</div>
 						</div>
-						<div id="wether-temp">
-							<h5>최저:[[${jeju.minimumtemp}]]℃</h5>
-							<h5>최고:[[${jeju.highesttemp}]]℃</h5>
-						</div>
+						
 					</div>
 				</div>
 				
@@ -1534,40 +1536,42 @@ function createMarkers(data) {
 							<div th:if="${seogwipo.sky == 1 && seogwipo.pty == 0}" >
 								<div th:if="${seogwipo.day == 'day'}">
 									<h5>맑음(낮)</h5>
-									<img alt="" src="/resources/image/weather/clearday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearday.png">
 								</div>
 								<div th:if="${seogwipo.day == 'night'}">
 									<h5>맑음(밤)</h5>
-									<img alt="" src="/resources/image/weather/clearnight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearnight.png">
 								</div>
 							</div>
 							<div th:if="${seogwipo.sky == 3 && seogwipo.pty == 0}" >
 								<h5>흐림</h5>
-								<img alt="" src="/resources/image/weather/cloud.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/cloud.png">
 							</div>
 							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 0}" >
 								<div th:if="${seogwipo.day == 'day'}">
 									<h5>구름많음(낮)</h5>
-									<img alt="" src="/resources/image/weather/cloudyday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudyday.png">
 								</div>
 								<div th:if="${seogwipo.day == 'night'}">
 									<h5>구름많음(밤)</h5>
-									<img alt="" src="/resources/image/weather/cloudynight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudynight.png">
 								</div>
 							</div>
 							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 1}" >
 								<h5>비</h5>
-								<img alt="" src="/resources/image/weather/rain.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/rain.png">
 							</div>
 							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 3}" >
 								<h5>눈</h5>
-								<img alt="" src="/resources/image/weather/snow.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/snow.png">
+							</div>
+							
+							<div id="wether-temp">
+								<h5>최저:[[${seogwipo.minimumtemp}]]℃</h5>
+								<h5>최고:[[${seogwipo.highesttemp}]]℃</h5>
 							</div>
 						</div>
-						<div id="wether-temp">
-							<h5>최저:[[${seogwipo.minimumtemp}]]℃</h5>
-							<h5>최고:[[${seogwipo.highesttemp}]]℃</h5>
-						</div>
+						
 					</div>
 				</div>
 			</div>
