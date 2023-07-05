@@ -360,6 +360,25 @@
 				alert(jqXHR);
 			})
 	}
+	
+	function planshare(planName){
+	var userID = [[${session.login}]];
+	
+	$.ajax({
+		url : "/login/planshare",
+		type : "post",
+		data : { userID : userID,
+				planName : planName}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain"
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
 </script>
 </head>
 <body>
@@ -437,7 +456,7 @@
 							</div>
 						</div>
 						<div class="loc3">
-							<button id="share1">공유</button>
+							<button id="share1" th:onclick="planshare([[${userplan.planName}]])">공유</button>
 							<button id="fix1">수정</button>
 							<button id="delete1" th:onclick="plandelete([[${userplan.planName}]])">삭제</button>
 						</div>

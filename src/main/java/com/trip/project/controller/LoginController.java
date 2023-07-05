@@ -227,9 +227,23 @@ public class LoginController {
 	@RequestMapping("/plandelete")
 	public String planDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
 		int res = pservice.planDelete(userID,planName);
+		int res1 = pservice.planDetaildelete(userID, planName);
 		System.out.println(res);
-		return userID.toString()+"님의"+planName.toString()+"이 삭제되었습니다.";
+		System.out.println(res1);
+		return userID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
 	}
+	//plan 공유 
+	@ResponseBody
+	@RequestMapping("/planshare")
+	public String planshare(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
+	
+		int res = pservice.planShare(userID, planName);
+		int res1 = pservice.planDetailshare(userID, planName);
+		System.out.println(res);
+		System.out.println(res1);
+		return userID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
+	}
+	
 	
 	// 사용자 회원 정보 수정
 	@ResponseBody

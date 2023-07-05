@@ -37,7 +37,14 @@ public interface PlanService {
 	
 	public List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto);
 	
+	// 마이페이지 일정 삭제버튼, 플랜, 플랜디테일 
 	public int planDelete(String userID, String planName);
+	public int planDetaildelete(String userID, String planName);
+	
+	// 마이페이지 일정 공유버튼, 플랜,플랜디테일
+	public int planShare(String userID, String planName);
+	public int planDetailshare(String userID, String planName);
+//	public int datecount(String userID, String planName);
 	
 	public List<PlanDTO> userPlancount(String userID);
 }
