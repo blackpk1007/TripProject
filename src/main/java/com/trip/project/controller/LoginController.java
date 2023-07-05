@@ -244,6 +244,18 @@ public class LoginController {
 		return userID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
 	}
 	
+	// community 공유 
+	
+	// community 삭제
+	@ResponseBody
+	@RequestMapping("/communitydelete")
+	public String communityDelete(@RequestParam("communityTitle")String communityTitle,@RequestParam("userID")String userID ) {
+		int res = cservice.communityDelete(communityTitle, userID);
+		System.out.println(res);
+		
+		return communityTitle+"제목의 게시물이 삭제되었습니다.";
+	}
+	
 	
 	// 사용자 회원 정보 수정
 	@ResponseBody

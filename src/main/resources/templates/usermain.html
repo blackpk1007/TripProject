@@ -323,24 +323,34 @@
 <script th:inline="javascript">
 	function myplan() {
 		document.getElementById("plan").style.display = "block";
-		document.getElementById("myplan").style.display = "block";
-		document.getElementById("review").style.display = "none";
+		/* document.getElementById("review").style.display = "none"; */
 		document.getElementById("community").style.display = "none";
+		
+		document.getElementById("myplan").style.display = "block";
+		/* document.getElementById("myreview").style.display = "none"; */
+		document.getElementById("mycommunity").style.display = "none";
 	}
 	function myreview() {
-		document.getElementById("review").style.display = "block";
 		document.getElementById("plan").style.display = "none";
+		/* document.getElementById("review").style.display = "block"; */
 		document.getElementById("community").style.display = "none";
+		
+		document.getElementById("myplan").style.display = "none";
+		/* document.getElementById("myreview").style.display = "block"; */
+		document.getElementById("mycommunity").style.display = "none";
 	}
 	function mycommunity() {
-		document.getElementById("community").style.display = "block";
 		document.getElementById("plan").style.display = "none";
-		document.getElementById("review").style.display = "none";
+		/* document.getElementById("review").style.display = "none"; */
+		document.getElementById("community").style.display = "block";
+		
+		document.getElementById("myplan").style.display = "none";
+		/* document.getElementById("myreview").style.display = "none"; */
+		document.getElementById("mycommunity").style.display = "block";
 	}
 	
 	// 일정 삭제 
 	function plandelete(planName){
-		//data의 id랑 값 개념이 이게 맞나? useridvalue 선언하고 data : { userID : useridvalue가?}
 	var userID = [[${session.login}]];
 	
 	console.log(planName);
@@ -360,7 +370,7 @@
 				alert(jqXHR);
 			})
 	}
-	
+	// 일정 공유 
 	function planshare(planName){
 	var userID = [[${session.login}]];
 	
@@ -369,6 +379,28 @@
 		type : "post",
 		data : { userID : userID,
 				planName : planName}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain"
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
+	
+	// 게시물 삭제 
+	function communitydelete(communityTitle){
+	var userID = [[${session.login}]];
+	
+	console.log(communityTitle);
+	
+	$.ajax({
+		url : "/login/communitydelete",
+		type : "post",
+		data : { userID : userID,
+				communityTitle : communityTitle}
 		})
 			.done(function(result){
 				alert(result);
@@ -408,7 +440,6 @@
 			</div>
 			<div class="profile" th:text="${session.login}">
 				내 프로필
-				<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
 			</div>
 			<div class="profile">
 				<button id="profilefix"
@@ -417,8 +448,6 @@
 		</div>
 
 		<div class="status">
-			<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
-			<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
 			<div class="user_status" onclick="myplan();">
 				나의 일정
 				<div class="num" th:text="${plancount}">일정 끌고오기</div>
@@ -434,7 +463,7 @@
 		</div>
 
 		<div class="mymain_text">
-			<div id="plan" style="display: none;">나의 일정</div>
+			<div id="plan" >나의 일정</div>
 			<div id="review" style="display: none;">나의 리뷰</div>
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
@@ -463,6 +492,32 @@
 					</div>
 				</div>
 			</div>
+		</div>
+			
+		<div class="mymain" id="mycommunity" style="display: none;">
+			<div class="list-scroll">
+				<div class="main" th:each="usercommunity : ${community}">
+					<div class="myplan1">
+						<div class="loc1">
+							<img id="location1" src="#">
+						</div>
+						<div class="loc2">
+							<div class="tripname">
+								게시물이름 &nbsp; <label th:text="${usercommunity.communityTitle}"></label>
+							</div>
+							<div class="tripdate">
+								게시일자 &nbsp; <label th:text="${usercommunity.communityDate}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="share1" th:onclick="communityshare([[${usercommunity.communityTitle}]])">공유</button>
+							<button id="fix1">수정</button>
+							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityTitle}]])">삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 			<!-- <div class="main">
 				<div class="myplan2">
 					<div class="loc1">
@@ -488,7 +543,7 @@
 				</div>
 			</div> -->
 
-		</div>
+		
 	</div>
 
 	<!-- 나의 일정, 나의 리뷰, 나의 게시물 누를때 바뀌는용, ui 안정함.나중에. 
