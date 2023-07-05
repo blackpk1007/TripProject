@@ -70,6 +70,6 @@ public interface PlaceMapper {
 	List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto);
 	
 	@Delete(" delete from plan where userID = #{userID} and planName = #{planName} ")
-	int planDelete(PlanDTO dto);
+	int planDelete(String userID, String planName);
 	
 }

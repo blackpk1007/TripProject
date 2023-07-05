@@ -337,6 +337,29 @@
 		document.getElementById("plan").style.display = "none";
 		document.getElementById("review").style.display = "none";
 	}
+	
+	// 일정 삭제 
+	function plandelete(planName){
+		//data의 id랑 값 개념이 이게 맞나? useridvalue 선언하고 data : { userID : useridvalue가?}
+	var userID = [[${session.login}]];
+	
+	console.log(planName);
+	
+	$.ajax({
+		url : "/login/plandelete",
+		type : "post",
+		data : { userID : userID,
+				planName : planName}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain"
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
 </script>
 </head>
 <body>
@@ -416,7 +439,7 @@
 						<div class="loc3">
 							<button id="share1">공유</button>
 							<button id="fix1">수정</button>
-							<button id="delete1">삭제</button>
+							<button id="delete1" th:onclick="plandelete([[${userplan.planName}]])">삭제</button>
 						</div>
 					</div>
 				</div>

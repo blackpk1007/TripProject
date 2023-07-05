@@ -37,7 +37,7 @@ public interface PlanService {
 	
 	public List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto);
 	
-	public int planDelete(PlanDTO dto);
+	public int planDelete(String userID, String planName);
 	
 	public List<PlanDTO> userPlancount(String userID);
 }
