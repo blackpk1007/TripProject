@@ -219,7 +219,115 @@
             </div>
         </div>
 	</div>
-
+	
+	<div id="AirplaneInformation">
+    <div id="airplane-title">
+    	<!-- <h1>Airplane Information</h1> -->
+    	<div id="airplane-button-block">
+    		<button class="airplane-button" id="startingPointButton">출발지: 제주</button>
+    		<button class="airplane-button" id="destinationButton">목적지: 제주</button>
+    	</div>
+    	<div id="airplane-title-img-div">
+    		<img id="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    	</div>
+    </div>
+    <div th:if="${not #lists.isEmpty(boardings)}">
+    <table id="flightTable">
+        <tr>
+        	<th class="airplane-flightDate">날짜</th>
+        	<th class="airplane-std">출발시간</th>
+        	<th class="airplane-etd">변경시간</th>
+            <th class="airplane-boardingKor">출발지</th>
+            <th class="airplane-arrivedKor">목적지</th>
+            <th class="airplane-airFln">항공편</th>
+            <th class="airplane-airlineKorean">항공사</th>
+           	<th class="airplane-rmkKor">현황</th>
+        </tr>
+       	<tr th:each="boarding : ${boardings}">
+           	<td class="airplane-flightDate" th:text="${boarding.flightDate}"></td>
+            <td class="airplane-std">
+            	<div th:if="${boarding.std.toString().length() == 3}">
+    				<div th:text="${#strings.substring(boarding.std.toString(), 0, 1) + ':' + #strings.substring(boarding.std.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${boarding.std.toString().length() == 4}">
+    				<div th:text="${#strings.substring(boarding.std.toString(), 0, 2) + ':' + #strings.substring(boarding.std.toString(), 2)}"></div>
+				</div>
+            </td>
+             <td class="airplane-etd" id="airplane-etd" >
+             	<div th:if="${boarding.etd.toString().length() == 3}">
+    				<div th:text="${#strings.substring(boarding.etd.toString(), 0, 1) + ':' + #strings.substring(boarding.etd.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${boarding.etd.toString().length() == 4}">
+    				<div th:text="${#strings.substring(boarding.etd.toString(), 0, 2) + ':' + #strings.substring(boarding.etd.toString(), 2)}"></div>
+				</div>
+             </td>
+            <td class="airplane-boardingKor" th:text="${boarding.boardingKor}"></td>
+            <td class="airplane-arrivedKor" th:text="${boarding.arrivedKor}"></td>
+            <td class="airplane-airFln" th:text="${boarding.airFln}"></td>
+          	<td class="airplane-airlineKorean">
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '대한항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-koreanair.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '아시아나항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-asiana.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '진에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jinair.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '티웨이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-tway.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '제주항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jeju.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '에어부산'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airbusan.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '에어로케이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-aerok.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '하이에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-hiair.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '에어서울'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airseoul.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '이스타항공'}">
+			    	<img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-eastar.png}">
+			    	<span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			</td>
+            <td class="airplane-rmkKor">
+            	<div class="airplane-rmkKor-ifdiv" th:if="${boarding.rmkKor == '출발'} or ${boarding.rmkKor == '도착'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color:#0067a3;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor == '지연'} or ${boarding.rmkKor == '결항'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color: #dc143c;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor == ''} or ${boarding.rmkKor == null}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color:white;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor != '출발'} and ${boarding.rmkKor != '도착'} and ${boarding.rmkKor != '지연'} and ${boarding.rmkKor != '결항' } and ${boarding.rmkKor != ''} and ${boarding.rmkKor != null}">
+            		<div class="airplane-rmkKor-ifdiv-div"  th:text="${boarding.rmkKor}" style="background-color: #32cd32;"></div>
+            	</div>
+            </td>
+            
+        </tr> 	
+    </table>
+  </div>
+  <div th:if="${#lists.isEmpty(boardings) or boardings == null}">
+  		<h5>나옴?</h5>
+  </div>	 
+</div>
 	<script th:inline="javascript">
 	var loginchk = [[${session.login}]];
 	console.log(loginchk); 
