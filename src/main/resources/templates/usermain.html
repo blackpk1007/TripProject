@@ -411,6 +411,8 @@
 				alert(jqXHR);
 			})
 	}
+	
+	
 </script>
 </head>
 <body>
@@ -506,13 +508,14 @@
 								게시물이름 &nbsp; <label th:text="${usercommunity.communityTitle}"></label>
 							</div>
 							<div class="tripdate">
-								게시일자 &nbsp; <label th:text="${usercommunity.communityDate}"></label>
+								게시일자 &nbsp; <label th:text="${#dates.format(usercommunity.communityDate, 'yyyy-MM-dd')}"></label>
 							</div>
 						</div>
 						<div class="loc3">
-							<button id="share1" th:onclick="communityshare([[${usercommunity.communityTitle}]])">공유</button>
-							<button id="fix1">수정</button>
+							<!-- <button id="share1" >공유</button> -->
+							<button id="fix1" th:onclick="|location.href='/community/communityupdateform?communityNumber=${usercommunity.communityNumber}'|">수정</button>
 							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityTitle}]])">삭제</button>
+							<!-- th:onclick="communityupdate([[${usercommunity.communityNumber}]])" -->
 						</div>
 					</div>
 				</div>
