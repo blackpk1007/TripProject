@@ -265,18 +265,6 @@ public class LoginController {
 		return dto.getUserID()+"님의 회원탈퇴가 완료되었습니다.";
 	}
 	
-	// 코스 추천
-	@RequestMapping("/recommandcourse")
-	public String recommandcourse() {
-		return "recommandcourse";
-	}
-	
-	// 코스 상세
-	@RequestMapping("/coursedetail")
-	public String coursedetail(){
-		return "coursedetail";
-	}
-	
 	@RequestMapping("/userinserttest")
 	public String userinserttest() {
 		

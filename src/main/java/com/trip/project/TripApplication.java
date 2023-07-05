@@ -25,46 +25,35 @@ import com.trip.project.service.MainpageService;
 @Controller
 @SpringBootApplication
 public class TripApplication {
-	
+
 	@Autowired
 	private CrawlingService cservice;
-	
+
 	@Autowired
 	private AirPlaneService aservice;
-	
+
 	@Autowired
 	private MainpageService mainpageService;
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(TripApplication.class, args);
 	}
-	
+
 	// 메인 페이지
 	@RequestMapping("/")
-	public String main(Model model) {
-		
+	public String main(Model model) throws IOException {
 
-//		try {
-//			if(!aservice.jejuArrived().isEmpty() &&) {
-//				model.addAttribute("arriveds", aservice.jejuArrived());
-//				model.addAttribute("boardings", aservice.jejuBoarding());
-//			}else {
-//				model.addAttribute("test", "test");
-//				model.addAttribute("test", "test");
-//			}
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		model.addAttribute("arriveds", aservice.jejuArrived());
+		model.addAttribute("boardings", aservice.jejuBoarding());
 		model.addAttribute("list", mainpageService.selectList());
 		model.addAttribute("animalList", mainpageService.animalList());
 		model.addAttribute("parentsList", mainpageService.parentsList());
 		return "main";
 	}
-	
+
 	@GetMapping("/main/getPlaceInfo")
-    @ResponseBody
-    public PlaceDTO getPlaceInfo(@RequestParam("placeName") String placeName) {
-        return mainpageService.getPlaceInfo(placeName);
-    }
+	@ResponseBody
+	public PlaceDTO getPlaceInfo(@RequestParam("placeName") String placeName) {
+		return mainpageService.getPlaceInfo(placeName);
+	}
 }
