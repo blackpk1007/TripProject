@@ -7,35 +7,250 @@
 	
 $(document).ready(function() {
     $('#popularity').click(function() {
-    	alert("인기순");
       changeList('popularity');
     });
 
     $('#followingdate').click(function() {
-    	alert("날짜순");
       changeList('followingdate');
     });
   });
   
 function changeList(sortBy) {
-	$.ajax({
-		url:'/plan/search',
-		type: 'POST',
-		data: {keyword: keyword,
-			   pageNum: pageNum},
-		success: function(data){
-			updateList(data);
-			createMarkers(data);
-		},
-		error: function(data){
-			alert("실패");
-		}
-	});
-	$.ajax({
-		url:'/course/'
-		
-	});
-	
+	console.log(sortBy);
+		$.ajax({
+			url:'/course/sort',
+			type: 'POST',
+			data: {sort:sortBy},
+			success: function(data){
+				generateHTML(data);
+			},
+			error: function(data){
+				alert(data);
+			}
+		});	
+}
+function generateHTML(data) {
+    var html = '';
+    for (var i = 0; i < data.length; i++) {
+        var course = data[i];
+        var planName = course.planName;
+        var courseFirstDate = course.courseFirstDate;
+        var coursetravelDate = course.coursetravelDate;
+        var userID = course.userID;
+        var courseCount = course.courseCount;
+
+        var itemHtml = `
+            <div class="plan1">
+                <div class="loc1">
+                    <img class="coursepic" src="/resources/image/course1.png">
+                </div>
+                <div class="loc2">
+                    <div class="col1">
+                        <div class="category"> 여행 이름 </div>
+                        <div class="category"> 여행 날짜 </div>
+                        <div class="category"> 여행 기간 </div>
+                        <div class="username">
+                            <img class="usernamelogo" src="/resources/image/stonepapa.png">${userID}
+                        </div>
+                    </div>
+                    <div class="col2">
+                        <div class="data">${planName}</div>
+                        <div class="data">${courseFirstDate}</div>
+                        <div class="data">${coursetravelDate}일간</div>
+                        <div class="userview">
+                            <img class="viewlogo" src="/resources/image/magnifier.png">${courseCount}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        html += itemHtml;
+    }
+
+    $('.main1').html(html);
+}
+
+function displayAllCourses() {
+    $.ajax({
+        url: '/course/all',
+        type: 'POST',
+        success: function(response) {
+            generateHTML(response);
+        },
+        error: function(response) {
+            // AJAX 요청 실패 시 수행할 동작
+        }
+    });
+}
+$(document).ready(function() {
+    $('input[name="date"], input[name="season"]').on('change', function() {
+        var selectedDates = [];
+        var selectedSeasons = [];
+        
+        $('input[name="date"]:checked').each(function() {
+            selectedDates.push($(this).next('label').text());
+        });
+        
+        $('input[name="season"]:checked').each(function() {
+            selectedSeasons.push($(this).next('label').text());
+        });
+        
+        if (selectedDates.length === 0 && selectedSeasons.length === 0) {
+            // 아무 것도 선택하지 않았을 때 전체 리스트를 보여주는 요청을 보냄
+            var optionsHtml = '';
+            $('.option').html(optionsHtml);
+            displayAllCourses();
+        } else {
+            generateOptions(selectedDates, selectedSeasons);
+            if (selectedDates.length > 0 && selectedSeasons.length === 0) {
+                sendSelectedDates(selectedDates);
+            } else if (selectedDates.length === 0 && selectedSeasons.length > 0) {
+                sendSelectedSeasons(selectedSeasons);
+            } else {
+                sendSelectedDatesSeasons(selectedDates, selectedSeasons);
+            }
+        }
+    });
+});
+
+function generateOptions(dates, seasons) {
+    var optionsHtml = '';
+    
+    for (var i = 0; i < dates.length; i++) {
+        optionsHtml += '<div class="option1">' + dates[i] + '</div>';
+    }
+    
+    for (var j = 0; j < seasons.length; j++) {
+        optionsHtml += '<div class="option1">' + seasons[j] + '</div>';
+    }
+    
+    $('.option').html(optionsHtml);
+}
+
+function sendSelectedSeasons(seasons) {
+    var selectedMonths = [];
+    
+    if (seasons.includes('봄')) {
+        selectedMonths.push(3, 4, 5);
+    }
+    
+    if (seasons.includes('여름')) {
+        selectedMonths.push(6, 7, 8);
+    }
+    
+    if (seasons.includes('가을')) {
+        selectedMonths.push(9, 10, 11);
+    }
+    
+    if (seasons.includes('겨울')) {
+        selectedMonths.push(12, 1, 2);
+    }
+    console.log(selectedMonths);
+    console.log(typeof selectedMonths);
+    $.ajax({
+        url: '/course/season',
+        type: 'POST',
+        data: JSON.stringify({ months: selectedMonths }),
+        contentType: 'application/json',
+        success: function(response) {
+        	generateHTML(response);
+        },
+        error: function(response) {
+            // AJAX 요청 실패 시 수행할 동작
+        }
+    });
+}
+
+function sendSelectedDates(dates) {
+    var selectedDayRanges = [];
+    
+    if (dates.includes('1-3 Day')) {
+        selectedDayRanges.push(1, 2, 3);
+    }
+    
+    if (dates.includes('4-6 Day')) {
+        selectedDayRanges.push(4, 5, 6);
+    }
+    
+    if (dates.includes('7-9 Day')) {
+        selectedDayRanges.push(7, 8, 9);
+    }
+    
+    if (dates.includes('10 + Day')) {
+        selectedDayRanges.push(10);
+    }
+    
+    console.log(selectedDayRanges);
+    
+    $.ajax({
+        url: '/course/days',
+        type: 'POST',
+        data: JSON.stringify({ days: selectedDayRanges }),
+        contentType: 'application/json',
+        success: function(response) {
+            // AJAX 요청 성공 시 수행할 동작
+        	generateHTML(response);
+        },
+        error: function(error) {
+            // AJAX 요청 실패 시 수행할 동작
+        }
+    });
+}
+
+function sendSelectedDatesSeasons(dates, seasons) {
+    var selectedDayRanges = [];
+    
+    if (dates.includes('1-3 Day')) {
+        selectedDayRanges.push(1, 2, 3);
+    }
+    
+    if (dates.includes('4-6 Day')) {
+        selectedDayRanges.push(4, 5, 6);
+    }
+    
+    if (dates.includes('7-10 Day')) {
+        selectedDayRanges.push(7, 8, 9, 10);
+    }
+    
+    if (dates.includes('10 + Day')) {
+        selectedDayRanges.push('10+');
+    }
+    
+    var selectedMonths = [];
+    
+    if (seasons.includes('봄')) {
+        selectedMonths.push(3, 4, 5);
+    }
+    
+    if (seasons.includes('여름')) {
+        selectedMonths.push(6, 7, 8);
+    }
+    
+    if (seasons.includes('가을')) {
+        selectedMonths.push(9, 10, 11);
+    }
+    
+    if (seasons.includes('겨울')) {
+        selectedMonths.push(12, 1, 2);
+    }
+    
+    console.log(selectedDayRanges);
+    console.log(selectedMonths);
+    
+    $.ajax({
+        url: '/course/seasonsdates',
+        type: 'POST',
+        data: JSON.stringify({ days: selectedDayRanges, months: selectedMonths }),
+        contentType: 'application/json',
+        success: function(response) {
+            // AJAX 요청 성공 시 수행할 동작
+            generateHTML(response);
+        },
+        error: function(error) {
+            // AJAX 요청 실패 시 수행할 동작
+        }
+    });
 }
 </script>
 <title>코스 추천</title>
@@ -463,7 +678,7 @@ hr{
 				<label>여행일</label>
 			</div>
 			<div class="dates">
-				<input type="checkbox" id="3day" name="date" checked>
+				<input type="checkbox" id="3day" name="date">
 				<label for="date">1-3 Day</label>
 			</div>
 			<div class="dates">
@@ -472,7 +687,7 @@ hr{
 			</div>
 			<div class="dates">
 				<input type="checkbox" id="10day" name="date" >
-				<label for="date">7-10 Day</label>
+				<label for="date">7-9 Day</label>
 			</div>
 			<div class="dates">
 				<input type="checkbox" id="30day" name="date" >
@@ -482,7 +697,7 @@ hr{
 	<div class="season">
 			<div class="seasons1">여행시기</div>
 			<div class="seasons" >
-				<input type="checkbox" id="spring" name="season" checked>
+				<input type="checkbox" id="spring" name="season">
 				<label for="date">봄</label>
 			</div>
 			<div class="seasons" >
@@ -500,9 +715,6 @@ hr{
 	</div>
 	<hr>	
 	<div class="option">
-		<div class="option1">1-3 Day</div>
-		<div class="option1">봄</div>
-		<div class="option1">10 + Day</div>
 	</div>
 </div>
 <!-- 본 -->

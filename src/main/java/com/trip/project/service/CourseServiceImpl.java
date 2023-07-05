@@ -20,4 +20,34 @@ public class CourseServiceImpl implements CourseService{
 		return cmapper.courseList();
 	}
 
+	@Override
+	public List<CourseDTO> courseDateSort() {
+
+		return cmapper.courseDateSort();
+	}
+
+	@Override
+	public List<CourseDTO> courseCountSort() {
+
+		return cmapper.courseCountSort();
+	}
+
+	@Override
+	public List<CourseDTO> courseseason(List<Integer> months) {
+
+		return cmapper.courseseason(months);
+	}
+
+	@Override
+	public List<CourseDTO> coursedays(List<Integer> days) {
+
+		return cmapper.coursedays(days);
+	}
+
+	@Override
+	public List<CourseDTO> courseDaysSeasons(List<Integer> days, List<Integer> months) {
+		
+		return cmapper.courseDaysSeasons(days, months);
+	}
+
 }
