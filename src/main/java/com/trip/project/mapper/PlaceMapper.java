@@ -69,7 +69,22 @@ public interface PlaceMapper {
 	@Select(" select * from planDetail where userID = #{userID} and planName = #{planName} ")
 	List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto);
 	
+	// 마이페이지 삭제 - 플랜,플랜디테
 	@Delete(" delete from plan where userID = #{userID} and planName = #{planName} ")
 	int planDelete(String userID, String planName);
-	
+	@Delete(" delete from planDetail where userID = #{userID} and planName = #{planName} ")
+	int planDetaildelete(String userID, String planName);
+	// 마이페이지 공유
+	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, userID, planName )"
+			+ "select planFirstDate, planLastDate, #{datecount}, planCount, userID, planName "
+			+ "from plan "
+			+ "WHERE planName=#{planName} AND userID=#{userID} ")
+	int planShare(String userID, String planName, @Param("datecount")int datecount);
+	@Insert(" INSERT INTO courseDetail (courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, userID, planName) "
+			+ "select planDetailDate, planDetailLon, planDetailLat, planDetailColor, userID, planName "
+			+ "from planDetail "
+			+ "WHERE planName=#{planName} AND  userID=#{userID} ")
+	int planDetailshare(String userID, String planName);
+	@Select(" SELECT planFirstDate, planLastDate FROM plan WHERE planName=#{planName} AND userID=#{userID} ")
+	PlanDTO datecount(String userID, String planName);
 }

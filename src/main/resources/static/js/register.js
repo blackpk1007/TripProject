@@ -1,4 +1,10 @@
-//joinform_check 함수로 유효성 검사
+// 현재 날짜를 가져옵니다.
+	var currentDate = new Date().toISOString().split("T")[0];
+	
+	// 최대 날짜를 현재 날짜로 설정합니다.
+	document.getElementById("userBirth").max = currentDate;
+
+//regist_check 함수로 유효성 검사
 function regist_check() {
   //변수에 담아주기
   var userName = document.getElementById("userName");
@@ -30,7 +36,7 @@ function regist_check() {
 	  alert("생년월일 입력하세요.")
 	  return false;
   }
-  
+	  
   /*
   if (!bDate.test(userBirth.value)) {
   	alert("오늘태어났니?");

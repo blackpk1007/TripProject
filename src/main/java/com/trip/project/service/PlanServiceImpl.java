@@ -82,6 +82,11 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.planDelete(userID,planName);
 	}
+	@Override
+	public int planDetaildelete(String userID, String planName) {
+		
+		return pmapper.planDetaildelete(userID, planName);
+	}
 
 	@Override
 	public List<PlaceDTO> placeSearch(String keyword, placePagination paging) {
@@ -100,6 +105,28 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.placeCategoryCount(categoey);
 	}
+
+	@Override
+	public int planShare(String userID, String planName) {
+		PlanDTO dto = pmapper.datecount(userID, planName);
+		int fd = Integer.parseInt(dto.getPlanFirstDate().replaceAll("-", ""));
+		int ld = Integer.parseInt(dto.getPlanLastDate().replaceAll("-", ""));
+		int datecount = ld-fd+1;
+		
+		return pmapper.planShare(userID, planName, datecount);
+	}
+	@Override
+	public int planDetailshare(String userID, String planName) {
+		return pmapper.planDetailshare(userID, planName);
+	}
+
+//	@Override
+//	public int datecount(String userID, String planName ) {
+//		
+//		return pmapper.datecount(userID, planName);
+//	}
+
+	
 
 
 }
