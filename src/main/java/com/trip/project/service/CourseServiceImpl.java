@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trip.project.dto.CourseDTO;
+import com.trip.project.dto.CourseDetailDTO;
 import com.trip.project.mapper.CourseMapper;
 
 @Service
@@ -48,6 +49,18 @@ public class CourseServiceImpl implements CourseService{
 	public List<CourseDTO> courseDaysSeasons(List<Integer> days, List<Integer> months) {
 		
 		return cmapper.courseDaysSeasons(days, months);
+	}
+
+	@Override
+	public List<CourseDetailDTO> courseDetailList(String userID, String planName) {
+
+		return cmapper.courseDetailList(userID, planName);
+	}
+
+	@Override
+	public int courseListCount(String userID, String planName) {
+		
+		return cmapper.courseListCount(userID, planName);
 	}
 
 }
