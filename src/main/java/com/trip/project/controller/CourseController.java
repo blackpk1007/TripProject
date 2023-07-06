@@ -96,13 +96,14 @@ public class CourseController {
 	public String coursedetail(Model model, String planName, String userID){
 		cService.courseListCount(userID, planName);
 		List<CourseDetailDTO> dtoList = cService.courseDetailList(userID, planName);
-
+		
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		
 		   Map<String, Object> resultMap = new LinkedHashMap<>();
 
-		    for (CourseDetailDTO dto : dtoList) {
+		   for (CourseDetailDTO dto : dtoList) {
 		        String date = dto.getCourseDetailDate();
 		        String color = dto.getCourseDetailColor();
-
 		        if (!resultMap.containsKey(date)) {
 		            Map<String, Object> itemMap = new HashMap<>();
 		            itemMap.put("date", date);
@@ -110,7 +111,7 @@ public class CourseController {
 		            itemMap.put("lonLatPairs", new ArrayList<>());
 		            resultMap.put(date, itemMap);
 		        }
-
+		        
 		        Map<String, Object> itemMap = (Map<String, Object>) resultMap.get(date);
 		        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) itemMap.get("lonLatPairs");
 
@@ -119,9 +120,10 @@ public class CourseController {
 		        lonLatMap.put("lat", dto.getCourseDetailLat());
 		        lonLatPairs.add(lonLatMap);
 		    }
-
-		    System.out.println("controller: " + resultMap);
-		    model.addAttribute("courseDetail", resultMap);
+		   resultList.add(resultMap);
+		   System.out.println("controller : "+resultList);
+		   
+		   model.addAttribute("courseDetail", resultList);
 		    
 		
 		return "coursedetail";

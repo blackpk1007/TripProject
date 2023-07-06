@@ -27,9 +27,6 @@ import com.trip.project.service.MainpageService;
 public class TripApplication {
 
 	@Autowired
-	private CrawlingService cservice;
-
-	@Autowired
 	private AirPlaneService aservice;
 
 	@Autowired

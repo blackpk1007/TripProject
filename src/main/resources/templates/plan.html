@@ -1276,8 +1276,7 @@ function createMarkers(data) {
 		        lonLatPairs: lonLatPairs,
 		        color: colorName
 		      });
-		      
-		      });
+		    });
 		    
 
 		    return values;
@@ -1337,15 +1336,6 @@ function createMarkers(data) {
 	    var startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
 	    var endPage = Math.min(totalPages, startPage + pageRange - 1);
 
-	    // 이전 버튼 생성
-	    var prevButton = document.createElement('a');
-	    prevButton.href = 'javascript:void(0)';
-	    prevButton.textContent = '이전';
-	    prevButton.addEventListener('click', function () {
-	    	fetchUpdatedMarkers(category, currentPage - 5);
-	    });
-	    paginationContainer.appendChild(prevButton);
-
 	    // 페이지 번호 생성
 	    for (var i = startPage; i <= endPage; i++) {
 	        var pageLink = document.createElement('a');
@@ -1362,14 +1352,6 @@ function createMarkers(data) {
 	        paginationContainer.appendChild(pageLink);
 	    }
 
-	    // 다음 버튼 생성
-	    var nextButton = document.createElement('a');
-	    nextButton.href = 'javascript:void(0)';
-	    nextButton.textContent = '다음';
-	    nextButton.addEventListener('click', function () {
-	    	fetchUpdatedMarkers(category, currentPage + 5);
-	    });
-	    paginationContainer.appendChild(nextButton);
 	}
 
 	document.addEventListener('DOMContentLoaded', function() {
