@@ -3,307 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Airplane</title>
+    <link href="./resources/css/airplane.css" rel="stylesheet">
  <style type="text/css">
- 	#AirplaneInformation{
- 		resize:none;
- 		overflow:auto;
- 		width:100%;
- 	}
- 	table{
- 		border: solid 1px #d3d3d3;
- 		border-collapse: collapse;
- 	}
- 	th {
- 		border: solid 1px #d3d3d3;
- 		height:7vh;
- 		background-color:#B8E9FF;
- 		color:black;
- 	}
- 	
- 	td{
- 		border: solid 1px #d3d3d3;
- 		height:7vh;
- 		text-align:center;
- 	}
- 	
- 	.airplane-flightDate{
- 		width:15vw;
- 	}
- 	.airplane-std{
- 		width:10vw;
- 		font-weigth: bold;
- 	}
- 	.airplane-etd{
- 		width:10vw;
- 	}
- 	#airplane-etd{
- 	 	color: #0067a3;
- 	}
- 	.airplane-boardingKor{
- 		width:15vw;
- 	}
- 	.airplane-arrivedKor{
- 		width:15vw;
- 	}
- 	.airplane-airFln{
- 		width:13vw;
- 	}
- 	.airplane-airlineKorean{
- 		width:20vw;
- 	}
- 	.airplane-rmkKor{
- 		width:15vw;
- 	}
- 	.airplane-airlineKorean-img{
- 		width:4vh;
- 		height:4vh;
- 		float:left;
- 		margin-right:5%;
- 	}
- 	.airplane-airlineKorean-div{
- 		width:100%;
- 		height:100%;
- 		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 16px;
- 	}
- 	.airplane-rmkKor-ifdiv-div{
- 		width:12vh;
- 		height:5vh;
- 		color:white;
- 		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius:10px;
-		font-size:12px;
- 	}
- 	.airplane-rmkKor-ifdiv{
- 		width:100%;
- 		heigth:100%;
- 		display: flex;
-		justify-content: center;
-		align-items: center;
- 	}
- 	#airplane-title{
- 		/* display: flex;
-		justify-content: center;
-		align-items: center; */
- 	}
- 	#airplane-title-img{
- 		width:40%;
- 		height:100%;
- 	}
- 	.airplane-button{
- 		width:13.2%;
- 		height:5.5vh;
- 		margin-bottom: 1vh;
- 		border-radius: 7px;
- 		border:none;
- 		background-color: #B8E9FF;
- 		font-size: 14px;
- 		cursor:pointer;
- 	}
- 	#airplane-button-block{
- 		display:block;
- 	}
- 	#airplane-title-img-div{
- 		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin-bottom: 3vh;
-		margin-top: 3rvh;
- 	}
  	
  </style>
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <script th:inline="javascript">
- /*<![CDATA[*/
- $(document).ready(function(){
-	let arriveds = [[ ${arriveds} ]];
-	let boardings = [[ ${boardings} ]];
-	
-	$("#startingPointButton").click(function(){
-		startingPointButton(arriveds);  
-	}); 
-	
-	$("#destinationButton").click(function(){
-		 destinationButton(boardings); 
-	});
-	 
-});  
- 	function destinationButton(boardings) {
- 		console.log(boardings);
- 		let content = '';
-		$("#flightTable").empty();
- 		
- 		content += `
- 		<tr>
-        	<th class="airplane-flightDate">날짜</th>
-        	<th class="airplane-std">출발시간</th>
-        	<th class="airplane-etd">변경시간</th>
-            <th class="airplane-boardingKor">출발지</th>
-            <th class="airplane-arrivedKor">목적지</th>
-            <th class="airplane-airFln">항공편</th>
-            <th class="airplane-airlineKorean">항공사</th>
-           	<th class="airplane-rmkKor">현황</th>
-        </tr>
-        `;
-        
-        boardings.forEach((boarding) => {
-        content += `
-        <tr>
-            <td class="airplane-flightDate">${boarding.flightDate}</td>
-            <td class="airplane-std">
-                <div>${formattedTime(boarding.std)}</div>
-            </td>
-            <td class="airplane-etd" id="airplane-etd">
-                <div>${formattedTime(boarding.etd)}</div>
-            </td>
-            <td class="airplane-boardingKor">${boarding.boardingKor}</td>
-            <td class="airplane-arrivedKor">${boarding.arrivedKor}</td>
-            <td class="airplane-airFln">${boarding.airFln}</td>
-            <td class="airplane-airlineKorean">
-            	<div class="airplane-airlineKorean-div">
-            		${AirlineLogo(boarding.airlineKorean)}
-            		<span>${boarding.airlineKorean}</span>
-            	</div>
-            </td>
-            <td class="airplane-rmkKor">
-                <div class="airplane-rmkKor-ifdiv" >
-                    <div class="airplane-rmkKor-ifdiv-div" style="background-color:${rmkKorBackgroundColor(boarding.rmkKor)};">${boarding.rmkKor}</div>
-                </div>
-            </td>
-        </tr>
-        `;
-    });
- 		document.getElementById('flightTable').innerHTML = content;
- 	
- 	}
- 	
- 	function startingPointButton(arriveds) {
- 		
- 		let content = '';
-		$("#flightTable").empty();
- 		
- 		content += `
- 		<tr>
-        	<th class="airplane-flightDate">날짜</th>
-        	<th class="airplane-std">출발시간</th>
-        	<th class="airplane-etd">변경시간</th>
-            <th class="airplane-boardingKor">출발지</th>
-            <th class="airplane-arrivedKor">목적지</th>
-            <th class="airplane-airFln">항공편</th>
-            <th class="airplane-airlineKorean">항공사</th>
-           	<th class="airplane-rmkKor">현황</th>
-        </tr>
-        `;
-        
-        arriveds.forEach((arrived) => {
-        content += `
-        <tr>
-            <td class="airplane-flightDate">${arrived.flightDate}</td>
-            <td class="airplane-std">
-                <div>${formattedTime(arrived.std)}</div>
-            </td>
-            <td class="airplane-etd" id="airplane-etd">
-                <div>${formattedTime(arrived.etd)}</div>
-            </td>
-            <td class="airplane-boardingKor">${arrived.boardingKor}</td>
-            <td class="airplane-arrivedKor">${arrived.arrivedKor}</td>
-            <td class="airplane-airFln">${arrived.airFln}</td>
-            <td class="airplane-airlineKorean">
-            	<div class="airplane-airlineKorean-div">
-            		${AirlineLogo(arrived.airlineKorean)}
-            		<span>${arrived.airlineKorean}</span>
-            	</div>
-            </td>
-            <td class="airplane-rmkKor">
-                <div class="airplane-rmkKor-ifdiv" >
-                    <div class="airplane-rmkKor-ifdiv-div" style="background-color:${rmkKorBackgroundColor(arrived.rmkKor)};">${arrived.rmkKor}</div>
-                </div>
-            </td>
-        </tr>
-        `;
-    });
- 		document.getElementById('flightTable').innerHTML = content;
- 	}
- 	
- 	function formattedTime(time){
- 	    let stringTime = time.toString();
- 	    let timeLength = stringTime.length;
- 	    let airplaneTime = '';
- 	    
- 	    if(timeLength == 3){
- 	        airplaneTime = stringTime.substring(0, 1) + ':' + stringTime.substring(1);
- 	    } else if(timeLength == 4){
- 	        airplaneTime = stringTime.substring(0, 2) + ':' + stringTime.substring(2);
- 	    }
- 	    
- 	    return airplaneTime;
- 	}
- 	
- 	function AirlineLogo(airline){
- 		let logoSrc = '';
- 	    
- 	    if (airline == '대한항공') {
- 	        logoSrc = '/resources/image/airplane-koreanair.png';
- 	    } else if (airline == '아시아나항공') {
- 	        logoSrc = '/resources/image/airplane-asiana.png';
- 	    } else if (airline == '진에어') {
- 	        logoSrc = '/resources/image/airplane-jinair.png';
- 	    } else if (airline == '티웨이항공') {
- 	        logoSrc = '/resources/image/airplane-tway.png';
- 	    } else if (airline == '제주항공') {
- 	        logoSrc = '/resources/image/airplane-jeju.png';
- 	    } else if (airline == '에어부산') {
- 	        logoSrc = '/resources/image/airplane-airbusan.png';
- 	    } else if (airline == '에어로케이항공') {
- 	        logoSrc = '/resources/image/airplane-aerok.png';
- 	    } else if (airline == '하이에어') {
- 	        logoSrc = '/resources/image/airplane-hiair.png';
- 	    } else if (airline == '에어서울') {
- 	        logoSrc = '/resources/image/airplane-airseoul.png';
- 	    } else if (airline == '이스타항공') {
- 	        logoSrc = '/resources/image/airplane-eastar.png';
- 	    }
- 	    
- 	   return `<img class="airplane-airlineKorean-img" src="${logoSrc}">`;
- 	}
- 	
- 	function rmkKorBackgroundColor(rmkKor){
- 		let color = '';
- 		
- 		if(rmkKor == '출발' || rmkKor == '도착'){
- 			color = '#0067a3';
- 		}else if(rmkKor == '지연' || rmkKor == '결항') {
- 			color = '#dc143c';
- 		}else if(rmkKor == '' || rmkKor== 'null') {
- 			color = 'white';
- 		}else{
- 			color = '#32cd32';
- 		} 
- 		
- 		return color;
- 	}
-
- /*]]*/
- </script>
+ 
 </head>
 <body>
 
 <div id="AirplaneInformation">
-    <div id="airplane-title">
-    	<!-- <h1>Airplane Information</h1> -->
-    	<div id="airplane-button-block">
-    		<button class="airplane-button" id="startingPointButton">출발지: 제주</button>
-    		<button class="airplane-button" id="destinationButton">목적지: 제주</button>
+<div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
+    <div class="airplane-title">
+    	 
+    	<div class="airplane-button-block">
+    		<button class="airplane-button"  onclick="viewBoardings();">출발지: 제주</button>
+    		<button class="airplane-button"  onclick="viewArriveds();">목적지: 제주</button>
     	</div>
-    	<div id="airplane-title-img-div">
-    		<img id="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    	<div class="airplane-title-img-div">
+    		<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
     	</div>
     </div>
-    <div th:if="${not #lists.isEmpty(boardings)}">
+   
     <table id="flightTable">
         <tr>
         	<th class="airplane-flightDate">날짜</th>
@@ -396,10 +116,142 @@
         </tr> 	
     </table>
   </div>
-  <div th:if="${#lists.isEmpty(boardings) or boardings == null}">
-  		<h5>나옴?</h5>
-  </div>	 
+ <div id="airplane-arriveds" th:if="${not #lists.isEmpty(arriveds)}" style="display: none">
+    <div class="airplane-title">
+    	 
+    	<div class="airplane-button-block">
+    		<button class="airplane-button" onclick="viewBoardings();">출발지: 제주</button>
+    		<button class="airplane-button" onclick="viewArriveds();">목적지: 제주</button>
+    	</div>
+    	<div class="airplane-title-img-div">
+    		<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    	</div>
+    </div>
+   
+    <table id="flightTable">
+        <tr>
+        	<th class="airplane-flightDate">날짜</th>
+        	<th class="airplane-std">출발시간</th>
+        	<th class="airplane-etd">변경시간</th>
+            <th class="airplane-boardingKor">출발지</th>
+            <th class="airplane-arrivedKor">목적지</th>
+            <th class="airplane-airFln">항공편</th>
+            <th class="airplane-airlineKorean">항공사</th>
+           	<th class="airplane-rmkKor">현황</th>
+        </tr>
+       	<tr th:each="arrived : ${arriveds}">
+           	<td class="airplane-flightDate" th:text="${arrived.flightDate}"></td>
+            <td class="airplane-std">
+            	<div th:if="${arrived.std.toString().length() == 3}">
+    				<div th:text="${#strings.substring(arrived.std.toString(), 0, 1) + ':' + #strings.substring(arrived.std.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${arrived.std.toString().length() == 4}">
+    				<div th:text="${#strings.substring(arrived.std.toString(), 0, 2) + ':' + #strings.substring(arrived.std.toString(), 2)}"></div>
+				</div>
+            </td>
+             <td class="airplane-etd" id="airplane-etd" >
+             	<div th:if="${arrived.etd.toString().length() == 3}">
+    				<div th:text="${#strings.substring(arrived.etd.toString(), 0, 1) + ':' + #strings.substring(arrived.etd.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${arrived.etd.toString().length() == 4}">
+    				<div th:text="${#strings.substring(arrived.etd.toString(), 0, 2) + ':' + #strings.substring(arrived.etd.toString(), 2)}"></div>
+				</div>
+             </td>
+            <td class="airplane-boardingKor" th:text="${arrived.boardingKor}"></td>
+            <td class="airplane-arrivedKor" th:text="${arrived.arrivedKor}"></td>
+            <td class="airplane-airFln" th:text="${arrived.airFln}"></td>
+          	<td class="airplane-airlineKorean">
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '대한항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-koreanair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '아시아나항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-asiana.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '진에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jinair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '티웨이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-tway.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '제주항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jeju.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어부산'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airbusan.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어로케이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-aerok.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '하이에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-hiair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어서울'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airseoul.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '이스타항공'}">
+			    	<img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-eastar.png}">
+			    	<span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			</td>
+            <td class="airplane-rmkKor">
+            	<div class="airplane-rmkKor-ifdiv" th:if="${arrived.rmkKor == '출발'} or ${arrived.rmkKor == '도착'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color:#0067a3;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor == '지연'} or ${arrived.rmkKor == '결항'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color: #dc143c;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor == ''} or ${arrived.rmkKor == null}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color:white;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor != '출발'} and ${arrived.rmkKor != '도착'} and ${arrived.rmkKor != '지연'} and ${arrived.rmkKor != '결항' } and ${arrived.rmkKor != ''} and ${arrived.rmkKor != null}">
+            		<div class="airplane-rmkKor-ifdiv-div"  th:text="${arrived.rmkKor}" style="background-color: #32cd32;"></div>
+            	</div>
+            </td>
+            
+        </tr> 	
+    </table>
+  </div>
+  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and boardings == null and #lists.isEmpty(arriveds) and arriveds == null}">
+  	<div class="airplane-title">
+    		<div class="airplane-title-img-div">
+    			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    		</div>
+    	</div> 
+  	<div class="listEmpty">
+  		<div class="listEmpty-title">*실시간 항공편 안내사항*</div><br><br>
+  		<div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div>
+  		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
+  	</div>
+  	
+  </div>
+
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script th:inline="javascript">
+var boardingsDiv = document.getElementById("airplane-boardings");
+var arrivedsDiv = document.getElementById("airplane-arriveds");
+
+ function viewBoardings() {
+	 
+     boardingsDiv.style.display = "block";
+     arrivedsDiv.style.display = "none";
+   }
+
+   function viewArriveds() {
+	 
+     arrivedsDiv.style.display = "block";
+     boardingsDiv.style.display = "none";
+   }
+ </script>
 </body>
 </html>
