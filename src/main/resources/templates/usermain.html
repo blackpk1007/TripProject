@@ -479,13 +479,41 @@
 				alert(jqXHR);
 			})
 	}
-	function userupdateform(){
-		var pass = prompt("수정을 위해 비밀번호를 입력해주세요.");
-		var pass2 = prompt("수정을 위해 비밀번호를 입력해주세요.");
+	
+	// 프로필 수정시 프롬프트에 비밀번호 값 받아 /logincheck 이
+	function passcheck(){
+		var userPW = prompt("수정을 위해 비밀번호를 입력해주세요.");
+		console.log(userPW);
+		if (userPW.value == "") {
+		    alert("비밀번호를 입력하세요.");
+		    return false;
+		  };
 		
+		var userID = [[${session.login}]];
 		
-		location.href="/login/userupdateform";
-	}
+		$.ajax({
+			url : "/login/userpasscheck",
+			type : "post",
+			data : { userID : userID,
+					userPW : userPW}
+			})
+				.done(function(result){
+					alert(result);
+                    if(result == "ID가 일치하지 않습니다."){
+                  	  return false;
+                    }
+                    if(result == "비밀번호가 일치하지 않습니다."){
+                  	  return false;
+                    }else{
+                  	  location.href="/login/userupdateform";  
+                    }
+				})
+				.fail(function(jqXHR){
+					console.log(jqXHR);
+					alert(jqXHR);
+				})
+		}
+	
 	
 </script>
 </head>
@@ -518,8 +546,8 @@
 				내 프로필
 			</div>
 			<div class="profile">
-				<button id="profilefix"
-					onclick="location.href='/login/userupdateform'">프로필 수정</button>
+				<button id="profilefix" type="button"
+					onclick="return passcheck();">프로필 수정</button>
 			</div>
 		</div>
 
