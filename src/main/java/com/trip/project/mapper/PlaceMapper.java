@@ -81,6 +81,12 @@ public interface PlaceMapper {
 	int planDelete(String userID, String planName);
 	@Delete(" delete from planDetail where userID = #{userID} and planName = #{planName} ")
 	int planDetaildelete(String userID, String planName);
+	// 코스, 코스디테일 삭제 
+	@Delete(" delete from course where userID = #{userID} and planName = #{planName} ")
+	int courseDelete(String userID, String planName);
+	@Delete(" delete from courseDetail where userID = #{userID} and planName = #{planName} ")
+	int courseDetaildelete(String userID, String planName);
+	
 	// 마이페이지 공유
 	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, userID, planName )"
 			+ "select planFirstDate, planLastDate, #{datecount}, planCount, userID, planName "

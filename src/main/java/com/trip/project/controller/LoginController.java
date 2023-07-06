@@ -53,7 +53,7 @@ public class LoginController {
 	         if (!dto.getUserID().equals(res.getUserID())) {
 	         }
 	      }catch(NullPointerException e) {
-	         return "ID일치하지않습니다.";
+	         return "ID가 일치하지 않습니다.";
 	      }
 
 		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
@@ -62,7 +62,7 @@ public class LoginController {
 			System.out.println(dto.getUserPW());
 			System.out.println(res.getUserPW());
 			
-			return "비밀번호일치하지않습니다.";
+			return "비밀번호가 일치하지 않습니다.";
 		}else {
 			session.setAttribute("login", res.getUserID());
 			session.setMaxInactiveInterval(1800);
@@ -230,8 +230,12 @@ public class LoginController {
 	public String planDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
 		int res = pservice.planDelete(userID,planName);
 		int res1 = pservice.planDetaildelete(userID, planName);
+		int res2 = pservice.courseDelete(userID, planName);
+		int res3 = pservice.courseDetaildelete(userID, planName);
 		System.out.println(res);
 		System.out.println(res1);
+		System.out.println(res2);
+		System.out.println(res3);
 		return userID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
 	}
 	//plan 공유 
@@ -251,11 +255,11 @@ public class LoginController {
 	// community 삭제
 	@ResponseBody
 	@RequestMapping("/communitydelete")
-	public String communityDelete(@RequestParam("communityTitle")String communityTitle,@RequestParam("userID")String userID ) {
-		int res = cservice.communityDelete(communityTitle, userID);
+	public String communityDelete(@RequestParam("communityNumber")String communityNumber,@RequestParam("userID")String userID ) {
+		int res = cservice.communityDelete(communityNumber, userID);
 		System.out.println(res);
 		
-		return communityTitle+"제목의 게시물이 삭제되었습니다.";
+		return "게시물이 삭제되었습니다.";
 	}
 	
 	

@@ -77,8 +77,11 @@
                  userEmail : useremailvalue}
        })
        		.done(function (result) {
-       			if(result=="이름과 이메일이 일치하지 않습니다."){
        				alert(result);
+       			if(result=="이름과 이메일이 일치하지 않습니다."){
+       				$("#userName").val('');
+              	 	$("#userEmail").val('');
+              	 	return false;
        			}else{
        				alert(result);
        				location.href="/login";

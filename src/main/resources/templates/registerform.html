@@ -32,6 +32,7 @@
 
 			</div>
 			<div class="signup_body">
+			<form action="/login/register">
 					<div class="loginForm">
 						&nbsp;이름 <input type="text" id="userName" name="userName">
 					</div>
@@ -45,7 +46,7 @@
 						여자<input id="female" type="radio" name="userGender" value="F" />
 					</div>
 					<div class="loginForm">
-						&nbsp;아이디 <button class="idcheck" th:onclick="idCheck();">중복체크</button><input type="text" id="userID" name="userID">
+						&nbsp;아이디 <button class="idcheck" type="button" th:onclick="idCheck();">중복체크</button><input type="text" id="userID" name="userID">
 					</div>
 					<div class="loginForm">
 						&nbsp;비밀번호 <input type="password" id="userPW" name="userPW">
@@ -68,7 +69,8 @@
 					-->
 
 					<!-- temp? -->
-					<button id="signinButton" onclick="return regist_check();">회원가입</button>
+					<button id="signinButton" type="submit" onclick="return regist_check();">회원가입</button>
+					</form>
 				<button id="AuthButton" type="submit">이메일 인증</button>
 
 
