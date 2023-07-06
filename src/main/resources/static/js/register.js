@@ -113,30 +113,6 @@ function regist_check() {
 
 
 
-
-
-//아이디 중복체크 팝업창(현재 공백문서)
-function id_check() {
-  //window.open("팝업될 문서 경로", "팝업될 문서 이름", "옵션");
-  window.open("", "", "width=600, height=200, left=200, top=100");
-}
-
-//이메일 옵션 선택후 주소 자동 완성
-function change_email() {
-  var email_add = document.getElementById("email_add");
-  var email_sel = document.getElementById("email_sel");
-
-  //지금 골라진 옵션의 순서와 값 구하기
-  var idx = email_sel.options.selectedIndex;
-  var val = email_sel.options[idx].value;
-
-  email_add.value = val;
-}
-
-//우편번호 검색 팝업창(현재 공백문서)
-function search_address() {
-  window.open("", "b", "width=600, height=300, left=200, top=100");
-}
 function idCheck(){
 	var userID = document.getElementById("userID");
 	var useridvalue = document.getElementById("userID").value;
@@ -176,7 +152,55 @@ function idCheck(){
                 alert(jqXHR);
             })
 	
+};
+
+function sendEmailConfirm(){
+    var emailInput = document.getElementById("userEmail").value;
+    $.ajax({
+      url: '/login/emailConfirm',
+      method: 'POST',
+      data: { userEmail : emailInput
+      },
+      success: function (data) {
+    	  
+      		alert(data);
+      		var ac = document.getElementById("acd");
+      		ac.value = data;
+      		console.log(ac);
+      },
+      error: function () {
+        console.log('이메일전송에 실패했습니다.');
+      }
+    });
+};
+
+
+//alert("인증메일 전송에 성공했습니다. 3분안에 인증코드를 입력해주세요.");
+
+//아이디 중복체크 팝업창(현재 공백문서)
+function id_check() {
+  //window.open("팝업될 문서 경로", "팝업될 문서 이름", "옵션");
+  window.open("", "", "width=600, height=200, left=200, top=100");
 }
+
+//이메일 옵션 선택후 주소 자동 완성
+function change_email() {
+  var email_add = document.getElementById("email_add");
+  var email_sel = document.getElementById("email_sel");
+
+  //지금 골라진 옵션의 순서와 값 구하기
+  var idx = email_sel.options.selectedIndex;
+  var val = email_sel.options[idx].value;
+
+  email_add.value = val;
+}
+
+//우편번호 검색 팝업창(현재 공백문서)
+function search_address() {
+  window.open("", "b", "width=600, height=300, left=200, top=100");
+}
+
+
 
   /*
   var reg = /^[0-9]+/g; //숫자만 입력하는 정규식
