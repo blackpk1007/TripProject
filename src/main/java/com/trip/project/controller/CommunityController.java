@@ -62,6 +62,7 @@ public class CommunityController {
 //		model.addAttribute("image", cService.selectOneImg(communityNumber));
 
 		ImageDTO imgDto = cService.selectOneImg(communityNumber);
+		System.out.println("controller detail : "+imgDto);
 		model.addAttribute("image", imgDto);
 		
 		session.getAttribute("login");
@@ -102,6 +103,7 @@ public class CommunityController {
 			file.setImageNumber(tmp.getCommunityNumber());
 			//image insert
 			imageInsertRes = cService.imageInsert(file);
+			System.out.println("selectImg="+imageInsertRes);
 			
 			if (communityInsertRes > 0 &&  imageInsertRes> 0) {
 				return "redirect:/community/communitymain";
@@ -124,7 +126,7 @@ public class CommunityController {
 	public String communityUpdateForm(Model model, int communityNumber) {
 		logger.info("UPDATEFORM COMMUNITY");
 		ImageDTO imgDto = cService.selectOneImg(communityNumber);
-		
+		System.out.println("controller update : "+imgDto);
 		model.addAttribute("dto", cService.selectOne(communityNumber));
 		model.addAttribute("image", imgDto);
 		
@@ -140,18 +142,35 @@ public class CommunityController {
 		// 게시글 update
 		int communityUpdateRes = cService.update(dto);
 		int imageUpdateRes = 0;
+		int imageInsertRes = 0;
 		
 		//file을 선택했을때 
 		if (file != null) {
-			//방금 INSERT한 게시글의 번호를 SELECT한 다음 UploadFile 객체에 저장
+			
 			CommunityDTO tmp = cService.ComunityselectOne();
 			file.setImageNumber(tmp.getCommunityNumber());
-			//image insert
+			//image update
 			imageUpdateRes = cService.updateImg(file);
+			
+			
+			System.out.println("image = "+imageUpdateRes);
+			System.out.println("update= "+communityUpdateRes);
+			
 			
 			if (communityUpdateRes > 0 &&  imageUpdateRes> 0) {
 				return "redirect:/community/communitydetail?communityNumber="+dto.getCommunityNumber();
-			} else {
+				
+			}else if(communityUpdateRes > 0 &&  imageUpdateRes == 0) {
+				
+				imageInsertRes = cService.imageInsert(file);
+				
+				if(communityUpdateRes > 0 &&  imageInsertRes > 0) {
+					return "redirect:/community/communitydetail?communityNumber="+dto.getCommunityNumber();
+				}else {
+					return "redirect:/community/communityupdate?communityNumber="+dto.getCommunityNumber();
+				}
+				
+			}else {
 				return "redirect:/community/communityupdate?communityNumber="+dto.getCommunityNumber();
 			}
 		}else {
@@ -161,6 +180,7 @@ public class CommunityController {
 				return "redirect:/community/communityupdate?communityNumber="+dto.getCommunityNumber();
 			}
 		}
+		
 	}
 
 	// 커뮤니티 삭제
