@@ -479,7 +479,13 @@
 				alert(jqXHR);
 			})
 	}
-	
+	function userupdateform(){
+		var pass = prompt("수정을 위해 비밀번호를 입력해주세요.");
+		var pass2 = prompt("수정을 위해 비밀번호를 입력해주세요.");
+		
+		
+		location.href="/login/userupdateform";
+	}
 	
 </script>
 </head>
@@ -611,10 +617,8 @@
 							</div>
 						</div>
 						<div class="loc3">
-							<!-- <button id="share1" >공유</button> -->
 							<button id="fix1" th:onclick="|location.href='/community/communityupdateform?communityNumber=${usercommunity.communityNumber}'|">수정</button>
 							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityNumber}]])">삭제</button>
-							<!-- th:onclick="communityupdate([[${usercommunity.communityNumber}]])" -->
 						</div>
 					</div>
 				</div>
