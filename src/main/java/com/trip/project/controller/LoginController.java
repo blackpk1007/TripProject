@@ -69,8 +69,29 @@ public class LoginController {
 		
 			return res.getUserID()+"님 로그인 되었습니다.";
 		}
-		
-  }
+	}
+	@ResponseBody
+	@RequestMapping("/userpasscheck")
+	public String userpasscheck(HttpSession session, Model model, LoginDTO dto) {
+		LoginDTO res = lservice.login(dto);
+		try {
+	         if (!dto.getUserID().equals(res.getUserID())) {
+	         }
+	      }catch(NullPointerException e) {
+	         return "ID가 일치하지 않습니다.";
+	      }
+		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
+		if (!passwordEncoder.matches(dto.getUserPW(), res.getUserPW())) {
+			System.out.println("password.");
+			System.out.println(dto.getUserPW());
+			System.out.println(res.getUserPW());
+			
+			return "비밀번호가 일치하지 않습니다.";
+		}else{
+			return "비밀번호가 확인되었습니다.";
+		}
+	}
+	
 	// 로그아웃 - 메인
 	@GetMapping("/logout")
 	public String logout(HttpSession session, HttpServletRequest request) {
