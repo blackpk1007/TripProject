@@ -7,11 +7,71 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
 	rel="stylesheet">
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
 <style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
 .body{
 	display: flex;
-	width: 98vw;
-	height: 78vh;
+	width: 97vw;
+	height: 100%;
 	flex-direction: column;
 	position:relative;
 	left:1vw;
@@ -30,8 +90,7 @@
 }
 /* 경로 버튼 부분 */
 .coursebtn{
-	display:flex;
-	justify-content:center;
+	position: relative;
 	
 }
 
@@ -41,10 +100,12 @@
 	font-size:1.8rem;
 	margin:1rem;
 	margin-bottom:0;
+	margin-top: 6vh;
 	position:relative;
 	display:flex;
 	justify-content:center;
-	left:20vw;
+	left:22.1%;
+	height: 6vh;
 	
 }
 .day1{
@@ -61,7 +122,7 @@
 	display: flex;
 	justify-content: center;
   	align-items: center;
-	
+	width:5vw;
 }
 .day2{
 	margin:0.7rem;
@@ -69,6 +130,7 @@
 	display: flex;
 	flex-direction: column;
   	align-items: center;
+  	justify-content: center;
 }
 .day3{
 	margin:0.2rem;
@@ -81,11 +143,10 @@
 	justify-content: center;
   	align-items: center;
 	flex-direction: column;
-	
 	height: 48vh;
-	
 	margin: 2rem;
 	margin-top:0;
+	margin-bottom:5vh;
 }
 
 .main{
@@ -148,14 +209,71 @@
 	height:4rem;
 	margin:1rem;
 }
+.courseInfo{
+display:flex;
+	justify-content: center;
+	align-items:center;
+	font-size: 20px;
+}
+.courseInfo-date{
+	margin-right:50vh;
+	margin-left:1vh;
+}
+.swiper-container {
+	width: 50%; 
+	height: 17vh;
+}
+.swiper-slide {
+	width:15vw;
+	height: 10vh;
+	text-align: center;
+	 /* 내용을 중앙정렬 하기위해 flex 사용 */
+	align-items: center; /* 위아래 기준 중앙정렬 */
+	justify-content: center; /* 좌우 기준 중앙정렬 */
+	
+}
+.swiper-slide {
+    position: relative;
+    height: 10vh;
+  }
+.swiper-slide img {
+	width:50%;
+	height:50%;
+	box-shadow: 0 0 5px #555;
+	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+}
+#coursedetail-img{
+	width:3vh;
+	height:2.5vh;
+}
+.swiper-slide-day{
+	margin-top: 2vh;
+	margin-bottom: 1vh;
 
-
+}
+ .swiper-pagination-bullet-active{
+  	background:#B8E9FF;
+  }
+  .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+  	background-image: url(/resources/image/mainArrowleft.png);
+  	
+  }
+  .swiper-button-next, .swiper-container-rtl .swiper-button-next {
+  	background-image: url(/resources/image/mainArrowRight.png);
+  }
+  #courseInfo-installText{
+  	margin-right:0.5vw;
+  }
+  
+  
 </style>
 
 <script
 	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
 <script th:inline="javascript">
 function initTmap() {
 	  // map 생성
@@ -174,32 +292,84 @@ window.onload = function () {
 </head>
 
 <body>
-	<div class="body">
-		<div><h2> 00 의 일정 제목 </h2></div>
-		<div> 
-			<div>기간 시작~기간 끝 </div>
-			<img src="#">
+<div class="header">
+		<div class="header-category">
+			<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
 		</div>
+	</div>
+	<div class="body">
+		<div class="courseInfo">
+			<div class="courseInfo-title">00 의 일정 제목</div>
+			<div> 
+				<div class="courseInfo-date">00.00.00 ~00.00.00</div>
+				
+			</div>
+			<div id="courseInfo-installText">저장하기</div>
+			<div id="coursedetail-img"><img src="/resources/image/coursedetail-img.png"></div>
+		</div>	
 		<!--  지도  -->
 		<div class="map">
 			<div id="map_div"></div>
 		</div>
 		<!-- 지도 밑 버튼 (경로 불러오는), 화면설계서랑 다름 -->
-		<div class="coursebtn"><!-- (경로출력) -->
-			<button>day1</button>
-			<button>day2</button>
-			<button>day3</button>
-			<button>day4</button>
-			<button>day5</button>
-			<button>day6</button>
-			<button>day7</button>
+		<div class="swiper-container" id="swiper-container-course">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day1</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day2</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day3</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day4</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day5</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day6</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day7</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+			</div>
+		<!-- 네비게이션 -->
+		<div class="swiper-button-next" id="swiper-button-next-course"></div>
+		<!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+		<div class="swiper-button-prev" id="swiper-button-prev-course"></div>
+		<!-- 이전 버튼 -->
+
+		<!-- 페이징 -->
+		<div class="swiper-pagination" id="swiper-pagination-course"></div>
 		</div>
 		<!-- 밑에 리스트 -->
 		<div class="mymain_text">
 			<div class="day1">Day1</div>
 			<div class="day2">
-				<div class="day3">date</div>
-				<div class="day3">제주도</div>
+				<div class="day3">00.00.00</div>
 			</div>
 		</div>
 		<div class="mymain">
@@ -252,6 +422,29 @@ window.onload = function () {
 			</div>
 		</div>
 	</div>
-	
+	<script type="text/javascript">
+		new Swiper('.swiper-container', {
+
+			slidesPerView : 4, // 동시에 보여줄 슬라이드 갯수
+			spaceBetween : 10, // 슬라이드간 간격
+			slidesPerGroup : 4, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+
+			// 그룹수가 맞지 않을 경우 빈칸으로 메우기
+			// 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+			loopFillGroupWithBlank : true,
+
+			loop : false, // 무한 반복
+
+			pagination : { // 페이징
+				el : '.swiper-pagination',
+				clickable : true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+			},
+			navigation : { // 네비게이션
+				nextEl : '.swiper-button-next', // 다음 버튼 클래스명
+				prevEl : '.swiper-button-prev', // 이번 버튼 클래스명
+			},
+		});
+	</script>
 </body>
+
 </html>
