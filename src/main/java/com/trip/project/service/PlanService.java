@@ -23,6 +23,8 @@ public interface PlanService {
 	
 	public List<PlaceDTO> placeSearch(String keyword, placePagination pageing);
 	
+	public int placeSearchCount(String keyword);
+	
 	public List<LoginDTO> genderList(int recommandPlaceNumber);
 	
 	public List<LoginDTO> birthList(int recommandPlaceNumber);

@@ -164,13 +164,32 @@ public class PlanController {
 	
 	@ResponseBody
 	@PostMapping("/search")
-	public List<PlaceDTO> search(@RequestParam("keyword") String keyword, @RequestParam("pageNum") int pageNum) throws UnsupportedEncodingException {
+	public Map<String, Object> search(@RequestParam("keyword") String keyword, @RequestParam("pageNum") int pageNum) throws UnsupportedEncodingException {
 		String KeywordDecode = URLDecoder.decode(keyword, "UTF-8");
+
+		int totalItems = pservice.placeSearchCount(KeywordDecode);
+		int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
 		placePagination paging = new placePagination(pageNum, 20);
 
 		List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
 
-		return dto;
+				
+        // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
+        if (pageNum < 1) {
+            pageNum = 1;
+        } else if (pageNum > totalPages) {
+        	pageNum = totalPages;
+        }
+        placePagination paging = new placePagination(pageNum, 20);
+        
+        // 현재 페이지에 해당하는 데이터 조회
+		List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("placeList", dto);
+        responseData.put("totalPages", totalPages);
+        responseData.put("currentPage", pageNum);
+		
+		return responseData;
 	}
 
 }

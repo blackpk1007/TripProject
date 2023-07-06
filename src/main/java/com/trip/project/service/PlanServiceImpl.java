@@ -146,9 +146,10 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 
+	@Override
+	public int placeSearchCount(String keyword) {
 
-
-	
-
+		return pmapper.placeSearchCount(keyword);
+}
 
 }

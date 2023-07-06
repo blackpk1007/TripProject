@@ -305,10 +305,28 @@ function fetchUpdatedMarkers(category, pageNum) {
     });
   }
   
+function fetchUpdatedMarkerssearch(keyword, pageNum) {
+	
+    $.ajax({
+      url: '/plan/search',
+      method: 'POST',
+      data: { keyword: keyword,
+    	      pageNum: pageNum},
+      success: function (data) {
+    	  updateList(data.placeList);
+    	  createMarkers(data.placeList);
+    	  updatePaginationsearch(data.totalPages, data.currentPage, keyword);
+    	  
+      },
+      error: function () {
+        console.log('Failed to fetch updated markers.');
+      }
+    });
+  }
 function updateList(data) {
 	var listContainer = document.querySelector('.list');
 	  listContainer.innerHTML = ''; // 기존 리스트 내용 초기화
-
+		console.log("update List : "+data);
 	  data.forEach(function (restaurant) {
 	    var listItem = document.createElement('div');
 	    listItem.id = 'left_block';
@@ -1106,7 +1124,8 @@ function createMarkers(data) {
 		  function getInputValues() {
 		    const courseLists = document.querySelectorAll('.course-plan .course-list');
 		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
-		    
+		    let check = true;
+		    let placecheck = true;
 		    const values = [];
 
 		    courseLists.forEach((courseList, index) => {
@@ -1114,7 +1133,12 @@ function createMarkers(data) {
 		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
   			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
-	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+	     	  let checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+	     	  if(checkboxColor == false){
+	     		  check = false;
+	     		  return check;
+	     	  }
+	     	  
 		      const colorName = convertRGBToColorName(checkboxColor);
 		      
 		      const inputDateValue = inputDateElement.value;
@@ -1130,6 +1154,8 @@ function createMarkers(data) {
 		          lon: inputLonValue,
 		          lat: inputLatValue
 		        });
+		        console.log("place for : "+lonLatPairs);
+		       
 		      });
 					
 		      values.push({
@@ -1139,13 +1165,38 @@ function createMarkers(data) {
 		        color: colorName
 		      });
 		      
+		      console.log("values push 후: "+values.lonLatPairs);
+		      if(values.lonLatPairs == undefined){
+		    	  placecheck = false;
+	     		  return placecheck;
+	     	  }else{
+	     		  placecheck = true;
+	     		  return placecheck;
+	     	  }
+		      console.log("getInputValues for : "+values.lonLatPairs);
 		      });
-		    
+		    console.log("coursePreviewPopup values :"+values.lonLatPairs);
+		    console.log("coursePreviewPopup placecheck : "+placecheck);
+		    if(!check){
+	     		  
+	     		 alert('색상을 선택해 주세요');
+	     		  return false;
+	     	  }
+		    if(!placecheck){
+		    		alert('장소를 선택해 주세요');
+	     		  return false;
+	     	  }
 		    return values;
 		  }
 		  
 		  const inputValues = getInputValues();
+		  console.log("incput Values = "+inputValues);
+		  if(!inputValues){
+     		  return false;
+     	  }
+
 		  console.log(inputValues);
+
 		  previewOpenPopup(inputValues);
 
 		 }
@@ -1163,6 +1214,9 @@ function createMarkers(data) {
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
 			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
 	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+	     	  if(checkboxColor === false){
+	     		  return false;
+	     	  }
 		      const colorName = convertRGBToColorName(checkboxColor);
 		      
 		      const inputDateValue = inputDateElement.value;
@@ -1213,7 +1267,6 @@ function createMarkers(data) {
 		  }
 	function getCheckboxIconBackgroundColor(checkboxElement) {
 		if(checkboxElement === "" || checkboxElement === null){
-			alert("색상을 선택해 주세요");
 			return false;
 		}else{
 		  const labelElement = checkboxElement.parentElement; // 체크박스를 감싸는 label 요소
@@ -1319,8 +1372,11 @@ function createMarkers(data) {
 			data: {keyword: keyword,
 				   pageNum: pageNum},
 			success: function(data){
-				updateList(data);
-				createMarkers(data);
+				console.log(data);
+				updateList(data.placeList);
+		    	  createMarkers(data.placeList);
+				updatePaginationsearch(data.totalPages, data.currentPage, keyword);
+				
 			},
 			error: function(data){
 				alert("실패");
@@ -1354,6 +1410,33 @@ function createMarkers(data) {
 
 	}
 
+
+	function updatePaginationsearch(totalPages, currentPage, keyword) {
+	    var paginationContainer = document.querySelector('#pagination');
+	    paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+	    var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
+	    var startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+	    var endPage = Math.min(totalPages, startPage + pageRange - 1);
+	    var decodekeyword = decodeURIComponent(keyword);
+		console.log(decodekeyword);
+	    // 페이지 번호 생성
+	    for (var i = startPage; i <= endPage; i++) {
+	        var pageLink = document.createElement('a');
+	        pageLink.href = 'javascript:void(0)';
+	        pageLink.textContent = i;
+	        pageLink.addEventListener('click', function () {
+	        	fetchUpdatedMarkerssearch(decodekeyword, Number(this.textContent));
+	        });
+
+	        if (i === currentPage) {
+	            pageLink.classList.add('active');
+	        }
+
+	        paginationContainer.appendChild(pageLink);
+	    }
+
+	}
+
 	document.addEventListener('DOMContentLoaded', function() {
 		  const buttons = document.querySelectorAll('#category-button button');
 
@@ -1375,6 +1458,22 @@ function createMarkers(data) {
 		      }
 		    });
 		  });
+
+		});
+
+	function weather(){
+		
+		$.ajax({
+			url:'/weather',
+			type: 'POST',
+			success: function(data){
+				updateList(data);
+				createMarkers(data);
+			},
+			error: function(data){
+				alert("실패");
+			}
+			
 		});
 
 
@@ -1410,7 +1509,7 @@ function createMarkers(data) {
 		<div class="main-left">
 			<div class="search-div">
 				<input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요">
-				<button type="button" id="search-button" onclick="search()">검색</button>
+				<button type="button" id="search-button" name="searchbutton" onclick="search()">검색</button>
 			</div>
 			<div class="list-scroll">
 			<div class="list">
