@@ -205,6 +205,8 @@ public class LoginController {
 		System.out.println("일정 : "+ pservice.userPlancount(userID));
 		System.out.println(pservice.userPlancount(userID).size());
 		
+		model.addAttribute("user2recommand", pservice.user2recommand(userID));
+		System.out.println("u2rec"+pservice.user2recommand(userID));
 		return "usermain";
 		
 	}

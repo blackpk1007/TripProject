@@ -27,7 +27,9 @@ public interface PlanService {
 	
 	public List<LoginDTO> birthList(int recommandPlaceNumber);
 	
+	// 마이페이지 리뷰 
 	public List<RecommandDTO> usermainRecommand(String userID);
+	public List<RecommandDTO> user2recommand(String userID);
 
 	public int planInsert(PlanDTO dto);
 	
@@ -40,11 +42,11 @@ public interface PlanService {
 	// 마이페이지 일정 삭제버튼, 플랜, 플랜디테일 
 	public int planDelete(String userID, String planName);
 	public int planDetaildelete(String userID, String planName);
-	
 	// 마이페이지 일정 공유버튼, 플랜,플랜디테일
 	public int planShare(String userID, String planName);
 	public int planDetailshare(String userID, String planName);
-//	public int datecount(String userID, String planName);
+//	// 마이페이지 recommandPlaceNumber로 place 정보(placeName용) 가져오는거 
+//	public List<PlaceDTO> userplace(String recommandPlaceNumber);
 	
 	public List<PlanDTO> userPlancount(String userID);
 }

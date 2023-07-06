@@ -73,7 +73,7 @@
 .body {
 	width: 98vw;
 	height: 78vh;
-	position: relative;
+	/* position: relative; */
 	left: 1vw;
 	display: flex;
 	flex-direction: column;
@@ -172,6 +172,14 @@
 	align-items: center;
 	justify-content: center;
 }
+/*  나의 리뷰  */
+.mymain2 {
+	display: flex;
+	padding: 5vw;
+	padding-top: 1rem;
+	align-items: center;
+	justify-content: center;
+}
 
 .list-scroll {
 	width: 90vw;
@@ -183,8 +191,36 @@
 	align-items: center;
 	-ms-overflow-style: none;
 }
+ /* 나의 리뷰  */
+.list-scroll1 {
+	width: 30vw;
+	height: 35vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	-ms-overflow-style: none;
+}
+.list-scroll2 {
+	width: 30vw;
+	height: 35vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	-ms-overflow-style: none;
+}
+
 
 .list-scroll::-webkit-scrollbar {
+	display: none;
+}
+.list-scroll1::-webkit-scrollbar {
+	display: none;
+}
+.list-scroll2::-webkit-scrollbar {
 	display: none;
 }
 
@@ -200,6 +236,39 @@
 	height: 15vh;
 	box-sizing: content-box;
 	width:55vw;
+	justify-content: center;
+	align-items: center;
+}
+/* 나의리뷰 */
+.main1 {
+	display:flex;
+	flex-direction: column;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	/* height: 15vh; */
+	box-sizing: content-box;
+	width:25vw;
+	justify-content: center;
+	align-items: center;
+} 
+.main2 {
+	display:flex;
+	flex-direction: column;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	/* height: 15vh; */
+	box-sizing: content-box;
+	width:25vw;
 	justify-content: center;
 	align-items: center;
 }
@@ -323,29 +392,29 @@
 <script th:inline="javascript">
 	function myplan() {
 		document.getElementById("plan").style.display = "block";
-		/* document.getElementById("review").style.display = "none"; */
+		document.getElementById("review").style.display = "none"; 
 		document.getElementById("community").style.display = "none";
 		
 		document.getElementById("myplan").style.display = "block";
-		/* document.getElementById("myreview").style.display = "none"; */
+		document.getElementById("myreview").style.display = "none"; 
 		document.getElementById("mycommunity").style.display = "none";
 	}
 	function myreview() {
 		document.getElementById("plan").style.display = "none";
-		/* document.getElementById("review").style.display = "block"; */
+		document.getElementById("review").style.display = "block"; 
 		document.getElementById("community").style.display = "none";
 		
 		document.getElementById("myplan").style.display = "none";
-		/* document.getElementById("myreview").style.display = "block"; */
+		document.getElementById("myreview").style.display = "flex"; 
 		document.getElementById("mycommunity").style.display = "none";
 	}
 	function mycommunity() {
 		document.getElementById("plan").style.display = "none";
-		/* document.getElementById("review").style.display = "none"; */
+		document.getElementById("review").style.display = "none"; 
 		document.getElementById("community").style.display = "block";
 		
 		document.getElementById("myplan").style.display = "none";
-		/* document.getElementById("myreview").style.display = "none"; */
+		document.getElementById("myreview").style.display = "none"; 
 		document.getElementById("mycommunity").style.display = "block";
 	}
 	
@@ -495,6 +564,37 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="mymain2" id="myreview" style="display: none;">
+			<div class="list-scroll1">
+				<div class="main1" th:each="userrecommand : ${recommand}">
+					<div class="myplan1">
+						<div class="loc2" >
+							<div class="tripdate">
+								전체 추천 &nbsp; <label th:text="${userrecommand.recommandPlaceNumber}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="delete1" >삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-scroll2">	
+				<div class="main2" th:each="user2 : ${user2recommand}">
+					<div class="myplan1">
+						<div class="loc2" >
+							<div class="tripdate">
+								2번 이상 &nbsp; <label th:text="${user2.recommandPlaceNumber}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="delete1" >삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 			
 		<div class="mymain" id="mycommunity" style="display: none;">
 			<div class="list-scroll">
@@ -521,6 +621,8 @@
 				</div>
 			</div>
 		</div>
+		
+		
 			<!-- <div class="main">
 				<div class="myplan2">
 					<div class="loc1">
@@ -549,38 +651,7 @@
 		
 	</div>
 
-	<!-- 나의 일정, 나의 리뷰, 나의 게시물 누를때 바뀌는용, ui 안정함.나중에. 
 	
-	<div class="mymain" id="myreview">
-		<div class="main">
-			<img id="location1" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-		<div class="main">
-			<img id="location2" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-	</div>
-	
-	<div class="mymain" id="mycommunity">
-		<div class="main">
-			<img id="location1" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-		<div class="main">
-			<img id="location2" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-	</div> -->
-
 
 
 </body>
