@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style type="text/css">
 .header {
 	width: 90vw;
@@ -260,6 +261,96 @@
 
        
 </style>
+
+
+</head>
+<body>
+	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
+<div id="write">
+	
+    <div id="top_title">
+        게시글 수정
+    </div>
+    
+    <form action="/community/communityupdate" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="communityNumber" th:value="${dto.communityNumber}">
+   
+        <div id="kategorie" class="div">
+            <div id="write_kg">카테고리</div>
+            <div id="tag">
+                
+                    <select name="communityCategory">
+                        <option value="tip">팁</option>
+                        <option value="review">후기</option>
+                    </select>
+                
+            </div>
+        </div>
+        <div id="title" class="div">
+            <div id="write_ti">제목</div>
+            <div><input type="text" id="communityTitle" name="communityTitle" th:value="${dto.communityTitle}"></div>
+        </div>
+        <div id="contents" class="div">
+        	 <div class="editor-menu">
+			    <div class="filebox">
+            		<input type="file" id="attachFile" name="attachFile" >
+        		</div>
+	        	 <button id="buttonContourTwo">|</button>
+	        	 <button id="btn-unordered-list">
+			        o_<br>
+			       	o_
+			       
+			    </button>
+			    <button id="btn-ordered-list">
+			        1_<br>
+			         2_
+			    </button>
+			   	<button id="buttonContour">|</button>
+			    <button id="btn-strike">
+			        <s>가</s>
+			    </button>
+			    <button id="btn-underline">
+			        <u>가</u>
+			    </button>
+			    <button id="btn-italic">
+			        <i>가</i>
+			    </button>
+			    <button id="btn-bold">
+			        <b>가</b>
+			    </button>
+			</div>
+            <div id="write_con">내용</div>
+            <div id="contentText" contenteditable="true" th:utext="${dto.communityContent}"  >
+            	<img th:src="|/community/image/__${image.imageStoredName}__|">
+            	 <input type="hidden" name="placeNumber" value="" id="placeNumber">
+            </div>
+           
+            <input type="hidden" name="communityContent" id="communityContent">
+        </div>
+        <div id="button">
+            <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
+            <input type="submit" value="수정" id="submitBT">
+        </div>
+        
+    </form>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -395,93 +486,30 @@ $(document).ready(function() {
     	}
     	
     });
-    
+   /*  function readURL(input) {
+        var session = sessionStorage.getItem('placeNumber');
+        document.getElementById("placeNumber").value = session;
+        var imagediv = document.querySelector("#contentText");
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+            	var image = document.createElement("img");
+            	image.id = 'preview';
+            	imagediv.appendChild(image);
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            document.getElementById('preview').src = "";
+        }
+    }
+   
+    $("#attachFile").on("change", function() {
+        readURL(this);
+    });
+     */
    
 });
 </script>
-</head>
-<body>
-	<div class="header">
-		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
-			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
-				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
-		</div>
-	</div>
-<div id="write">
-	
-    <div id="top_title">
-        게시글 수정
-    </div>
-    
-    <form action="/community/communityupdate" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="communityNumber" th:value="${dto.communityNumber}">
-   
-        <div id="kategorie" class="div">
-            <div id="write_kg">카테고리</div>
-            <div id="tag">
-                
-                    <select name="communityCategory">
-                        <option value="tip">팁</option>
-                        <option value="review">후기</option>
-                    </select>
-                
-            </div>
-        </div>
-        <div id="title" class="div">
-            <div id="write_ti">제목</div>
-            <div><input type="text" id="communityTitle" name="communityTitle" th:value="${dto.communityTitle}"></div>
-        </div>
-        <div id="contents" class="div">
-        	 <div class="editor-menu">
-			    <div class="filebox">
-            		<input type="file" id="attachFile" name="attachFile">
-        		</div>
-	        	 <button id="buttonContourTwo">|</button>
-	        	 <button id="btn-unordered-list">
-			        o_<br>
-			       	o_
-			       
-			    </button>
-			    <button id="btn-ordered-list">
-			        1_<br>
-			         2_
-			    </button>
-			   	<button id="buttonContour">|</button>
-			    <button id="btn-strike">
-			        <s>가</s>
-			    </button>
-			    <button id="btn-underline">
-			        <u>가</u>
-			    </button>
-			    <button id="btn-italic">
-			        <i>가</i>
-			    </button>
-			    <button id="btn-bold">
-			        <b>가</b>
-			    </button>
-			</div>
-            <div id="write_con">내용</div>
-            <div id="contentText" contenteditable="true" th:utext="${dto.communityContent}" ></div>
-            <input type="hidden" name="communityContent" id="communityContent">
-        </div>
-        <div id="button">
-            <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
-            <input type="submit" value="수정" id="submitBT">
-        </div>
-        
-    </form>
-</div>
 </body>
 </html>

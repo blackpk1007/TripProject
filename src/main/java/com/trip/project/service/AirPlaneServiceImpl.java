@@ -75,6 +75,9 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 					// XML 파싱
 					JSONObject jsonObject = XML.toJSONObject(flightStatusJson);
 					JSONObject response = jsonObject.getJSONObject("response");
+					if (!response.has("body")) {
+						return null;
+					}
 					JSONObject body = response.getJSONObject("body");
 
 					// Check if "items" field is a JSONObject
@@ -103,7 +106,6 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 				}
 			}
 		}
-		System.out.println(flightStatusList);
 
 		return flightStatusList;
 	}
@@ -159,6 +161,9 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 				// XML 파싱
 				JSONObject jsonObject = XML.toJSONObject(flightStatusJson);
 				JSONObject response = jsonObject.getJSONObject("response");
+				if (!response.has("body")) {
+					return null;
+				}
 				JSONObject body = response.getJSONObject("body");
 
 				// Check if "items" field is a JSONObject
@@ -180,7 +185,6 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 				}
 			}
 		}
-		System.out.println("service : "+flightStatusList);
 
 		return flightStatusList;
 	}

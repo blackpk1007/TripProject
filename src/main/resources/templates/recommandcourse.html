@@ -255,22 +255,79 @@ function sendSelectedDatesSeasons(dates, seasons) {
 </script>
 <title>코스 추천</title>
 <link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
-
 <style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 9vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
 .main_text{
-	font-size:2rem;
+	font-size:3rem;
 	text-align:center;
 	margin-top:2rem;
 		
 }
 .course{
 
-	width:50vw;
+	width:64vw;
 	height:20vh;
-  border:solid;
-	border-width:0.1rem;
+  	border:solid #d3d3d3;
+	border-width:2px;
 	position:relative;
-	left: 25vw;
+	left: 17.4vw;
 	top: 2vw;
 	text-align:center;
 }
@@ -278,7 +335,7 @@ function sendSelectedDatesSeasons(dates, seasons) {
 	margin:auto;
 	margin-top:1rem;
 	margin-bottom:1rem;
-	width:40vw;
+	width:50vw;
 	height:30%;
 	display: flex;
   	justify-content: center;
@@ -295,26 +352,27 @@ function sendSelectedDatesSeasons(dates, seasons) {
 }
 
 .dates1{
-  	font-size:1.8rem;
+  	font-size:1.6rem;
   	margin-left:auto;
   	margin-right:2rem;
-  	padding-top:0.2rem;
-  	width:8.5rem;
-  	border-radius: 1rem;
+  	border-radius: 3rem;
     border: solid;
-    border-width:3px;
+    border-width:2px;
     border-color: #B8E9FF;
-	display: flex;
-	text-align: center;
+	display:flex;
+	text-align:center;
   	align-items: center;
-  	justify-content:center;
+   	justify-content:center;
+  	width:5vw;
+  	height:1.7vh;
+  	padding:0.6rem;
 }
 
 .season{
 	margin: auto;
 	margin-top:1rem;
 	margin-bottom:1rem;
-	width:40vw;
+	width:50vw;
 	height:30%;
 	display: flex;
   	justify-content: center;
@@ -331,25 +389,25 @@ function sendSelectedDatesSeasons(dates, seasons) {
   	width:10rem;
 }
 .seasons1{
-  	font-size:1.8rem;
+  	font-size:1.6rem;
   	margin-left:auto;
   	margin-right:2rem;
-  	padding-top:0.2rem;
-  	width:8.5rem;
-  	border-radius: 1rem;
+  	border-radius: 3rem;
     border: solid;
-    border-width:3px;
+    border-width:2px;
     border-color: #B8E9FF;
 	display:flex;
 	text-align:center;
   	align-items: center;
    	justify-content:center;
-  	
+  	width:5vw;
+  	height:1.7vh;
+  	padding:0.6rem;
 }
 
 /* 줄 */
 hr{
-	width: 55rem;
+	width: 90rem;
 }
 .option{
 	display:flex;
@@ -358,16 +416,19 @@ hr{
   	justify-content:center;
 }
 .option1{
+	width: 5vw;
+	height: 1.7vh;
 	font-size:1.6rem;
 	display:flex;
-	text-align:center;
+	justify-content:center;
   	align-items: center;
   	margin:0.4rem;
+  	margin-right: 2rem;
   	border: solid;
 	border-color: #B8E9FF;
-	border-radius:0.5rem;
+	border-radius:3rem;
 	border-width:2px;
-	padding:0.4rem;
+	padding:0.6rem;
 }
 
 
@@ -376,8 +437,10 @@ hr{
 	font-size:1.8rem;
 	position:relative;
 	top: 4vh;
-	left:15vw;
+	left:18vw;
 	display:flex;
+	margin-top: 7.7rem;
+	margin-bottom: 0.7rem;
 }
 /* 큰틀 */
 .mymain{
@@ -385,9 +448,9 @@ hr{
 	position:relative;
 	display:flex;
 	top:4.5vh;
-	width:98vw;
+	width:90%;
 	height:80vh;
-	left:1vw;
+	left:13.9vw;
 }
 	/* 세로 4개씩 반갈 왼쪽 */
 .main1{
@@ -429,7 +492,7 @@ hr{
 }
 	/* 왼쪽 개별 네모 칸 4개  */
 .plan1{
-	width:70%;
+	width:30vw;
 	height:15rem;
 	border: solid;
 	border-color: #B8E9FF;
@@ -446,7 +509,7 @@ hr{
 }
 	/* 오른쪽 개별 네모 칸 4개  */
 .plan2{
-	width:70%;
+	width:30vw;
 	height:15rem;
 	border: solid;
 	border-color: #B8E9FF;
@@ -500,6 +563,7 @@ hr{
 	margin:0.4rem;
 	margin-top:0.6rem;
 	margin-bottom:0.6rem;
+	color:#808080;
 }
 .username{
 	margin:0.4rem;
@@ -537,6 +601,7 @@ hr{
 	margin:0.4rem;
 	margin-top:0.6rem;
 	margin-bottom:0.6rem;
+	width:12vw;
 }
 .userview{
 	margin:0.4rem;
@@ -577,7 +642,9 @@ hr{
   	justify-content: center;
   	align-items: center;
 } */
-
+#body{
+	width:80%;
+}
 
 </style>
 </head>
@@ -585,7 +652,7 @@ hr{
 <body>
  	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
@@ -602,14 +669,16 @@ hr{
 		</div>
 	</div>
 <!-- 옵션 -->
+
 <div class="main_text">코스추천</div>
+<div id="body">
 <div class="course"><!-- 큰덩어리 -->
 	<div class="date">
 			<div class="dates1">
 				<label>여행일</label>
 			</div>
 			<div class="dates">
-				<input type="checkbox" id="3day" name="date" checked>
+				<input type="checkbox" id="3day" name="date">
 				<label for="date">1-3 Day</label>
 			</div>
 			<div class="dates">
@@ -618,7 +687,7 @@ hr{
 			</div>
 			<div class="dates">
 				<input type="checkbox" id="10day" name="date" >
-				<label for="date">7-10 Day</label>
+				<label for="date">7-9 Day</label>
 			</div>
 			<div class="dates">
 				<input type="checkbox" id="30day" name="date" >
@@ -628,7 +697,7 @@ hr{
 	<div class="season">
 			<div class="seasons1">여행시기</div>
 			<div class="seasons" >
-				<input type="checkbox" id="spring" name="season" checked>
+				<input type="checkbox" id="spring" name="season">
 				<label for="date">봄</label>
 			</div>
 			<div class="seasons" >
@@ -646,9 +715,6 @@ hr{
 	</div>
 	<hr>	
 	<div class="option">
-		<div class="option1">1-3 Day</div>
-		<div class="option1">봄</div>
-		<div class="option1">10 + Day</div>
 	</div>
 </div>
 <!-- 본 -->
@@ -658,187 +724,31 @@ hr{
 </div>
 <div class="mymain">
 		<div class="main1"> 
+		 <div th:each="course : ${courses}">
 			<div class="plan1">
 				<div class="loc1">
 					<img class="coursepic" src="/resources/image/course1.png">
 				</div>
 				<div class="loc2">
 					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png"> 
-						사용자id </div>
+						<div class="category"> 여행 이름 </div>
+						<div class="category"> 여행 날짜 </div>
+						<div class="category"> 여행 기간 </div>
+						<div class="username">
+							<img class="usernamelogo" src="/resources/image/stonepapa.png"> [[${course.userID}]] </div>
 					</div>
 					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
+						<div class="data"><a th:href="|/course/coursedetail?planName=${course.planName}&userID=${course.userID}|"> [[${course.planName}]] </a></div>
+						<div class="data">[[${course.courseFirstDate}]] </div>
+						<div class="data">[[${course.coursetravelDate}]]일간 </div>
 						<div class="userview">
-							<img class="viewlogo" src="/resources/image/magnifier.png"> view </div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="plan1">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
-				</div>
-				<div class="loc2">
-					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
-						사용자id </div>
-					</div>
-					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="plan1">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
-				</div>
-				<div class="loc2">
-					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
-						사용자id </div>
-					</div>
-					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="plan1">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
-				</div>
-				<div class="loc2">
-					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
-						사용자id </div>
-					</div>
-					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
-					</div>
-				</div>
-			</div>
-			
-		</div>
-		
-		<div class="main2">
-			<div class="plan2">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
-				</div>
-				<div class="loc2">
-					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
-						사용자id </div>
-					</div>
-					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="plan2">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
-				</div>
-				<div class="loc2">
-					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
-						사용자id </div>
-					</div>
-					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="plan2">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
-				</div>
-				<div class="loc2">
-					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
-						사용자id </div>
-					</div>
-					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
-					</div>
-				</div>
-			</div>
-		
-			<div class="plan2">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
-				</div>
-				<div class="loc2">
-					<div class="col1">
-						<div class="category"> 여행이름 </div>
-						<div class="category"> 여행날짜 </div>
-						<div class="category"> 여행기간 </div>
-						<div class="username"><img class="usernamelogo" src="/resources/image/stonepapa.png">
-						사용자id </div>
-					</div>
-					<div class="col2">
-						<div class="data"> 여행이름 </div>
-						<div class="data"> 여행날짜 </div>
-						<div class="data"> 여행기간 </div>
-						<div class="userview"><img class="viewlogo" src="/resources/image/magnifier.png">
-						 view </div>
+							<img class="viewlogo" src="/resources/image/magnifier.png">[[${course.courseCount}]] </div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
+		</div>
 	</div>
-	
+</div>	
 </body>
 </html>

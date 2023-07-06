@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
 <style type="text/css">
 .header {
 	width: 90vw;
@@ -163,18 +164,18 @@
 <script th:inline="javascript">
 	function foodUrl(){
 		alert("맛집동행 채팅방 비밀번호는 1234 입니다.");
-		window.location.href="https://open.kakao.com/o/gKjzPmsf";
+		window.open("https://open.kakao.com/o/gKjzPmsf");
 	}
 	function taxiUrl(){
 		alert("택시동행 채팅방 비밀번호는 1234 입니다.");
-		window.location.href="https://open.kakao.com/o/gssGRmsf";
+		window.open("https://open.kakao.com/o/gssGRmsf");
 	}
 </script>
 </head>
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>

@@ -8,7 +8,7 @@
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
@@ -64,8 +64,10 @@
        var useridvalue = document.getElementById("userID").value;
        var useremailvalue = document.getElementById("userEmail").value;
 
-       console.log(userID);
+       console.log(useremailvalue);
+       console.log(userEmail);
        console.log(useridvalue);
+       console.log(userID);
        
        if (useridvalue == "") {
          alert("아이디를 입력해 주세요.");
@@ -90,14 +92,13 @@
                 	  $("#userEmail").val('');
                 	  return false;
                   }else{
-                	  location.href="/login/pwfixform";  
+                	  location.href="/login/pwfixform?userID="+useridvalue+"&userEmail="+useremailvalue;  
                   }
             })
             .fail(function(jqXHR) {
                 console.log(jqXHR);
                 alert(jqXHR);
             })
-     
    }
       
    </script>

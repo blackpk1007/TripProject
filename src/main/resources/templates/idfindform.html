@@ -11,7 +11,7 @@
 <body>
  	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
@@ -77,8 +77,11 @@
                  userEmail : useremailvalue}
        })
        		.done(function (result) {
-       			if(result=="이름과 이메일이 일치하지 않습니다."){
        				alert(result);
+       			if(result=="이름과 이메일이 일치하지 않습니다."){
+       				$("#userName").val('');
+              	 	$("#userEmail").val('');
+              	 	return false;
        			}else{
        				alert(result);
        				location.href="/login";

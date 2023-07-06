@@ -71,6 +71,8 @@ public interface CommunityMapper {
 	// 마이페이지에 내 게시물 정보 들고오
 	@Select( " SELECT * FROM community WHERE communityWriter=#{userID} " )
 	List<CommunityDTO> usermainCommunity(String userID);
-	
+	// 마이페이지에서 게시물 삭제
+	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} AND communityWriter=#{userID} ")
+	int communityDelete(String communityNumber, String userID);
 	
 }

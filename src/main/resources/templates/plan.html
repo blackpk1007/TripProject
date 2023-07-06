@@ -153,7 +153,9 @@ function test(){
 	                      
 	                      
 	                      var placeCheckcnt=0;
+	                      var db_check=0;
 	                  
+	                   
 	                      if (check.includes(placeAddress2)) {
 	                          console.log("placeAddress 값이 포함되어 있습니다.");
 	                          placeCheckcnt++;
@@ -173,6 +175,7 @@ function test(){
 	                      	if(userCheckcnt==0){
 	                      		alert("첫번째 영수증 인증이 완료되었습니다");
 	                      		closePopup();
+	                      		db_check=1;
 	                      		// 데이터를 서버로 전송하여 DB에 삽입
 	                              $.ajax({
 	                                  url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
@@ -180,7 +183,8 @@ function test(){
 	                                  data: {
 	                                      userID: loginchk,
 	                                      placeNumber: placeNumber2,
-	                                      date: date
+	                                      date: date,
+	                                      db_check: db_check
 	                                  },
 	                                  success: function(response) {
 	                                      console.log(response);
@@ -196,7 +200,7 @@ function test(){
 	                      			console.log(date);
 	                      			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
 	                      			closePopup();
-	                      			
+	                      			db_check=2;
 	                      			 // 데이터를 서버로 전송하여 DB에 삽입
 	                                  $.ajax({
 	                                      url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
@@ -204,7 +208,8 @@ function test(){
 	                                      data: {
 	                                          userID: loginchk,
 	                                          placeNumber: placeNumber2,
-	                                          date: date
+	                                          date: date,
+	                                          db_check: db_check
 	                                      },
 	                                      success: function(response) {
 	                                          console.log(response);
@@ -289,10 +294,9 @@ function fetchUpdatedMarkers(category, pageNum) {
       data: { category: category,
     	      pageNum: pageNum},
       success: function (data) {
-    	  updateList(data);
-    	  createMarkers(data);
-    	  fetchTotalItems();
-    	  pageNum = pageNum; // 현재 페이지 번호 업데이트
+    	  updateList(data.placeList);
+    	  createMarkers(data.placeList);
+    	  updatePagination(data.totalPages, data.currentPage);
     	  
       },
       error: function () {
@@ -368,7 +372,7 @@ function updateList(data) {
 
 	    var heartImg = document.createElement('div');
 	    var imgHeart = document.createElement('img');
-	    imgHeart.src = './resources/image/heart.png';
+	    imgHeart.src = '/resources/image/place_heart.png';
 	    imgHeart.alt = '';
 	    imgHeart.id = 'heart';
 	    heartImg.appendChild(imgHeart);
@@ -789,12 +793,17 @@ function createMarkers(data) {
     if (!selectedStartDate && !selectedEndDate) {
     	const applyButton = document.querySelector("#applyButton");
     	applyButton.style.display = 'none';
+    	const info = document.querySelector(".info");
+  	  info.style.display = 'block';
       const courseColorDay = document.querySelector(".course-color-day");
       courseColorDay.innerHTML = "";
+      courseColorDay.style.display = 'none'
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+      coursePlan.style.display = 'none'
       const courseButtonElement = document.querySelector(".course-button");
       courseButtonElement.innerHTML = "";
+      courseButtonElement.style.display = 'none'
     }else{
     	const applyButton = document.querySelector("#applyButton");
     	applyButton.style.display = 'block';
@@ -807,8 +816,21 @@ function createMarkers(data) {
 
 //적용 버튼 클릭 시 실행되는 함수
   function applyDate() {
+	  const info = document.querySelector(".info");
+	  info.style.display = 'none';
 	const applyButton = document.querySelector("#applyButton");
 	applyButton.style.display = 'none';
+	const courseColorDay = document.querySelector(".course-color-day");
+	courseColorDay.innerHTML = "";
+    courseColorDay.style.display = 'block';
+    const coursePlan = document.querySelector(".course-plan");
+    coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+    coursePlan.style.display = 'block';
+    const courseButtonElement = document.querySelector(".course-button");
+    courseButtonElement.innerHTML = "";
+    courseButtonElement.style.display = 'block';
+    
+    
     if (selectedStartDate && selectedEndDate) {
       days = getDayDiff(selectedStartDate, selectedEndDate);
       const courseColorDay = document.querySelector(".course-color-day");
@@ -817,6 +839,9 @@ function createMarkers(data) {
       const coursePlan = document.querySelector(".course-plan");
       coursePlan.innerHTML = ""; // 기존의 course-list 초기화
       
+      const coursedaydiv = document.createElement("div");
+      coursedaydiv.className = "course-day";
+      courseColorDay.appendChild(coursedaydiv);
     // 7개의 checkbox 생성
     for (let i = 1; i <= days; i++) {
     	
@@ -870,8 +895,8 @@ function createMarkers(data) {
       
       	  coursePlan.appendChild(courseColor);
     	}
-      
-    	const daydivElement = document.createElement("div");
+        
+    	const daydivElement = document.createElement("div");	
         const dayElement = document.createElement("h5");
         dayElement.textContent = `Day${i}`;
         dayElement.dataset.day = i; // 데이터 속성으로 day 값 설정
@@ -879,10 +904,8 @@ function createMarkers(data) {
           changeCurrentDay(parseInt(this.dataset.day)); // day 값을 정수로 변환하여 전달
         });
         
-        
 		daydivElement.appendChild(dayElement);
-		
-        courseColorDay.appendChild(daydivElement);
+        coursedaydiv.appendChild(daydivElement);
 		
         const courseList = document.createElement("div");
         courseList.className = "course-list";
@@ -909,14 +932,17 @@ function createMarkers(data) {
 	  
       const daybuttondiv = document.createElement("div");
    	  // 미리보기 버튼 생성
+   	  daybuttondiv.className = "daybutton";
       const previewButton = document.createElement("button");
       previewButton.setAttribute("type", "button");
+      previewButton.id = "previewButton";
       previewButton.setAttribute("onclick", "coursePreviewPopup()");
       previewButton.textContent = "미리보기";
 
       // 등록 버튼 생성
       const submitButton = document.createElement("button");
       submitButton.setAttribute("type", "button");
+      submitButton.id = "insertButton";
       submitButton.setAttribute("onclick", "courseInsertPopup()");
       submitButton.textContent = "등록";
 	  
@@ -939,7 +965,7 @@ function createMarkers(data) {
       daybuttondiv.appendChild(previewButton);
       daybuttondiv.appendChild(submitButton);
       
-      courseColorDay.appendChild(daybuttondiv);
+      coursedaydiv.appendChild(daybuttondiv);
       
       // Day 숫자 초기 설정 (첫 번째 Day를 선택한 상태로 설정)
       const firstDayElement = document.querySelector(".course-color-day h5");
@@ -1168,6 +1194,9 @@ function createMarkers(data) {
 		  if(!inputValues){
      		  return false;
      	  }
+
+		  console.log(inputValues);
+
 		  previewOpenPopup(inputValues);
 
 		 }
@@ -1300,8 +1329,7 @@ function createMarkers(data) {
 		        lonLatPairs: lonLatPairs,
 		        color: colorName
 		      });
-		      
-		      });
+		    });
 		    
 
 		    return values;
@@ -1356,55 +1384,32 @@ function createMarkers(data) {
 		});
 	}
 	
-		function updatePagination(totalItems, itemsPerPage, pageNum) {
-			const categoryInput = document.querySelector('input[name="placeCategory"]').value;
-			console.log(categoryInput);
-			  var totalPages = Math.ceil(totalItems / itemsPerPage);
-			  var paginationContainer = document.querySelector('#pagination');
-			  paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+	function updatePagination(totalPages, currentPage) {
+	    var paginationContainer = document.querySelector('#pagination');
+	    paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+	    var category = document.querySelector('input[name="placeCategory"]').value;
+	    var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
+	    var startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+	    var endPage = Math.min(totalPages, startPage + pageRange - 1);
 
-			  var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
-			  var startPage = Math.max(1, pageNum - Math.floor(pageRange / 2));
-			  var endPage = Math.min(totalPages, startPage + pageRange - 1);
+	    // 페이지 번호 생성
+	    for (var i = startPage; i <= endPage; i++) {
+	        var pageLink = document.createElement('a');
+	        pageLink.href = 'javascript:void(0)';
+	        pageLink.textContent = i;
+	        pageLink.addEventListener('click', function () {
+	        	fetchUpdatedMarkers(category, Number(this.textContent));
+	        });
 
-			  // 이전 버튼 생성
-			  var prevButton = document.createElement('a');
-			  prevButton.href = 'javascript:void(0)';
-			  prevButton.textContent = '이전';
-			  prevButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum - 5)+')');
-			  paginationContainer.appendChild(prevButton);
+	        if (i === currentPage) {
+	            pageLink.classList.add('active');
+	        }
 
-			  // 페이지 번호 생성
-			  for (var i = startPage; i <= endPage; i++) {
-			    var pageLink = document.createElement('a');
-			    pageLink.href = 'javascript:void(0)';
-			    pageLink.textContent = i;
-			    pageLink.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+i+')');
+	        paginationContainer.appendChild(pageLink);
+	    }
 
-			    if (i === pageNum) {
-			      pageLink.classList.add('active');
-			    }
-
-			    paginationContainer.appendChild(pageLink);
-			  }
-
-			  // 다음 버튼 생성
-			  var nextButton = document.createElement('a');
-			  nextButton.href = 'javascript:void(0)';
-			  nextButton.textContent = '다음';
-			  nextButton.setAttribute('onclick', 'fetchUpdatedMarkers(\"'+categoryInput+'\", '+(pageNum + 5)+')');
-			  paginationContainer.appendChild(nextButton);
-		}
-	// 서버로부터 전체 데이터 수를 가져와서 페이지 번호 업데이트
-	function fetchTotalItems() {
-	  // 서버로부터 전체 데이터 수를 가져오는 API 요청을 수행하세요.
-	  // 예시: AJAX 요청 등을 사용하여 전체 데이터 수를 가져옵니다.
-	  var totalItems = [[${placeListCount}]];
-		console.log(totalItems);
-	  var itemsPerPage = 20; // 페이지당 출력할 데이터 수
-
-	  updatePagination(totalItems, itemsPerPage, pageNum);
 	}
+
 
 	function updatePaginationsearch(totalPages, currentPage, keyword) {
 	    var paginationContainer = document.querySelector('#pagination');
@@ -1431,6 +1436,7 @@ function createMarkers(data) {
 	    }
 
 	}
+
 	document.addEventListener('DOMContentLoaded', function() {
 		  const buttons = document.querySelectorAll('#category-button button');
 
@@ -1452,6 +1458,7 @@ function createMarkers(data) {
 		      }
 		    });
 		  });
+
 		});
 
 	function weather(){
@@ -1468,11 +1475,13 @@ function createMarkers(data) {
 			}
 			
 		});
-	}
+
+
+	
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
-		  fetchTotalItems();
+		  fetchUpdatedMarkers('restaurant', 1);
 	};	
 </script>
 <title>Insert title here</title>
@@ -1480,7 +1489,7 @@ function createMarkers(data) {
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>
@@ -1515,7 +1524,7 @@ function createMarkers(data) {
 						</div>
 						<div id="list-name-heartimg">
 							<div>
-								<img src="./resources/image/heart.png" alt="" id="heartimg">
+								<img src="/resources/image/insta_heart.png" alt="" id="heartimg">
 							</div>
 							<div id="list-name-heartimg-label">
 								<label th:text="${restaurant.placeGood}">456</label>
@@ -1586,14 +1595,14 @@ function createMarkers(data) {
 			<div id="map_div"></div>
 			
 			<div id="category-button">
-				<button id="restaurant-btn">음식점</button>
+				<button id="restaurant-btn" class="button-selected">음식점</button>
 				<button id="youtube-btn">유튜브맛집</button>
 				<button id="tourist-btn">관광지</button>
 				<button id="hill-btn">오름</button>
 				<button id="ollegil-btn">올레길</button>
 			</div>
-			
 			<div id="weather">
+			<div th:if="${not #lists.isEmpty(jeju) or jeju != null}">
 				<div id="jejuweather">
 					<div id="wether-current">
 						<h5>제주시</h5>
@@ -1604,43 +1613,47 @@ function createMarkers(data) {
 							<div th:if="${jeju.sky == 1 && jeju.pty == 0}" >
 								<div th:if="${jeju.day == 'day'}">
 									<h5>맑음(낮)</h5>
-									<img alt="" src="/resources/image/weather/clearday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearday.png">
 								</div>
 								<div th:if="${jeju.day == 'night'}">
 									<h5>맑음(밤)</h5>
-									<img alt="" src="/resources/image/weather/clearnight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearnight.png">
 								</div>
 							</div>
 							<div th:if="${jeju.sky == 3 && jeju.pty == 0}" >
 								<h5>흐림</h5>
-								<img alt="" src="/resources/image/weather/cloud.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/cloud.png">
 							</div>
 							<div th:if="${jeju.sky == 4 && jeju.pty == 0}" >
 								<div th:if="${jeju.day == 'day'}">
 									<h5>구름많음(낮)</h5>
-									<img alt="" src="/resources/image/weather/cloudyday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudyday.png">
 								</div>
 								<div th:if="${jeju.day == 'night'}">
 									<h5>구름많음(밤)</h5>
-									<img alt="" src="/resources/image/weather/cloudynight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudynight.png">
 								</div>
 							</div>
 							<div th:if="${jeju.sky == 4 && jeju.pty == 1}" >
 								<h5>비</h5>
-								<img alt="" src="/resources/image/weather/rain.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/rain.png">
 							</div>
 							<div th:if="${jeju.sky == 4 && jeju.pty == 3}" >
 								<h5>눈</h5>
-								<img alt="" src="/resources/image/weather/snow.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/snow.png">
+							</div>
+							
+							<div id="wether-temp">
+								<h5>최저:[[${jeju.minimumtemp}]]℃</h5>
+								<h5>최고:[[${jeju.highesttemp}]]℃</h5>
 							</div>
 						</div>
-						<div id="wether-temp">
-							<h5>최저:[[${jeju.minimumtemp}]]℃</h5>
-							<h5>최고:[[${jeju.highesttemp}]]℃</h5>
-						</div>
+						
 					</div>
 				</div>
-				
+				</div>
+				<div th:if="${#lists.isEmpty(jeju) or jeju == null}"></div>
+				<div th:if="${not #lists.isEmpty(seogwipo) or seogwipo != null}">
 				<div id="seogwipoweather">
 					<div id="wether-current">
 						<h5>서귀포시</h5>
@@ -1651,41 +1664,45 @@ function createMarkers(data) {
 							<div th:if="${seogwipo.sky == 1 && seogwipo.pty == 0}" >
 								<div th:if="${seogwipo.day == 'day'}">
 									<h5>맑음(낮)</h5>
-									<img alt="" src="/resources/image/weather/clearday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearday.png">
 								</div>
 								<div th:if="${seogwipo.day == 'night'}">
 									<h5>맑음(밤)</h5>
-									<img alt="" src="/resources/image/weather/clearnight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearnight.png">
 								</div>
 							</div>
 							<div th:if="${seogwipo.sky == 3 && seogwipo.pty == 0}" >
 								<h5>흐림</h5>
-								<img alt="" src="/resources/image/weather/cloud.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/cloud.png">
 							</div>
 							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 0}" >
 								<div th:if="${seogwipo.day == 'day'}">
 									<h5>구름많음(낮)</h5>
-									<img alt="" src="/resources/image/weather/cloudyday.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudyday.png">
 								</div>
 								<div th:if="${seogwipo.day == 'night'}">
 									<h5>구름많음(밤)</h5>
-									<img alt="" src="/resources/image/weather/cloudynight.png">
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudynight.png">
 								</div>
 							</div>
 							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 1}" >
 								<h5>비</h5>
-								<img alt="" src="/resources/image/weather/rain.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/rain.png">
 							</div>
 							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 3}" >
 								<h5>눈</h5>
-								<img alt="" src="/resources/image/weather/snow.png">
+								<img id="weatherImg" alt="" src="/resources/image/weather/snow.png">
+							</div>
+							
+							<div id="wether-temp">
+								<h5>최저:[[${seogwipo.minimumtemp}]]℃</h5>
+								<h5>최고:[[${seogwipo.highesttemp}]]℃</h5>
 							</div>
 						</div>
-						<div id="wether-temp">
-							<h5>최저:[[${seogwipo.minimumtemp}]]℃</h5>
-							<h5>최고:[[${seogwipo.highesttemp}]]℃</h5>
 						</div>
 					</div>
+				</div>
+				<div th:if="${#lists.isEmpty(seogwipo) or seogwipo == null}">
 				</div>
 			</div>
 		</div>
@@ -1717,10 +1734,14 @@ function createMarkers(data) {
 				</div>
 			</div>
 			<div class="course">
+				<div class="info" style="display: block">
+				<p>가나다라마바사가나다라마바사가나다라마바사<br>
+				가나다라마바사가나다라마바사가나다라마바사가나다라마바사<br>
+				가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사<br>
+				</p>
+				</div>
 				<div class="course-color-day">
 				</div>
-				<div class="course-name">
-				</div>		
 				<div class="course-plan">
 					<div class="course-color-check">
 					</div>

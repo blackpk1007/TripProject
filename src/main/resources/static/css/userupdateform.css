@@ -83,11 +83,15 @@
 
 .signup_body {
 	box-sizing: border-box;
+	display:flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .body{
 	display:flex;
-	width:100%;
+	width:50%;
+	justify-content: center;
 }
 
 .fixed{
@@ -105,8 +109,9 @@
 
 .info{
 	border:solid;
-	flex:5;
+	flex:3;
 	padding:2rem;
+	font-size:1.6rem;
 }
 .info>input{
 	width: 80%;
@@ -123,7 +128,6 @@
 	display:flex;
 	align-items: center;
 	font-size: 1.6rem;
-	padding-left: 1rem;
 }
 #male{
 	display:flex;
@@ -147,7 +151,7 @@
 }
 
 .loginForm>input {
-	width: 80%;
+	width: 42%;
 	height: 2.6rem;
 	display: inline-block;
 	box-sizing: border-box;
@@ -155,12 +159,13 @@
 	border-radius: 0.5rem;
 	font-size: 1.6rem;
 	background-color: #EEEEEE;
-	padding-left: 2rem;
+	padding-left: 1rem;
+	margin-top: 0.6rem;
 }
 
 #updateButton {
 	cursor: pointer;
-	width: 40%;
+	width: 42%;
 	height: 2.6rem;
 	border-radius: 0.5rem;
 	border: solid;

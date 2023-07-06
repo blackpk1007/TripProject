@@ -55,12 +55,29 @@
 	                alert("재로그인 후 다시 시도해주세요.");
 	            })
    }
+   function userDelete(){
+	   var userID = [[${userinfo.userID}]];
+	   
+	   $.ajax({
+	          url : "/login/userdelete",
+	          type : "post",
+	          data : {userID : userID}
+	       })
+	       		.done(function (result) {
+	                alert(result);
+	                location.href="/login/logout";
+	            })
+	            .fail(function(jqXHR) {
+	                console.log(jqXHR);
+	                alert("재로그인 후 다시 시도해주세요.");
+	            })
+   }
    </script>
 </head>
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
@@ -86,13 +103,13 @@
 					<div class="body">
 						<div class="fixed">이름</div>
 						<div class="info">
-							<input type="text" id="userName" th:value="${userinfo.userName}" >
+							[[${userinfo.userName}]]
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">생년월일</div>
 						<div class="info">
-							<input type="text" id="userBirth" th:value="${userinfo.userBirth}">
+							[[${userinfo.userBirth}]]
 						</div>
 					</div>
 					<div class="body">
@@ -100,26 +117,24 @@
 						<div class="info">
 							<!-- <input type="text" id="userGender" th:value="${userinfo.getUserGender()}"> -->
 							<div class="gender" th:if="${userinfo.userGender} == 'M'">
-							남자<input id="male" type="radio" name="userGender" value="M" checked />
-							여자<input id="female" type="radio" name="userGender" value="F" />
+							남자
 							</div>
 							<div class="gender" th:if="${userinfo.userGender} == 'F'">
-							남자<input id="male" type="radio" name="userGender" value="M" />
-							여자<input id="female" type="radio" name="userGender" value="F" checked />
+							여자
 							</div>
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">아이디</div>
 						<div class="info">
-							<input type="text" id="userID" th:value="${userinfo.userID}">
+							[[${userinfo.userID}]]
 						</div>
 					</div>
 					<div class="body">
 						<div class="fixed">비밀번호</div>
 						<div class="info">
 							<div class="loginForm">새 비밀번호<br>
-	                        	<input type="text"	id="userPW" name="userPW" >
+	                        	<input type="password"	id="userPW" name="userPW" >
 							</div>
 							<div class="loginForm">비밀번호 재입력<br>
                         		<input type="password"	id="userPW2" name="userPW2" >
@@ -130,22 +145,11 @@
 					<div class="body">
 						<div class="fixed">이메일</div>
 						<div class="info">
-							<input type="text" id="userEmail" th:value="${userinfo.userEmail}">
+							[[${userinfo.userEmail}]]
 						</div>
 					</div>
-					<!-- <div class="body">
-						<div class="fixed">전화번호</div>
-						<div class="info">
-							<input type="text" id="userPhone">
-						</div>
-					</div> -->
                     
-                    <!-- <div class="loginForm">이메일<br>
-                        <input type="text"	id="userEmail" name="userEmail" >
-					</div>
- 					-->
-                    
-					<button id="deleteButton" type="submit" onclick="location.href'=/login/userdelete'">회원탈퇴</button>
+					<button id="deleteButton" type="submit" th:onclick="userDelete();">회원탈퇴</button>
 
 			</div>
 		</div>

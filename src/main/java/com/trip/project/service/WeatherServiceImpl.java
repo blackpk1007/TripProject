@@ -40,7 +40,7 @@ public class WeatherServiceImpl implements WeatherService{
 		urlBuilder
 				.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /* 페이지번호 */
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
-				+ URLEncoder.encode("10000", "UTF-8")); /* 한 페이지 결과 수 */
+				+ URLEncoder.encode("550", "UTF-8")); /* 한 페이지 결과 수 */
 		urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "="
 				+ URLEncoder.encode("JSON", "UTF-8")); /* 요청자료형식(XML/JSON) Default: XML */
 		urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "="
@@ -73,6 +73,9 @@ public class WeatherServiceImpl implements WeatherService{
 		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
 	    JSONObject json = new JSONObject(sb.toString());
 	    JSONObject response = json.getJSONObject("response");
+	    if (!response.has("body")) {
+			return null;
+		}
 	    JSONObject body = response.getJSONObject("body");
 	    JSONObject items = body.getJSONObject("items");
 	    JSONArray weatherArray = items.getJSONArray("item");
@@ -158,7 +161,7 @@ public class WeatherServiceImpl implements WeatherService{
 		urlBuilder
 				.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /* 페이지번호 */
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
-				+ URLEncoder.encode("10000", "UTF-8")); /* 한 페이지 결과 수 */
+				+ URLEncoder.encode("550", "UTF-8")); /* 한 페이지 결과 수 */
 		urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "="
 				+ URLEncoder.encode("JSON", "UTF-8")); /* 요청자료형식(XML/JSON) Default: XML */
 		urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "="
@@ -191,6 +194,9 @@ public class WeatherServiceImpl implements WeatherService{
 		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
 	    JSONObject json = new JSONObject(sb.toString());
 	    JSONObject response = json.getJSONObject("response");
+	    if (!response.has("body")) {
+			return null;
+		}
 	    JSONObject body = response.getJSONObject("body");
 	    JSONObject items = body.getJSONObject("items");
 	    JSONArray weatherArray = items.getJSONArray("item");

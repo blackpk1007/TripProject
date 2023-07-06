@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.OcrDTO;
@@ -22,4 +23,7 @@ public interface OcrMapper {
     
     @Insert("INSERT INTO recommand (recommandUserID, recommandPlaceNumber, recommandDate) VALUES (#{userID}, #{placeNumber}, #{date}) ")
     void insertRecommandData(String userID, int placeNumber, String date);
+    
+    @Update(" UPDATE place SET placeGood = placeGood + 1 WHERE placeNumber = #{placeNumber} ")
+    void updatePlaceGood(int placeNumber);
 }

@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.project.dto.LoginDTO;
+import com.trip.project.dto.PlanDTO;
 import com.trip.project.service.CommunityService;
 import com.trip.project.service.LoginService;
 import com.trip.project.service.PlanService;
@@ -49,7 +53,7 @@ public class LoginController {
 	         if (!dto.getUserID().equals(res.getUserID())) {
 	         }
 	      }catch(NullPointerException e) {
-	         return "ID일치하지않습니다.";
+	         return "ID가 일치하지 않습니다.";
 	      }
 
 		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
@@ -58,15 +62,36 @@ public class LoginController {
 			System.out.println(dto.getUserPW());
 			System.out.println(res.getUserPW());
 			
-			return "비밀번호일치하지않습니다.";
+			return "비밀번호가 일치하지 않습니다.";
 		}else {
 			session.setAttribute("login", res.getUserID());
 			session.setMaxInactiveInterval(1800);
 		
 			return res.getUserID()+"님 로그인 되었습니다.";
 		}
-		
-  }
+	}
+	@ResponseBody
+	@RequestMapping("/userpasscheck")
+	public String userpasscheck(HttpSession session, Model model, LoginDTO dto) {
+		LoginDTO res = lservice.login(dto);
+		try {
+	         if (!dto.getUserID().equals(res.getUserID())) {
+	         }
+	      }catch(NullPointerException e) {
+	         return "ID가 일치하지 않습니다.";
+	      }
+		System.out.println(passwordEncoder.matches(dto.getUserPW(), res.getUserPW()));
+		if (!passwordEncoder.matches(dto.getUserPW(), res.getUserPW())) {
+			System.out.println("password.");
+			System.out.println(dto.getUserPW());
+			System.out.println(res.getUserPW());
+			
+			return "비밀번호가 일치하지 않습니다.";
+		}else{
+			return "비밀번호가 확인되었습니다.";
+		}
+	}
+	
 	// 로그아웃 - 메인
 	@GetMapping("/logout")
 	public String logout(HttpSession session, HttpServletRequest request) {
@@ -119,9 +144,9 @@ public class LoginController {
 		if(res == null) {
 			return "아이디와 이메일이 일치하지 않습니다";
 		}else {
-//			세션에 썼던 아이디 이메일 담아주고 그걸 바로 재설정페이지에서 써먹어야될 것 같은데..
-//			model.addAttribute("userID", dto.getUserID() );
-//			model.addAttribute("userEmail", dto.getUserEmail());
+			//model.addAttribute("userinfo", lservice.userinfo(dto.getUserID()));
+//			model.addAttribute("userID", dto.getUserID());
+//			System.out.println(dto.getUserID());
 		return res.getUserName()+"님의 비밀번호 재설정 페이지로 이동합니다.";
 		}
 	}
@@ -129,21 +154,20 @@ public class LoginController {
 	// 비밀번호 재설정페이지
 	@RequestMapping("/pwfixform")
 	public String pwfixform(HttpSession session, Model model , LoginDTO dto) {
-		System.out.println(session.getAttribute("pwfind"));
-		System.out.println(dto.getUserEmail());
+		model.addAttribute("userinfo", lservice.userinfo(dto.getUserID()));
+		System.out.println(dto);
 		
-		//model.addAttribute("dto",dto);
 		return "pwfixform";
 	}
 	
 	//비밀번호 재설정
 	@ResponseBody
 	@PostMapping("/pwfix")
-	public String pwfix( LoginDTO dto) {
+	public String newpw( LoginDTO dto) {
 		int res = lservice.newpw(dto);
 		System.out.println(res);
 		
-		return dto.getUserName();
+		return dto.getUserID()+"님의 패스워드가 수정되었니다.";
 	}
 
 	// 회원가입 페이지
@@ -175,6 +199,14 @@ public class LoginController {
 		}
 
 	}
+	
+	//아이디중복체크  
+	@ResponseBody
+	@RequestMapping("/idcheck")
+	public int idcheck(LoginDTO dto) {
+		int res = lservice.idcheck(dto);
+		return res;
+	}
 
 	// 사용자 마이페이지 메인
 	@RequestMapping("/usermain")
@@ -189,8 +221,13 @@ public class LoginController {
 		model.addAttribute("recommandcount", pservice.usermainRecommand(userID).size());
 		System.out.println("리뷰 : "+ pservice.usermainRecommand(userID));
 		System.out.println(pservice.usermainRecommand(userID).size());
+		model.addAttribute("plan", pservice.userPlancount(userID));
+		model.addAttribute("plancount", pservice.userPlancount(userID).size());
+		System.out.println("일정 : "+ pservice.userPlancount(userID));
+		System.out.println(pservice.userPlancount(userID).size());
 		
-		
+		model.addAttribute("user2recommand", pservice.user2recommand(userID));
+		System.out.println("u2rec"+pservice.user2recommand(userID));
 		return "usermain";
 		
 	}
@@ -208,6 +245,45 @@ public class LoginController {
 		return "userupdateform";
 	}
 
+	//plandelete 삭제
+	@ResponseBody
+	@RequestMapping("/plandelete")
+	public String planDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
+		int res = pservice.planDelete(userID,planName);
+		int res1 = pservice.planDetaildelete(userID, planName);
+		int res2 = pservice.courseDelete(userID, planName);
+		int res3 = pservice.courseDetaildelete(userID, planName);
+		System.out.println(res);
+		System.out.println(res1);
+		System.out.println(res2);
+		System.out.println(res3);
+		return userID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
+	}
+	//plan 공유 
+	@ResponseBody
+	@RequestMapping("/planshare")
+	public String planshare(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
+	
+		int res = pservice.planShare(userID, planName);
+		int res1 = pservice.planDetailshare(userID, planName);
+		System.out.println(res);
+		System.out.println(res1);
+		return userID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
+	}
+	
+	// community 공유 
+	
+	// community 삭제
+	@ResponseBody
+	@RequestMapping("/communitydelete")
+	public String communityDelete(@RequestParam("communityNumber")String communityNumber,@RequestParam("userID")String userID ) {
+		int res = cservice.communityDelete(communityNumber, userID);
+		System.out.println(res);
+		
+		return "게시물이 삭제되었습니다.";
+	}
+	
+	
 	// 사용자 회원 정보 수정
 	@ResponseBody
 	@RequestMapping("/userupdate")
@@ -215,34 +291,17 @@ public class LoginController {
 		
 		int res = lservice.update(dto);
 		System.out.println(res);
-		return dto.getUserName();
+		return dto.getUserID();
 	}
 
 	// 사용자 회원 탈퇴
+	@ResponseBody
 	@RequestMapping("/userdelete")
 	public String userDelete(Model model, LoginDTO dto) {
 		int res = lservice.delete(dto);
-
-		if (res != 0) {
-			System.out.println(dto.getUserName());
-			model.addAttribute("message", "회원정보 삭제 완료.");
-			return "redirect:/usermain";
-		} else {
-			model.addAttribute("error", "삭제실패.");
-			return "redirect:/usermain";
-		}
-	}
-	
-	// 코스 추천
-	@RequestMapping("/recommandcourse")
-	public String recommandcourse() {
-		return "recommandcourse";
-	}
-	
-	// 코스 상세
-	@RequestMapping("/coursedetail")
-	public String coursedetail(){
-		return "coursedetail";
+		System.out.println(res);
+		
+		return dto.getUserID()+"님의 회원탈퇴가 완료되었습니다.";
 	}
 	
 	@RequestMapping("/userinserttest")

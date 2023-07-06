@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style type="text/css">
 .header {
 	width: 90vw;
@@ -69,7 +70,7 @@
 	        margin:20px auto;
 	        text-align:center;
         }
-        #img{
+        #category-img{
             width:5%;
             float: left;
             
@@ -190,7 +191,7 @@
 <script type="text/javascript">
 #(document).ready(function(){
 	$("#deleteBT").on('click', function(){
-		alert("게시글을 삭제 하시겠습니까?");
+		confirm("게시글을 삭제 하시겠습니까?");
 	});
 });
 </script>
@@ -198,7 +199,7 @@
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
@@ -216,11 +217,11 @@
 	</div>
 	<div id="detail">
         <div th:if="${dto.communityCategory} == 'tip'">
-            <div><img src="/resources/image/bulb.png" id="img"></div>
+            <div><img src="/resources/image/bulb.png" id="category-img"></div>
             <div id="top_title">제주도 여행팁</div>
         </div>
         <div th:if="${dto.communityCategory} == 'review'">
-            <div><img src="/resources/image/pencil.png" id="img"></div>
+            <div><img src="/resources/image/pencil.png" id="category-img"></div>
             <div id="top_title">제주도 여행후기</div>
         </div>
         <div id="write_title">

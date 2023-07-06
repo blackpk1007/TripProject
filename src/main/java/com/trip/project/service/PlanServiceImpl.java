@@ -43,11 +43,6 @@ public class PlanServiceImpl implements PlanService{
 		
 		return pmapper.birthList(recommandPlaceNumber);
 	}
-
-	@Override
-	public List<RecommandDTO> usermainRecommand(String userID) {
-		return pmapper.usermainRecommand(userID);
-}
 	public int planInsert(PlanDTO dto) {
 
 		return pmapper.planInsert(dto);
@@ -64,18 +59,40 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.userPlan(userID);
 	}
+	
+	@Override
+	public List<PlanDTO> userPlancount(String userID) {
+
+		return pmapper.userPlancount(userID);
+	}
 
 	@Override
 	public List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto) {
 
 		return pmapper.userPlanDetail(dto);
 	}
-
+	// 마이페이지 나의 일정 삭제 - 플랜,플랜디테
 	@Override
-	public int planDelete(PlanDTO dto) {
+	public int planDelete(String userID, String planName) {
 
-		return pmapper.planDelete(dto);
+		return pmapper.planDelete(userID,planName);
 	}
+	@Override
+	public int planDetaildelete(String userID, String planName) {
+		
+		return pmapper.planDetaildelete(userID, planName);
+	}
+	// 코스,코스디테일 삭제 
+	@Override
+	public int courseDelete(String userID, String planName) {
+		return pmapper.courseDelete(userID, planName);
+	}
+	
+	@Override
+	public int courseDetaildelete(String userID, String planName) {
+		return pmapper.courseDetaildelete(userID, planName);
+	}
+	
 
 	@Override
 	public List<PlaceDTO> placeSearch(String keyword, placePagination paging) {
@@ -128,10 +145,11 @@ public class PlanServiceImpl implements PlanService{
 		return pmapper.user2recommand(userID);
 	}
 
+
 	@Override
 	public int placeSearchCount(String keyword) {
 
 		return pmapper.placeSearchCount(keyword);
-	}
+}
 
 }

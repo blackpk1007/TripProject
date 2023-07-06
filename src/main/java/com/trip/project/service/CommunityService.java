@@ -28,4 +28,6 @@ public interface CommunityService {
 	
 	// 마이페이지에 게시물 정보 들고오기
 	public List<CommunityDTO> usermainCommunity(String userID);
+	// 마이페이지에서 삭제
+	public int communityDelete(String communityNumber, String userID);
 }

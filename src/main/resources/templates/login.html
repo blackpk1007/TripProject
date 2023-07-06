@@ -12,14 +12,14 @@
 <body>
  	<div class="header">
 		<div class="header-category">
-			<a href="/course" id="label-left-course">코스추천</a>
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
 			 <a href="/chatting" id="label-left-chat">채팅방</a>
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
 			<!-- 로그인전 --> 
 				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
+					<a href="/login" id="label-right-login"></a> 
+					<a href="/login/registerform" id="label-right-login"></a>
 				</div>
 				<!-- 로그인 후 -->
 				<div th:if="${session.login != null}" >
@@ -127,10 +127,10 @@
 		       })
 		       		.done(function (result) {
 	                      alert(result);
-	                      if(result == "ID일치하지않습니다."){
+	                      if(result == "ID가 일치하지 않습니다."){
 	                    	  return false;
 	                      }
-	                      if(result == "비밀번호일치하지않습니다."){
+	                      if(result == "비밀번호가 일치하지 않습니다."){
 	                    	  return false;
 	                      }else{
 	                    	  location.href="/";  
