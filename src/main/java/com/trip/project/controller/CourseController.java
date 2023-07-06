@@ -1,7 +1,14 @@
 package com.trip.project.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.project.dto.CourseDTO;
+import com.trip.project.dto.CourseDetailDTO;
+import com.trip.project.dto.PlanDetailDTO;
 import com.trip.project.service.CourseService;
 
 @Controller
@@ -84,7 +93,39 @@ public class CourseController {
 	}
 	// 코스 상세
 	@RequestMapping("/coursedetail")
-	public String coursedetail(){
+	public String coursedetail(Model model, String planName, String userID){
+		cService.courseListCount(userID, planName);
+		List<CourseDetailDTO> dtoList = cService.courseDetailList(userID, planName);
+		
+		List<Map<String, Object>> resultList = new ArrayList<>();
+		
+		   Map<String, Object> resultMap = new LinkedHashMap<>();
+
+		   for (CourseDetailDTO dto : dtoList) {
+		        String date = dto.getCourseDetailDate();
+		        String color = dto.getCourseDetailColor();
+		        if (!resultMap.containsKey(date)) {
+		            Map<String, Object> itemMap = new HashMap<>();
+		            itemMap.put("date", date);
+		            itemMap.put("color", color);
+		            itemMap.put("lonLatPairs", new ArrayList<>());
+		            resultMap.put(date, itemMap);
+		        }
+		        
+		        Map<String, Object> itemMap = (Map<String, Object>) resultMap.get(date);
+		        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) itemMap.get("lonLatPairs");
+
+		        Map<String, String> lonLatMap = new HashMap<>();
+		        lonLatMap.put("lon", dto.getCourseDetailLon());
+		        lonLatMap.put("lat", dto.getCourseDetailLat());
+		        lonLatPairs.add(lonLatMap);
+		    }
+		   resultList.add(resultMap);
+		   System.out.println("controller : "+resultList);
+		   
+		   model.addAttribute("courseDetail", resultList);
+		    
+		
 		return "coursedetail";
+		}
 	}
-}

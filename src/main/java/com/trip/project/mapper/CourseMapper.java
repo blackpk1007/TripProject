@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.trip.project.dto.CourseDTO;
+import com.trip.project.dto.CourseDetailDTO;
 
 @Mapper
 public interface CourseMapper {
@@ -17,7 +19,7 @@ public interface CourseMapper {
 	@Select(" select * from course order by courseCount desc ")
 	List<CourseDTO> courseCountSort();
 	
-	@Select(" select * from course ")
+	@Select(" select * from course order by courseFirstDate desc ")
 	List<CourseDTO> courseList();
 	
 	@Select({
@@ -85,4 +87,10 @@ public interface CourseMapper {
 	})
 
 	List<CourseDTO> courseDaysSeasons(@Param("days") List<Integer> days, @Param("months") List<Integer> months);
+	
+	@Select(" select * from courseDetail where userID = #{userID} and planName = #{planName} ")
+	List<CourseDetailDTO> courseDetailList(String userID, String planName);
+	
+	@Update(" update course set courseCount = courseCount + 1 where userID = #{userID} and planName = #{planName} ")
+	int courseListCount(String userID, String planName);
 }

@@ -54,7 +54,7 @@ function generateHTML(data) {
                         </div>
                     </div>
                     <div class="col2">
-                        <div class="data">${planName}</div>
+                        <div class="data"><a href="/course/coursedetail?planName=${planName}">${planName}</a></div>
                         <div class="data">${courseFirstDate}</div>
                         <div class="data">${coursetravelDate}일간</div>
                         <div class="userview">
@@ -738,7 +738,7 @@ hr{
 							<img class="usernamelogo" src="/resources/image/stonepapa.png"> [[${course.userID}]] </div>
 					</div>
 					<div class="col2">
-						<div class="data">[[${course.planName}]] </div>
+						<div class="data"><a th:href="|/course/coursedetail?planName=${course.planName}&userID=${course.userID}|"> [[${course.planName}]] </a></div>
 						<div class="data">[[${course.courseFirstDate}]] </div>
 						<div class="data">[[${course.coursetravelDate}]]일간 </div>
 						<div class="userview">
