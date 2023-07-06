@@ -71,7 +71,7 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.userPlanDetail(dto);
 	}
-
+	// 마이페이지 나의 일정 삭제 - 플랜,플랜디테
 	@Override
 	public int planDelete(String userID, String planName) {
 
@@ -82,6 +82,17 @@ public class PlanServiceImpl implements PlanService{
 		
 		return pmapper.planDetaildelete(userID, planName);
 	}
+	// 코스,코스디테일 삭제 
+	@Override
+	public int courseDelete(String userID, String planName) {
+		return pmapper.courseDelete(userID, planName);
+	}
+	
+	@Override
+	public int courseDetaildelete(String userID, String planName) {
+		return pmapper.courseDetaildelete(userID, planName);
+	}
+	
 
 	@Override
 	public List<PlaceDTO> placeSearch(String keyword, placePagination paging) {
@@ -133,6 +144,7 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.user2recommand(userID);
 	}
+
 
 
 

@@ -27,7 +27,7 @@ function regist_check() {
    // 한글영어,두글자이상12글자이
  	var namecheck = /^[가-힣a-zA-Z]{2,12}$/;
   if (!namecheck.test(userName.value)){
-  	alert("한글, 두글자 이상 12글자 이하 이름만 가능.");
+  	alert("한글 및 영어 두글자 이상 12글자 이하 이름만 가능.");
   	userName.focus();
   	return false;
   };
@@ -35,7 +35,7 @@ function regist_check() {
   if (userBirth.value == ""){
 	  alert("생년월일 입력하세요.")
 	  return false;
-  }
+  };
 	  
   /*
   if (!bDate.test(userBirth.value)) {
@@ -58,7 +58,7 @@ function regist_check() {
   	alert("아이디는 영어,숫자 6~20자로 설정해주세요.");
   	userID.focus();
   	return false;
-  }
+  };
   
   if (userPW.value == "") {
     alert("비밀번호를 입력하세요.");
@@ -76,7 +76,7 @@ function regist_check() {
   };
 
   if (userPW2.value !== userPW.value) {
-    alert("비밀번호가 일치하지 않습니다..");
+    alert("비밀번호가 일치하지 않습니다.");
     userPW2.focus();
     return false;
   };
@@ -88,7 +88,6 @@ function regist_check() {
     return false;
   } */
 
-  
 
 
   if (userEmail.value == "") {
@@ -104,20 +103,6 @@ function regist_check() {
       return false;
   }
   
-  /*
-  var reg = /^[0-9]+/g; //숫자만 입력하는 정규식
-  if (!reg.test(userPhone.value)) {
-    alert("전화번호는 숫자만 입력할 수 있습니다.");
-    userPhone.focus();
-    return false;
-  }
-  */
-
-  /* if (!agree.checked) { //체크박스 미체크시
-    alert("약관 동의를 체크하세요.");
-    agree.focus();
-    return false;
-  } */
   
   alert("회원가입이 완료되었습니다!");
 
@@ -125,6 +110,10 @@ function regist_check() {
   document.registerform.submit(); //유효성 검사의 포인트
   location.href="/login";
 }
+
+
+
+
 
 //아이디 중복체크 팝업창(현재 공백문서)
 function id_check() {
@@ -152,6 +141,20 @@ function idCheck(){
 	var userID = document.getElementById("userID");
 	var useridvalue = document.getElementById("userID").value;
 	
+	if (userID.value == "") { //해당 입력값이 없을 경우 같은말: if(!uid.value)
+    alert("아이디를 입력하세요.");
+    userID.focus(); //focus(): 커서가 깜빡이는 현상, blur(): 커서가 사라지는 현상
+    return false; //return: 반환하다 return false:  아무것도 반환하지 말아라 아래 코드부터 아무것도 진행하지 말것
+  	};
+  
+  //아이디 영어,숫자 6~20자
+  var idcheck = /^[a-zA-Z0-9]{6,20}$/;
+  if (!idcheck.test(userID.value)) {
+  	alert("아이디는 영어,숫자 6~20자로 설정해주세요.");
+  	userID.focus();
+  	return false;
+  };
+	
 	$.ajax({
           url : "/login/idcheck",
           type : "post",
@@ -174,3 +177,18 @@ function idCheck(){
             })
 	
 }
+
+  /*
+  var reg = /^[0-9]+/g; //숫자만 입력하는 정규식
+  if (!reg.test(userPhone.value)) {
+    alert("전화번호는 숫자만 입력할 수 있습니다.");
+    userPhone.focus();
+    return false;
+  }
+  */
+
+  /* if (!agree.checked) { //체크박스 미체크시
+    alert("약관 동의를 체크하세요.");
+    agree.focus();
+    return false;
+  } */

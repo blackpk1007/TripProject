@@ -72,7 +72,7 @@ public interface CommunityMapper {
 	@Select( " SELECT * FROM community WHERE communityWriter=#{userID} " )
 	List<CommunityDTO> usermainCommunity(String userID);
 	// 마이페이지에서 게시물 삭제
-	@Delete(" DELETE FROM community WHERE communityTitle=#{communityTitle} AND communityWriter=#{userID} ")
-	int communityDelete(String communityTitle, String userID);
+	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} AND communityWriter=#{userID} ")
+	int communityDelete(String communityNumber, String userID);
 	
 }

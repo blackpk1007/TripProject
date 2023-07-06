@@ -146,9 +146,9 @@ public class CommunityServiceImpl implements CommunityService{
 	}
 	//마이페이지에서 삭제 
 	@Override
-	public int communityDelete(String communityTitle, String userID) {
+	public int communityDelete(String communityNumber, String userID) {
 
-		return mapper.communityDelete(communityTitle, userID);
+		return mapper.communityDelete(communityNumber, userID);
 	}
 
 

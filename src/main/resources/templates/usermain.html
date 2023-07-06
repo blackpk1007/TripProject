@@ -161,7 +161,7 @@
 /* main */
 .mymain_text {
 	font-size: 1.8rem;
-	margin-left: 10vw;
+	margin-left: 20vw;
 }
 
 .mymain {
@@ -460,27 +460,32 @@
 	}
 	
 	// 게시물 삭제 
-	function communitydelete(communityTitle){
+	function communitydelete(communityNumber){
 	var userID = [[${session.login}]];
 	
-	console.log(communityTitle);
 	
 	$.ajax({
 		url : "/login/communitydelete",
 		type : "post",
 		data : { userID : userID,
-				communityTitle : communityTitle}
+				communityNumber : communityNumber}
 		})
 			.done(function(result){
 				alert(result);
-				location.href="/login/usermain"
+				location.href="/login/usermain";
 			})
 			.fail(function(jqXHR){
 				console.log(jqXHR);
 				alert(jqXHR);
 			})
 	}
-	
+	function userupdateform(){
+		var pass = prompt("수정을 위해 비밀번호를 입력해주세요.");
+		var pass2 = prompt("수정을 위해 비밀번호를 입력해주세요.");
+		
+		
+		location.href="/login/userupdateform";
+	}
 	
 </script>
 </head>
@@ -612,43 +617,13 @@
 							</div>
 						</div>
 						<div class="loc3">
-							<!-- <button id="share1" >공유</button> -->
 							<button id="fix1" th:onclick="|location.href='/community/communityupdateform?communityNumber=${usercommunity.communityNumber}'|">수정</button>
-							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityTitle}]])">삭제</button>
-							<!-- th:onclick="communityupdate([[${usercommunity.communityNumber}]])" -->
+							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityNumber}]])">삭제</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
-		
-			<!-- <div class="main">
-				<div class="myplan2">
-					<div class="loc1">
-						<img id="location2" src="#">
-					</div>
-					<div class="loc2">
-						<div class="tripname">
-						 여행이름 &nbsp;
-						 <label th:text="${userplan.planName}"></label> 
-						 </div>
-						<div class="tripdate">
-						 여행일자 &nbsp;
-						 <label th:text="${userplan.planFirstDate}"></label>
-						  ~ 
-						 <label th:text="${userplan.planLastDate}"></label> 
-						 </div>
-					</div>
-					<div class="loc3">
-						<button id="share2">공유</button>
-						<button id="fix2">수정</button>
-						<button id="delete2">삭제</button>
-					</div>
-				</div>
-			</div> -->
-
-		
 	</div>
 
 	
