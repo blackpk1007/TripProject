@@ -73,7 +73,7 @@
 .body {
 	width: 98vw;
 	height: 78vh;
-	position: relative;
+	/* position: relative; */
 	left: 1vw;
 	display: flex;
 	flex-direction: column;
@@ -172,6 +172,14 @@
 	align-items: center;
 	justify-content: center;
 }
+/*  나의 리뷰  */
+.mymain2 {
+	display: flex;
+	padding: 5vw;
+	padding-top: 1rem;
+	align-items: center;
+	justify-content: center;
+}
 
 .list-scroll {
 	width: 90vw;
@@ -183,8 +191,36 @@
 	align-items: center;
 	-ms-overflow-style: none;
 }
+ /* 나의 리뷰  */
+.list-scroll1 {
+	width: 30vw;
+	height: 35vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	-ms-overflow-style: none;
+}
+.list-scroll2 {
+	width: 30vw;
+	height: 35vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	-ms-overflow-style: none;
+}
+
 
 .list-scroll::-webkit-scrollbar {
+	display: none;
+}
+.list-scroll1::-webkit-scrollbar {
+	display: none;
+}
+.list-scroll2::-webkit-scrollbar {
 	display: none;
 }
 
@@ -200,6 +236,39 @@
 	height: 15vh;
 	box-sizing: content-box;
 	width:55vw;
+	justify-content: center;
+	align-items: center;
+}
+/* 나의리뷰 */
+.main1 {
+	display:flex;
+	flex-direction: column;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	/* height: 15vh; */
+	box-sizing: content-box;
+	width:25vw;
+	justify-content: center;
+	align-items: center;
+} 
+.main2 {
+	display:flex;
+	flex-direction: column;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	/* height: 15vh; */
+	box-sizing: content-box;
+	width:25vw;
 	justify-content: center;
 	align-items: center;
 }
@@ -323,24 +392,34 @@
 <script th:inline="javascript">
 	function myplan() {
 		document.getElementById("plan").style.display = "block";
-		document.getElementById("myplan").style.display = "block";
-		document.getElementById("review").style.display = "none";
+		document.getElementById("review").style.display = "none"; 
 		document.getElementById("community").style.display = "none";
+		
+		document.getElementById("myplan").style.display = "block";
+		document.getElementById("myreview").style.display = "none"; 
+		document.getElementById("mycommunity").style.display = "none";
 	}
 	function myreview() {
-		document.getElementById("review").style.display = "block";
 		document.getElementById("plan").style.display = "none";
+		document.getElementById("review").style.display = "block"; 
 		document.getElementById("community").style.display = "none";
+		
+		document.getElementById("myplan").style.display = "none";
+		document.getElementById("myreview").style.display = "flex"; 
+		document.getElementById("mycommunity").style.display = "none";
 	}
 	function mycommunity() {
-		document.getElementById("community").style.display = "block";
 		document.getElementById("plan").style.display = "none";
-		document.getElementById("review").style.display = "none";
+		document.getElementById("review").style.display = "none"; 
+		document.getElementById("community").style.display = "block";
+		
+		document.getElementById("myplan").style.display = "none";
+		document.getElementById("myreview").style.display = "none"; 
+		document.getElementById("mycommunity").style.display = "block";
 	}
 	
 	// 일정 삭제 
 	function plandelete(planName){
-		//data의 id랑 값 개념이 이게 맞나? useridvalue 선언하고 data : { userID : useridvalue가?}
 	var userID = [[${session.login}]];
 	
 	console.log(planName);
@@ -360,7 +439,7 @@
 				alert(jqXHR);
 			})
 	}
-	
+	// 일정 공유 
 	function planshare(planName){
 	var userID = [[${session.login}]];
 	
@@ -379,6 +458,30 @@
 				alert(jqXHR);
 			})
 	}
+	
+	// 게시물 삭제 
+	function communitydelete(communityTitle){
+	var userID = [[${session.login}]];
+	
+	console.log(communityTitle);
+	
+	$.ajax({
+		url : "/login/communitydelete",
+		type : "post",
+		data : { userID : userID,
+				communityTitle : communityTitle}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain"
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
+	
+	
 </script>
 </head>
 <body>
@@ -408,7 +511,6 @@
 			</div>
 			<div class="profile" th:text="${session.login}">
 				내 프로필
-				<!-- 사진바뀌는기능할건지 비번바꾸는걸로할건지? -->
 			</div>
 			<div class="profile">
 				<button id="profilefix"
@@ -417,8 +519,6 @@
 		</div>
 
 		<div class="status">
-			<!-- 각각 onclick javascript 이용, 밑으로 끌고가야됨  -->
-			<!-- https://www.delftstack.com/ko/howto/javascript/make-a-div-clickable/ -->
 			<div class="user_status" onclick="myplan();">
 				나의 일정
 				<div class="num" th:text="${plancount}">일정 끌고오기</div>
@@ -434,7 +534,7 @@
 		</div>
 
 		<div class="mymain_text">
-			<div id="plan" style="display: none;">나의 일정</div>
+			<div id="plan" >나의 일정</div>
 			<div id="review" style="display: none;">나의 리뷰</div>
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
@@ -463,6 +563,66 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		
+		<div class="mymain2" id="myreview" style="display: none;">
+			<div class="list-scroll1">
+				<div class="main1" th:each="userrecommand : ${recommand}">
+					<div class="myplan1">
+						<div class="loc2" >
+							<div class="tripdate">
+								전체 추천 &nbsp; <label th:text="${userrecommand.recommandPlaceNumber}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="delete1" >삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-scroll2">	
+				<div class="main2" th:each="user2 : ${user2recommand}">
+					<div class="myplan1">
+						<div class="loc2" >
+							<div class="tripdate">
+								2번 이상 &nbsp; <label th:text="${user2.recommandPlaceNumber}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="delete1" >삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+		<div class="mymain" id="mycommunity" style="display: none;">
+			<div class="list-scroll">
+				<div class="main" th:each="usercommunity : ${community}">
+					<div class="myplan1">
+						<div class="loc1">
+							<img id="location1" src="#">
+						</div>
+						<div class="loc2">
+							<div class="tripname">
+								게시물이름 &nbsp; <label th:text="${usercommunity.communityTitle}"></label>
+							</div>
+							<div class="tripdate">
+								게시일자 &nbsp; <label th:text="${#dates.format(usercommunity.communityDate, 'yyyy-MM-dd')}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<!-- <button id="share1" >공유</button> -->
+							<button id="fix1" th:onclick="|location.href='/community/communityupdateform?communityNumber=${usercommunity.communityNumber}'|">수정</button>
+							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityTitle}]])">삭제</button>
+							<!-- th:onclick="communityupdate([[${usercommunity.communityNumber}]])" -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
 			<!-- <div class="main">
 				<div class="myplan2">
 					<div class="loc1">
@@ -488,41 +648,10 @@
 				</div>
 			</div> -->
 
-		</div>
+		
 	</div>
 
-	<!-- 나의 일정, 나의 리뷰, 나의 게시물 누를때 바뀌는용, ui 안정함.나중에. 
 	
-	<div class="mymain" id="myreview">
-		<div class="main">
-			<img id="location1" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-		<div class="main">
-			<img id="location2" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-	</div>
-	
-	<div class="mymain" id="mycommunity">
-		<div class="main">
-			<img id="location1" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-		<div class="main">
-			<img id="location2" src="#">
-			<button>공유</button>
-			<button>수정</button>
-			<button>삭제</button>
-		</div>
-	</div> -->
-
 
 
 </body>

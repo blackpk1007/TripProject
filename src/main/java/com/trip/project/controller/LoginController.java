@@ -205,6 +205,8 @@ public class LoginController {
 		System.out.println("일정 : "+ pservice.userPlancount(userID));
 		System.out.println(pservice.userPlancount(userID).size());
 		
+		model.addAttribute("user2recommand", pservice.user2recommand(userID));
+		System.out.println("u2rec"+pservice.user2recommand(userID));
 		return "usermain";
 		
 	}
@@ -242,6 +244,18 @@ public class LoginController {
 		System.out.println(res);
 		System.out.println(res1);
 		return userID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
+	}
+	
+	// community 공유 
+	
+	// community 삭제
+	@ResponseBody
+	@RequestMapping("/communitydelete")
+	public String communityDelete(@RequestParam("communityTitle")String communityTitle,@RequestParam("userID")String userID ) {
+		int res = cservice.communityDelete(communityTitle, userID);
+		System.out.println(res);
+		
+		return communityTitle+"제목의 게시물이 삭제되었습니다.";
 	}
 	
 	

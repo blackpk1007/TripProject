@@ -49,9 +49,16 @@ public interface PlaceMapper {
 	@Select(" SELECT DATE_FORMAT(l.userBirth, '%Y') AS userBirth, r.recommandPlaceNumber FROM login AS l JOIN recommand AS r ON l.userID = r.recommandUserID WHERE r.recommandPlaceNumber =#{recommandPlaceNumber} ")
 	List<LoginDTO> birthList(int recommandPlaceNumber);
 	
-	// 마이페이지에 갯수세는거 
-	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID}" )
+	// 마이페이지에 recommand 전체 갯수세는거 
+	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} " )
 	public List<RecommandDTO> usermainRecommand(String userID);	
+	// 마이페이지에 recommand 2개이상 갯수 세는거
+	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} group by recommandPlaceNumber having count(*) > 1" )
+	public List<RecommandDTO> user2recommand(String userID);
+//	// 마이페이지에 recommandPlaceNumber로 place 정보 (placeName) 가져오는거 
+//	@Select(" SELECT * FROM place WHERE placeNumber=#{recommandPlaceNumber")
+//	List<PlaceDTO> userplace(String recommandPlaceNumber);
+	
 
 	@Insert(" insert into plan values(null, #{userID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
 	int planInsert(PlanDTO dto);
