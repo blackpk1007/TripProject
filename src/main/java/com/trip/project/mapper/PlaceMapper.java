@@ -40,6 +40,9 @@ public interface PlaceMapper {
 	@Select(" select * from place where placeName like '%${keyword}%' order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}")
 	List<PlaceDTO> placeSearch(@Param("keyword") String keyword, @Param("paging")placePagination paging);
 	
+	@Select(" select count(*) from place where placeName like '%${keyword}%' ")
+	int placeSearchCount(@Param("keyword") String keyword);
+	
 	@Select(" SELECT l.userGender, recommandPlaceNumber, COUNT(*) AS count FROM login AS l JOIN recommand AS r ON l.userID = r.recommandUserID WHERE r.recommandPlaceNumber =#{recommandPlaceNumber} GROUP BY l.userGender ")
 	List<LoginDTO> genderList(int recommandPlaceNumber);
 	

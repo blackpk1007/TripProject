@@ -89,5 +89,49 @@ public class PlanServiceImpl implements PlanService{
 		return pmapper.placeRestaurantListCount();
 	}
 
+	@Override
+	public int placeCategoryCount(String categoey) {
+
+		return pmapper.placeCategoryCount(categoey);
+	}
+
+	@Override
+	public int planShare(String userID, String planName) {
+		PlanDTO dto = pmapper.datecount(userID, planName);
+		int fd = Integer.parseInt(dto.getPlanFirstDate().replaceAll("-", ""));
+		int ld = Integer.parseInt(dto.getPlanLastDate().replaceAll("-", ""));
+		int datecount = ld-fd+1;
+		
+		return pmapper.planShare(userID, planName, datecount);
+	}
+	@Override
+	public int planDetailshare(String userID, String planName) {
+		
+		return pmapper.planDetailshare(userID, planName);
+	}
+//	// 마이페이지 recommandPlaceNumber로 place 정보(placeName용) 가져오는거 
+//	@Override
+//	public List<PlaceDTO> userplace(String recommandPlaceNumber) {
+//		
+//		return pmapper.userplace(recommandPlaceNumber);
+//	}
+
+	// 마이페이지 리뷰 갯수
+	@Override
+	public List<RecommandDTO> usermainRecommand(String userID) {
+		
+		return pmapper.usermainRecommand(userID);
+	}
+	@Override
+	public List<RecommandDTO> user2recommand(String userID) {
+
+		return pmapper.user2recommand(userID);
+	}
+
+	@Override
+	public int placeSearchCount(String keyword) {
+
+		return pmapper.placeSearchCount(keyword);
+	}
 
 }
