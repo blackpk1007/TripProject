@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Mypage</title>
+<link rel="stylesheet" href="/resources/css/reset.css" type="text/css">
+
+<style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
+
+#logo {
+	width: 300px;
+	height: 200px;
+}
+
+.body {
+	width: 98vw;
+	height: 78vh;
+	/* position: relative; */
+	left: 1vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+/*  프로필 */
+.profilearea {
+	display: flex;
+	padding: 1rem;
+	margin-left: 20vw;
+}
+
+.imagebox {
+	width: 15rem;
+	height: 15rem;
+	border-radius: 70%;
+	border: solid;
+	border-width: 4px;
+	border-color: #B8E9FF;
+	overflow: hidden;
+	background: white;
+	margin-right: 1rem;
+}
+
+.profilepic {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.profile {
+	text-align: center;
+	font-size: 1.8rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#profilefix {
+	font-size: 1.5rem;
+	background-color: #BDBDBD;
+	border: none;
+	border-radius: 0.5rem;
+	padding: 0.4rem;
+	margin-left: 1rem;
+}
+
+/* 일정 3개 */
+.status {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.user_status {
+	width: 12vw;
+	text-align: center;
+	background-color: #B8E9FF;
+	font-size: 1.8rem;
+	color: white;
+	margin: 5vw;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	padding-top: 1rem;
+	border-radius: 0.5rem;
+}
+
+.num {
+	text-align: center;
+	border: solid;
+	border-width: 2px;
+	border-color: grey;
+	border-top-color: #B8E9FF;
+	background-color: white;
+	font-size: 1.8rem;
+	color: black;
+	padding-top: 0.5rem;
+	padding-bottom: 1rem;
+	border-color: #ECECEC;
+	border-bottom-left-radius: 0.5rem;
+	border-bottom-right-radius: 0.5rem;
+}
+
+/* main */
+.mymain_text {
+	font-size: 1.8rem;
+	margin-left: 20vw;
+}
+
+.mymain {
+	display: flex;
+	padding: 5vw;
+	padding-top: 1rem;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+/*  나의 리뷰  */
+.mymain2 {
+	display: flex;
+	padding: 5vw;
+	padding-top: 1rem;
+	align-items: center;
+	justify-content: center;
+}
+
+.list-scroll {
+	width: 90vw;
+	/* height: 35vh; */
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	-ms-overflow-style: none;
+}
+ /* 나의 리뷰  */
+.list-scroll1 {
+	width: 30vw;
+	height: 35vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	-ms-overflow-style: none;
+}
+.list-scroll2 {
+	width: 30vw;
+	height: 35vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	-ms-overflow-style: none;
+}
+
+
+.list-scroll::-webkit-scrollbar {
+	display: none;
+}
+.list-scroll1::-webkit-scrollbar {
+	display: none;
+}
+.list-scroll2::-webkit-scrollbar {
+	display: none;
+}
+
+.main {
+	display:flex;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	height: 15vh;
+	box-sizing: content-box;
+	width:55vw;
+	justify-content: center;
+	align-items: center;
+}
+/* 나의리뷰 */
+.main1 {
+	display:flex;
+	flex-direction: column;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	/* height: 15vh; */
+	box-sizing: content-box;
+	width:25vw;
+	justify-content: center;
+	align-items: center;
+} 
+.main2 {
+	display:flex;
+	flex-direction: column;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	/* height: 15vh; */
+	box-sizing: content-box;
+	width:25vw;
+	justify-content: center;
+	align-items: center;
+}
+
+#location1 {
+	width: 18rem;
+	height: 15rem;
+	overflow: hidden;
+	background: #BDBDBD;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.myplan1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#location2 {
+	width: 18rem;
+	height: 15rem;
+	overflow: hidden;
+	background: #BDBDBD;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.myplan2 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.loc1 {
+	flex: 1 0 auto;
+	margin-left:0;
+	margin-right:auto;
+}
+
+.loc2 {
+	flex: 3 0 auto;
+}
+
+.tripname {
+	margin: 1rem;
+}
+
+.tripdate {
+	margin: 1rem;
+}
+
+.loc3 {
+	flex: 1 0 auto;
+}
+
+/*공 수 삭 */
+#share1 {
+	font-size: 2rem;
+	color: #B8E9FF;
+	border: solid;
+	border-width: 2px;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+
+#share2 {
+	font-size: 2rem;
+	color: #B8E9FF;
+	border: solid;
+	border-width: 2px;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+
+#fix1 {
+	font-size: 2rem;
+	color: #78A84E;
+	border: solid;
+	border-width: 2px;
+	border-color: #78A84E;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+
+#fix2 {
+	font-size: 2rem;
+	color: #78A84E;
+	border: solid;
+	border-width: 2px;
+	border-color: #78A84E;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+
+#delete1 {
+	font-size: 2rem;
+	color: #EFA174;
+	border: solid;
+	border-width: 2px;
+	border-color: #EFA174;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+
+#delete2 {
+	font-size: 2rem;
+	color: #EFA174;
+	border: solid;
+	border-width: 2px;
+	border-color: #EFA174;
+	border-radius: 0.5rem;
+	margin: 1rem;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script th:inline="javascript">
+	function myplan() {
+		document.getElementById("plan").style.display = "block";
+		document.getElementById("review").style.display = "none"; 
+		document.getElementById("community").style.display = "none";
+		
+		document.getElementById("myplan").style.display = "block";
+		document.getElementById("myreview").style.display = "none"; 
+		document.getElementById("mycommunity").style.display = "none";
+	}
+	function myreview() {
+		document.getElementById("plan").style.display = "none";
+		document.getElementById("review").style.display = "block"; 
+		document.getElementById("community").style.display = "none";
+		
+		document.getElementById("myplan").style.display = "none";
+		document.getElementById("myreview").style.display = "flex"; 
+		document.getElementById("mycommunity").style.display = "none";
+	}
+	function mycommunity() {
+		document.getElementById("plan").style.display = "none";
+		document.getElementById("review").style.display = "none"; 
+		document.getElementById("community").style.display = "block";
+		
+		document.getElementById("myplan").style.display = "none";
+		document.getElementById("myreview").style.display = "none"; 
+		document.getElementById("mycommunity").style.display = "block";
+	}
+	
+	// 일정 삭제 
+	function plandelete(planName){
+	var userID = [[${session.login}]];
+	
+	console.log(planName);
+	
+	$.ajax({
+		url : "/login/plandelete",
+		type : "post",
+		data : { userID : userID,
+				planName : planName}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain"
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
+	// 일정 공유 
+	function planshare(planName){
+	var userID = [[${session.login}]];
+	
+	$.ajax({
+		url : "/login/planshare",
+		type : "post",
+		data : { userID : userID,
+				planName : planName}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain"
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
+	
+	// 게시물 삭제 
+	function communitydelete(communityNumber){
+	var userID = [[${session.login}]];
+	
+	
+	$.ajax({
+		url : "/login/communitydelete",
+		type : "post",
+		data : { userID : userID,
+				communityNumber : communityNumber}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain";
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
+	
+	// 프로필 수정시 프롬프트에 비밀번호 값 받아 /logincheck 이
+	function passcheck(){
+		var userPW = prompt("수정을 위해 비밀번호를 입력해주세요.");
+		console.log(userPW);
+		if (userPW.value == "") {
+		    alert("비밀번호를 입력하세요.");
+		    return false;
+		  };
+		
+		var userID = [[${session.login}]];
+		
+		$.ajax({
+			url : "/login/userpasscheck",
+			type : "post",
+			data : { userID : userID,
+					userPW : userPW}
+			})
+				.done(function(result){
+					alert(result);
+                    if(result == "ID가 일치하지 않습니다."){
+                  	  return false;
+                    }
+                    if(result == "비밀번호가 일치하지 않습니다."){
+                  	  return false;
+                    }else{
+                  	  location.href="/login/userupdateform";  
+                    }
+				})
+				.fail(function(jqXHR){
+					console.log(jqXHR);
+					alert(jqXHR);
+				})
+		}
+	
+	
+</script>
+</head>
+<body>
+	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
+	<div class="body">
+		<div class="profilearea">
+			<div class="imagebox">
+				<img class="profilepic" id="profilepic"
+					src="/resources/image/stonepapa.png">
+			</div>
+			<div class="profile" th:text="${session.login}">
+				내 프로필
+			</div>
+			<div class="profile">
+				<button id="profilefix" type="button"
+					onclick="return passcheck();">프로필 수정</button>
+			</div>
+		</div>
+
+		<div class="status">
+			<div class="user_status" onclick="myplan();">
+				나의 일정
+				<div class="num" th:text="${plancount}">일정 끌고오기</div>
+			</div>
+			<div class="user_status" onclick="myreview();">
+				나의 리뷰
+				<div class="num" th:text="${recommandcount}">리뷰 끌고오기</div>
+			</div>
+			<div class="user_status" onclick="mycommunity();">
+				나의 게시물
+				<div class="num" th:text="${communitycount}">게시물 끌고오기</div>
+			</div>
+		</div>
+
+		<div class="mymain_text">
+			<div id="plan" >나의 일정</div>
+			<div id="review" style="display: none;">나의 리뷰</div>
+			<div id="community" style="display: none;">나의 게시물</div>
+		</div>
+
+		<div class="mymain" id="myplan" >
+			<div class="list-scroll">
+				<div class="main" th:each="userplan : ${plan}">
+					<div class="myplan1">
+						<div class="loc1">
+							<img id="location1" src="#">
+						</div>
+						<div class="loc2">
+							<div class="tripname">
+								여행이름 &nbsp; <label th:text="${userplan.planName}"></label>
+							</div>
+							<div class="tripdate">
+								여행일자 &nbsp; <label th:text="${userplan.planFirstDate}"></label>
+								~ <label th:text="${userplan.planLastDate}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="share1" th:onclick="planshare([[${userplan.planName}]])">공유</button>
+							<button id="fix1">수정</button>
+							<button id="delete1" th:onclick="plandelete([[${userplan.planName}]])">삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="mymain2" id="myreview" style="display: none;">
+			<div class="list-scroll1">
+				<div class="main1" th:each="userrecommand : ${recommand}">
+					<div class="myplan1">
+						<div class="loc2" >
+							<div class="tripdate">
+								전체 추천 &nbsp; <label th:text="${userrecommand.recommandPlaceNumber}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="delete1" >삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-scroll2">	
+				<div class="main2" th:each="user2 : ${user2recommand}">
+					<div class="myplan1">
+						<div class="loc2" >
+							<div class="tripdate">
+								2번 이상 &nbsp; <label th:text="${user2.recommandPlaceNumber}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="delete1" >삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+		<div class="mymain" id="mycommunity" style="display: none;">
+			<div class="list-scroll">
+				<div class="main" th:each="usercommunity : ${community}">
+					<div class="myplan1">
+						<div class="loc1">
+							<img id="location1" src="#">
+						</div>
+						<div class="loc2">
+							<div class="tripname">
+								게시물이름 &nbsp; <label th:text="${usercommunity.communityTitle}"></label>
+							</div>
+							<div class="tripdate">
+								게시일자 &nbsp; <label th:text="${#dates.format(usercommunity.communityDate, 'yyyy-MM-dd')}"></label>
+							</div>
+						</div>
+						<div class="loc3">
+							<button id="fix1" th:onclick="|location.href='/community/communityupdateform?communityNumber=${usercommunity.communityNumber}'|">수정</button>
+							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityNumber}]])">삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+
+</body>
+</html>
+

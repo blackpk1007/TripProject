@@ -1,23 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>FindYourID</title>
 <link rel="stylesheet" href="/resources/css/pwfindform.css" type="text/css">
 </head>
 <body>
-	<nav id="menu">
-		<div style="text-align: center;">
-			<img id="logo" src="/resources/image/logo.png">
+	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
 		</div>
-		<ul>
-			<li class="linka" ><a class="link" href="#">일정생성</a></li>
-			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka" ><a class="link" href="#">채팅방</a></li>
-			<li class="linkb" ><a class="link" href="#">마이페이지</a></li>
-		</ul>
-	</nav>
-
+	</div>
 	<div class="signup1">
 		<div class="signup2">
 			<div class="signup_header">
@@ -25,27 +31,76 @@
 				
 			</div>
 			<div class="signup_body">
-				<form method="post" action="/login/idcheck">
 					<div class="loginForm">
-                        <input type="text"	id="userName" name="userName" placeholder=" 이름 입력">  
+                        <input type="text"	id="userID" name="userID" placeholder="ID 입력">  
 					</div>
 					<div class="loginForm">
-                        <input type="text"	id="userEmail" name="userEmail" placeholder=" 이메일 입력">
+                        <input type="text"	id="userEmail" name="userEmail" placeholder="이메일 입력">
 					</div>
-					<button id="findPwButton" type="submit">확인</button>
-						<script>
-							alert(${error});
-						</script>
+					<button id="findPwButton" type="button" th:onclick="findPw();">확인</button>
+			</div>
+			<!-- <form name="userInfo" method="post" action="/login/pwfixform">
+				<input type="hidden" name="userID" value="${userID}">
+				<input type="hidden" name="userEmail" value="${userEmail}">
+			</form> -->
 					<ul class="wrap">
 						<hr class="line">
 						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
 						<li><a href="/login/idfindform" id="txt">아이디 찾기</a></li>&nbsp;&nbsp;
 						<hr class="line">
 					</ul>
-				</form>
+		
 			</div>
 		</div>
-	</div>
 	
+	
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   <script th:inline="javascript"> 
+   
+   function findPw(){
+      
+       var userID = document.getElementById("userID");
+       var userEmail = document.getElementById("userEmail");
+       var useridvalue = document.getElementById("userID").value;
+       var useremailvalue = document.getElementById("userEmail").value;
+
+       console.log(useremailvalue);
+       console.log(userEmail);
+       console.log(useridvalue);
+       console.log(userID);
+       
+       if (useridvalue == "") {
+         alert("아이디를 입력해 주세요.");
+         userid.focus();
+         return false;
+      }
+      if (useremailvalue == "") {
+         alert("이메일을 입력해 주세요.");
+         useremail.focus();
+         return false;
+      }
+      $.ajax({
+          url : "/login/pwfind",
+          type : "post",
+          data : { userID : useridvalue,
+                 userEmail : useremailvalue}
+       })
+       		.done(function (result) {
+                  alert(result);
+                  if(result == "아이디와 이메일이 일치하지 않습니다"){
+                	  $("#userID").val('');
+                	  $("#userEmail").val('');
+                	  return false;
+                  }else{
+                	  location.href="/login/pwfixform?userID="+useridvalue+"&userEmail="+useremailvalue;  
+                  }
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+                alert(jqXHR);
+            })
+   }
+      
+   </script>
 </body>
 </html>

@@ -1,53 +1,97 @@
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<!-- <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/> -->
 <title>FindYourID</title>
 <link rel="stylesheet" href="/resources/css/idfindform.css" type="text/css">
 </head>
 <body>
-	<nav id="menu">
-		<div style="text-align: center;">
-			<img id="logo" src="/resources/image/logo.png">
-		</div>
-		<ul>
-			<li class="linka" ><a class="link" href="#">일정생성</a></li>
-			<li class="linka" ><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka" ><a class="link" href="#">채팅방</a></li>
-			<li class="linkb" ><a class="link" href="#">마이페이지</a></li>
-		</ul>
-	</nav>
-
-	<div class="signup1">
-		<div class="signup2">
-			<div class="signup_header">
-				<div id="signin">아이디 찾기</div>
-				
-			</div>
-			<div class="signup_body">
-				<form method="post" action="/login/idcheck">
-					<div class="loginForm">
-                        <input type="text"	id="userName" name="userName" placeholder=" 이름 입력">  
-					</div>
-					<div class="loginForm">
-                        <input type="text"	id="userEmail" name="userEmail" placeholder=" 이메일 입력">
-					</div>
-					<button id="findIdButton" type="submit">확인</button>
-						<script>
-							alert(${error});
-						</script>
-					<ul class="wrap">
-						<hr class="line">
-						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
-						<li><a href="/login/pwfindform" id="txt">비밀번호 찾기</a></li>&nbsp;&nbsp;
-						<hr class="line">
-					</ul>
-				</form>
-			</div>
+ 	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
 		</div>
 	</div>
-	
+   <div class="signup1">
+      <div class="signup2">
+         <div class="signup_header">
+            <div id="signin">아이디 찾기</div>
+            
+         </div>
+         <div class="signup_body">
+               <div class="loginForm" >
+                        <input type="text"   id="userName" name="userName" placeholder="이름 입력">  
+               </div>
+               <div class="loginForm">
+                        <input type="text"   id="userEmail" name="userEmail" placeholder="이메일 입력">
+               </div>
+               <button id="findIdButton" th:onclick="findId();">확인</button>
+               <ul class="wrap">
+                  <hr class="line">
+                  <li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
+                  <li><a href="/login/pwfindform" id="txt">비밀번호 찾기</a></li>&nbsp;&nbsp;
+                  <hr class="line">
+               </ul>
+         </div>
+      </div>
+   </div>
+   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   <script th:inline="javascript"> 
+   
+   function findId(){
+      
+       var username = document.getElementById("userName");
+       var useremail = document.getElementById("userEmail");
+       var usernamevalue = document.getElementById("userName").value;
+       var useremailvalue = document.getElementById("userEmail").value;
+       if (username.value == "") {
+         alert("이름을 입력해 주세요.");
+         username.focus();
+         return false;
+      }
+      if (useremail.value == "") {
+         alert("이메일을 입력해 주세요.");
+         useremail.focus();
+         return false;
+      }
+      
+      $.ajax({
+          url : "/login/idfind",
+          type : "post",
+          data : { userName : usernamevalue,
+                 userEmail : useremailvalue}
+       })
+       		.done(function (result) {
+       				alert(result);
+       			if(result=="이름과 이메일이 일치하지 않습니다."){
+       				$("#userName").val('');
+              	 	$("#userEmail").val('');
+              	 	return false;
+       			}else{
+       				alert(result);
+       				location.href="/login";
+       			}
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            })
+   }
+   
+   </script>
 </body>
 </html>
-

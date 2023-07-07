@@ -7,204 +7,78 @@
 <title>Document</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+	<link href="./resources/css/mainpage.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+window.onload = function () {
+	airplaneOpenPopup();
+};	
+//장소별 팝업창
+  function placePopup(placeName,imagePath) {
+    $.ajax({
+      url: '/main/getPlaceInfo',
+      type: 'GET',
+      data: { placeName: placeName },
+      success: function(response) {
+        openPopup(response.placeName, response.placeAddress, response.placePhone, response.placeContent, response.placeInfo, response.placeGood, imagePath);
+      },
+      error: function(error) {
+        console.error('Error:', error);
+      }
+    });
+  }
+
+  function openPopup(placeName,placeAddress,  placePhone, placeContent, placeInfo, placeGood, imagePath) {
+	  var popupContainer = document.createElement("div");
+	  popupContainer.setAttribute("id", "place_popupContainer");
+	  popupContainer.setAttribute("class", "place_popup-container");
+
+	  var popup = document.createElement("div");
+	  popup.setAttribute("class", "place_popup");
+
+	  popup.innerHTML = `
+	  <br>
+	  <div class="popup_imgcontainer">
+		<img src="${imagePath}">
+		</div>
+		<br><hr><br><br>
+	    <h1>${placeName}</h1>
+	    <br>
+	    <p>📍 ${placeAddress}</p>
+	    <p>📞 ${placePhone}</p>
+	    <p>✔️ ${placeInfo}</p>
+	    <br>
+
+	    <p>${placeContent}</p><br><br><hr>
+	    <br>
+	    <p class="recommend"><img src="/resources/image/insta_heart.png"/><span>추천수: ${placeGood}</span></p>
+	    <span class="place_popup-close" onclick="closePopup()">X </span>
+	    	`;
+
+	  popupContainer.appendChild(popup);
+	  document.body.appendChild(popupContainer);
+	}
+
+
+  function closePopup() {
+    var popupContainer = document.getElementById("place_popupContainer");
+    if (popupContainer) {
+      popupContainer.parentNode.removeChild(popupContainer);
+    }
+  }
+</script>
 
 <style type="text/css">
-.swiper-container {
-	width: 80%;
-	height: 420px;
-}
 
-.swiper-slide {
-	text-align: center;
-	display: flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
-	align-items: center; /* 위아래 기준 중앙정렬 */
-	justify-content: center; /* 좌우 기준 중앙정렬 */
-}
-
-.swiper-slide img {
-	box-shadow: 0 0 5px #555;
-	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
-	/* 이 예제에서 필요해서 설정했습니다. 상황에따라 다를 수 있습니다. */
-}
-
-* {
-	margin: 0px;
-	padding: 0px;
-}
-
-ul {
-	list-style: none;
-}
-
-a {
-	text-decoration: none;
-}
-
-#back {
-	position: relative;
-}
-
-header {
-	width: 100%;
-	height: 30vh;
-	background-color: rgba(256, 256, 256, 0.6);
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-#logo {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 3vh;
-}
-
-#top_menu {
-	position: absolute;
-	top: 30px;
-	right: 10px;
-}
-
-#top_menu a {
-	color: black;
-	margin-right: 5vh;
-}
-
-#nav {
-	/* position: absolute; */
-	/* bottom: 10px; */
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 16px;
-}
-
-#nav label {
-	margin-left: 5vh;
-	margin-right: 5vh;
-}
-
-#nav>label>a {
-	text-decoration: none;
-	color: black;
-}
-
-#back_img {
-	width: 100%;
-	object-fit: cover;
-}
-
-#main_text {
-	padding: 5px 10px;
-	text-align: center;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: white;
-	font-size: 24pt;
-}
-
-#place_text {
-	text-align: center;
-}
-
-#tag1 {
-	width: 150px;
-	height: 30px;
-	border: 1px solid #B8E9FF;
-	border-radius: 8px;
-	background-color: #B8E9FF;
-	color: white;
-	margin-left: 20vh;
-	margin-top: 8vh;
-	margin-bottom: 2vh;
-}
-
-#tag1_img {
-	width: 90%;
-	height: 50vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-left: 10vh;
-}
-/* #tag1_img > div {
-            display:flex;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-        } */
-/* #tag1_img img{
-            width: 70%;
-            height: 75%;
-        } */
-.a {
-	width: 100%;
-	height: 20vh;
-}
-
-.insta {
-	position: relative;
-	margin-left: 3vh;
-	width: 100%;
-	height: 100%;
-	background-image: url("./img/insta.png");
-	background-repeat: no-repeat;
-	background-size: contain;
-	/* width: 350px;
-            height: 380px; */
-	/* object-fit: cover; */
-	box-shadow: 5px 5px 5px #595959;
-}
-
-/* .insta_1{
-            position: relative;
-            z-index: 1;
-            width: 70%;
-            height: 75%;
-            box-shadow: 5px 5px 5px #595959;
-        } */
-.insta_2 {
-	position: absolute;
-	top: 26%;
-	left: 17%;
-	z-index: 2;
-	width: 66%;
-	height: 40%;
-}
-
-.popup-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-        }
-        
-        .popup {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        
-        .popup-close {
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
 </style>
 </head>
 <body>
+
 	<div id="back">
 		<img src="/resources/image/back.png" id="back_img">
 		<header>
@@ -212,15 +86,21 @@ header {
 				<div id="logo">
 					<img src="/resources/image/logo2.png" alt="Logo">
 				</div>
-
-				<div id="top_menu">
+				<!-- 로그인전 --> 
+				<div th:if="${session.login == null}" id="top_menu">
 					<a href="/login">로그인</a> <a href="/login/registerform">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" id="top_menu">
+					<a href="/login/logout">로그아웃</a><a href="/login/usermain">마이페이지</a>
 				</div>
 			</div>
 			<div id="nav">
-				<label for=""><a href="/plan">일정만들기</a></label> <label for=""><a
-					href="#">코스보기</a></label> <label for=""><a href="#">커뮤니티</a></label> <label
-					for=""><a href="#">동행구하기</a></label>
+				<label for=""><a href="/plan">일정만들기</a></label>
+				 <!-- 코스 디테일 임시로해놈   -->
+				<label for=""><a href="/course/recommandcourse">코스보기</a></label>
+				<label for=""><a href="/community/communitymain">커뮤니티</a></label>
+				<label for=""><a href="/chatting">동행구하기</a></label>
 			</div>
 
 		</header>
@@ -228,12 +108,41 @@ header {
 	</div>
 	<div id="place_text">
 		<br> <br>
-		<p>제주도 핫플레이스</p>
-		<p>Hot Place</p>
+		<p id="place_text_korean">제주도 핫플레이스</p>
+		<p id="place_text_english">Hot Place</p>
 		<br> <br>
 	</div>
+	<div class="swiper-container" id="swiper-container-hotPlace">
+	  <div class="swiper-wrapper">
+	    <div th:each="list : ${list}" class="swiper-slide">
+	      <div class="hot_img">
+	        <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${list.placeName}" th:data-image-path="@{/resources/image/place/__${list.placeName}__.jpg}">
+	          <img th:src="@{/resources/image/place/__${list.placeName}__.jpg}">
+	        </a>
+	      </div>
+	      <div th:text="${list.placeName}" class="hot_text"></div>
+	    </div>
+	  </div>
 
-	<div class="swiper-container">
+	  <!-- 네비게이션 -->
+	  <div class="swiper-button-next" id="swiper-button-next-hotPlace"></div>
+	  <!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+	  <div class="swiper-button-prev" id="swiper-button-prev-hotPlace"></div>
+	  <!-- 이전 버튼 -->
+	
+	  <!-- 페이징 -->
+	  <div class="swiper-pagination" id="swiper-pagination-hotPlace"></div>
+	</div>
+
+
+
+	<div id="place_text">
+		<br> <br>
+		<p id="place_text_korean">코스추천</p>
+		<p id="place_text_english">Course</p>
+		<br> <br>
+	</div>
+	<div class="swiper-container" id="swiper-container-course">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide">
 				<a href="#"><img src="/resources/image/udo.jpg"></a>
@@ -254,134 +163,345 @@ header {
 		</div>
 
 		<!-- 네비게이션 -->
-		<div class="swiper-button-next"></div>
+		<div class="swiper-button-next" id="swiper-button-next-course"></div>
 		<!-- 다음 버튼 (오른쪽에 있는 버튼) -->
-		<div class="swiper-button-prev"></div>
+		<div class="swiper-button-prev" id="swiper-button-prev-course"></div>
 		<!-- 이전 버튼 -->
 
 		<!-- 페이징 -->
-		<div class="swiper-pagination"></div>
-	</div>
-
-
-	<div id="place_text">
-		<br> <br>
-		<p>코스추천</p>
-		<p>Course</p>
-		<br> <br>
-	</div>
-	<div class="swiper-container">
-		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide" style="font-size: 50pt;">- 끝 -</div>
-		</div>
-
-		<!-- 네비게이션 -->
-		<div class="swiper-button-next"></div>
-		<!-- 다음 버튼 (오른쪽에 있는 버튼) -->
-		<div class="swiper-button-prev"></div>
-		<!-- 이전 버튼 -->
-
-		<!-- 페이징 -->
-		<div class="swiper-pagination"></div>
+		<div class="swiper-pagination" id="swiper-pagination-course"></div>
 	</div>
 	<br>
 	<br>
 	<br>
 	<br>
 	<div id="place_text">
-		<p>어떤 여행을 계획하고 계시나요?</p>
-		<p>Hash Tag</p>
+		<p id="place_text_korean">어떤 여행을 계획하고 계시나요?</p>
+		<p id="place_text_english">Hash Tag</p>
 		<br> <br>
 	</div>
 	<div align="center" id="tag1">#반려동물동반</div>
-	<div id="tag1_img">
-		<div class="insta">
-			<!-- <a href="#"><img class="insta_2" src="./img/udo.jpg" ></a> -->
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
+	<div class="instagram-feed-container">
+        <div th:each="animalList: ${animalList}" class="instagram-feed">
+            <div class="image-container">
+                <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${animalList.placeName}" th:data-image-path="@{/resources/image/place/__${animalList.placeName}__.jpg}"><img th:src="@{/resources/image/place/__${animalList.placeName}__.jpg}" alt="Instagram Feed Image"></a>
+            </div>
+            <div class="icons">
+                <div class="left-icons">
+                    <img src="/resources/image/insta_heart.png" alt="Heart Icon" class="fas fa-heart">
+                    <img src="/resources/image/insta_chat.png" alt="Comment Icon" class="fas fa-comment">
+                    <img src="/resources/image/insta_share.png" alt="Share Icon" class="fas fa-share">
+                </div>
+                <div class="right-icons">
+                    <img src="/resources/image/insta_store.png" alt="Bookmark Icon" class="fas fa-bookmark">
+                </div>
+            </div>
+            <div class="hashtags">
+                <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${animalList.placeName}" th:data-image-path="@{/resources/image/place/__${animalList.placeName}__.jpg}"><div>#<span th:text="${animalList.placeName}"></span></div></a>
+            </div>
+        </div>
 	</div>
+
 
 	<div align="center" id="tag1">#부모님동반</div>
-	<div id="tag1_img">
-		<div class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-		<div class="insta">
-			<a href="#"><img class="insta_1" src="/resources/image/insta.png"></a>
-			<a href="#"><img class="insta_2" src="/resources/image/udo.jpg"></a>
-		</div>
-	</div>
+		<div class="instagram-feed-container" id="instagram-feed-container2">
+        <div th:each="parentsList:${parentsList}" class="instagram-feed">
+            <div class="image-container">
+                <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${parentsList.placeName}" th:data-image-path="@{/resources/image/place/__${parentsList.placeName}__.jpg}"><img th:src="@{/resources/image/place/__${parentsList.placeName}__.jpg}" alt="Instagram Feed Image"></a>
+            </div>
+            <div class="icons">
+                <div class="left-icons">
+                    <img src="/resources/image/insta_heart.png" alt="Heart Icon" class="fas fa-heart">
+                    <img src="/resources/image/insta_chat.png" alt="Comment Icon" class="fas fa-comment">
+                    <img src="/resources/image/insta_share.png" alt="Share Icon" class="fas fa-share">
+                </div>
+                <div class="right-icons">
+                    <img src="/resources/image/insta_store.png" alt="Bookmark Icon" class="fas fa-bookmark">
+                </div>
+            </div>
+            <div class="hashtags">
+                <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${parentsList.placeName}" th:data-image-path="@{/resources/image/place/__${parentsList.placeName}__.jpg}">
+                <div>#<span th:text="${parentsList.placeName}"></span></div></a>
+            </div>
+        </div>
+	</div> 
+	
+	<div id="airplanePopupContainer" class="airplanePopupContainer">
+    <div class="airplanePopupContent">
+	<div id="AirplaneInformation">
+<div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
+    <div class="airplane-title">
+    	<div class="airplane-button-block">
+    		<button class="airplane-button"  onclick="viewBoardings();">출발지: 제주</button>
+    		<button class="airplane-button"  onclick="viewArriveds();">목적지: 제주</button>
+    	</div>
+    	<div class="airplane-title-img-div">
+    		<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    	</div>
+    </div>
+   
+    <table id="flightTable">
+        <tr>
+        	<th class="airplane-flightDate">날짜</th>
+        	<th class="airplane-std">출발시간</th>
+        	<th class="airplane-etd">변경시간</th>
+            <th class="airplane-boardingKor">출발지</th>
+            <th class="airplane-arrivedKor">목적지</th>
+            <th class="airplane-airFln">항공편</th>
+            <th class="airplane-airlineKorean">항공사</th>
+           	<th class="airplane-rmkKor">현황</th>
+        </tr>
+       	<tr th:each="boarding : ${boardings}">
+           	<td class="airplane-flightDate" th:text="${boarding.flightDate}"></td>
+            <td class="airplane-std">
+            	<div th:if="${boarding.std.toString().length() == 3}">
+    				<div th:text="${#strings.substring(boarding.std.toString(), 0, 1) + ':' + #strings.substring(boarding.std.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${boarding.std.toString().length() == 4}">
+    				<div th:text="${#strings.substring(boarding.std.toString(), 0, 2) + ':' + #strings.substring(boarding.std.toString(), 2)}"></div>
+				</div>
+            </td>
+             <td class="airplane-etd" id="airplane-etd" >
+             	<div th:if="${boarding.etd.toString().length() == 3}">
+    				<div th:text="${#strings.substring(boarding.etd.toString(), 0, 1) + ':' + #strings.substring(boarding.etd.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${boarding.etd.toString().length() == 4}">
+    				<div th:text="${#strings.substring(boarding.etd.toString(), 0, 2) + ':' + #strings.substring(boarding.etd.toString(), 2)}"></div>
+				</div>
+             </td>
+            <td class="airplane-boardingKor" th:text="${boarding.boardingKor}"></td>
+            <td class="airplane-arrivedKor" th:text="${boarding.arrivedKor}"></td>
+            <td class="airplane-airFln" th:text="${boarding.airFln}"></td>
+          	<td class="airplane-airlineKorean">
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '대한항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-koreanair.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '아시아나항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-asiana.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '진에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jinair.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '티웨이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-tway.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '제주항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jeju.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '에어부산'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airbusan.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '에어로케이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-aerok.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '하이에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-hiair.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '에어서울'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airseoul.png}">
+			        <span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${boarding.airlineKorean == '이스타항공'}">
+			    	<img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-eastar.png}">
+			    	<span th:text="${boarding.airlineKorean}"></span>
+			    </div>
+			</td>
+            <td class="airplane-rmkKor">
+            	<div class="airplane-rmkKor-ifdiv" th:if="${boarding.rmkKor == '출발'} or ${boarding.rmkKor == '도착'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color:#0067a3;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor == '지연'} or ${boarding.rmkKor == '결항'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color: #dc143c;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor == ''} or ${boarding.rmkKor == null}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${boarding.rmkKor}" style="background-color:white;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${boarding.rmkKor != '출발'} and ${boarding.rmkKor != '도착'} and ${boarding.rmkKor != '지연'} and ${boarding.rmkKor != '결항' } and ${boarding.rmkKor != ''} and ${boarding.rmkKor != null}">
+            		<div class="airplane-rmkKor-ifdiv-div"  th:text="${boarding.rmkKor}" style="background-color: #32cd32;"></div>
+            	</div>
+            </td>
+            
+        </tr> 	
+    </table>
+  </div>
+ <div id="airplane-arriveds" th:if="${not #lists.isEmpty(arriveds)}" style="display: none">
+    <div class="airplane-title">
+    	 
+    	<div class="airplane-button-block">
+    		<button class="airplane-button" onclick="viewBoardings();">출발지: 제주</button>
+    		<button class="airplane-button" onclick="viewArriveds();">목적지: 제주</button>
+    	</div>
+    	<div class="airplane-title-img-div">
+    		<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    	</div>
+    </div>
+   
+    <table id="flightTable">
+        <tr>
+        	<th class="airplane-flightDate">날짜</th>
+        	<th class="airplane-std">출발시간</th>
+        	<th class="airplane-etd">변경시간</th>
+            <th class="airplane-boardingKor">출발지</th>
+            <th class="airplane-arrivedKor">목적지</th>
+            <th class="airplane-airFln">항공편</th>
+            <th class="airplane-airlineKorean">항공사</th>
+           	<th class="airplane-rmkKor">현황</th>
+        </tr>
+       	<tr th:each="arrived : ${arriveds}">
+           	<td class="airplane-flightDate" th:text="${arrived.flightDate}"></td>
+            <td class="airplane-std">
+            	<div th:if="${arrived.std.toString().length() == 3}">
+    				<div th:text="${#strings.substring(arrived.std.toString(), 0, 1) + ':' + #strings.substring(arrived.std.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${arrived.std.toString().length() == 4}">
+    				<div th:text="${#strings.substring(arrived.std.toString(), 0, 2) + ':' + #strings.substring(arrived.std.toString(), 2)}"></div>
+				</div>
+            </td>
+             <td class="airplane-etd" id="airplane-etd" >
+             	<div th:if="${arrived.etd.toString().length() == 3}">
+    				<div th:text="${#strings.substring(arrived.etd.toString(), 0, 1) + ':' + #strings.substring(arrived.etd.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${arrived.etd.toString().length() == 4}">
+    				<div th:text="${#strings.substring(arrived.etd.toString(), 0, 2) + ':' + #strings.substring(arrived.etd.toString(), 2)}"></div>
+				</div>
+             </td>
+            <td class="airplane-boardingKor" th:text="${arrived.boardingKor}"></td>
+            <td class="airplane-arrivedKor" th:text="${arrived.arrivedKor}"></td>
+            <td class="airplane-airFln" th:text="${arrived.airFln}"></td>
+          	<td class="airplane-airlineKorean">
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '대한항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-koreanair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '아시아나항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-asiana.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '진에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jinair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '티웨이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-tway.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '제주항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jeju.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어부산'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airbusan.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어로케이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-aerok.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '하이에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-hiair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어서울'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airseoul.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '이스타항공'}">
+			    	<img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-eastar.png}">
+			    	<span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			</td>
+            <td class="airplane-rmkKor">
+            	<div class="airplane-rmkKor-ifdiv" th:if="${arrived.rmkKor == '출발'} or ${arrived.rmkKor == '도착'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color:#0067a3;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor == '지연'} or ${arrived.rmkKor == '결항'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color: #dc143c;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor == ''} or ${arrived.rmkKor == null}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color:white;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor != '출발'} and ${arrived.rmkKor != '도착'} and ${arrived.rmkKor != '지연'} and ${arrived.rmkKor != '결항' } and ${arrived.rmkKor != ''} and ${arrived.rmkKor != null}">
+            		<div class="airplane-rmkKor-ifdiv-div"  th:text="${arrived.rmkKor}" style="background-color: #32cd32;"></div>
+            	</div>
+            </td>
+            
+        </tr> 	
+    </table>
+  </div>
+  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and #lists.isEmpty(arriveds)}">
+  	<div class="airplane-title">
+    		<div class="airplane-title-img-div">
+    			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    		</div>
+    	</div> 
+  	<div class="listEmpty">
+  		<div class="listEmpty-title">*실시간 항공편 안내사항*</div><br><br>
+  		<div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div>
+  		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
+  	</div>
+  </div>
+  <div id="bothEmpty" th:if="${boardings == null or arriveds == null}">
+  	<div class="airplane-title">
+    		<div class="airplane-title-img-div">
+    			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    		</div>
+    	</div> 
+  	<div class="listEmpty">
+  		<div class="listEmpty-title">*실시간 항공편 안내사항*</div><br><br>
+  		<!-- <div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div> -->
+  		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
+  	</div>
+  </div>
+</div>
+<span class="place_popup-close" onclick="airplaneClosePopup()">X </span>
+   </div>
+</div>
+	<script th:inline="javascript">
+	var loginchk = [[${session.login}]];
+	console.log(loginchk); 
+	
+	</script>
 
-	<div id="popupContainer" class="popup-container">
-		<div class="popup">
-			<h1>팝업 내용</h1>
-			<div id="popupTable"></div>
-			<table id="flightTable">
-				<tr>
-					<th>항공사</th>
-					<th>출발지</th>
-					<th>목적지</th>
-					<th>날짜</th>
-					<th>항공편</th>
-					<th>출발시간</th>
-					<th>변경시간</th>
-					<th>현황</th>
-				</tr>
-				<tr th:each="arrived : ${arriveds}">
-					<td th:text="${arrived.airlineKorean}"></td>
-					<td th:text="${arrived.boardingKor}"></td>
-					<td th:text="${arrived.arrivedKor}"></td>
-					<td th:text="${arrived.flightDate}"></td>
-					<td th:text="${arrived.airFln}"></td>
-					<td th:text="${arrived.std}"></td>
-					<td th:text="${arrived.etd}"></td>
-					<td th:text="${arrived.rmkKor}"></td>
-				</tr>
-			</table>
-			<span class="popup-close" onclick="closePopup()">X</span>
-		</div>
-	</div>
+	<script type="text/javascript">
+	
+	function airplaneOpenPopup() {
+	    // 팝업 레이어 열기
+	    document.getElementById("airplanePopupContainer").style.display = "block";
+	}
 
-	<script>
-        window.addEventListener('load', function() {
-            document.getElementById('popupContainer').style.display = 'flex';
-        });
-        
-        function closePopup() {
-            document.getElementById('popupContainer').style.display = 'none';
-        }
+	function airplaneClosePopup() {
+	    // 팝업 레이어 닫기
+	    document.getElementById("airplanePopupContainer").style.display = "none";
+	}
+/* 	document.addEventListener('DOMContentLoaded', function() {
+		  window.addEventListener('load', function() {
+		    $.ajax({
+		      url: '/plan/airplane',
+		      type: 'GET',
+		      success: function(response) {
+		        var popupWindow = window.open('', 'Course Preview', 'width=800,height=500');
+		        if (popupWindow && popupWindow.document) {
+		          popupWindow.document.open();
+		          popupWindow.document.write(response);
+		          popupWindow.document.close();
+		        } else {
+		          // 팝업 차단 메시지 또는 대체 처리 로직
+		          console.log('팝업 차단되었거나 팝업 창을 열 수 없습니다.');
+		        }
+		      }
+		    });
+	
+		  });
+		}); 
+ */
     </script>
 	<script>
 		new Swiper('.swiper-container', {

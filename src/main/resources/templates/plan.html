@@ -1,889 +1,2278 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
-<style type="text/css">
-	body{
-	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="./resources/css/plan.css" rel="stylesheet">
+<script
+	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+var loginchk = [[${session.login}]];
+console.log(loginchk);
+var markers = []; // 마커를 담을 배열
+var placeData=[];
+var map; // map 객체 선언
+// 초기 마커 생성
+var placeList = [[${placeRestaurantList}]];
+let colorSelections = {};
+var pageNum = 1;
+var totalPages = 5; // 전체 페이지 수
+
+//영수증인증 팝업창
+function openPopup() {
+    var popupContainer = document.createElement("div");
+    popupContainer.setAttribute("id", "ocr_popupContainer");
+    popupContainer.setAttribute("class", "ocr_popup-container");
+
+    var popup = document.createElement("div");
+    popup.setAttribute("class", "ocr_popup");
+
+    // 팝업 내용 추가
+    popup.innerHTML = `
+        <div id="ocr_title">📝영수증 인증</div>
+        <div id="ocr_notice">* 2회 이상 방문 인증시에 추천수가 올라갑니다</div>
+            <div class="filebox">
+            	<div id="file_button">
+	                <input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
+	                <input type="button" value="인증하기" id="submitBT" onclick="test()">
+            	</div>
+                <img id="preview"/>
+                <input type="hidden" name="placeNumber" value="" id="placeNumber">
+            </div>
+        <span class="ocr_popup-close" onclick="closePopup()">X</span>
+    `;
+
+    popupContainer.appendChild(popup);
+    document.body.appendChild(popupContainer);
+}
+
+function closePopup() {
+    var popupContainer = document.getElementById("ocr_popupContainer");
+    if (popupContainer) {
+        popupContainer.parentNode.removeChild(popupContainer);
+    }
+}
+
+// 파일 미리보기 함수
+function readURL(input) {
+    var session = sessionStorage.getItem('placeNumber');
+    document.getElementById("placeNumber").value = session;
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('preview').src = "";
+    }
+}
+
+function test(){
+	   var fileInput = document.getElementById("attachFile");
+	     var placeNumberInput = document.getElementById("placeNumber");
+
+	     var file = fileInput.files[0];
+	     var placeNumber = placeNumberInput.value;
+
+	     var formData = new FormData();
+	     formData.append("attachFile", file);
+	     formData.append("placeNumber", placeNumber);
+
+	   $.ajax({
+	      url: '/review/reviewwrite',
+	      type: 'POST',
+	      data: formData,
+	      processData: false,
+	      contentType: false,
+	      success:function(data){
+	          console.log(data);
+	          var loginchk = [[${session.login}]];
+	          console.log(loginchk);
+	          		let res=data[0];
+	          		let num=data[1];
+	          		let userCheck=data[2];
+	          		console.log(res);
+	          		console.log(num);
+	          		console.log(userCheck);
+	                var placeNumber2 = num.placeNumber;
+	                var placeName2 = num.placeName;
+	                var placeAddress2 = num.placeAddress;
+	             	// 공백 제거
+	                placeName2 = placeName2.replace(/\s/g, '');
+	                placeAddress2 = placeAddress2.replace(/\s/g, '');
+
+	                console.log(placeNumber2);
+	                console.log(placeName2);
+	                console.log(placeAddress2);
+	                  //let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
+	                  //let num = '[(${num})]';
+	                  //let userCheck = [[(${userCheck})]];
+	                  var userCheckcnt=0;
+	                  var dateCheckcnt=-1;
+	                  var dateCheckdata;
+	                  
+	                  for(var i=0;i<userCheck.length;i++){
+	                  	dateCheckcnt++;
+	                      if (loginchk == userCheck[i].recommandUserID) {
+	                          userCheckcnt++;
+	                          dateCheckdata=userCheck[i].recommandDate;
+	                          console.log(dateCheckdata);
+	                      }
+	                  }
+	                  /*
+	                  let placeNumber = num.match(/placeNumber=([^,]+)/)[1];
+	                  let placeName = num.match(/placeName=([^,]+)/)[1];
+	                  let placeAddress = num.match(/placeAddress=([^,]+)/)[1];
+	                  console.log(placeNumber);
+	                  let check="";
+	                  
+	      	        // 괄호 제거하기
+	      	        placeAddress = placeAddress.replace(/\(|\)/g, '');
+	      	        placeAddress = placeAddress.replace(/\s/g, '');
+	                  console.log(placeName);
+	                  console.log(placeAddress);*/
+	                  let check="";
+	                  if (res) {
+	                      res = JSON.parse(res); // JSON 문자열을 JavaScript 객체로 변환
+	                      for (let i = 0; i < res.images[0].fields.length; i++) {
+	                          check+=res.images[0].fields[i].inferText;
+	                      }
+	                      console.log(check);
+
+	                      var date;
+	                      var regex = /(200[0-9]|201[0-9]|202[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g;
+	                      var result = check.match(regex);
+	                      if (result) {
+	                      	  date = new Date(result[0]);
+	                      	}
+	                      
+	                      
+	                      var placeCheckcnt=0;
+	                      var db_check=0;
+	                  
+	                   
+	                      if (check.includes(placeAddress2)) {
+	                          console.log("placeAddress 값이 포함되어 있습니다.");
+	                          placeCheckcnt++;
+	                      } else {
+	                          console.log("placeAddress 값이 포함되어 있지 않습니다.");
+	                      }
+	                      if (check.includes(placeName2)) {
+	                          console.log("placeName 값이 포함되어 있습니다.");
+	                          placeCheckcnt++;
+	                      } else {
+	                          console.log("placeName 값이 포함되어 있지 않습니다.");
+	                      }
+	                      console.log(dateCheckdata);
+	          			console.log(date);
+
+	                      if(placeCheckcnt==2){
+	                      	if(userCheckcnt==0){
+	                      		alert("첫번째 영수증 인증이 완료되었습니다");
+	                      		closePopup();
+	                      		db_check=1;
+	                      		// 데이터를 서버로 전송하여 DB에 삽입
+	                              $.ajax({
+	                                  url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+	                                  type: 'POST',
+	                                  data: {
+	                                      userID: loginchk,
+	                                      placeNumber: placeNumber2,
+	                                      date: date,
+	                                      db_check: db_check
+	                                  },
+	                                  success: function(response) {
+	                                      console.log(response);
+	                                  },
+	                                  error: function(error) {
+	                                      console.log(error);
+	                                  }
+	                              });
+	                      	}
+	                      	else if(userCheckcnt==1){
+	                      		if(dateCheckdata!=date){
+	                      			console.log(dateCheckdata);
+	                      			console.log(date);
+	                      			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
+	                      			closePopup();
+	                      			db_check=2;
+	                      			 // 데이터를 서버로 전송하여 DB에 삽입
+	                                  $.ajax({
+	                                      url: '/review/insertRecommandData', // 백엔드 API 엔드포인트
+	                                      type: 'POST',
+	                                      data: {
+	                                          userID: loginchk,
+	                                          placeNumber: placeNumber2,
+	                                          date: date,
+	                                          db_check: db_check
+	                                      },
+	                                      success: function(response) {
+	                                          console.log(response);
+	                                      },
+	                                      error: function(error) {
+	                                          console.log(error);
+	                                      }
+	                                  });
+	                      		}
+	                      		else{
+	                      			alert("이전에 인증한 날짜 영수증입니다");
+	                      			closePopup();
+	                      		}
+	                      	}
+	                      	else if(userCheckcnt>1){
+	                      		alert("두번 이상 인증하셨습니다");
+	                      		closePopup();
+	                      	}
+	                      }
+	                      else alert("영수증과 장소가 일치하지 않습니다");
+	                      closePopup();
+	                  }
+	                  
+	       },
+	       error:function(data){
+	          alert("실패");
+	       }
+	   });
 	}
-    .header {
-        width: 90vw;
-        height: 13vh;
-        border-bottom: 1px solid #EEEEEE;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 5vh;
-        /* display: flex;
-            justify-content: center; */
+	
+
+var loginchk = [[${session.login}]];
+console.log(loginchk);
+var placeData=[];
+var map; // map 객체 선언
+var map2;
+// 초기 마커 생성
+
+/* function reloadStylesheet() {
+	  var links = document.getElementsByTagName('link');
+	  for (var i = 0; i < links.length; i++) {
+	    if (links[i].rel === 'stylesheet') {
+	      var href = links[i].href;
+	      links[i].href = ''; // 스타일시트 URL을 비웁니다.
+	      links[i].href = '/resources/css/plan.css'; // 스타일시트 URL을 다시 설정하여 재로드합니다.
+	    }
+	  }
+	} */
+function initTmap() {
+	  // map 생성
+	  map = new Tmapv2.Map("map_div", {
+	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
+	    width: "50vw", // 지도의 넓이
+	    height: "80vh", // 지도의 높이
+	    zoom: 10
+	  });
+	  
+	  createMarkers(placeList);
+	  
+	}
+function previewTmap(){
+	  map2 = new Tmapv2.Map("preview_div", {
+			center: new Tmapv2.LatLng(33.3616666, 126.5291666),
+			width: "100%",
+			height: "400px",
+			zoom: 10
+		});
+}
+function insertTmap(){
+	  map2 = new Tmapv2.Map("insert_div", {
+			center: new Tmapv2.LatLng(33.3616666, 126.5291666),
+			width: "100%",
+			height: "400px",
+			zoom: 10
+		});
+}
+function fetchUpdatedMarkers(category, pageNum) {
+	
+    $.ajax({
+      url: '/plan/fetchMarkers',
+      method: 'GET',
+      data: { category: category,
+    	      pageNum: pageNum},
+      success: function (data) {
+    	  updateList(data.placeList);
+    	  createMarkers(data.placeList);
+    	  updatePagination(data.totalPages, data.currentPage);
+    	  
+      },
+      error: function () {
+        console.log('Failed to fetch updated markers.');
+      }
+    });
+  }
+  
+function fetchUpdatedMarkerssearch(keyword, pageNum) {
+	
+    $.ajax({
+      url: '/plan/search',
+      method: 'POST',
+      data: { keyword: keyword,
+    	      pageNum: pageNum},
+      success: function (data) {
+    	  updateList(data.placeList);
+    	  createMarkers(data.placeList);
+    	  updatePaginationsearch(data.totalPages, data.currentPage, keyword);
+    	  
+      },
+      error: function () {
+        console.log('Failed to fetch updated markers.');
+      }
+    });
+  }
+function updateList(data) {
+	var listContainer = document.querySelector('.list');
+	  listContainer.innerHTML = ''; // 기존 리스트 내용 초기화
+	  data.forEach(function (restaurant) {
+	    var listItem = document.createElement('div');
+	    listItem.id = 'left_block';
+		
+	    var inputCategory = document.createElement('input');
+	    inputCategory.type = 'hidden';
+	    inputCategory.name = 'placeCategory';
+	    inputCategory.value = restaurant.placeCategory;
+	    listItem.appendChild(inputCategory);
+	    
+	    var inputLon = document.createElement('input');
+	    inputLon.type = 'hidden';
+	    inputLon.name = 'planLon';
+	    inputLon.value = restaurant.placeLon;
+	    listItem.appendChild(inputLon);
+
+	    var inputLat = document.createElement('input');
+	    inputLat.type = 'hidden';
+	    inputLat.name = 'planLat';
+	    inputLat.value = restaurant.placeLat;
+	    listItem.appendChild(inputLat);
+
+	    var listImg = document.createElement('div');
+	    listImg.id = 'list-img';
+	    var img = document.createElement('img');
+	    img.src = './resources/image/place/' + restaurant.placeName + '.jpg';
+	    img.alt = '';
+	    listImg.appendChild(img);
+	    listItem.appendChild(listImg);
+
+	    var listName = document.createElement('div');
+	    listName.id = 'list-name';
+
+	    var listNameLabel = document.createElement('div');
+	    listNameLabel.id = 'list-name-label';
+	    var nameLabel = document.createElement('label');
+	    nameLabel.textContent = restaurant.placeName;
+	    listNameLabel.appendChild(nameLabel);
+	    listName.appendChild(listNameLabel);
+
+	    var listNameHeartimg = document.createElement('div');
+	    listNameHeartimg.id = 'list-name-heartimg';
+
+	    var heartImg = document.createElement('div');
+	    var imgHeart = document.createElement('img');
+	    imgHeart.src = '/resources/image/place_heart.png';
+	    imgHeart.alt = '';
+	    imgHeart.id = 'heart';
+	    heartImg.appendChild(imgHeart);
+	    listNameHeartimg.appendChild(heartImg);
+
+	    var listNameHeartimgLabel = document.createElement('div');
+	    listNameHeartimgLabel.id = 'list-name-heartimg-label';
+	    var heartLabel = document.createElement('label');
+	    heartLabel.textContent = restaurant.placeGood;
+	    listNameHeartimgLabel.appendChild(heartLabel);
+	    listNameHeartimg.appendChild(listNameHeartimgLabel);
+
+	    listName.appendChild(listNameHeartimg);
+	    listItem.appendChild(listName);
+
+	    var listPlus = document.createElement('div');
+	    listPlus.id = 'list-plus';
+	    var plusImg = document.createElement('img');
+	    plusImg.src = './resources/image/plus.png';
+	    plusImg.alt = '';
+	    plusImg.id = 'plus';
+	    listPlus.appendChild(plusImg);
+	    listItem.appendChild(listPlus);
+
+	    listContainer.appendChild(listItem);
+	    
+	 /* // CSS 스타일시트 재로드
+	    reloadStylesheet(); */
+	  });
+}
+var selectedMarkerChart1 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas)
+var selectedMarkerChart2 = null; // 클릭된 마커에 대한 차트 인스턴스를 저장할 변수 (chartCanvas2)
+
+function createMarkers(data) {
+    // 이전에 생성된 마커 삭제
+    // 숨길 요소와 나타낼 요소를 변수로 저장
+	var mainLeft = document.getElementsByClassName("main-left")[0];
+	var placeMenu = document.getElementsByClassName("placemenu")[0];
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+    markers = [];
+	placeData = [];
+    // 새로운 마커 생성
+    for (var i = 0; i < data.length; i++) {
+      var place = data[i];
+      var marker = new Tmapv2.Marker({
+        position: new Tmapv2.LatLng(place.placeLon, place.placeLat),
+        map: map,
+        title: place.placeName
+      });
+      
+      marker.setIcon("/resources/image/mk.png");
+      markers.push(marker); // 생성된 마커를 배열에 추가
+      
+      var extractedValue2 = {
+    		placeNumber: place.placeNumber,
+      		placeName: place.placeName,
+      		placeAddress: place.placeAddress,
+      		placePhone: place.placePhone,
+      		placeGood: place.placeGood,
+      		placeInfo: place.placeInfo,
+      		placeTag1: place.placeTag1,
+      		placeTag2: place.placeTag2,
+      		placeTag3: place.placeTag3
+            };
+      placeData.push(extractedValue2);
+    }
+    var selectedMarker = null; // 클릭된 마커를 저장할 변수 추가
+    
+    document.getElementById("placemenu_button").onclick = function () {
+    	mainLeft.style.display = 'block';
+	      placeMenu.style.display = 'none';
+	      if (selectedMarker !== null) {
+                selectedMarker.setIcon("/resources/image/mk.png");
+          }
+      };
+      
+
+    
+    // 마커 클릭 이벤트 등록
+    for (var i = 0; i < markers.length; i++) {
+	  (function(index) {
+	    markers[index].addListener("click", function(evt) {
+	    	      var marker = markers[index];
+	      var placedata = placeData[index];
+	      var placeNumber = placedata.placeNumber;
+	      console.log(marker);
+	      console.log(placedata);
+	   	  // 이전에 클릭된 마커가 있을 경우 아이콘을 원래대로 되돌림
+          if (selectedMarker !== null) {
+                selectedMarker.setIcon("/resources/image/mk.png");
+          }
+	      
+       // 이전에 클릭된 마커에 대한 차트를 파괴
+          if (selectedMarkerChart1 !== null) {
+            selectedMarkerChart1.destroy();
+          }
+          if (selectedMarkerChart2 !== null) {
+            selectedMarkerChart2.destroy();
+          }
+       
+        sessionStorage.setItem('placeNumber', placedata.placeNumber);
+	      marker.setIcon("/resources/image/m11.png");
+	      
+	      // 요소의 스타일 속성을 조작하여 나타내거나 숨김
+	      mainLeft.style.display = 'none';
+	      placeMenu.style.display = 'block';
+	      
+	      document.getElementById("placeImage").src = "/resources/image/place/" + placedata.placeName + ".jpg"; // 이미지 경로를 이미지 요소에 할당
+	      document.getElementById("datatest1").innerText = placedata.placeName;
+	      document.getElementById("datatest2").innerText = placedata.placeAddress;
+	      document.getElementById("datatest3").innerText = placedata.placePhone;
+	      document.getElementById("datatest4").innerText = placedata.placeGood;
+	      document.getElementById("datatest5").innerText = placedata.placeInfo;
+	      document.getElementById("datatest6").innerText = placedata.placeTag1;
+	      document.getElementById("datatest7").innerText = placedata.placeTag2;
+	      document.getElementById("datatest8").innerText = placedata.placeTag3;
+	      
+	   	  // 클릭된 마커를 selectedMarker 변수에 저장
+        selectedMarker = marker;
+	   	console.log("click :"+placeNumber);
+	   	selectedMarkerChartId = "chart" + index;  // 각 마커에 대한 고유한 ID 생성
+	      
+        
+        $.ajax({
+						    url: '/plan/genderList',
+						    type: 'GET',
+						    data: { recommandPlaceNumber : placeNumber },
+						    success: function(data2){
+						    	console.log("gender : "+data2.length);
+						    	if(data2.length == 0){
+						    		return false;
+						    	}
+						    	var count1 = data2[0].count;
+					            var count2 = data2[1].count;
+						    	console.log(data2[0].count);
+						    	console.log(data2[1].count);
+						    	
+						    	var total = count1 + count2;
+						    	  var ratio1 = count1 / total;
+						    	  var ratio2 = count2 / total;
+						    	  
+						    	  var percentage1 = (ratio1 * 100).toFixed(0) + "%";
+						    	  var percentage2 = (ratio2 * 100).toFixed(0) + "%";
+
+						    	  var ctx = document.getElementById("chartCanvas").getContext("2d");
+						    	  if (selectedMarkerChart1) {
+						              selectedMarkerChart1.destroy();
+						            }
+						            selectedMarkerChart1 = new Chart(ctx, {
+						    	    type: 'pie',
+						    	    data: {
+						    	      labels: ["여성(" + percentage1 + ")", "남성(" + percentage2 + ")"],
+						    	      datasets: [{
+						    	        data: [ratio1, ratio2],
+						    	        backgroundColor: ['#FF6384', '#36A2EB'],
+						    	        borderWidth: 1
+						    	      }]
+						    	    },
+					                options: {
+					                  responsive: true
+					                }
+					              });
+					            },
+					            error: function (xhr, status, error) {
+					              console.error(error);
+					            }
+					          });
+				      $.ajax({
+						    url: '/plan/birthList',
+						    type: 'GET',
+						    data: { recommandPlaceNumber : placeNumber },
+						    success: function(data3){
+						    	console.log("birth : "+data3);
+						    	if(data3.length == 0){
+						    		
+						    		return false;
+						    	}
+						    	var ageCategories = {
+						    		      "10대": 0,
+						    		      "20대": 0,
+						    		      "30대": 0,
+						    		      "40대": 0,
+						    		      "50대": 0
+						    		      //"60대": 0
+						    		    };
+						    	for(var i=0;i<data3.length;i++){
+						    		var birthYear = parseInt(data3[i].userBirth);
+						    	      var age = new Date().getFullYear() - birthYear + 1;
+
+						    	      if (age >= 10 && age < 20) {
+						    	        ageCategories["10대"]++;
+						    	      } else if (age >= 20 && age < 30) {
+						    	        ageCategories["20대"]++;
+						    	      } else if (age >= 30 && age < 40) {
+						    	        ageCategories["30대"]++;
+						    	      } else if (age >= 40 && age < 50) {
+						    	        ageCategories["40대"]++;
+						    	      } else if (age >= 50 && age < 60) {
+						    	        ageCategories["50대"]++;
+						    	      } 
+						    	}
+						    	var ctx = document.getElementById("chartCanvas2").getContext("2d");
+						    	if (selectedMarkerChart2) {
+						              selectedMarkerChart2.destroy();
+						            }
+						            selectedMarkerChart2 = new Chart(ctx, {
+						    	      type: 'bar',
+						    	      data: {
+						    	        labels: Object.keys(ageCategories).map(function(label) {
+						    	          //return label + "(" + ageCategories[label] + "명)";
+						    	        	return label ;
+						    	        }),
+						    	        datasets: [{
+						    	          label: '연령대 비율',
+						    	          data: Object.values(ageCategories),
+						    	          backgroundColor: '#B8E9FF',
+						    	          borderColor: 'rgba(0, 123, 255, 0.8)',
+						    	          borderWidth: 1
+						    	        }]
+						    	      },
+						    	      options: {
+						    	        responsive: true,
+						    	        scales: {
+						    	          y: {
+						    	        	  display: false,
+						    	            beginAtZero: true,
+						    	            ticks: {
+						    	              stepSize: 1,
+						    	              callback: function(value) {
+						    	                return value.toString();
+						    	              }
+						    	            }
+						    	          },
+						    	          x: {
+						    	            grid: {
+						    	              display: false
+						    	            }
+						    	          }
+						    	        },
+						    	        plugins: {
+						    	          legend: {
+						    	            display: false
+						    	          },
+						    	          tooltip: {
+						    	            callbacks: {
+						    	              label: function(context) {
+						    	                var label = context.label || '';
+						    	                var value = context.parsed.y || 0;
+						    	                return label + ': ' + value;
+						    	              }
+						    	            }
+						    	          }
+						    	        }
+						    	      }
+						    	    });
+						    	  },
+					            error: function (xhr, status, error) {
+					              console.error(error);
+					            }
+					          });
+	    });
+	  })(i);
+	}
+    createPlusClickEvent();
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    var restaurantBtn = document.getElementById('restaurant-btn');
+    restaurantBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('restaurant', pageNum);
+    });
+
+    var youtubeBtn = document.getElementById('youtube-btn');
+    youtubeBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('youtube', pageNum);
+    });
+
+    var touristBtn = document.getElementById('tourist-btn');
+    touristBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('tourist', pageNum);
+    });
+
+    var hillBtn = document.getElementById('hill-btn');
+    hillBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('hill', pageNum);
+    });
+
+    var ollegilBtn = document.getElementById('ollegil-btn');
+    ollegilBtn.addEventListener('click', function () {
+      fetchUpdatedMarkers('ollegil', pageNum);
+    });
+  });
+  function createPlusClickEvent() {
+	  var plusElements = document.querySelectorAll('#list-plus');
+	  plusElements.forEach(function(plus) {
+	    plus.addEventListener('click', function() {
+	      // 클릭 이벤트 발생 시 실행되는 함수
+	      // 클릭한 plus 요소의 부모인 main-left div를 찾아 복사
+	      var mainLeft = this.parentNode;
+	      var coursePlan = document.querySelector('.course-plan');
+	      // main-left div 복사
+	      var clonedMainLeft = mainLeft.cloneNode(true);
+
+	      // course-plan div에서 기존의 list div를 찾아 가져옴
+	      var listContainer = coursePlan.querySelector(`#course-list-${currentDay}`);
+
+	      var isDuplicate = Array.from(listContainer.querySelectorAll('#left_block')).some(function(listItem) {
+	    	  var listItemLabel = listItem.querySelector('#list-name-label label');
+	    	  var listItemText = listItemLabel ? listItemLabel.textContent.toLowerCase() : '';
+	    	  var clonedMainLeftLabel = clonedMainLeft.querySelector('#list-name-label label');
+	    	  var clonedMainLeftText = clonedMainLeftLabel ? clonedMainLeftLabel.textContent.toLowerCase() : '';
+	    	  if (listItemText === clonedMainLeftText) {
+	    	    return true;  // 중복되는 경우 true 반환
+	    	  }
+
+	    	  return false;  // 중복되지 않는 경우 false 반환
+	    	});
+	      if (isDuplicate) {
+	        alert('이미 추가된 장소입니다.'); // 중복된 장소인 경우 경고창 표시
+	        return;  // 중복되는 장소인 경우 함수 종료
+	      }
+
+	      // 복사한 main-left div에서 plus 이미지를 제거
+	      var plusElement = clonedMainLeft.querySelector('#list-plus');
+	      plusElement.remove();
+
+	      // list-name-heartimg 요소 제거
+	      var listNameHeartImg = clonedMainLeft.querySelector('#list-name-heartimg');
+	      listNameHeartImg.remove();
+
+	      var listMinusDiv = document.createElement('div');
+	      listMinusDiv.setAttribute('id', 'list-minus');
+
+	      // list-minus 이미지 생성
+	      var listMinusImg = document.createElement('img');
+	      listMinusImg.setAttribute('src', './resources/image/minus.png');
+	      listMinusImg.setAttribute('alt', '');
+
+	      // list-minus 이미지를 list-minus div에 추가
+	      listMinusDiv.appendChild(listMinusImg);
+
+	      // 복사한 main-left div에 list-minus div 추가
+	      clonedMainLeft.appendChild(listMinusDiv);
+	      
+	      // 현재 Day에 해당하는 course-list에만 복사된 main-left div 추가
+	      var currentCourseList = document.getElementById(`course-list-${currentDay}`);
+	      var clonedMainLeftCopy = clonedMainLeft.cloneNode(true);
+	      currentCourseList.appendChild(clonedMainLeftCopy);
+
+	      // 현재 Day에 해당하는 course-list 다시 표시
+	      showCurrentDay();
+
+	    });
+	  });
+	  // minus 버튼 클릭 이벤트 처리
+	  var coursePlan = document.querySelector('.course-plan');
+	  coursePlan.addEventListener('click', function(event) {
+	    if (event.target.parentNode && event.target.parentNode.id === 'list-minus') {
+	      var parentMainLeft = event.target.parentNode.parentNode;
+	      parentMainLeft.remove();
+	      showCurrentDay();
+	    }
+	    });
+	}
+
+  let nowMonth = new Date(); // 현재 달을 페이지를 로드한 날의 달로 초기화
+  let today = new Date(); // 페이지를 로드한 날짜를 저장
+  today.setHours(0, 0, 0, 0); // 비교 편의를 위해 today의 시간을 초기화
+
+  let selectedStartDate = null; // 선택된 시작 날짜
+  let selectedEndDate = null; // 선택된 종료 날짜
+
+  // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
+  function buildCalendar() {
+    let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1); // 이번달 1일
+    let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0); // 이번달 마지막날
+
+    let tbody_Calendar = document.querySelector(".Calendar-table > tbody");
+    document.getElementById("calYear").innerText = nowMonth.getFullYear(); // 연도 숫자 갱신
+    document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1); // 월 숫자 갱신
+
+    while (tbody_Calendar.rows.length > 0) { // 이전 출력결과가 남아있는 경우 초기화
+      tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
     }
 
-    .header-category {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    let nowRow = tbody_Calendar.insertRow(); // 첫번째 행 추가
+
+    for (let j = 0; j < firstDate.getDay(); j++) { // 이번달 1일의 요일만큼
+      let nowColumn = nowRow.insertCell(); // 열 추가
     }
 
-    #logimg {
-        width: 15vw;
-        height: 12vh;
-        margin-left: 7vw;
-        margin-right: 14vw;
+    for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) { // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복
+      let nowColumn = nowRow.insertCell(); // 새 열을 추가하고
+      nowColumn.innerText = leftPad(nowDay.getDate()); // 추가한 열에 날짜 입력
 
+      if (nowDay.getDay() === 0) { // 일요일인 경우 글자색 빨강으로
+        nowColumn.style.color = "#DC143C";
+      }
+      if (nowDay.getDay() === 6) { // 토요일인 경우 글자색 파랑으로 하고
+        nowColumn.style.color = "#0000CD";
+        nowRow = tbody_Calendar.insertRow(); // 새로운 행 추가
+      }
+
+      if (nowDay < today) { // 지난날인 경우
+        nowColumn.className = "pastDay";
+      } else if (nowDay.getFullYear() === today.getFullYear() && nowDay.getMonth() === today.getMonth() && nowDay.getDate() === today.getDate()) { // 오늘인 경우
+        nowColumn.className = "today";
+        nowColumn.onclick = function() {
+          choiceDate(this);
+        };
+      } else { // 미래인 경우
+        nowColumn.className = "futureDay";
+        nowColumn.onclick = function() {
+          choiceDate(this);
+        };
+      }
+
+      // 선택된 날짜 범위에 해당하는 스타일 적용
+      if (selectedStartDate && selectedEndDate && nowDay >= selectedStartDate && nowDay <= selectedEndDate) {
+        nowColumn.classList.add("choiceDay");
+      } else if (selectedStartDate && !selectedEndDate && nowDay.getTime() === selectedStartDate.getTime()) {
+        nowColumn.classList.add("choiceDay");
+      }
     }
-
-    .header-category>label {
-        /* border: 1px solid;
-            border-radius: 5px; */
-        color: #595959;
-        font-family: 'Noto Sans KR Regular', sans-serif;
-        padding: 7px;
-        padding-top: 0.2vh;
-        padding-bottom: 0.2vh;
-        cursor: pointer;
-    }
-
-    #label-left-course {
-        margin-right: 3vw;
-    }
-
-    #label-left-community {
-        margin-right: 3vw;
-    }
-
-    #label-left-chat {
-        margin-right: 3vw;
-        padding-left: 1vw;
-        padding-right: 1vw;
-    }
-
-    #label-right-login {
-        padding-left: 1vw;
-        padding-right: 1vw;
-        margin-left: 3vw;
-    }
-
-    #label-right-register {
-        margin-left: 3vw;
-    }
-
-    .main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 98vw;
-        height: 78vh;
-    }
-
-    .main-left {
-        width: 20vw;
-        height: 80vh;
-    }
-
-    .main-left h2 {
-        font-family: 'Noto Sans KR Light', sans-serif;
-        text-align: center;
-        color: #595959;
-        margin-top: 0vw;
-    }
-
-    .main-center {
-        width: 60vw;
-        height: 80vh;
-
-    }
-
-    .main-right {
-        width: 20vw;
-        height: 80vh;
-    }
-
-    .list {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 0.1vw solid #B8E9FF;
-        border-radius: 0.3vw;
-        width: 18vw;
-        height: 12vh;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    #list-img>img {
-        width: 7vw;
-        height: 10vh;
-        border: 0.1vw solid;
-        border-radius: 0.5vw;
-        margin-left: 0.5vw;
-        margin-right: 0.5vw;
-        margin-top: 0.5vh;
-    }
-
-    #list-name {
-        width: 30vw;
-        height: 10vh;
-        margin-left: 1vw;
-        margin-top: 5vh;
-        font-size: 12px;
-        font-family: 'Noto Sans KR Light', sans-serif;
-        text-align: left;
-        color: #595959;
-    }
-
-    #list-name-heartimg {
-        display: flex;
-        width: 5vw;
-        height: 3vh;
-        margin-top: 1vh;
-        margin-left: 0vw;
-    }
-
-    #heartimg {
-        width: 1vw;
-        height: 2vh;
-        margin-right: 0.5vw;
-    }
-
-    #list-plus>img {
-        width: 1vw;
-        height: 2vh;
-        margin-top: 8vh;
-        margin-left: 1vw;
-        margin-right: 1vw;
-    }
-
-    .course {
-        width: 20vw;
-        height: 44vh;
-    }
-
-    .course-color {
-        width: 19vw;
-        height: 10vh;
-        border: 0.1vw solid #B8E9FF;
-        border-radius: 0.5vw;
-        border-bottom-left-radius: 0vw;
-        border-bottom-right-radius: 0vw;
-        margin: 0vw;
-        margin: 0 auto;
-    }
-
-    .course-color h5 {
-        margin-top: 0.2vw;
-    }
-
-    .course-plan {
-        width: 19vw;
-        height: 33vh;
-        border: 0.1vw solid #B8E9FF;
-        border-top: 0vw;
-        border-radius: 0.5vw;
-        border-top-left-radius: 0vw;
-        border-top-right-radius: 0vw;
-        margin: 0vw;
-        margin: 0 auto;
-    }
-
-    .course-plan>img {
-        width: 10vw;
-        height: 2vh;
-        margin-top: 8vh;
-        margin-left: 1vh;
-        margin-right: 1vh;
+    // 선택된 날짜가 없을 때 Day 초기화
+    if (!selectedStartDate && !selectedEndDate) {
+    	const applyButton = document.querySelector("#applyButton");
+    	applyButton.style.display = 'none';
+    	const info = document.querySelector(".info");
+  	  info.style.display = 'block';
+      const courseColorDay = document.querySelector(".course-color-day");
+      courseColorDay.innerHTML = "";
+      courseColorDay.style.display = 'none'
+      const coursePlan = document.querySelector(".course-plan");
+      coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+      coursePlan.style.display = 'none'
+      const courseButtonElement = document.querySelector(".course-button");
+      courseButtonElement.innerHTML = "";
+      courseButtonElement.style.display = 'none'
+    }else{
+    	const applyButton = document.querySelector("#applyButton");
+    	applyButton.style.display = 'block';
     }
     
-    .course-color-check {
-        width: 100%;
-        height: 8vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-    }
-
-    .course-color-day {
-        display: flex;
-        align-items: center;
-        width: 90%;
-        height: 3vh;
-        margin-left: 1.5vh;
-    }
-
-    .course-color-day h5 {
-        text-align: left;
-    }
-
-    .course-color-check i {
-        margin-left: 0.5vh;
-        margin-right: 0.5vh;
-    }
-
-    .circle1 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle1:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle2 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle2:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle3 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle3:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle4 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle4:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle5 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle5:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle6 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle6:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle7 {
-        display: inline-block;
-        /* 영역적용가능해짐 */
-        width: 20px;
-        height: 20px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-        border-radius: 10px;
-        /* 모서리둥글게 처리 */
-        position: relative;
-        top: 4px;
-
-        cursor: pointer;
-        /* 마우스 올렸을때 손모양 처리 */
-    }
-
-    .circle7:after {
-        content: '\2714';
-        /* 체크박스 특수문자 */
-        font-size: 24px;
-        color: #333;
-        position: absolute;
-        top: -14px;
-        left: 0;
-
-        opacity: 0;
-        /* 처음엔 안보이게 처리 */
-        transition: 0.2s;
-        /* CSS변화에 시간차 처리 */
-    }
-
-    .circle1 {
-        background-color: red;
-    }
-
-    .circle2 {
-        background-color: orange;
-    }
-
-    .circle3 {
-        background-color: yellow;
-    }
-
-    .circle4 {
-        background-color: green;
-    }
-
-    .circle5 {
-        background-color: blue;
-    }
-
-    .circle6 {
-        background-color: navy;
-    }
-
-    .circle7 {
-        background-color: purple;
-    }
-
-    /* input이 체크되면 특수문자 보이게 처리 */
-    #chk1:checked+.circle1:after {
-        opacity: 1;
-    }
-
-    #chk2:checked+.circle2:after {
-        opacity: 1;
-    }
-
-    #chk3:checked+.circle3:after {
-        opacity: 1;
-    }
-
-    #chk4:checked+.circle4:after {
-        opacity: 1;
-    }
-
-    #chk5:checked+.circle5:after {
-        opacity: 1;
-    }
-
-    #chk6:checked+.circle6:after {
-        opacity: 1;
-    }
-
-    #chk7:checked+.circle7:after {
-        opacity: 1;
-    }
-
-    /* 체크박스는 display:none;을 주면 데이터 처리가 안됨 */
-    #chk1 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk2 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk3 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk4 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk5 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk6 {
-        position: absolute;
-        left: -999em;
-    }
-
-    #chk7 {
-        position: absolute;
-        left: -999em;
-    }
-
-    h5 {
-        margin: 0px;
-    }
-
-    @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
-
-    .calendar {
-        background-color: white;
-        width: 80%;
-        height: 30vh;
-        margin: 0px;
-        padding: 20px;
-        margin: 0 auto;
-        border: 1px solid #B8E9FF;
-        border-radius: 5px;
-        margin-bottom: 1vh;
-        /* box-shadow:0px 40px 30px -20px rgba(0,0,0,0.3); */
-    }
-
-    td {
-        width: 3.5vh;
-        height: 3.5vh;
-    }
-
-    .Calendar-table {
-        text-align: center;
-        margin: auto;
-    }
-
-    .Calendar-table>thead>tr:first-child>td {
-        font-family: 'Questrial', sans-serif;
-        font-size: 0.5em;
-        font-weight: bold;
-    }
-
-    .Calendar-table>thead>tr:last-child>td {
-        font-family: 'Questrial', sans-serif;
-        font-size: 0.5em;
-        font-weight: 600;
-    }
-
-    .Calendar-table>tbody>tr>td>p {
-        font-family: 'Montserrat', sans-serif;
-        height: 5vh;
-        width: 5vh;
-        border-radius: 45px;
-        transition-duration: .2s;
-        line-height: 5vh;
-        margin: 1px;
-        display: block;
-        text-align: center;
-    }
-
-    .pastDay {
-        color: lightgray;
-        font-size: 0.5em;
-    }
-
-    .today {
-        background-color: #EEEEEE;
-        color: black;
-        font-size: 0.5em;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .futureDay {
-        background-color: #FFFFFF;
-        font-size: 0.5em;
-        cursor: pointer;
-    }
-
-    .futureDay:hover {
-        background: #eee;
-    }
-
-    .futureDay.choiceDay,
-    .today.choiceDay {
-        background: #B8E9FF;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.5em;
-        cursor: pointer;
-    }
-</style>
-<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
-<script type="text/javascript">
-    // 페이지가 로딩이 된 후 호출하는 함수입니다.
-    function initTmap() {
-        // map 생성
-        // Tmapv2.Map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
-        var map = new Tmapv2.Map("map_div", { // 지도가 생성될 div
-            center: new Tmapv2.LatLng(33.3616666, 126.5291666),
-            width: "60vw", // 지도의 넓이
-            height: "80vh", // 지도의 높이
-            zoom: 10
+  }
+//전역 변수로 days와 currentDay 선언
+  let days;
+  let currentDay = 1;
+
+//적용 버튼 클릭 시 실행되는 함수
+  function applyDate() {
+	  const info = document.querySelector(".info");
+	  info.style.display = 'none';
+	const applyButton = document.querySelector("#applyButton");
+	applyButton.style.display = 'none';
+	const courseColorDay = document.querySelector(".course-color-day");
+	courseColorDay.innerHTML = "";
+    courseColorDay.style.display = 'block';
+    const coursePlan = document.querySelector(".course-plan");
+    coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+    coursePlan.style.display = 'block';
+    const courseButtonElement = document.querySelector(".course-button");
+    courseButtonElement.innerHTML = "";
+    courseButtonElement.style.display = 'block';
+    
+    
+    if (selectedStartDate && selectedEndDate) {
+      days = getDayDiff(selectedStartDate, selectedEndDate);
+      const courseColorDay = document.querySelector(".course-color-day");
+      courseColorDay.innerHTML = ""; // 기존의 Day 숫자 초기화
+      
+      const coursePlan = document.querySelector(".course-plan");
+      coursePlan.innerHTML = ""; // 기존의 course-list 초기화
+      
+      const coursedaydiv = document.createElement("div");
+      coursedaydiv.className = "course-day";
+      courseColorDay.appendChild(coursedaydiv);
+    // 7개의 checkbox 생성
+    for (let i = 1; i <= days; i++) {
+    	
+    	const courseColor = document.createElement("div");
+  	  courseColor.className = "course-color-check";
+  	  
+  	courseColor.id = `course-color-check-${i}`; // 고유한 ID 설정
+  	courseColor.style.display = i === 1 ? "block" : "none"; // 첫 번째 day에 해당하는 course-list는 보여주기, 나머지는 숨김
+  	  const colorh5 = document.createElement("div");
+  	  const colorh5Element = document.createElement("h5");
+  	  colorh5Element.textContent = '경로색상';
+  	  colorh5.appendChild(colorh5Element);
+  	  courseColor.appendChild(colorh5);
+  	  
+    	for (let j = 1; j <= 7; j++) {
+      // div 요소 생성
+      	const divElement = document.createElement("div");
+      
+      // label 요소 생성
+	      const labelElement = document.createElement("label");
+    	  labelElement.setAttribute("for", `chk${i}-${j}`);
+
+      // checkbox 요소 생성
+    	  const checkboxElement = document.createElement("input");
+	      checkboxElement.setAttribute("type", "checkbox");
+      	checkboxElement.setAttribute("id", `chk${i}-${j}`);
+      	checkboxElement.setAttribute("name", "planColor");
+      	checkboxElement.setAttribute("onclick", `handleCheckboxClick(${i}, 'chk${i}-${j}')`);
+		
+      	const inputcss = `
+      	    #chk${i}-${j}:checked + .circle${j}::after {
+      	      opacity: 1;
+      	    }
+      	  `;
+      	  
+      	  // <style> 요소를 생성하여 CSS 스타일을 추가
+  const styleElement = document.createElement('style');
+  styleElement.innerHTML = inputcss;
+  document.head.appendChild(styleElement);
+      // i 요소 생성
+	      const iElement = document.createElement("i");
+    	  iElement.classList.add(`circle${j}`);
+
+      // label 요소에 checkbox와 i 요소 추가
+	      labelElement.appendChild(checkboxElement);
+    	  labelElement.appendChild(iElement);
+      
+          divElement.appendChild(labelElement);
+      
+     	  courseColor.appendChild(divElement);
+      
+      	  coursePlan.appendChild(courseColor);
+    	}
+        
+    	const daydivElement = document.createElement("div");	
+        const dayElement = document.createElement("h5");
+        dayElement.textContent = `Day${i}`;
+        dayElement.dataset.day = i; // 데이터 속성으로 day 값 설정
+        dayElement.addEventListener("click", function () {
+          changeCurrentDay(parseInt(this.dataset.day)); // day 값을 정수로 변환하여 전달
         });
-        var positions = [
-             th:each="place : ${placelist}"
-            {
-                name: ${place.placeName}
-                lon: ${place.placeLon},
-                lat: ${place.placeLat}
-            },
-        ];
-        console.log(positions);
-        for (var i = 0; i< positions.length; i++){//for문을 통하여 배열 안에 있는 값을 마커 생성
-			var lonlat = positions[i].lonlat;
-			var title = positions[i].title;
-			//Marker 객체 생성.
-			marker = new Tmapv2.Marker({
-				position : lonlat, //Marker의 중심좌표 설정.
-				map : map, //Marker가 표시될 Map 설정.
-				title : title //Marker 타이틀.
-			});
+        
+		daydivElement.appendChild(dayElement);
+        coursedaydiv.appendChild(daydivElement);
+		
+        const courseList = document.createElement("div");
+        courseList.className = "course-list";
+        courseList.id = `course-list-${i}`; // 고유한 ID 설정
+        courseList.style.display = i === 1 ? "block" : "none"; // 첫 번째 day에 해당하는 course-list는 보여주기, 나머지는 숨김
+
+        // Create hidden input element for the selected date
+        const inputElement = document.createElement("input");
+        inputElement.type = "hidden";
+        inputElement.name = "planDate";
+
+        const currentDate = new Date(selectedStartDate);
+        currentDate.setDate(currentDate.getDate() + i - 1);
+        const year = currentDate.getFullYear();
+        const month = leftPad(currentDate.getMonth() + 1);
+        const day = leftPad(currentDate.getDate());
+        const selectedDate = `${year}-${month}-${day}`;
+        inputElement.value = selectedDate;
+
+        courseList.appendChild(inputElement);
+
+        coursePlan.appendChild(courseList);
+      }
+	  
+      const daybuttondiv = document.createElement("div");
+   	  // 미리보기 버튼 생성
+   	  daybuttondiv.className = "daybutton";
+      const previewButton = document.createElement("button");
+      previewButton.setAttribute("type", "button");
+      previewButton.id = "previewButton";
+      previewButton.setAttribute("onclick", "coursePreviewPopup()");
+      previewButton.textContent = "미리보기";
+
+      // 등록 버튼 생성
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "button");
+      submitButton.id = "insertButton";
+      submitButton.setAttribute("onclick", "courseInsertPopup()");
+      submitButton.textContent = "등록";
+	  
+   // 이전날 버튼 생성
+      const previousDayButton = document.createElement("button");
+      previousDayButton.type = "button";
+      previousDayButton.innerText = "이전날";
+      previousDayButton.addEventListener("click", previousDay);
+
+      // 다음날 버튼 생성
+      const nextDayButton = document.createElement("button");
+      nextDayButton.type = "button";
+      nextDayButton.innerText = "다음날";
+      nextDayButton.addEventListener("click", nextDay);
+      
+      const courseButtonElement = document.querySelector(".course-button");
+	  
+      courseButtonElement.appendChild(previousDayButton);
+      courseButtonElement.appendChild(nextDayButton);
+      daybuttondiv.appendChild(previewButton);
+      daybuttondiv.appendChild(submitButton);
+      
+      coursedaydiv.appendChild(daybuttondiv);
+      
+      // Day 숫자 초기 설정 (첫 번째 Day를 선택한 상태로 설정)
+      const firstDayElement = document.querySelector(".course-color-day h5");
+      firstDayElement.classList.add("active");
+    } else {
+      const courseColorDay = document.querySelector(".course-color-day");
+      courseColorDay.innerHTML = ""; // Day 숫자 제거
+
+      const coursePlan = document.querySelector(".course-plan");
+      coursePlan.innerHTML = ""; // course-list 제거
+    }
+  }
+
+  // 다음날 버튼 클릭 시 실행되는 함수
+  function nextDay() {
+    if (currentDay < days) {
+      const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      const currentCourseColor = document.getElementById(`course-color-check-${currentDay}`);
+      currentCourseList.style.display = "none";
+      currentCourseColor.style.display = "none";
+      currentDay++;
+
+      const nextCourseList = document.getElementById(`course-list-${currentDay}`);
+      const nextCourseColor = document.getElementById(`course-color-check-${currentDay}`);
+      nextCourseList.style.display = "block";
+      nextCourseColor.style.display = "block";
+
+      // Day 숫자 변경
+      const courseColorDay = document.querySelector(".course-color-day");
+      const dayElements = courseColorDay.getElementsByTagName("h5");
+      for (let i = 0; i < dayElements.length; i++) {
+        const dayElement = dayElements[i];
+        if (parseInt(dayElement.dataset.day) === currentDay) {
+          dayElement.classList.add("active");
+        } else {
+          dayElement.classList.remove("active");
+        }
+      }
+    }
+  }
+
+  // 이전날 버튼 클릭 시 실행되는 함수
+  function previousDay() {
+    if (currentDay > 1) {
+      const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      const currentCourseColor = document.getElementById(`course-color-check-${currentDay}`);
+      currentCourseList.style.display = "none";
+      currentCourseColor.style.display = "none";
+      currentDay--;
+
+      const previousCourseList = document.getElementById(`course-list-${currentDay}`);
+      const previousCourseColor = document.getElementById(`course-color-check-${currentDay}`);
+      previousCourseList.style.display = "block";
+      previousCourseColor.style.display = "block";
+
+      // Day 숫자 변경
+      const courseColorDay = document.querySelector(".course-color-day");
+      const dayElements = courseColorDay.getElementsByTagName("h5");
+      for (let i = 0; i < dayElements.length; i++) {
+        const dayElement = dayElements[i];
+        if (parseInt(dayElement.dataset.day) === currentDay) {
+          dayElement.classList.add("active");
+        } else {
+          dayElement.classList.remove("active");
+        }
+      }
+    }
+  }
+
+  // 현재 표시 중인 Day 변경 함수
+  function changeCurrentDay(day) {
+    if (day !== currentDay) {
+      const currentCourseList = document.getElementById(`course-list-${currentDay}`);
+      currentCourseList.style.display = "none";
+      currentDay = day;
+
+      const nextCourseList = document.getElementById(`course-list-${currentDay}`);
+      nextCourseList.style.display = "block";
+
+      // Day 숫자 변경
+      const courseColorDay = document.querySelector(".course-color-day");
+      const dayElements = courseColorDay.getElementsByTagName("h5");
+      for (let i = 0; i < dayElements.length; i++) {
+        const dayElement = dayElements[i];
+        if (parseInt(dayElement.dataset.day) === currentDay) {
+          dayElement.classList.add("active");
+        } else {
+          dayElement.classList.remove("active");
+        }
+      }
+    }
+  }
+  // 현재 Day에 해당하는 course-list 보여주는 함수
+  function showCurrentDay() {
+    const courseLists = document.querySelectorAll(".course-list");
+    courseLists.forEach((courseList, index) => {
+      if (index + 1 === currentDay) {
+        courseList.style.display = "block";
+      } else {
+        courseList.style.display = "none";
+      }
+    });
+  }
+  // 날짜 선택
+  function choiceDate(nowColumn) {
+    const selectedDay = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), parseInt(nowColumn.innerText));
+
+    if (selectedStartDate && selectedEndDate) {
+      // 이미 시작 날짜와 종료 날짜가 선택된 경우
+      selectedStartDate = selectedEndDate = null; // 선택된 날짜 초기화
+    } else if (selectedStartDate) {
+      // 시작 날짜가 이미 선택된 경우
+      if (selectedDay < selectedStartDate) {
+        selectedEndDate = selectedStartDate;
+        selectedStartDate = selectedDay;
+      } else if (selectedDay > selectedStartDate) {
+        selectedEndDate = selectedDay;
+      } else {
+        selectedStartDate = null; // 선택된 날짜 초기화
+      }
+    } else {
+      // 시작 날짜가 선택되지 않은 경우
+      selectedStartDate = selectedDay;
+    }
+
+    buildCalendar(); // 달력 다시 생성
+  }
+//날짜 차이 계산
+  function getDayDiff(startDate, endDate) {
+    const oneDay = 24 * 60 * 60 * 1000; // 1일의 밀리초 수
+    const diffDays = Math.round(Math.abs((startDate - endDate) / oneDay)) + 1; // 날짜 차이 계산
+    return diffDays;
+  }
+  // 이전달 버튼 클릭
+  function prevCalendar() {
+    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate()); // 현재 달을 1 감소
+    buildCalendar(); // 달력 다시 생성
+  }
+
+  // 다음달 버튼 클릭
+  function nextCalendar() {
+    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate()); // 현재 달을 1 증가
+    buildCalendar(); // 달력 다시 생성
+  }
+
+
+	// input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
+	function leftPad(value) {
+		if (value < 10) {
+			value = "0" + value;
+			return value;
 		}
-    }
-    window.onload = function () {
-        buildCalendar();
+		return value;
+	}
+	function coursePreviewPopup() {
+		  function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    let check = true;
+		    let placecheck = true;
+		    const values = [];
 
-    }    // 웹 페이지가 로드되면 buildCalendar 실행
-    window.addEventListener('load', function () {
-        initTmap();
-    })
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
+  			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  let checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+	     	  if(checkboxColor === false){
+	     		  check = false;
+	     		  return check;
+	     	  }else{
+	     		  check = true;
+	     	  }
+	     	  
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
+		      const inputDateValue = inputDateElement.value;
+		      const lonLatPairs = [];
+			  
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
 
-    let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
-    let today = new Date();     // 페이지를 로드한 날짜를 저장
-    today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+		        
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
+					
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
+		      });
+		     });
+		    if(!check){
+	     		 alert('색상을 선택해 주세요');
+	     		  return false;
+	     	  }
+		    return values;
+		  }
+		  
+		  const inputValues = getInputValues();
+		  console.log("incput Values = "+inputValues);
+		  if(!inputValues){
+     		  return false;
+     	  }
 
-    // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-    function buildCalendar() {
+		  console.log(inputValues);
 
-        let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
-        let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
+		  previewOpenPopup(inputValues);
 
-        let tbody_Calendar = document.querySelector(".Calendar-table > tbody");
-        document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
-        document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
+		 }
+		
+	function courseInsertPopup() {
+		  function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    
+		    const values = [];
 
-        while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
-            tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
-        }
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
+			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+	     	  if(checkboxColor === false){
+	     		  return false;
+	     	  }
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
+		      const inputDateValue = inputDateElement.value;
+		      const lonLatPairs = [];
+			  
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
 
-        let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+		        
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
+					
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
+		      });
+		      
+		      });
+		    
+		    return values;
+		  }
+		  
+		  const inputValues = getInputValues();
 
-        for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
-            let nowColumn = nowRow.insertCell();        // 열 추가
-        }
+		  insertOpenPopup(inputValues);
 
-        for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {   // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
+		 }
+	
+	function handleCheckboxClick(day, checkboxId) {
+			const courseColorCheck = document.querySelector(`#course-color-check-${day}`);
+			  if (courseColorCheck.style.display === 'block') {
+			    const checkboxes = courseColorCheck.querySelectorAll('input[type="checkbox"]');
+			    checkboxes.forEach((checkbox) => {
+			      if (checkbox.id === checkboxId) {
+			        checkbox.checked = true;
+			      } else {
+			        checkbox.checked = false;
+			      }
+			    });	
+			}
+		  }
+	function getCheckboxIconBackgroundColor(checkboxElement) {
+		if(checkboxElement === "" || checkboxElement === null){
+			return false;
+		}else{
+		  const labelElement = checkboxElement.parentElement; // 체크박스를 감싸는 label 요소
+		  const iconElement = labelElement.querySelector('i'); // label 요소 내의 i 태그
 
-            let nowColumn = nowRow.insertCell();        // 새 열을 추가하고
-            nowColumn.innerText = leftPad(nowDay.getDate());      // 추가한 열에 날짜 입력
+		  const computedStyle = window.getComputedStyle(iconElement);
+		  const backgroundColor = computedStyle.backgroundColor;
+
+		  return backgroundColor;
+		}
+	}	
+	function convertRGBToColorName(rgbValue) {
+		const colorMap = {
+				  'rgb(255, 0, 0)': 'red',
+				  'rgb(255, 165, 0)': 'orange',
+				  'rgb(255, 255, 0)': 'yellow',
+				  'rgb(0, 128, 0)': 'green',
+				  'rgb(0, 0, 255)': 'blue',
+				  'rgb(0, 0, 128)': 'navy',
+				  'rgb(128, 0, 128)': 'purple',
+				  // 추가적인 색상 값들을 필요에 따라 계속해서 추가할 수 있습니다.
+				};
+
+		  return colorMap[rgbValue] || rgbValue;
+		}
+	
+	function courseInsert(){
+		function getInputValues() {
+		    const courseLists = document.querySelectorAll('.course-plan .course-list');
+		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
+		    
+		    const values = [];
+
+		    courseLists.forEach((courseList, index) => {
+		      const inputDateElement = courseList.querySelector('input[name="planDate"]');
+		      const inputLonElements = courseList.querySelectorAll('input[name="planLon"]');
+		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
+  			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
+	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+		      const colorName = convertRGBToColorName(checkboxColor);
+		      
+		      const inputDateValue = inputDateElement.value;
+		      const lonLatPairs = [];
+			  
+		      inputLonElements.forEach((inputLonElement, lonIndex) => {
+		        const inputLatElement = inputLatElements[lonIndex];
+
+		        const inputLonValue = inputLonElement.value;
+		        const inputLatValue = inputLatElement.value;
+		        
+		        lonLatPairs.push({
+		          lon: inputLonValue,
+		          lat: inputLatValue
+		        });
+		      });
+					
+		      values.push({
+		        index: index + 1,
+		        date: inputDateValue,
+		        lonLatPairs: lonLatPairs,
+		        color: colorName
+		      });
+		    });
+		    
+
+		    return values;
+		  }
+		
+ 		const inputValues = getInputValues();
+		const planName = document.querySelector('input[name="planName"]');
+		const planNameValue = planName.value;
+		if(planNameValue == "" || planNameValue == null){
+			alert("일정 제목을 입력해 주세요");
+			return false;
+		}else{
+			$.ajax({
+			    url: '/plan/createplan',
+			    type: 'POST',
+			    data: JSON.stringify({
+			    	   inputValues: inputValues,
+			    	   userID: loginchk,
+			    	   planName: planNameValue
+			    	}),
+			    contentType: 'application/json',
+			    success: function(data) {
+			      location.href="/login/usermain";
+			    },
+			    error: function(data){
+			    	alert("실패");
+			    }
+			  });	
+		}
+		   
+	}
+	
+	function search(){
+		const searchInput = document.querySelector('input[name="keyword"]');
+		const keyword = encodeURIComponent(searchInput.value);
+		
+		$.ajax({
+			url:'/plan/search',
+			type: 'POST',
+			data: {keyword: keyword,
+				   pageNum: pageNum},
+			success: function(data){
+				updateList(data.placeList);
+		    	  createMarkers(data.placeList);
+				updatePaginationsearch(data.totalPages, data.currentPage, keyword);
+				
+			},
+			error: function(data){
+				alert("실패");
+			}
+		});
+	}
+	
+	function updatePagination(totalPages, currentPage) {
+	    var paginationContainer = document.querySelector('#pagination');
+	    paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+	    var category = document.querySelector('input[name="placeCategory"]').value;
+	    var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
+	    var startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+	    var endPage = Math.min(totalPages, startPage + pageRange - 1);
+
+	    // 페이지 번호 생성
+	    for (var i = startPage; i <= endPage; i++) {
+	        var pageLink = document.createElement('a');
+	        pageLink.href = 'javascript:void(0)';
+	        pageLink.textContent = i;
+	        pageLink.addEventListener('click', function () {
+	        	fetchUpdatedMarkers(category, Number(this.textContent));
+	        });
+
+	        if (i === currentPage) {
+	            pageLink.classList.add('active');
+	        }
+
+	        paginationContainer.appendChild(pageLink);
+	    }
+
+	}
 
 
-            if (nowDay.getDay() == 0) {                 // 일요일인 경우 글자색 빨강으로
-                nowColumn.style.color = "#DC143C";
-            }
-            if (nowDay.getDay() == 6) {                 // 토요일인 경우 글자색 파랑으로 하고
-                nowColumn.style.color = "#0000CD";
-                nowRow = tbody_Calendar.insertRow();    // 새로운 행 추가
-            }
+	function updatePaginationsearch(totalPages, currentPage, keyword) {
+	    var paginationContainer = document.querySelector('#pagination');
+	    paginationContainer.innerHTML = ''; // 기존 페이지 번호 초기화
+	    var pageRange = 5; // 한 번에 표시할 페이지 번호의 수
+	    var startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+	    var endPage = Math.min(totalPages, startPage + pageRange - 1);
+	    var decodekeyword = decodeURIComponent(keyword);
+		console.log(decodekeyword);
+	    // 페이지 번호 생성
+	    for (var i = startPage; i <= endPage; i++) {
+	        var pageLink = document.createElement('a');
+	        pageLink.href = 'javascript:void(0)';
+	        pageLink.textContent = i;
+	        pageLink.addEventListener('click', function () {
+	        	fetchUpdatedMarkerssearch(decodekeyword, Number(this.textContent));
+	        });
 
+	        if (i === currentPage) {
+	            pageLink.classList.add('active');
+	        }
 
-            if (nowDay < today) {                       // 지난날인 경우
-                nowColumn.className = "pastDay";
-            }
-            else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) { // 오늘인 경우           
-                nowColumn.className = "today";
-                nowColumn.onclick = function () { choiceDate(this); }
-            }
-            else {                                      // 미래인 경우
-                nowColumn.className = "futureDay";
-                nowColumn.onclick = function () { choiceDate(this); }
-            }
-        }
-    }
+	        paginationContainer.appendChild(pageLink);
+	    }
 
-    // 날짜 선택
-    function choiceDate(nowColumn) {
-        if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
-            document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
-        }
-        nowColumn.classList.add("choiceDay");           // 선택된 날짜에 "choiceDay" class 추가
-    }
+	}
 
-    // 이전달 버튼 클릭
-    function prevCalendar() {
-        nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
-        buildCalendar();    // 달력 다시 생성
-    }
-    // 다음달 버튼 클릭
-    function nextCalendar() {
-        nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
-        buildCalendar();    // 달력 다시 생성
-    }
+	document.addEventListener('DOMContentLoaded', function() {
+		  const buttons = document.querySelectorAll('#category-button button');
+		  let selectedButton = document.querySelector('.button-selected');
 
-    // input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
-    function leftPad(value) {
-        if (value < 10) {
-            value = "0" + value;
-            return value;
-        }
-        return value;
-    }
+		  buttons.forEach(button => {
+		    button.addEventListener('click', function() {
+		      const isSelected = this.classList.contains('button-selected');
+
+		      if (!isSelected) {
+		        // 다른 버튼들의 선택 상태 제거
+		        buttons.forEach(btn => {
+		          btn.classList.remove('button-selected');
+		        });
+
+		        // 현재 버튼을 선택 상태로 설정
+		        this.classList.add('button-selected');
+		        selectedButton = this;
+		      }
+		    });
+		  });
+		});
+	
+	window.onload = function () {
+		  buildCalendar();
+		  initTmap();
+		  fetchUpdatedMarkers('restaurant', 1);
+	};	
 </script>
-
 <title>Insert title here</title>
 </head>
 <body>
-    <div class="header">
-        <div class="header-category">
-            <label id="label-left-course">코스추천</label>
-            <label id="label-left-community">커뮤니티</label>
-            <label id="label-left-chat">채팅방</label>
-            <img src="./logo.png" alt="" id="logimg">
-            <label id="label-right-login">로그인</label>
-            <label id="label-right-register">회원가입</label>
-        </div>
-    </div>
-    <div class="main">
-        <div class="main-left">
-            <h2>사용자 추천</h2>
-            <div class="list">
-                <div id="list-img">
-                    <img src="./곽지식당.jpg" alt="">
-                </div>
-
-                <div id="list-name">
-                    <div id="list-name-label">
-                        <label>곽지식당</label>
-                    </div>
-                    <div id="list-name-heartimg">
-                        <div>
-                            <img src="004.png" alt="" id="heartimg">
-                        </div>
-                        <div id="list-name-heartimg-label">
-                            <label>456</label>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div id="list-plus">
-                    <img src="plus.png" alt="">
-                </div>
-
-            </div>
-        </div>
-        <div class="main-center">
-            <div id="map_div"></div>
-        </div>
-        <div class="main-right">
-            <div class="calendar">
-                <table class="Calendar-table">
-                    <thead>
-                        <tr>
-                            <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
-                            <td colspan="5">
-                                <span id="calYear"></span>년
-                                <span id="calMonth"></span>월
-                            </td>
-                            <td onClick="nextCalendar();" style="cursor:pointer;">&#62;</td>
-                        </tr>
-                        <tr>
-                            <td>일</td>
-                            <td>월</td>
-                            <td>화</td>
-                            <td>수</td>
-                            <td>목</td>
-                            <td>금</td>
-                            <td>토</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div class="course">
-                <div class="course-color">
-                    <div class="course-color-day">
-                        <h5>Day1</h5>
-                    </div>
-                    <div class="course-color-check">
-                        <div>
-                            <h5>마커색상</h5>
-                        </div>
-                        <div>
-                            <label for="chk1">
-                                <input type="checkbox" id="chk1">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle1"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk2">
-                                <input type="checkbox" id="chk2">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle2"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk3">
-                                <input type="checkbox" id="chk3">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle3"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk4">
-                                <input type="checkbox" id="chk4">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle4"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk5">
-                                <input type="checkbox" id="chk5">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle5"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk6">
-                                <input type="checkbox" id="chk6">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle6"></i>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="chk7">
-                                <input type="checkbox" id="chk7">
-                                <!--실제로는 글자를 기울이는 태그, 퍼블리셔들이 아이콘담을 때 많이 사용-->
-                                <i class="circle7"></i>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-plan">
-                    <div id="list-img">
-                        <img src="./곽지식당.jpg" alt="">
-                    </div>
-
-                    <div id="list-name">
-                        <div id="list-name-label">
-                            <label>곽지식당</label>
-                        </div>
-                    </div>
-                    <div id="list-minus">
-                        <img src="minus.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
+	<div class="main"> 
+		<div class="main-left">
+			<div class="search-div">
+				<input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요">
+				<button type="button" id="search-button" name="searchbutton" onclick="search()">검색</button>
+			</div>
+			<div class="list-scroll">
+			<div class="list">
+				<div id="left_block" th:each="restaurant : ${placeRestaurantList}">
+				<input type="hidden" name="placeCategory" th:value="${restaurant.placeCategory}">
+					<div id="list-img">
+						<img th:src="@{/resources/image/place/__${restaurant.placeName}__.jpg}" alt="">
+					</div>
+					<div id="list-name">
+						<div id="list-name-label">
+							<label th:text="${restaurant.placeName}">곽지식당</label>
+						</div>
+						<div id="list-name-heartimg">
+							<div>
+								<img src="/resources/image/insta_heart.png" alt="" id="heartimg">
+							</div>
+							<div id="list-name-heartimg-label">
+								<label th:text="${restaurant.placeGood}">456</label>
+							</div>
+						</div>
+					</div>
+					<div id="list-plus">
+						<img src="./resources/image/plus.png" alt="" id="plus">
+					</div>
+					<input type="hidden" name="planLon" th:value="${restaurant.placeLon}">
+					<input type="hidden" name="planLat" th:value="${restaurant.placeLat}">
+				</div>
+			</div>
+			</div>
+			<div id="pagination"></div>
+		</div>
+		<div class="placemenu" style="display: none;">
+			<div id="placemenu_top">
+				<div id="placemenu_button">
+					<button>x</button>
+				</div>
+				<div id="datatest">
+				  <img id="placeImage" src="" alt="장소 이미지">
+				</div>
+				<div id="datatest1"></div>
+				<div id="ocr_button">
+					<img src="/resources/image/insta_heart.png" id="heartimg2"/>
+					<div id="datatest4"></div>
+					<img src="/resources/image/goood.png" id="heartimg2"/>
+					<div id="placemenu_heart">
+					<a th:href="'javascript:void(0);'" th:onclick="|openPopup()|">추천하기</a>
+					</div>
+				</div>
+				<hr id="hr_css">
+				<div id="placemenu_pin">
+					<img src="/resources/image/pin2.png" id="pin_img"/>
+					<div id="datatest2"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/number.png" id="pin_img"/>
+					<div id="datatest3"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/infocheck.png" id="pin_img"/>
+					<div id="datatest5"></div>
+				</div>
+				<div id="placemenu_number">
+					<img src="/resources/image/taaag.png" id="pin_img"/>
+					<div id="data_tag">
+						<div id="datatest6"></div>
+						<div id="datatest7"></div>
+						<div id="datatest8"></div>
+					</div>
+				</div>
+				<div id="datatest0"></div>
+				<div id="chart_title">연령별/성별 추천 비율</div>	
+			</div>
+			<div id="chart_set">
+				<div id="chart">
+					<canvas id="chartCanvas"></canvas>
+				</div>
+				<div id="chart2">
+					<canvas id="chartCanvas2"></canvas>
+				</div>
+			</div>
+		</div>
+		<div class="main-center">
+			<div id="map_div"></div>
+			
+			<div id="category-button">
+				<button id="restaurant-btn" class="button-selected">음식점</button>
+				<button id="youtube-btn">유튜브맛집</button>
+				<button id="tourist-btn">관광지</button>
+				<button id="hill-btn">오름</button>
+				<button id="ollegil-btn">올레길</button>
+			</div>
+			<div id="weather">
+			<div th:if="${not #lists.isEmpty(jeju) or jeju != null}">
+				<div id="jejuweather">
+					<div id="wether-current">
+						<h5>제주시</h5>
+						<h2>[[${jeju.currenttemp}]]℃</h2>
+					</div>
+					<div id="wether-temp">
+						<div id="wether-state">
+							<div th:if="${jeju.sky == 1 && jeju.pty == 0}" >
+								<div th:if="${jeju.day == 'day'}">
+									<h5>맑음(낮)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearday.png">
+								</div>
+								<div th:if="${jeju.day == 'night'}">
+									<h5>맑음(밤)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearnight.png">
+								</div>
+							</div>
+							<div th:if="${jeju.sky == 3 && jeju.pty == 0}" >
+								<h5>흐림</h5>
+								<img id="weatherImg" alt="" src="/resources/image/weather/cloud.png">
+							</div>
+							<div th:if="${jeju.sky == 4 && jeju.pty == 0}" >
+								<div th:if="${jeju.day == 'day'}">
+									<h5>구름많음(낮)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudyday.png">
+								</div>
+								<div th:if="${jeju.day == 'night'}">
+									<h5>구름많음(밤)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudynight.png">
+								</div>
+							</div>
+							<div th:if="${jeju.sky == 4 && jeju.pty == 1}" >
+								<h5>비</h5>
+								<img id="weatherImg" alt="" src="/resources/image/weather/rain.png">
+							</div>
+							<div th:if="${jeju.sky == 4 && jeju.pty == 3}" >
+								<h5>눈</h5>
+								<img id="weatherImg" alt="" src="/resources/image/weather/snow.png">
+							</div>
+							
+							<div id="wether-temp">
+								<h5>최저:[[${jeju.minimumtemp}]]℃</h5>
+								<h5>최고:[[${jeju.highesttemp}]]℃</h5>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				</div>
+				<div th:if="${#lists.isEmpty(jeju) or jeju == null}"></div>
+				<div th:if="${not #lists.isEmpty(seogwipo) or seogwipo != null}">
+				<div id="seogwipoweather">
+					<div id="wether-current">
+						<h5>서귀포시</h5>
+						<h2>[[${seogwipo.currenttemp}]]℃</h2>
+					</div>
+					<div id="wether-temp">
+						<div id="wether-state">
+							<div th:if="${seogwipo.sky == 1 && seogwipo.pty == 0}" >
+								<div th:if="${seogwipo.day == 'day'}">
+									<h5>맑음(낮)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearday.png">
+								</div>
+								<div th:if="${seogwipo.day == 'night'}">
+									<h5>맑음(밤)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/clearnight.png">
+								</div>
+							</div>
+							<div th:if="${seogwipo.sky == 3 && seogwipo.pty == 0}" >
+								<h5>흐림</h5>
+								<img id="weatherImg" alt="" src="/resources/image/weather/cloud.png">
+							</div>
+							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 0}" >
+								<div th:if="${seogwipo.day == 'day'}">
+									<h5>구름많음(낮)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudyday.png">
+								</div>
+								<div th:if="${seogwipo.day == 'night'}">
+									<h5>구름많음(밤)</h5>
+									<img id="weatherImg" alt="" src="/resources/image/weather/cloudynight.png">
+								</div>
+							</div>
+							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 1}" >
+								<h5>비</h5>
+								<img id="weatherImg" alt="" src="/resources/image/weather/rain.png">
+							</div>
+							<div th:if="${seogwipo.sky == 4 && seogwipo.pty == 3}" >
+								<h5>눈</h5>
+								<img id="weatherImg" alt="" src="/resources/image/weather/snow.png">
+							</div>
+							
+							<div id="wether-temp">
+								<h5>최저:[[${seogwipo.minimumtemp}]]℃</h5>
+								<h5>최고:[[${seogwipo.highesttemp}]]℃</h5>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+				<div th:if="${#lists.isEmpty(seogwipo) or seogwipo == null}">
+				</div>
+			</div>
+		</div>
+		<div class="main-right">
+			<div class="calendar">
+				<table class="Calendar-table">
+					<thead>
+						<tr>
+							<td onClick="prevCalendar();" style="cursor: pointer;">&#60;</td>
+							<td colspan="5"><span id="calYear"></span>년 <span
+								id="calMonth"></span>월</td>
+							<td onClick="nextCalendar();" style="cursor: pointer;">&#62;</td>
+						</tr>
+						<tr>
+							<td>일</td>
+							<td>월</td>
+							<td>화</td>
+							<td>수</td>
+							<td>목</td>
+							<td>금</td>
+							<td>토</td>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div>
+					<button type="button" id="applyButton" th:onclick="applyDate()" style="display: none">적용</button>
+				</div>
+			</div>
+			<div class="course">
+				<div class="info" style="display: block">
+<pre>                 일정 등록 방법<br>
+1. 첫날과 마지막날 날짜 선택 후 적용 버튼 클릭<br>
+2. Day별로 색상 선택후 왼쪽 리스트에서 
+   플러스 버튼 이용해 장소 추가 가능<br>
+3. 오른쪽 일정에서 마이너스 버튼 이용해
+   장소 제거 가능<br>
+4. 이전날 다음날 버튼으로 Day별로 이동 가능<br>
+5. 미리보기 클릭시 Day별로 경로 보여주기<br>
+6. 등록 클릭시 Day별 경로 보여주고
+   저장할 이름 작성후 등록하면 일정 생성
+				</pre>
+				</div>
+				<div class="course-color-day">
+				</div>
+				<div class="course-plan">
+					<div class="course-color-check">
+					</div>
+				</div>
+				<div class="course-button">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="previewPopupContainer" class="preview-popup-container" style="display: none">
+  		<div class="preview-popup-content">
+    <!-- 팝업 내용 -->
+    		<div id="preivew_button_container">
+    		</div>
+			<div id="preview_div"></div>
+  	</div>
+  	</div>
+  	<div id="insertPopupContainer" class="insert-popup-container" style="display: none">
+  		<div class="insert-popup-content">
+    <!-- 팝업 내용 -->
+    		<div id="input_button_container">
+    		</div>
+			<div id="insert_div"></div>
+  	</div>
+</div>
+	
 </body>
+<script th:inline="javascript">
+var new_polyLine = [];
+var new_Click_polyLine = [];
+var markerList = [];
+var pointArray = [];
+var markers2 = [];
+
+function previewOpenPopup(inputValues) {
+	  var previewPopupContainer = document.getElementById('previewPopupContainer');
+	// 팝업 내용 설정
+	  var previewPopupContent = previewPopupContainer.querySelector('.preview-popup-content');
+	  var preivewMapContainer = previewPopupContent.querySelector('#preview_div');
+	  preivewMapContainer.innerHTML="";
+	  previewPopupContainer.style.display = 'block';
+	  
+	  previewTmap();
+	  createPreviewButton(inputValues);
+	  showAllDayRoute(inputValues);
+	}
+
+	function preivewClosePopup() {
+	  var previewPopupContainer = document.getElementById('previewPopupContainer');
+	  previewPopupContainer.style.display = 'none';
+	}
+	
+	function insertOpenPopup(inputValues) {
+		  var insertPopupContainer = document.getElementById('insertPopupContainer');
+		// 팝업 내용 설정
+		  var insertPopupContent = insertPopupContainer.querySelector('.insert-popup-content');
+		  var insertMapContainer = insertPopupContent.querySelector('#insert_div');
+		  insertMapContainer.innerHTML="";
+		  insertPopupContainer.style.display = 'block';
+		  
+		  insertTmap();
+		  createInsertButton(inputValues);
+		  showAllDayRoute(inputValues);
+		}
+
+		function insertClosePopup() {
+		  var insertPopupContainer = document.getElementById('insertPopupContainer');
+		  insertPopupContainer.style.display = 'none';
+		}
+		
+		// 2. 시작, 도착 심볼찍기
+
+
+		function createPreviewButton(inputValues){
+		// 버튼을 추가할 컨테이너 선택
+		 var previewPopupContainer = document.getElementById('previewPopupContainer');
+		var previewPopupContent = previewPopupContainer.querySelector('.preview-popup-content');
+		 var previewButtonContainer = previewPopupContent.querySelector('#preivew_button_container');
+		 previewButtonContainer.innerHTML="";
+		 
+		 var closeButtonDiv = document.createElement("div");
+		 closeButtonDiv.className = "close-Button-div";
+			var inputCloseButton = document.createElement('button');
+			inputCloseButton.textContent = 'X';
+			inputCloseButton.addEventListener('click', preivewClosePopup);
+			closeButtonDiv.appendChild(inputCloseButton);
+			previewButtonContainer.appendChild(closeButtonDiv);
+			
+		var AllDaybutton = document.createElement('button');
+		AllDaybutton.textContent = 'All Day';
+		previewButtonContainer.appendChild(AllDaybutton);
+		AllDaybutton.addEventListener('click', function() {
+			  showAllDayRoute(inputValues);
+			});
+			
+		var closeButton = document.createElement('button');
+		closeButton.textContent = 'X';
+		closeButton.addEventListener('click', preivewClosePopup);
+
+
+		for (var i = 0; i < inputValues.length; i++) {
+		    var daybutton = document.createElement('button');
+		    daybutton.textContent = 'Day ' + (i + 1);
+		    previewButtonContainer.appendChild(daybutton);
+		    
+		    // 클릭 이벤트 처리
+		    daybutton.addEventListener('click', function(event) {
+		      var buttonIndex = Array.from(previewButtonContainer.children).indexOf(event.target) - 2;
+		      var selectedInputValue = inputValues[buttonIndex];
+		      console.log('Button ' + (buttonIndex + 2) + ' clicked');
+		      console.log('Selected Input Value:', selectedInputValue);
+		      // 경로 표시를 위한 데이터 추출
+		      var date = selectedInputValue.date;
+		      var color = selectedInputValue.color;
+		      var lonLatPairs = selectedInputValue.lonLatPairs;
+		      // 경로 표시 로직 추가
+		      clearMarkers()
+		      clearRoutes(); // 기존의 경로 삭제
+		      drawRoute(date, lonLatPairs, color);
+		    });
+		}
+		}
+
+		function createInsertButton(inputValues){
+			// 버튼을 추가할 컨테이너 선택
+			 var inputPopupContainer = document.getElementById('insertPopupContainer');
+			var inputPopupContent = inputPopupContainer.querySelector('.insert-popup-content');
+			 var inputButtonContainer = inputPopupContent.querySelector('#input_button_container');
+			 inputButtonContainer.innerHTML="";
+			 var closeButtonDiv = document.createElement("div");
+			 closeButtonDiv.className = "close-Button-div";
+				var inputCloseButton = document.createElement('button');
+				inputCloseButton.textContent = 'X';
+				inputCloseButton.addEventListener('click', insertClosePopup);
+				closeButtonDiv.appendChild(inputCloseButton);
+				inputButtonContainer.appendChild(closeButtonDiv);
+			 
+			var AllDaybutton = document.createElement('button');
+			AllDaybutton.textContent = 'All Day';
+			
+			AllDaybutton.addEventListener('click', function() {
+				  showAllDayRoute(inputValues);
+				});
+			inputButtonContainer.appendChild(AllDaybutton);
+			for (var i = 0; i < inputValues.length; i++) {
+			    var daybutton = document.createElement('button');
+			    daybutton.textContent = 'Day ' + (i + 1);
+			    inputButtonContainer.appendChild(daybutton);
+			    
+			    // 클릭 이벤트 처리
+			    daybutton.addEventListener('click', function(event) {
+			      var buttonIndex = Array.from(inputButtonContainer.children).indexOf(event.target) - 2;
+			      var selectedInputValue = inputValues[buttonIndex];
+			      console.log('Button ' + (buttonIndex + 1) + ' clicked');
+			      console.log('Selected Input Value:', selectedInputValue);
+			      // 경로 표시를 위한 데이터 추출
+			      var date = selectedInputValue.date;
+			      var color = selectedInputValue.color;
+			      var lonLatPairs = selectedInputValue.lonLatPairs;
+			      // 경로 표시 로직 추가
+			      clearMarkers()
+			      clearRoutes(); // 기존의 경로 삭제
+			      drawRoute(date, lonLatPairs, color);
+			    });
+			}
+		    const courseNameInput = document.createElement("input");
+		    courseNameInput.type = "text";
+		    courseNameInput.name = "planName";
+		    courseNameInput.id = "planName";
+		    courseNameInput.placeholder = '제목';
+		    const couseInsertInput = document.createElement("button");
+		    couseInsertInput.type ="button";
+		    couseInsertInput.setAttribute("onclick", "courseInsert()");
+		    couseInsertInput.textContent = "등록";
+		    
+		    inputButtonContainer.appendChild(courseNameInput);
+		    inputButtonContainer.appendChild(couseInsertInput);
+		    
+			}
+function drawData(data, color){
+	// 지도위에 선은 다 지우기
+	routeData = data;
+	var resultStr = "";
+	var distance = 0;
+	var idx = 1;
+	var newData = [];
+	var equalData = [];
+	var pointId1 = "-1234567";
+	var ar_line = [];
+	
+	
+	for (var i = 0; i < data.features.length; i++) {
+		var feature = data.features[i];
+		//배열에 경로 좌표 저장
+		if(feature.geometry.type == "LineString"){
+			ar_line = [];
+			for (var j = 0; j < feature.geometry.coordinates.length; j++) {
+				var startPt = new Tmapv2.LatLng(feature.geometry.coordinates[j][1],feature.geometry.coordinates[j][0]);
+				ar_line.push(startPt);
+				pointArray.push(feature.geometry.coordinates[j]);
+			}
+			var polyline = new Tmapv2.Polyline({
+		        path: ar_line,
+		        strokeColor: color, 
+		        strokeWeight: 3,
+		        map: map2
+		    });
+			new_polyLine.push(polyline);
+		}
+		var pointId2 = feature.properties.viaPointId;
+		if (pointId1 != pointId2) {
+			equalData = [];
+			equalData.push(feature);
+			newData.push(equalData);
+			pointId1 = pointId2;
+		}
+		else {
+			equalData.push(feature);
+		}
+	}
+	geoData = newData;
+	var markerCnt = 1;
+	for (var i = 0; i < newData.length; i++) {
+		var mData = newData[i];
+		var type = mData[0].geometry.type;
+		var pointType = mData[0].properties.pointType;
+		var pointTypeCheck = false; // 경유지 일때만 true
+		if (mData[0].properties.pointType == "S") {
+			var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
+			var lon = mData[0].geometry.coordinates[0];
+			var lat = mData[0].geometry.coordinates[1];
+		}
+		else if (mData[0].properties.pointType == "E") {
+			var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
+			var lon = mData[0].geometry.coordinates[0];
+			var lat = mData[0].geometry.coordinates[1];
+		}
+		else {
+			markerCnt=i;
+			var lon = mData[0].geometry.coordinates[0];
+			var lat = mData[0].geometry.coordinates[1];
+		}	
+	}
+}
+
+
+
+function clearRoutes() {
+    if (new_polyLine.length > 0) {
+        for (var i = 0; i < new_polyLine.length; i++) {
+            new_polyLine[i].setMap(null);
+        }
+        new_polyLine = [];
+    }
+    if (new_Click_polyLine.length > 0) {
+        for (var i = 0; i < new_Click_polyLine.length; i++) {
+            new_Click_polyLine[i].setMap(null);
+        }
+        new_Click_polyLine = [];
+    }
+}
+function clearMarkers() {
+	  for (var i = 0; i < markers2.length; i++) {
+	    markers2[i].setMap(null);
+	  }
+	  markers2 = [];
+	}
+function showAllDayRoute(inputValues) {
+	  // 기존 마커 지우기
+	  clearMarkers();
+for (var i = 0; i < inputValues.length; i++) {
+	var date = inputValues[i].date;
+	var color = inputValues[i].color;
+	var lonLatPairs = inputValues[i].lonLatPairs;
+	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+	if(lonLatPairs.length === 1){
+		addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+	}else{
+
+	// 시작
+	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+	// 도착
+	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
+
+	// 경유지 심볼 찍기
+	for (var j = 0; j < waypoints.length; j++) {
+		var waypoint = waypoints[j];
+		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
+	}
+	// 4. 경로탐색 API 사용요청
+	}
+	var startX = lonLatPairs[0].lat;
+	var startY = lonLatPairs[0].lon;
+	var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+	var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+	var passList = waypoints.map(function(waypoint) {
+		  return waypoint.lat + ',' + waypoint.lon;
+		}).join('_');
+	var prtcl;
+	var headers = {};
+	
+	headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+	$.ajax({
+			method:"POST", 
+			headers : headers, 
+			url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+			async:false,
+			data:{ 
+				startX : startX,
+				startY : startY,
+				endX : endX,
+				endY : endY,
+				passList : passList,
+				reqCoordType : "WGS84GEO",
+				resCoordType : "WGS84GEO",
+				angle : "172",
+				searchOption : "0",
+				trafficInfo : "N"
+			},
+			success:function(response){
+			prtcl = response;
+			
+			// 5. 경로탐색 결과 Line 그리기 
+			var trafficColors = {
+				extractStyles:true,
+				/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+				trafficDefaultColor:"#636f63", //Default
+				trafficType1Color:"#19b95f", //원할
+				trafficType2Color:"#f15426", //지체
+				trafficType3Color:"#ff970e"  //정체		
+			};    			
+			var style_red = {
+				fillColor:"#FF0000",
+				fillOpacity:0.2,
+				strokeColor: "#FF0000",
+				strokeWidth: 3,
+				strokeDashstyle: "solid",
+				pointRadius: 2,
+				title: "this is a red line"
+			};
+			drawData(prtcl, color);
+		
+		
+ 			// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+			  var center = new Tmapv2.LatLng(33.3616666, 126.5291666);
+			  var zoom = 10; // 현재 줌 레벨 가져오기
+			  map2.setCenter(center);
+			  map2.setZoom(zoom);
+			},
+			error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	}
+}
+	function addMarker(status, lon, lat, tag, color) {
+	//출도착경유구분
+	//이미지 파일 변경.
+	console.log("addMarker : "+color);
+	var markerLayer;
+	switch (status) {
+		case "llStart":
+			img = '/resources/image/marker/'+color+'start.png';
+			break;
+		case "llPass":
+			img = '/resources/image/marker/'+color+'pass.png';
+			break;
+		case "llEnd":
+			img = '/resources/image/marker/'+color+'end.png';
+			break;
+		default:
+	};
+	var marker = new Tmapv2.Marker({
+		position: new Tmapv2.LatLng(lat,lon),
+		icon: img,
+		map: map2
+	});
+	// 마커 드래그 설정
+	marker.tag = tag;
+	marker.addListener("dragend", function (evt) {
+	markerListenerEvent(evt);
+    });
+    marker.addListener("drag", function (evt) {    	
+    	markerObject = markerList[tag];
+    });
+    markerList[tag] = marker;
+    markers2.push(marker);
+    return marker;
+}
+	
+	 function drawRoute(date, lonLatPairs, color) {
+			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+			if(lonLatPairs.length === 1){
+				addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+				
+				// 4. 경로탐색 API 사용요청
+			      var startX = lonLatPairs[0].lat;
+			      var startY = lonLatPairs[0].lon;
+			      var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+			      var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+			      var passList = waypoints.map(function(waypoint) {
+			        return waypoint.lat + ',' + waypoint.lon;
+			      }).join('_');
+			      var prtcl;
+			  	  var headers = {};
+			      
+			      headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+			      // 경로 탐색 API 호출
+					$.ajax({
+						method:"POST", 
+						headers : headers, 
+						url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+						async:false,
+						data:{ 
+							startX : startX,
+							startY : startY,
+							endX : endX,
+							endY : endY,
+							passList : passList,
+							reqCoordType : "WGS84GEO",
+							resCoordType : "WGS84GEO",
+							angle : "172",
+							searchOption : "0",
+							trafficInfo : "N"
+						},
+						success:function(response){
+						prtcl = response;
+						
+						// 5. 경로탐색 결과 Line 그리기 
+						var trafficColors = {
+							extractStyles:true,
+							/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+							trafficDefaultColor:"#636f63", //Default
+							trafficType1Color:"#19b95f", //원할
+							trafficType2Color:"#f15426", //지체
+							trafficType3Color:"#ff970e"  //정체		
+						};    			
+						var style_red = {
+							fillColor:"#FF0000",
+							fillOpacity:0.2,
+							strokeColor: "#FF0000",
+							strokeWidth: 3,
+							strokeDashstyle: "solid",
+							pointRadius: 2,
+							title: "this is a red line"
+						};
+						drawData(prtcl, color);
+					
+					
+						// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+						  var center = new Tmapv2.LatLng(lonLatPairs[0].lon, lonLatPairs[0].lat);
+						  var zoom = 16; // 현재 줌 레벨 가져오기
+						  map2.setCenter(center);
+						  map2.setZoom(zoom);
+						},
+						error:function(request,status,error){
+						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					}
+				});
+				
+			}else{
+
+			// 시작
+			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+			// 도착
+			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
+
+			// 경유지 심볼 찍기
+			for (var j = 0; j < waypoints.length; j++) {
+				var waypoint = waypoints[j];
+				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
+			}
+			// 4. 경로탐색 API 사용요청
+	      var startX = lonLatPairs[0].lat;
+	      var startY = lonLatPairs[0].lon;
+	      var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+	      var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+	      var passList = waypoints.map(function(waypoint) {
+	        return waypoint.lat + ',' + waypoint.lon;
+	      }).join('_');
+	      var prtcl;
+	  	  var headers = {};
+	      
+	      headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+	      // 경로 탐색 API 호출
+			$.ajax({
+				method:"POST", 
+				headers : headers, 
+				url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+				async:false,
+				data:{ 
+					startX : startX,
+					startY : startY,
+					endX : endX,
+					endY : endY,
+					passList : passList,
+					reqCoordType : "WGS84GEO",
+					resCoordType : "WGS84GEO",
+					angle : "172",
+					searchOption : "0",
+					trafficInfo : "N"
+				},
+				success:function(response){
+				prtcl = response;
+				
+				// 5. 경로탐색 결과 Line 그리기 
+				var trafficColors = {
+					extractStyles:true,
+					/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+					trafficDefaultColor:"#636f63", //Default
+					trafficType1Color:"#19b95f", //원할
+					trafficType2Color:"#f15426", //지체
+					trafficType3Color:"#ff970e"  //정체		
+				};    			
+				var style_red = {
+					fillColor:"#FF0000",
+					fillOpacity:0.2,
+					strokeColor: "#FF0000",
+					strokeWidth: 3,
+					strokeDashstyle: "solid",
+					pointRadius: 2,
+					title: "this is a red line"
+				};
+				drawData(prtcl, color);
+			
+			
+				// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+				var newData = geoData[0];
+				PTbounds = new Tmapv2.LatLngBounds();
+						for (var i = 0; i < newData.length; i++) {
+							var mData = newData[i];
+							var type = mData.geometry.type;
+							var pointType = mData.properties.pointType;
+							if(type == "Point"){
+								var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[1],mData.geometry.coordinates[0]);
+								PTbounds.extend(linePt);
+							}
+							else{
+								var startPt,endPt;
+								for (var j = 0; j < mData.geometry.coordinates.length; j++) {
+									var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[j][1],mData.geometry.coordinates[j][0]);
+									PTbounds.extend(linePt);
+								}
+						}
+					}
+						map2.fitBounds(PTbounds);
+			
+				},
+				error:function(request,status,error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+			}
+	    }
+</script>
 </html>

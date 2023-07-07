@@ -1,25 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
 	   #write{
             width:50%;
-       		
 	        margin:20px auto;
 	        text-align:center;
-	        height:100vh;
+	        height:90vh;
 	        min-width:800px;
         }
         .div{
             border:solid 1px black;
         }
         #top_title{
+            width:100%;
             font-size:20pt;
+            
         }
         #write_kg{
             float: left;
+            height:4vh;
             margin:1% auto;
             margin-left: 8.3%;
             margin-right: 1.7%;
@@ -33,29 +94,35 @@
             margin-right: 3%;
         }
         #kategorie{
-        	
+        	width:100%;
             height:6vh;
             margin-top:3%;
         }
         #write_ti{
             float: left;
+            height:4vh;
             margin:1% auto;
             margin-left: 10%;
-            margin-right: 2.5%;
+            margin-right: 4%;
             line-height:220%;
             
         }
-        #title_text{
+        #communityTitle{
         	
             float: left;
             margin:1% auto;
-            margin-left: 9.8%;
+            margin-left: 8.3%;
             width: 70%;
             height:3vh;
+            padding:3px;
         }
         #title{
             height: 6vh;
-            
+            width:100%;
+        }
+        #contents{
+        	width:100%;
+        	height:60vh;
         }
         #write_con{
             float: left;
@@ -63,13 +130,18 @@
             margin-left: 10%;
             line-height: 500%;
         }
-        #textarea{
+      
+        #contentText{
         	
-            resize: none;
+
             width:70%;
-            margin-left:9%;
-            margin-top:1%;
+            margin-left:26%;
             margin-bottom: 1%;
+            border: solid 1px black;
+            height:53vh;
+           	text-align:left;
+           	padding:3px;
+           	overflow: auto;
             
         }
         #button{
@@ -103,14 +175,281 @@
             float:right;
             cursor:pointer;
         }
+        
+    	.editor-menu{
+    		margin-top:1%;
+    		width:70%;
+    		margin-left:16%;
+    		height:4vh;
+    	}
+    	.editor-menu button{
+    		float:right;
+    		height:3vh;
+    		border-radius:5px;
+    		padding: 1px 10px;
+    		width:6%;
+    		margin-right:1%;
+    		border:none;
+    		cursor:pointer;
+    		background-color:white;
+    	}
+    	.editor-menu p {float:right;}
+    	#btn-unordered-list,#btn-ordered-list{
+    		font-size:10%;
+    	}
+    	#buttonContour{
+    		color:#868E96;
+    		padding:0px;
+    		width:1%;
+    		cursor:default;
+    	}
+    	#buttonContourTwo{
+    		color:#868E96;
+    		padding:0px;
+    		width:1%;
+    		cursor:default;
+    		margin-right:2%;
+    	}
+    	#attachFile{float:right;}
+    	input[type=file]::file-selector-button {
+		  width: 40%;
+		  height: 3vh;
+		  border: solid 1px black;
+		  border-radius: 5px;
+		  cursor: pointer;
+		  background-color:white;
+		  
+		}
+    	
+		#menu{
+			width: 100%;
+			height: 40px;
+		}
+
+		#menu ul li{
+			background-color: #ffffff;
+			list-style: none;
+			text-align: center;
+		}
+		
+		#menu .linka{
+			float: left;
+		}
+		
+		#menu .linkb{
+			float: right;
+		}
+		
+		#menu .link{
+			width: 120px;
+			text-decoration: none;
+			display: block;
+			color: #000000;
+			font-weight: bold;
+		}
+		
+		#logo {
+			width: 200px;
+			height: 100px;
+			}
+		   
+		button.active {
+	        color: #B8E9FF;
+	        
+    	}
+		#preview{
+			width: 40%;
+        	hegith:5vh;
+        	float: left;
+		}
+
+       
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    const editor = document.getElementById('contentText');
+    const btnBold = document.getElementById('btn-bold');
+    const btnItalic = document.getElementById('btn-italic');
+    const btnUnderline = document.getElementById('btn-underline');
+    const btnStrike = document.getElementById('btn-strike');
+    const btnOrderedList = document.getElementById('btn-ordered-list');
+    const btnUnorderedList = document.getElementById('btn-unordered-list');
+
+    const buttonContour = document.getElementById('buttonContour');
+    const buttonContourTwo = document.getElementById('buttonContourTwo');
+    buttonContourTwo.disabled = true;
+    buttonContour.disabled = true;
+    
+    btnBold.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('bold');
+    });
+
+    btnItalic.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('italic');
+    });
+
+    btnUnderline.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('underline');
+    });
+
+    btnStrike.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('strikeThrough');
+    });
+
+    btnOrderedList.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('insertOrderedList');
+    });
+
+    btnUnorderedList.addEventListener('click', function () {
+    	event.preventDefault();
+        setStyle('insertUnorderedList');
+    });
+
+    editor.addEventListener('keydown', function () {
+        checkStyle();
+    });
+
+    editor.addEventListener('mousedown', function () {
+        checkStyle();
+    });
+    
+    function setStyle(style) {
+        document.execCommand(style, false, null);
+        updateHiddenInput(); // 적용된 스타일을 hidden input에 업데이트
+        focusEditor();
+        checkStyle();
+    }
+
+    function updateHiddenInput() {
+        const hiddenInput = document.querySelector('input[name="communityContent"]');
+        hiddenInput.value = editor.innerHTML;
+    }
+
+    function focusEditor() {
+        editor.focus({preventScroll: true});
+    }
+    
+    function checkStyle() {
+        if (isStyle('bold')) {
+            btnBold.classList.add('active');
+        } else {
+            btnBold.classList.remove('active');
+        }
+        if (isStyle('italic')) {
+            btnItalic.classList.add('active');
+        } else {
+            btnItalic.classList.remove('active');
+        }
+        if (isStyle('underline')) {
+            btnUnderline.classList.add('active');
+        } else {
+            btnUnderline.classList.remove('active');
+        }
+        if (isStyle('strikeThrough')) {
+            btnStrike.classList.add('active');
+        } else {
+            btnStrike.classList.remove('active');
+        }
+        if (isStyle('insertOrderedList')) {
+            btnOrderedList.classList.add('active');
+        } else {
+            btnOrderedList.classList.remove('active');
+        }
+        if (isStyle('insertUnorderedList')) {
+            btnUnorderedList.classList.add('active');
+        } else {
+            btnUnorderedList.classList.remove('active');
+        }
+    }
+
+    function isStyle(style) {
+        return document.queryCommandState(style);
+    }
+    
+    $("#submitBT").on('click', function (event) {
+    	let communityTitle = $("#communityTitle").val();
+    	let contentText = $("#contentText").text();
+    	let communityTitleLength = $("#communityTitle").val().length;
+    	let contentTextLength = $("#contentText").text().length;
+    	
+    	let titleLength = 30;
+    	let contentLength = 1000;
+    	
+    	console.log(communityTitle);
+    	console.log(contentText);
+    	
+    	if(communityTitle == null || communityTitle == "" || contentText == null || contentText == ""){
+    		alert("제목 또는 내용을 입력하여 주세요.");
+    		return false;
+    		
+    	}else if(communityTitleLength > titleLength){
+    		alert("제목은 30자 이내로 작성하여 주세요.")
+    		return false;
+    	}else if(contentTextLength > contentLength){
+    		alert("내용은 1000자 이내로 작성하여 주세요.")
+    		return false;
+    	}else{
+    		updateHiddenInput();
+    		
+    	}
+    	
+    });
+    function readURL(input) {
+        var session = sessionStorage.getItem('placeNumber');
+        document.getElementById("placeNumber").value = session;
+        var imagediv = document.querySelector("#contentText");
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+            	var image = document.createElement("img");
+            	image.id = 'preview';
+            	imagediv.appendChild(image);
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            document.getElementById('preview').src = "";
+        }
+    }
+   
+    $("#attachFile").on("change", function() {
+        readURL(this);
+    });
+});
+
+</script>
 </head>
 <body>
+	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
 	<div id="write">
     <div id="top_title">
         게시글 작성
     </div>
-    <form action="/community/communitywrite" method="post">
+    <form action="/community/communitywrite" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="communityWriter" name="communityWriter" th:value="${session.login}">
         <div id="kategorie" class="div">
             <div id="write_kg">카테고리</div>
             <div id="tag">
@@ -121,19 +460,57 @@
                     </select>
                 
             </div>
+            
         </div>
         <div id="title" class="div">
             <div id="write_ti">제목</div>
-            <div><input type="text" id="title_text" name="communityTitle"></div>
+            <div><input type="text" id="communityTitle" name="communityTitle"></div>
         </div>
+       
         <div id="contents" class="div">
+        	 <div class="editor-menu">
+	        	 <div class="filebox">
+            		<input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
+        		</div>
+        		<button id="buttonContourTwo">|</button>
+	        	 <button id="btn-unordered-list">
+			        o_<br>
+			       	o_
+			       
+			    </button>
+			    <button id="btn-ordered-list">
+			        1_<br>
+			         2_
+			    </button>
+			   	<button id="buttonContour">|</button>
+			    <button id="btn-strike">
+			        <s>가</s>
+			    </button>
+			    <button id="btn-underline">
+			        <u>가</u>
+			    </button>
+			    <button id="btn-italic">
+			        <i>가</i>
+			    </button>
+			    <button id="btn-bold">
+			        <b>가</b>
+			    </button>
+		    
+			</div>
             <div id="write_con">내용</div>
-            <div id="write_ta"><textarea rows="30" id="textarea" name="communityContent"></textarea></div>
+            <div id="contentTextDiv">
+            	<div id="contentText" contenteditable="true">
+            		
+            	</div>
+            	<input type="hidden" name="placeNumber" value="" id="placeNumber">
+            </div>	
+            <input type="hidden" name="communityContent" id="communityContent">
         </div>
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="submit" value="작성" id="submitBT">
         </div>
+        
     </form>
 </div>
 </body>

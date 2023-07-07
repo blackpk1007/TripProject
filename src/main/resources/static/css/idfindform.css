@@ -1,7 +1,67 @@
 @import "reset.css";
 
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
+
 .signup1 {
 	width: 25vw;
+	min-width: 300px;
 	height: 70vh;
 	margin-inline: auto;
 	position: absolute;
@@ -39,6 +99,7 @@
 .loginForm {
 	width: 100%;
 	margin-bottom: 1.5rem;
+	font-size: 1.6rem;
 }
 
 .loginForm>input {
@@ -48,6 +109,8 @@
 	box-sizing: border-box;
 	border: 0.7px solid rgb(185, 184, 184);
 	border-radius: 0.5rem;
+	font-size: 1.6rem;
+	padding-left:11px;
 }
 
 #findIdButton {

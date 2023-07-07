@@ -3,7 +3,6 @@ package com.trip.project.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -39,7 +38,7 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 					StringBuilder urlBuilder = new StringBuilder(
 							"http://openapi.airport.co.kr/service/rest/FlightStatusList/getFlightStatusList"); /* URL */
 					urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-							+ "=1kainzqQnmN7SXsZINtwO%2FxHhS9Vym1t4CDA1aTLEbOtE%2BInS7RhlsMw%2F4vTuOAaepTP5Cv8gt1sge%2Bhc%2BDJtA%3D%3D"); /*
+							+ "=1kainzqQnmN7SXsZINtwO%2FxHhS9Vym1t4CDA1aTLEbOtE%2BnS7RhlsMw%2F4vTuOAaepTP5Cv8gt1sge%2Bhc%2BDJtA%3D%3D"); /*
 																																			 * Service
 																																			 * Key
 																																			 */
@@ -76,6 +75,9 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 					// XML 파싱
 					JSONObject jsonObject = XML.toJSONObject(flightStatusJson);
 					JSONObject response = jsonObject.getJSONObject("response");
+					if (!response.has("body")) {
+						return null;
+					}
 					JSONObject body = response.getJSONObject("body");
 
 					// Check if "items" field is a JSONObject
@@ -104,7 +106,6 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 				}
 			}
 		}
-		System.out.println(flightStatusList);
 
 		return flightStatusList;
 	}
@@ -160,6 +161,9 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 				// XML 파싱
 				JSONObject jsonObject = XML.toJSONObject(flightStatusJson);
 				JSONObject response = jsonObject.getJSONObject("response");
+				if (!response.has("body")) {
+					return null;
+				}
 				JSONObject body = response.getJSONObject("body");
 
 				// Check if "items" field is a JSONObject
@@ -181,7 +185,6 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 				}
 			}
 		}
-		System.out.println("service : "+flightStatusList);
 
 		return flightStatusList;
 	}
@@ -193,8 +196,12 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 		flightStatus.setBoardingKor(flightObject.optString("boardingKor"));
 		flightStatus.setFlightDate(flightObject.optString("flightDate"));
 		flightStatus.setRmkKor(flightObject.optString("rmkKor"));
-		flightStatus.setStd(flightObject.getInt("std"));
-		flightStatus.setEtd(flightObject.getInt("etd"));
+		if (!flightObject.isNull("std")) {
+	           flightStatus.setStd(flightObject.getInt("std"));
+	       }
+	    if (!flightObject.isNull("etd")) {
+	        flightStatus.setEtd(flightObject.getInt("etd"));
+	    }
 		flightStatus.setAirFln(flightObject.optString("airFln"));
 		
 		return flightStatus;

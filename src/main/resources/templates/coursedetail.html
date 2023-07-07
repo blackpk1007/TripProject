@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>코스 상세</title>
+<link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&display=swap"
+	rel="stylesheet">
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
+<style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
+.body{
+	display: flex;
+	width: 97vw;
+	height: 100%;
+	flex-direction: column;
+	position:relative;
+	left:1vw;
+	justify-content: center;
+	
+}
+
+.map{
+	display:flex;
+	position:relative;
+	justify-content: center;
+	margin:1rem;
+}
+#map_div{
+	text-align:center;
+}
+/* 경로 버튼 부분 */
+.coursebtn{
+	position: relative;
+	
+}
+
+/* day 1  텍스트 부분 */
+.mymain_text{
+	width:20vw;
+	font-size:1.8rem;
+	margin:1rem;
+	margin-bottom:0;
+	margin-top: 6vh;
+	position:relative;
+	display:flex;
+	justify-content:center;
+	left:22.1%;
+	height: 6vh;
+	
+}
+.day1{
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius:0.5rem;
+	border-width:2px;
+	background-color: #B8E9FF;
+	font-size: 2rem;
+	color:white;
+	padding: 1rem;
+	padding-left:2rem;
+	padding-right:2rem;
+	display: flex;
+	justify-content: center;
+  	align-items: center;
+	width:5vw;
+}
+.day2{
+	margin:0.7rem;
+	text-align:center;
+	display: flex;
+	flex-direction: column;
+  	align-items: center;
+  	justify-content: center;
+}
+.day3{
+	margin:0.2rem;
+	text-align:center;
+}
+/* 코스보여주는곳 */
+/* 큰덩어리 */
+.mymain{
+	display: flex;
+	justify-content: center;
+  	align-items: center;
+	flex-direction: column;
+	height: 48vh;
+	margin: 2rem;
+	margin-top:0;
+	margin-bottom:5vh;
+}
+
+.main{
+	display:flex;
+	width:45vw;
+	height:12vh;
+	border:solid;
+	border-radius:1rem;
+	border-width: 0.1rem;
+	border-color: #BFBFBF;
+	margin: 2rem;
+	
+	justify-content: center;
+  	align-items: center;
+	
+}
+.sec1{
+	flex:1;
+	margin:1rem;
+	display:flex;
+	justify-content: center;
+	align-items:center;
+	
+}
+.num{
+	width:3rem;
+	height:3rem;
+	margin:1rem;
+}
+.sec2{
+	flex:1;
+	margin:1rem;
+	
+}
+.placepic{
+	width:13rem;
+	height:8rem;
+}
+.sec3{
+	flex:2;
+	margin:1rem;
+	
+}
+.placename{
+	font-size:1.6rem;
+}
+.sec4{
+	display:flex;
+	flex:1;
+	margin:1rem;
+	
+}
+.info{
+	width:4rem;
+	height:4rem;
+	margin:1rem;
+}
+.location{
+	width:4rem;
+	height:4rem;
+	margin:1rem;
+}
+.courseInfo{
+display:flex;
+	justify-content: center;
+	align-items:center;
+	font-size: 20px;
+}
+.courseInfo-date{
+	margin-right:50vh;
+	margin-left:1vh;
+}
+.swiper-container {
+	width: 50%; 
+	height: 17vh;
+}
+.swiper-slide {
+	width:15vw;
+	height: 10vh;
+	text-align: center;
+	 /* 내용을 중앙정렬 하기위해 flex 사용 */
+	align-items: center; /* 위아래 기준 중앙정렬 */
+	justify-content: center; /* 좌우 기준 중앙정렬 */
+	
+}
+.swiper-slide {
+    position: relative;
+    height: 10vh;
+  }
+.swiper-slide img {
+	width:50%;
+	height:50%;
+	box-shadow: 0 0 5px #555;
+	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+}
+#coursedetail-img{
+	width:3vh;
+	height:2.5vh;
+}
+.swiper-slide-day{
+	margin-top: 2vh;
+	margin-bottom: 1vh;
+
+}
+ .swiper-pagination-bullet-active{
+  	background:#B8E9FF;
+  }
+  .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+  	background-image: url(/resources/image/mainArrowleft.png);
+  	
+  }
+  .swiper-button-next, .swiper-container-rtl .swiper-button-next {
+  	background-image: url(/resources/image/mainArrowRight.png);
+  }
+  #courseInfo-installText{
+  	margin-right:0.5vw;
+  }
+  
+  
+</style>
+
+<script
+	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+
+</head>
+
+<body>
+<div class="header">
+		<div class="header-category">
+			<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
+	<div class="body">
+		<div class="courseInfo">
+			<div class="courseInfo-title">[[${coursedetail.userID}]] 의 [[${coursedetail.planName}]]</div>
+			<div> 
+				<div class="courseInfo-date">[[${coursedetail.courseFirstDate}]] ~ [[${coursedetail.courseLastDate}]]</div>
+				
+			</div>
+			<div id="courseInfo-installText">저장하기</div>
+			<div id="coursedetail-img"><img src="/resources/image/coursedetail-img.png"></div>
+		</div>	
+		<!--  지도  -->
+		<div class="map">
+			<div id="map_div"></div>
+		</div>
+		<!-- 지도 밑 버튼 (경로 불러오는), 화면설계서랑 다름 -->
+		<div class="swiper-container" id="swiper-container-course">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day1</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day2</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day3</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day4</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day5</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day6</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+				<div class="swiper-slide">
+					<div class="swiper-slide-day"><button>day7</button></div>
+					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
+				</div>
+			</div>
+		<!-- 네비게이션 -->
+		<div class="swiper-button-next" id="swiper-button-next-course"></div>
+		<!-- 다음 버튼 (오른쪽에 있는 버튼) -->
+		<div class="swiper-button-prev" id="swiper-button-prev-course"></div>
+		<!-- 이전 버튼 -->
+
+		<!-- 페이징 -->
+		<div class="swiper-pagination" id="swiper-pagination-course"></div>
+		</div>
+		<!-- 밑에 리스트 -->
+		<div class="mymain_text">
+			<div class="day1">Day1</div>
+			<div class="day2">
+				<div class="day3">00.00.00</div>
+			</div>
+		</div>
+		<div class="mymain">
+			<div class="main">
+				<div class="sec1">
+					<img class="num" src="/resources/image/num1.png">
+				</div>
+				<div class="sec2">
+					<img class="placepic" src="#">
+				</div>
+				<div class="sec3">
+					<div class="placename"> 장소이름 </div>
+				</div>
+				<div class="sec4">
+					<img class="info" src="/resources/image/exclamationmark.png">
+					<img class="location" src="/resources/image/positionmark.png">
+				</div>
+			</div>
+			<div class="dots"></div>
+			<div class="main">
+				<div class="sec1">
+					<img class="num" src="/resources/image/num2.png">
+				</div>
+				<div class="sec2">
+					<img class="placepic" src="#">
+				</div>
+				<div class="sec3">
+					<div class="placename"> 장소이름 </div>
+				</div>
+				<div class="sec4">
+					<img class="info" src="/resources/image/exclamationmark.png">
+					<img class="location" src="/resources/image/positionmark.png">
+				</div>
+			</div>
+			<div class="dots"></div>
+			<div class="main">
+				<div class="sec1">
+					<img class="num" src="/resources/image/num3.png">
+				</div>
+				<div class="sec2">
+					<img class="placepic" src="#">
+				</div>
+				<div class="sec3">
+					<div class="placename"> 장소이름 </div>
+				</div>
+				<div class="sec4">
+					<img class="info" src="/resources/image/exclamationmark.png">
+					<img class="location" src="/resources/image/positionmark.png">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		new Swiper('.swiper-container', {
+
+			slidesPerView : 4, // 동시에 보여줄 슬라이드 갯수
+			spaceBetween : 10, // 슬라이드간 간격
+			slidesPerGroup : 4, // 그룹으로 묶을 수, slidesPerView 와 같은 값을 지정하는게 좋음
+
+			// 그룹수가 맞지 않을 경우 빈칸으로 메우기
+			// 3개가 나와야 되는데 1개만 있다면 2개는 빈칸으로 채워서 3개를 만듬
+			loopFillGroupWithBlank : true,
+
+			loop : false, // 무한 반복
+
+			pagination : { // 페이징
+				el : '.swiper-pagination',
+				clickable : true, // 페이징을 클릭하면 해당 영역으로 이동, 필요시 지정해 줘야 기능 작동
+			},
+			navigation : { // 네비게이션
+				nextEl : '.swiper-button-next', // 다음 버튼 클래스명
+				prevEl : '.swiper-button-prev', // 이번 버튼 클래스명
+			},
+		});
+	</script>
+</body>
+<script th:inline="javascript">
+	var place = [[${placeInfo}]];
+	console.log(place);
+	
+	  map = new Tmapv2.Map("map_div", {
+	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
+	    width: "50vw", // 지도의 넓이
+	    height: "50vh", // 지도의 높이
+	    zoom: 10
+	  });
+	  
+	  var new_polyLine = [];
+	  var new_Click_polyLine = [];
+	  function drawData(data, color){
+		  	// 지도위에 선은 다 지우기
+		  	routeData = data;
+		  	var resultStr = "";
+		  	var distance = 0;
+		  	var idx = 1;
+		  	var newData = [];
+		  	var equalData = [];
+		  	var pointId1 = "-1234567";
+		  	var ar_line = [];
+		  	
+		  	
+		  	for (var i = 0; i < data.features.length; i++) {
+		  		var feature = data.features[i];
+		  		//배열에 경로 좌표 저장
+		  		if(feature.geometry.type == "LineString"){
+		  			ar_line = [];
+		  			for (var j = 0; j < feature.geometry.coordinates.length; j++) {
+		  				var startPt = new Tmapv2.LatLng(feature.geometry.coordinates[j][1],feature.geometry.coordinates[j][0]);
+		  				ar_line.push(startPt);
+		  				pointArray.push(feature.geometry.coordinates[j]);
+		  			}
+		  			var polyline = new Tmapv2.Polyline({
+		  		        path: ar_line,
+		  		        strokeColor: color, 
+		  		        strokeWeight: 3,
+		  		        map: map
+		  		    });
+		  			new_polyLine.push(polyline);
+		  		}
+		  		var pointId2 = feature.properties.viaPointId;
+		  		if (pointId1 != pointId2) {
+		  			equalData = [];
+		  			equalData.push(feature);
+		  			newData.push(equalData);
+		  			pointId1 = pointId2;
+		  		}
+		  		else {
+		  			equalData.push(feature);
+		  		}
+		  	}
+		  	geoData = newData;
+		  	var markerCnt = 1;
+		  	for (var i = 0; i < newData.length; i++) {
+		  		var mData = newData[i];
+		  		var type = mData[0].geometry.type;
+		  		var pointType = mData[0].properties.pointType;
+		  		var pointTypeCheck = false; // 경유지 일때만 true
+		  		if (mData[0].properties.pointType == "S") {
+		  			var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_s.png';
+		  			var lon = mData[0].geometry.coordinates[0];
+		  			var lat = mData[0].geometry.coordinates[1];
+		  		}
+		  		else if (mData[0].properties.pointType == "E") {
+		  			var img = 'http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png';
+		  			var lon = mData[0].geometry.coordinates[0];
+		  			var lat = mData[0].geometry.coordinates[1];
+		  		}
+		  		else {
+		  			markerCnt=i;
+		  			var lon = mData[0].geometry.coordinates[0];
+		  			var lat = mData[0].geometry.coordinates[1];
+		  		}	
+		  	}
+		  }
+
+
+		  // 2. 시작, 도착 심볼찍기
+		  var markerList = [];
+		  var pointArray = [];
+		  var markers = [];
+		
+		  var inputValues = [[${coursemarker}]];
+		  console.log(inputValues);
+		  console.log(inputValues.lonLatPairs);
+		  console.log(inputValues.length);
+		  console.log(inputValues.size);
+		  
+		  // 버튼을 추가할 컨테이너 선택
+		  var buttonContainer = document.getElementsByClassName('coursebtn')[0];
+		  var AllDaybutton = document.createElement('button');
+		  AllDaybutton.textContent = 'All Day';
+		  buttonContainer.appendChild(AllDaybutton);
+		  AllDaybutton.addEventListener('click', showAllDayRoute);
+
+		  for (var i = 0; i < inputValues.length; i++) {
+		      var daybutton = document.createElement('button');
+		      daybutton.textContent = 'Day ' + (i + 1);
+		      buttonContainer.appendChild(daybutton);
+		      
+		      // 클릭 이벤트 처리
+		      daybutton.addEventListener('click', function(event) {
+		        var buttonIndex = Array.from(buttonContainer.children).indexOf(event.target) - 1;
+		        var selectedInputValue = inputValues[buttonIndex];
+		        console.log('Button ' + (buttonIndex + 1) + ' clicked');
+		        console.log('Selected Input Value:', selectedInputValue);
+		        // 추가적인 처리 로직을 여기에 작성하세요.
+		        // 경로 표시를 위한 데이터 추출
+		        var date = selectedInputValue.date;
+		        var color = selectedInputValue.color;
+		        var lonLatPairs = selectedInputValue.lonLatPairs;
+		        // 경로 표시 로직 추가
+		        clearMarkers()
+		        clearRoutes(); // 기존의 경로 삭제
+		        drawRoute(date, lonLatPairs, color);
+		      });
+		  }
+		  function clearRoutes() {
+		      if (new_polyLine.length > 0) {
+		          for (var i = 0; i < new_polyLine.length; i++) {
+		              new_polyLine[i].setMap(null);
+		          }
+		          new_polyLine = [];
+		      }
+		      if (new_Click_polyLine.length > 0) {
+		          for (var i = 0; i < new_Click_polyLine.length; i++) {
+		              new_Click_polyLine[i].setMap(null);
+		          }
+		          new_Click_polyLine = [];
+		      }
+		  }
+		  function clearMarkers() {
+		  	  for (var i = 0; i < markers.length; i++) {
+		  	    markers[i].setMap(null);
+		  	  }
+		  	  markers = [];
+		  	}
+		  function showAllDayRoute() {
+		  	  // 기존 마커 지우기
+		  	  clearMarkers();
+		  for (var i = 0; i < inputValues.length; i++) {
+		  	var date = inputValues[i].date;
+		  	var color = inputValues[i].color;
+		  	var lonLatPairs = inputValues[i].lonLatPairs;
+		  	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+		  	if(lonLatPairs.length === 1){
+		  		addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+		  	}else{
+
+		  	// 시작
+		  	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+		  	// 도착
+		  	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
+
+		  	// 경유지 심볼 찍기
+		  	for (var j = 0; j < waypoints.length; j++) {
+		  		var waypoint = waypoints[j];
+		  		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
+		  	}
+		  	// 4. 경로탐색 API 사용요청
+		  	}
+		  	var startX = lonLatPairs[0].lat;
+		  	var startY = lonLatPairs[0].lon;
+		  	var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+		  	var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+		  	var passList = waypoints.map(function(waypoint) {
+		  		  return waypoint.lat + ',' + waypoint.lon;
+		  		}).join('_');
+		  	var prtcl;
+		  	var headers = {};
+		  	
+		  	headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+		  	$.ajax({
+		  			method:"POST", 
+		  			headers : headers, 
+		  			url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+		  			async:false,
+		  			data:{ 
+		  				startX : startX,
+		  				startY : startY,
+		  				endX : endX,
+		  				endY : endY,
+		  				passList : passList,
+		  				reqCoordType : "WGS84GEO",
+		  				resCoordType : "WGS84GEO",
+		  				angle : "172",
+		  				searchOption : "0",
+		  				trafficInfo : "N"
+		  			},
+		  			success:function(response){
+		  			prtcl = response;
+		  			
+		  			// 5. 경로탐색 결과 Line 그리기 
+		  			var trafficColors = {
+		  				extractStyles:true,
+		  				/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+		  				trafficDefaultColor:"#636f63", //Default
+		  				trafficType1Color:"#19b95f", //원할
+		  				trafficType2Color:"#f15426", //지체
+		  				trafficType3Color:"#ff970e"  //정체		
+		  			};    			
+		  			var style_red = {
+		  				fillColor:"#FF0000",
+		  				fillOpacity:0.2,
+		  				strokeColor: "#FF0000",
+		  				strokeWidth: 3,
+		  				strokeDashstyle: "solid",
+		  				pointRadius: 2,
+		  				title: "this is a red line"
+		  			};
+		  			drawData(prtcl, color);
+		  		
+		  		
+		   			// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+		  			  var center = new Tmapv2.LatLng(33.3616666, 126.5291666);
+		  			  var zoom = 10; // 현재 줌 레벨 가져오기
+		  			  map.setCenter(center);
+		  			  map.setZoom(zoom);
+		  			},
+		  			error:function(request,status,error){
+		  			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		  		}
+		  	});
+		  	}
+		  }
+		  	function addMarker(status, lon, lat, tag, color) {
+		  	//출도착경유구분
+		  	//이미지 파일 변경.
+		  	console.log("addMarker : "+color);
+		  	var markerLayer;
+		  	switch (status) {
+		  		case "llStart":
+		  			img = '/resources/image/marker/'+color+'start.png';
+		  			break;
+		  		case "llPass":
+		  			img = '/resources/image/marker/'+color+'pass.png';
+		  			break;
+		  		case "llEnd":
+		  			img = '/resources/image/marker/'+color+'end.png';
+		  			break;
+		  		default:
+		  	};
+		  	var marker = new Tmapv2.Marker({
+		  		position: new Tmapv2.LatLng(lat,lon),
+		  		icon: img,
+		  		map: map
+		  	});
+		  	// 마커 드래그 설정
+		  	marker.tag = tag;
+		  	marker.addListener("dragend", function (evt) {
+		  	markerListenerEvent(evt);
+		      });
+		      marker.addListener("drag", function (evt) {    	
+		      	markerObject = markerList[tag];
+		      });
+		      markerList[tag] = marker;
+		      markers.push(marker);
+		      return marker;
+		  }
+		  	
+		  	 function drawRoute(date, lonLatPairs, color) {
+		  			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+		  			if(lonLatPairs.length === 1){
+		  				addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+		  				
+		  			}else{
+
+		  			// 시작
+		  			addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
+		  			// 도착
+		  			addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
+
+		  			// 경유지 심볼 찍기
+		  			for (var j = 0; j < waypoints.length; j++) {
+		  				var waypoint = waypoints[j];
+		  				addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
+		  			}
+		  			// 4. 경로탐색 API 사용요청
+		  			}
+		  	      var startX = lonLatPairs[0].lat;
+		  	      var startY = lonLatPairs[0].lon;
+		  	      var endX = lonLatPairs[lonLatPairs.length - 1].lat;
+		  	      var endY = lonLatPairs[lonLatPairs.length - 1].lon;
+		  	      var passList = waypoints.map(function(waypoint) {
+		  	        return waypoint.lat + ',' + waypoint.lon;
+		  	      }).join('_');
+		  	      var prtcl;
+		  	  	  var headers = {};
+		  	      
+		  	      headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
+		  	      // 경로 탐색 API 호출
+		  			$.ajax({
+		  				method:"POST", 
+		  				headers : headers, 
+		  				url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
+		  				async:false,
+		  				data:{ 
+		  					startX : startX,
+		  					startY : startY,
+		  					endX : endX,
+		  					endY : endY,
+		  					passList : passList,
+		  					reqCoordType : "WGS84GEO",
+		  					resCoordType : "WGS84GEO",
+		  					angle : "172",
+		  					searchOption : "0",
+		  					trafficInfo : "N"
+		  				},
+		  				success:function(response){
+		  				prtcl = response;
+		  				
+		  				// 5. 경로탐색 결과 Line 그리기 
+		  				var trafficColors = {
+		  					extractStyles:true,
+		  					/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
+		  					trafficDefaultColor:"#636f63", //Default
+		  					trafficType1Color:"#19b95f", //원할
+		  					trafficType2Color:"#f15426", //지체
+		  					trafficType3Color:"#ff970e"  //정체		
+		  				};    			
+		  				var style_red = {
+		  					fillColor:"#FF0000",
+		  					fillOpacity:0.2,
+		  					strokeColor: "#FF0000",
+		  					strokeWidth: 3,
+		  					strokeDashstyle: "solid",
+		  					pointRadius: 2,
+		  					title: "this is a red line"
+		  				};
+		  				drawData(prtcl, color);
+		  			
+		  			
+		  				// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
+		  				var newData = geoData[0];
+		  				PTbounds = new Tmapv2.LatLngBounds();
+		  						for (var i = 0; i < newData.length; i++) {
+		  							var mData = newData[i];
+		  							var type = mData.geometry.type;
+		  							var pointType = mData.properties.pointType;
+		  							if(type == "Point"){
+		  								var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[1],mData.geometry.coordinates[0]);
+		  								PTbounds.extend(linePt);
+		  							}
+		  							else{
+		  								var startPt,endPt;
+		  								for (var j = 0; j < mData.geometry.coordinates.length; j++) {
+		  									var linePt = new Tmapv2.LatLng(mData.geometry.coordinates[j][1],mData.geometry.coordinates[j][0]);
+		  									PTbounds.extend(linePt);
+		  								}
+		  						}
+		  					}
+		  					map.fitBounds(PTbounds);
+		  			
+		  				},
+		  				error:function(request,status,error){
+		  				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		  			}
+		  		});
+		  	    }
+		  	 window.onload = function() {
+		  			// 기본적으로 전체 경로 표시하기
+		  		showAllDayRoute();
+		  	};
+	 
+</script>
+
+</html>

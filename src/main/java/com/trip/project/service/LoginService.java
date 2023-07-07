@@ -12,4 +12,16 @@ public interface LoginService {
 	
 	public int delete(LoginDTO dto);
 	
+	public LoginDTO idfind(LoginDTO dto);
+	
+	//비밀번호 찾기 
+	public LoginDTO pwfind(LoginDTO dto);
+	//비밀번호 찾기-pwfix 
+	public LoginDTO idEmail(LoginDTO dto);
+	//회원정보수정-재생성
+	public int newpw(LoginDTO dto);
+	// userid로 유저 정보 들고오기 userupdateform
+	public LoginDTO userinfo(String userID);
+	
+	public int idcheck(LoginDTO dto);
 }

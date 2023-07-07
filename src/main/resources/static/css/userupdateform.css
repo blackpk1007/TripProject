@@ -1,0 +1,255 @@
+@import "reset.css";
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
+
+.signup1 {
+	width:50vw;
+	min-width: 300px;
+	height: 70vh;
+	margin-inline: auto;
+	position: absolute;
+	left: 50vw;
+	top: 50vh;
+	transform: translate(-50%, -50%);
+	border-radius: 0.8rem;
+}
+
+.signup2 {
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+}
+
+.signup_header {
+	padding-top: 4rem;
+	padding-bottom: 2.5rem;
+}
+
+.signup_body {
+	box-sizing: border-box;
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.body{
+	display:flex;
+	width:50%;
+	justify-content: center;
+}
+.body1{
+	display:flex;
+	width:50%;
+}
+
+.fixed{
+/* 	width:20%; */
+	border:solid;
+	border-width:0.1rem;
+	border-bottom-width:0;
+	border-right-width:0;
+	flex:1;
+	padding:2rem;
+	font-size:1.6rem;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #B8E9FF;
+	
+}
+#fixed1{
+	border:solid;
+	border-width:0.1rem;
+	border-right-width:0rem;
+}
+
+.info{
+	border:solid;
+	border-width:0.1rem;
+	border-bottom-width:0;
+	flex:3;
+	padding:2rem;
+	font-size:1.6rem;
+}
+#info1{
+	border:solid;
+	border-width:0.1rem;
+}
+.info>input{
+	width: 80%;
+	height: 2.6rem;
+	display: inline-block;
+	box-sizing: border-box;
+	border: 0.7px solid rgb(185, 184, 184);
+	border-radius: 0.5rem;
+	font-size: 1.6rem;
+	background-color: #EEEEEE;
+	padding-left: 2rem;
+}
+.gender{
+	display:flex;
+	align-items: center;
+	font-size: 1.6rem;
+}
+#male{
+	display:flex;
+	align-items: center;
+}
+#female{
+	display:flex;
+	align-items: center;
+}
+
+#signin {
+	font-size: 28pt;
+	margin: 0 auto;
+	text-align:center;
+}
+
+.loginForm {
+	width: 100%;
+	margin-bottom: 1.5rem;
+	font-size: 1.6rem;
+}
+
+.loginForm>input {
+	width: 46%;
+	height: 2.6rem;
+	display: inline-block;
+	box-sizing: border-box;
+	border: 0.7px solid rgb(185, 184, 184);
+	border-radius: 0.5rem;
+	font-size: 1.6rem;
+	background-color: #EEEEEE;
+	padding-left: 1rem;
+	margin-top: 0.6rem;
+}
+
+#updateButton {
+	cursor: pointer;
+	width: 42%;
+	height: 2.6rem;
+	border-radius: 0.5rem;
+	border: solid;
+	border-width:0.1rem;
+ 	font-size: 1.6rem;
+	color: black;
+}
+
+#deleteButton {
+	cursor: pointer;
+	width: 20%;
+	height: 40px;
+	border: 1px solid;
+	border-radius: 0.5rem;
+	font-size: 1.6rem;
+	color: black;
+	background-color: #ffffff;
+	margin-top:1rem;
+ 	/* display: flex; */
+	
+}
+
+#userPw{
+	width: 100%;
+	background-color: rgb(222, 222, 222);
+}
+
+#userPwcheck{
+	width: 100%;
+	background-color: rgb(222, 222, 222);
+}
+
+#userEmail{
+	width: 80%;
+	background-color: #EEEEEE;
+}
+
+#menu{
+	width: 100%;
+	height: 40px;
+}
+
+#menu ul li{
+	background-color: #ffffff;
+	list-style: none;
+	text-align: center;
+}
+
+#menu .linka{
+	float: left;
+}
+
+#menu .linkb{
+	float: right;
+}
+
+#menu .link{
+	width: 120px;
+	text-decoration: none;
+	display: block;
+	color: #000000;
+	font-weight: bold;
+}
+
+#logo {
+	width: 200px;
+	height: 100px;
+	}
+}

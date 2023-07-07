@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
+<style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
+	 #menu{
+	 		
+			width: 100%;
+			height: 40px;
+		}
+
+		#menu ul li{
+			background-color: #ffffff;
+			list-style: none;
+			text-align: center;
+		}
+		
+		#menu .linka{
+			float: left;
+		}
+		
+		#menu .linkb{
+			float: right;
+		}
+		
+		#menu .link{
+			width: 120px;
+			text-decoration: none;
+			display: block;
+			color: #000000;
+			font-weight: bold;
+		}
+		
+		#logo {
+			width: 200px;
+			height: 100px;
+			}
+			
+		#chattingRoom{
+			width:100%;
+			height:60vh;
+			margin-top:4%;
+		}
+		#left{
+			
+			width:50%;
+			float:left;
+			height:50vh;
+			/* background-color:#ffd400; */
+			margin-top:5%;
+			border-radius:15%;
+		}
+		.chattingRoom-button{
+			width:45%;
+			height:45vh;
+			background-color: transparent;
+			border:none;
+			cursor:pointer;
+			text-align:center;
+			padding:0px;
+		}
+		
+		#taxi-button{
+		margin-left:45%;
+		}
+		#food-button{
+			margin-left:6%;
+		}
+		/* #taxiImg{
+			width:100%;
+			height:32vh;
+			border:solid 1px black;
+			border-radius:50%;
+			margin-left:25.5%;
+		} */
+		#right{
+		
+			width:50%;
+			float:left;
+			height:50vh;
+			/* background-color:#9bbbd4; */
+			margin-top:5%;
+			border-radius:15%;
+		}
+		/* #right h1, #left h1{
+			font-size:40px;
+			margin-left:48.1%;
+			margin-top:8%;
+		}
+		#foodImg{
+			width:100%;
+			height:32vh;
+			border:solid 1px black;
+			border-radius:50%;
+			margin-left:25.5%;
+		} */
+		.chattingRoom-img{
+			width:100%; 
+			height:100%;
+			border-radius:15%;
+		}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+	function foodUrl(){
+		alert("맛집동행 채팅방 비밀번호는 1234 입니다.");
+		window.open("https://open.kakao.com/o/gKjzPmsf");
+	}
+	function taxiUrl(){
+		alert("택시동행 채팅방 비밀번호는 1234 입니다.");
+		window.open("https://open.kakao.com/o/gssGRmsf");
+	}
+</script>
+</head>
+<body>
+	<div class="header">
+		<div class="header-category">
+			<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
+	<div id="chattingRoom">
+		<div id="left">
+			<button class="chattingRoom-button" id="taxi-button" onclick="taxiUrl();">
+			<img id="taxiImg" class="chattingRoom-img" src="/resources/image/taxitaxi.png">
+			</button>
+		</div>
+		<div id="right">
+			<button class="chattingRoom-button" id="food-button" onclick="foodUrl();">
+				<img id="foodImg" class="chattingRoom-img" src="/resources/image/foodfood.png">
+			</button>
+		</div>
+	</div>
+</body>
+</html>

@@ -3,15 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style type="text/css">
+.header {
+	width: 90vw;
+	height: 13vh;
+	border-bottom: 1px solid #EEEEEE;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5vh;
+	/* display: flex;
+            justify-content: center; */
+}
+
+.header-category {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#logimg {
+	width: 15vw;
+	height: 12vh;
+	margin-left: 7vw;
+	margin-right: 14vw;
+}
+
+.header-category>label {
+	/* border: 1px solid;
+            border-radius: 5px; */
+	color: #595959;
+	font-family: 'Noto Sans KR Regular', sans-serif;
+	padding: 7px;
+	padding-top: 0.2vh;
+	padding-bottom: 0.2vh;
+	cursor: pointer;
+}
+
+#label-left-course {
+	margin-right: 3vw;
+}
+
+#label-left-community {
+	margin-right: 3vw;
+}
+
+#label-left-chat {
+	margin-right: 3vw;
+	padding-left: 1vw;
+	padding-right: 1vw;
+}
+
+#label-right-login {
+	padding-left: 1vw;
+	padding-right: 1vw;
+	margin-left: 3vw;
+}
+
+#label-right-register {
+	margin-left: 3vw;
+}
 	#detail{
             width:50%;
+           	height:90vh;
             min-width:800px;
 	        margin:20px auto;
 	        text-align:center;
-	        
         }
-        #img{
+        #category-img{
             width:5%;
             float: left;
             
@@ -34,11 +93,15 @@
         .right{
             float: right;
         }
-        #textarea{
-            resize: none;
+        #contentText{
+            
             width: 99%;
             height:40vh;
-            margin-top:2%;
+            margin-top:1%;
+            backgrount-color:white;
+            text-align:left;
+            float:left;
+            
         }
        
         #title{padding:0.5%;}
@@ -76,34 +139,118 @@
             cursor:pointer;
         }
         
+        #contentImg{
+        	float: left;
+        	width-max:100%;
+        	width: 60%;
+        	hegith:10vh;
+        }
+        #contentAndImg{
+        	border: solid 1px black;
+        	margin-top:1%;
+        	margin-bottom:1%;
+        	padding: 1%;
+        	height:60vh;
+        	overflow: auto;
+        	padding-left:5%;
+        	padding-top:5%;
+        }
+        #menu{
+			width: 100%;
+			height: 40px;
+		}
+
+		#menu ul li{
+			background-color: #ffffff;
+			list-style: none;
+			text-align: center;
+		}
+		
+		#menu .linka{
+			float: left;
+		}
+		
+		#menu .linkb{
+			float: right;
+		}
+		
+		#menu .link{
+			width: 120px;
+			text-decoration: none;
+			display: block;
+			color: #000000;
+			font-weight: bold;
+		}
+		
+		#logo {
+			width: 200px;
+			height: 100px;
+			}
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+#(document).ready(function(){
+	$("#deleteBT").on('click', function(){
+		confirm("게시글을 삭제 하시겠습니까?");
+	});
+});
+</script>
 </head>
 <body>
-<div id="detail">
+	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
+	<div id="detail">
         <div th:if="${dto.communityCategory} == 'tip'">
-            <div><img src="/resources/image/bulb.png" id="img"></div>
+            <div><img src="/resources/image/bulb.png" id="category-img"></div>
             <div id="top_title">제주도 여행팁</div>
         </div>
         <div th:if="${dto.communityCategory} == 'review'">
-            <div><img src="/resources/image/pencil.png" id="img"></div>
+            <div><img src="/resources/image/pencil.png" id="category-img"></div>
             <div id="top_title">제주도 여행후기</div>
         </div>
         <div id="write_title">
             <div id="title" class="left" th:text="${dto.communityTitle}"></div>
             <div id="fmtdate" class="right" th:text="${#dates.format(dto.communityDate, 'yyyy-MM-dd')}"></div>
             <div id="date" class="right">작성일자</div>
-            <div id="writer_user" class="right"><!--작성자-->홍길동</div>
+            <div id="writer_user" class="right" th:text="${dto.communityWriter}"></div>
             <div id="writer" class="right" >작성자</div>
             
         </div>
-        <div>
-            <textarea readonly="readonly" id="textarea" th:text="${dto.communityContent}"></textarea>
-        </div>
+        <div id=contentAndImg>
+	        <div th:if="${image != null}">
+	    		<div th:if="${image.imageNumber != null}" >
+	        		<img th:src="|/community/image/__${image.imageStoredName}__|" id="contentImg">
+	    		</div>
+	    		<div th:unless="${image.imageNumber != null}" th:text=""></div>
+			</div>
+			<div id="contentText" th:utext="${dto.communityContent}"></div>
+		</div>
+		
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
-            <input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
-            <input type="button" value="수정" id="updateBT" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
+            <div th:if="${dto.communityWriter == session.login}">
+            	<input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
+            	<input type="button" value="수정" id="updateBT" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
+            </div>
+            <div th:unless="${dto.communityWriter == session.login}"></div>
         </div>
+        
     </div>
 </body>
 </html>

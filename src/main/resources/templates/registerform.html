@@ -5,22 +5,26 @@
 <title>RegisterForm</title>
 <link rel="stylesheet" href="/resources/css/registerform.css"
 	type="text/css">
-
-
 </head>
 <body>
-	<nav id="menu">
-		<div style="text-align: center;">
-			<img id="logo" src="/resources/image/logo.png">
+	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
 		</div>
-		<ul>
-			<li class="linka"><a class="link" href="#">일정생성</a></li>
-			<li class="linka"><a class="link" href="#">커뮤니티</a></li>
-			<li class="linka"><a class="link" href="#">채팅방</a></li>
-			<li class="linkb"><a class="link" href="#">마이페이지</a></li>
-		</ul>
-	</nav>
-
+	</div>
 	<div class="signup1">
 		<div class="signup2">
 			<div class="signup_header">
@@ -28,49 +32,67 @@
 
 			</div>
 			<div class="signup_body">
-				<form method="post" action="/login/register">
+				<form action="/login/register">
 					<div class="loginForm">
 						&nbsp;이름 <input type="text" id="userName" name="userName">
 					</div>
 					<div class="loginForm">
-						&nbsp;생년월일 <input type="date" id="userBirth" name="userBirth">
+						&nbsp;생년월일 <input type="date" id="userBirth" name="userBirth" min="1950-01-01" max="" >
 					</div>
 					<div class="male">
-						&nbsp;남자<input id=male type="radio" name="userGender" value="M" checked /> 
+						&nbsp;남자<input id="male" type="radio" name="userGender" value="M" checked /> 
 					</div>
 					<div class="female">
-						여자<input id=female type="radio" name="userGender" value="F" />
+						여자<input id="female" type="radio" name="userGender" value="F" />
 					</div>
 					<div class="loginForm">
-						&nbsp;아이디 <input type="text" id="userID" name="userID">
+						&nbsp;아이디 <button class="idcheck" type="button" th:onclick="idCheck();">중복체크</button><input type="text" id="userID" name="userID">
 					</div>
 					<div class="loginForm">
-						&nbsp;비밀번호 <input type="text" id="userPW" name="userPW">
+						&nbsp;비밀번호 <input type="password" id="userPW" name="userPW">
 					</div>
 					<div class="loginForm">
-						&nbsp;비밀번호 확인 <input type="text" id="userPwcheck" name="userPwcheck">
+						&nbsp;비밀번호 확인 <input type="password" id="userPW2" name="userPW2">
 					</div>
 					<div class="loginForm">
 						&nbsp;이메일 <input type="text" id="userEmail" name="userEmail">
 					</div>
 					<div class="loginForm">
+						&nbsp;인증번호 입력 <input type="text" id="authCode" name="authCode" placeholder="인증번호8자리입력" maxlength="8">
+					</div>
+					<!--  
+					<div class="loginForm">
 						&nbsp;전화번호 <input type="text" id="userPhone" name="userPhone">
 					</div>
+					-->
 
 					<!-- temp? -->
-					<button id="signinButton" type="submit">회원가입</button>
+					<button id="signinButton" type="submit" onclick="return regist_check();">회원가입</button>
 				</form>
-				<button id="AuthButton" type="submit">이메일 인증</button>
-
-				<script>
-							alert(${error});
-						</script>
+					<button id="AuthButton" type="submit" onclick="sendEmailConfirm()">인증번호 전송</button>
+					<button id="AuthButton" type="submit" onclick="emailAuth()">인증번호 입력</button>
+					<input type="hidden" id="acd">
 
 			</div>
 		</div>
 	</div>
-
+	
+<script src="/resources/js/register.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script th:inline="javascript">
+function emailAuth(){
+	/* var authcode = [[${session.authcode}]]; */
+	var userauthcode = document.getElementById("acd").value;
+	var inputauthcode = document.getElementById("authCode").value;
+	console.log(userauthcode);
+	console.log(inputauthcode);
+	if (userauthcode == inputauthcode){
+	alert(" 인증번호가 일치합니다! ");
+	}else{
+	alert(" 인증번호가 일치하지 않습니다!");
+	};
+};
+</script>
 </body>
 </html>
 
-</html>

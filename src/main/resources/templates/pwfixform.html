@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>FindYourID</title>
+<link rel="stylesheet" href="/resources/css/pwfindform.css" type="text/css">
+</head>
+<body>
+ 	<div class="header">
+		<div class="header-category">
+			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<!-- 로그인전 --> 
+				<div th:if="${session.login == null}">
+					<a href="/login" id="label-right-login">로그인</a> 
+					<a href="/login/registerform" id="label-right-login">회원가입</a>
+				</div>
+				<!-- 로그인 후 -->
+				<div th:if="${session.login != null}" >
+					<a href="/login/logout" id="label-right-login">로그아웃</a>
+					<a href="/login/usermain" id="label-right-register">마이페이지</a>
+				</div> 
+		</div>
+	</div>
+	<div class="signup1">
+		<div class="signup2">
+			<div class="signup_header">
+				<div id="signin">패스워드 수정</div>
+				
+			</div>
+			<div class="signup_body">
+					<div class="loginForm">
+                        <input type="password"	id="userPW" name="userPW" placeholder="PW 입력">  
+					</div>
+					<div class="loginForm">
+                        <input type="password"	id="userPW2" name="userPW2" placeholder="PW 확인">
+					</div>
+					
+					<!-- <input type="hidden" id="userID" th:value="${userinfo.userID}">
+					<input type="hidden" id="userEmail" th:value="${userinfo.userEmail}"> -->
+					
+					<button id="findPwButton" type="button" th:onclick="fixPw();">확인</button>
+						
+					<ul class="wrap">
+						<hr class="line">
+						<li>&nbsp;&nbsp;<a href="/login/registerform" id="txt">회원가입</a></li>&nbsp; /&nbsp;
+						<li><a href="/login/idfindform" id="txt">아이디 찾기</a></li>&nbsp;&nbsp;
+						<hr class="line">
+					</ul>
+			</div>
+		</div>
+	</div>
+	
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   <script th:inline="javascript"> 
+   
+   function fixPw(){
+       var userinfo = [[${userinfo}]];
+       console.log(userinfo);
+       
+       /* var userID = document.getElementById("userID");
+       var userEmail = document.getElementById("userEmail");
+       var useridvalue = document.getElementById("userID").value;
+       var useremailvalue = document.getElementById("userEmail").value; 
+       
+       console.log(userID);
+       console.log(useridvalue);
+       console.log(userEmail);
+       console.log(useremailvalue); */
+       
+       var userID = userinfo.userID;
+       var userEmail = userinfo.userEmail; 
+       
+       var userpw = document.getElementById("userPW");
+       var userpw2 = document.getElementById("userPW2");
+       var userpwvalue = document.getElementById("userPW").value;
+       var userpw2value = document.getElementById("userPW2").value;
+       
+       
+       if (userpwvalue == "") {
+         alert("패스워드를 입력 해 주세요.");
+         userpw.focus();
+         return false;
+      }
+      if (userpw2value == "") {
+         alert("패스워드 확인 해 주세요.");
+         userpw2.focus();
+         return false;
+      }
+    //비밀번호 영문자+숫자+특수조합(8~16자리 입력) 정규식
+      var pwdCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+
+      if (!pwdCheck.test(userpw.value)) {
+        alert("비밀번호는 영문자+숫자+특수문자 조합으로 8~16자리 사용해야 합니다.");
+        userpw.focus();
+        return false;
+      };
+
+      if (userpw2.value !== userpw.value) {
+        alert("비밀번호가 일치하지 않습니다..");
+        userpw2.focus();
+        return false;
+      };
+      
+       $.ajax({
+          url : "/login/pwfix",
+          type : "post",
+          data : { userPW : userpwvalue,
+        	       userID : userID,
+        	       userEmail : userEmail
+          }
+       })
+       		.done(function (result) {
+                console.log(result);
+                alert(result);
+                location.href="/login";
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+                alert(jqXHR);
+            })
+   	}
+   </script>
+
+</body>
+</html>
