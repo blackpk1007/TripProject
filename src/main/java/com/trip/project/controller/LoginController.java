@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlanDTO;
 import com.trip.project.service.CommunityService;
+import com.trip.project.service.EmailService;
 import com.trip.project.service.LoginService;
 import com.trip.project.service.PlanService;
 
@@ -36,6 +37,9 @@ public class LoginController {
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EmailService emailService;
 
 	// 로그인 메인 페이지
 	@RequestMapping
@@ -207,6 +211,27 @@ public class LoginController {
 		int res = lservice.idcheck(dto);
 		return res;
 	}
+	//이메일 인증
+	@ResponseBody
+	@RequestMapping("/emailConfirm")
+	public String emailConfirm(String userEmail, HttpSession session) throws Exception {
+
+	  String confirm = emailService.sendSimpleMessage(userEmail);
+	  System.out.println("인증번호"+confirm);
+	  session.setAttribute("authcode", confirm);
+	  // 인증코드 3분 맥스 ㅇㅇ 
+	  session.setMaxInactiveInterval(180);
+	  return confirm;
+	}
+//	//이메일 인증 확인
+//	@RequestMapping("/emailAuth")
+//	public int emailAuth(String emailAuth) {
+//		session
+//		if(emailAuth == confirm) {
+//			
+//		}
+//		return null; 
+//	}
 
 	// 사용자 마이페이지 메인
 	@RequestMapping("/usermain")

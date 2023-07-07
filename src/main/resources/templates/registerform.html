@@ -32,7 +32,7 @@
 
 			</div>
 			<div class="signup_body">
-			<form action="/login/register">
+				<form action="/login/register">
 					<div class="loginForm">
 						&nbsp;이름 <input type="text" id="userName" name="userName">
 					</div>
@@ -57,11 +57,9 @@
 					<div class="loginForm">
 						&nbsp;이메일 <input type="text" id="userEmail" name="userEmail">
 					</div>
-					<!--  
 					<div class="loginForm">
-						&nbsp;이메일인증 <input type="text" id="userEmailcheck" name="userEmailcheck" placeholder="인증번호6자리입력" disabled="disabled" maxlength="6">
+						&nbsp;인증번호 입력 <input type="text" id="authCode" name="authCode" placeholder="인증번호8자리입력" maxlength="8">
 					</div>
-					-->
 					<!--  
 					<div class="loginForm">
 						&nbsp;전화번호 <input type="text" id="userPhone" name="userPhone">
@@ -70,9 +68,10 @@
 
 					<!-- temp? -->
 					<button id="signinButton" type="submit" onclick="return regist_check();">회원가입</button>
-					</form>
-				<button id="AuthButton" type="submit">이메일 인증</button>
-
+				</form>
+					<button id="AuthButton" type="submit" onclick="sendEmailConfirm()">인증번호 전송</button>
+					<button id="AuthButton" type="submit" onclick="emailAuth()">인증번호 입력</button>
+					<input type="hidden" id="acd">
 
 			</div>
 		</div>
@@ -80,7 +79,20 @@
 	
 <script src="/resources/js/register.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
+<script th:inline="javascript">
+function emailAuth(){
+	/* var authcode = [[${session.authcode}]]; */
+	var userauthcode = document.getElementById("acd").value;
+	var inputauthcode = document.getElementById("authCode").value;
+	console.log(userauthcode);
+	console.log(inputauthcode);
+	if (userauthcode == inputauthcode){
+	alert(" 인증번호가 일치합니다! ");
+	}else{
+	alert(" 인증번호가 일치하지 않습니다!");
+	};
+};
+</script>
 </body>
 </html>
 
