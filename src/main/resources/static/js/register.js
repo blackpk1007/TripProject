@@ -154,9 +154,23 @@ function idCheck(){
 	
 };
 
+// 인증번호 보내기 버튼 기능 
 function sendEmailConfirm(){
-    var emailInput = document.getElementById("userEmail").value;
-    $.ajax({
+	
+	var emailInput = document.getElementById("userEmail").value;
+	if (emailInput == "") {
+    alert("이메일 주소를 입력하세요.");
+    emailInput.focus();
+    return false;
+  	}
+  	var emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+  	if (!emailRegExp.test(emailInput)) {
+      alert("이메일 형식이 올바르지 않습니다!");
+      emailInput.focus();
+      return false;
+  	}
+  	
+      $.ajax({
       url: '/login/emailConfirm',
       method: 'POST',
       data: { userEmail : emailInput

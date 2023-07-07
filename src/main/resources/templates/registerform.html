@@ -55,7 +55,8 @@
 						&nbsp;비밀번호 확인 <input type="password" id="userPW2" name="userPW2">
 					</div>
 					<div class="loginForm">
-						&nbsp;이메일 <input type="text" id="userEmail" name="userEmail">
+						&nbsp;이메일 <button id="sendAuthButton" type="button" onclick="sendEmailConfirm()">인증번호 전송</button>
+						<input type="text" id="userEmail" name="userEmail">
 					</div>
 					<div class="loginForm">
 						&nbsp;인증번호 입력 <input type="text" id="authCode" name="authCode" placeholder="인증번호8자리입력" maxlength="8">
@@ -67,10 +68,9 @@
 					-->
 
 					<!-- temp? -->
-					<button id="signinButton" type="submit" onclick="return regist_check();">회원가입</button>
+					<button id="userAuthButton" type="button" onclick="emailAuth()">이메일 인증</button>
+					<button id="signinButton" type="submit" onclick="return regist_check();" disabled>회원가입</button>
 				</form>
-					<button id="AuthButton" type="submit" onclick="sendEmailConfirm()">인증번호 전송</button>
-					<button id="AuthButton" type="submit" onclick="emailAuth()">인증번호 입력</button>
 					<input type="hidden" id="acd">
 
 			</div>
@@ -82,15 +82,24 @@
 <script th:inline="javascript">
 function emailAuth(){
 	/* var authcode = [[${session.authcode}]]; */
-	var userauthcode = document.getElementById("acd").value;
-	var inputauthcode = document.getElementById("authCode").value;
+	var sendauthcode = document.getElementById("acd").value;
+	var userauthcode = document.getElementById("authCode").value;
+	console.log(sendauthcode);
 	console.log(userauthcode);
-	console.log(inputauthcode);
-	if (userauthcode == inputauthcode){
+	if (sendauthcode == ""){
+		alert("이메일 인증번호 요청을 해 주세요.")
+		return false;
+	}
+	if(userauthcode == ""){
+		alert("받으신 인증번호를 입력 해 주세요.")
+		return false;
+	}
+	if (sendauthcode == userauthcode){
+	document.querySelector('#signinButton').disabled = false;
 	alert(" 인증번호가 일치합니다! ");
 	}else{
 	alert(" 인증번호가 일치하지 않습니다!");
-	};
+	}
 };
 </script>
 </body>
