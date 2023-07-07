@@ -136,18 +136,39 @@
 	/* display: flex;
        justify-content: center; */
 }
+.header a{
+	color: inherit;
+	text-decoration: none;
+}
 
 .header-category {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
+.header-left{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-center{
+	flex:3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-right{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 #logimg {
-	width: 15vw;
+	width: 18vw;
 	height: 12vh;
-	margin-left: 7vw;
-	margin-right: 14vw;
+	padding-right:1vw;
 }
 
 .header-category>label {
@@ -162,17 +183,15 @@
 }
 
 #label-left-course {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-community {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-chat {
-	margin-right: 3vw;
-	padding-left: 1vw;
-	padding-right: 1vw;
+	margin: auto;
 }
 
 #label-right-login {

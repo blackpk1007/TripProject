@@ -15,18 +15,38 @@
 	/* display: flex;
             justify-content: center; */
 }
+.header a{
+	color: inherit;
+	text-decoration: none;
+}
 
 .header-category {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
-
+.header-left{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-center{
+	flex:3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-right{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 #logimg {
-	width: 15vw;
+	width: 18vw;
 	height: 12vh;
-	margin-left: 7vw;
-	margin-right: 14vw;
+	padding-right:1vw;
 }
 
 .header-category>label {
@@ -41,17 +61,15 @@
 }
 
 #label-left-course {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-community {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-chat {
-	margin-right: 3vw;
-	padding-left: 1vw;
-	padding-right: 1vw;
+	margin: auto;
 }
 
 #label-right-login {
@@ -63,6 +81,7 @@
 #label-right-register {
 	margin-left: 3vw;
 }
+
 	#detail{
             width:50%;
            	height:90vh;
@@ -208,20 +227,24 @@ $(function(){
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<div class="header-left">
+				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+				<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				<a href="/chatting" id="label-left-chat">채팅방</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
 			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
 				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 	<div id="detail">
