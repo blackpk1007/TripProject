@@ -271,7 +271,7 @@ display:flex;
 <script
 	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
 
 </head>
 
@@ -296,9 +296,9 @@ display:flex;
 	</div>
 	<div class="body">
 		<div class="courseInfo">
-			<div class="courseInfo-title">00 의 일정 제목</div>
+			<div class="courseInfo-title">[[${coursedetail.userID}]] 의 [[${coursedetail.planName}]]</div>
 			<div> 
-				<div class="courseInfo-date">00.00.00 ~00.00.00</div>
+				<div class="courseInfo-date">[[${coursedetail.courseFirstDate}]] ~ [[${coursedetail.courseLastDate}]]</div>
 				
 			</div>
 			<div id="courseInfo-installText">저장하기</div>
@@ -431,6 +431,9 @@ display:flex;
 	</script>
 </body>
 <script th:inline="javascript">
+	var place = [[${placeInfo}]];
+	console.log(place);
+	
 	  map = new Tmapv2.Map("map_div", {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	    width: "50vw", // 지도의 넓이
@@ -512,7 +515,7 @@ display:flex;
 		  var pointArray = [];
 		  var markers = [];
 		
-		  var inputValues = [[${courseDetail}]];
+		  var inputValues = [[${coursemarker}]];
 		  console.log(inputValues);
 		  console.log(inputValues.lonLatPairs);
 		  console.log(inputValues.length);

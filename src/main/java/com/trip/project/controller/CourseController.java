@@ -119,12 +119,15 @@ public class CourseController {
 		        lonLatMap.put("lon", dto.getCourseDetailLon());
 		        lonLatMap.put("lat", dto.getCourseDetailLat());
 		        lonLatPairs.add(lonLatMap);
+		        System.out.println("test : "+lonLatPairs);
 		    }
 		   resultList.add(resultMap);
 		   System.out.println("controller : "+resultList);
 		   
-		   model.addAttribute("courseDetail", resultList);
-		    
+		   model.addAttribute("coursemarker", resultList);
+		   model.addAttribute("coursedetailLists", dtoList);
+		   model.addAttribute("coursedetail", cService.courseDetail(userID, planName));
+		   model.addAttribute("placeInfo", cService.coursePlace(userID, planName));
 		
 		return "coursedetail";
 		}
