@@ -17,6 +17,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
+	font-size:1.6rem;
 	/* display: flex;
             justify-content: center; */
 }
@@ -26,12 +27,29 @@
 	justify-content: center;
 	align-items: center;
 }
+.header-left{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-center{
+	flex:3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-right{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 #logimg {
-	width: 15vw;
-	height: 12vh;
-	margin-left: 7vw;
-	margin-right: 14vw;
+	width: 20rem;
+	height: 14rem;
+	padding-right:1vw;
 }
 
 .header-category>label {
@@ -70,12 +88,13 @@
 }
 .body{
 	display: flex;
-	width: 97vw;
+	width: 98vw;
 	height: 100%;
 	flex-direction: column;
 	position:relative;
 	left:1vw;
 	justify-content: center;
+	align-items: center;
 	
 }
 
@@ -104,7 +123,7 @@
 	position:relative;
 	display:flex;
 	justify-content:center;
-	left:22.1%;
+	right: 16vw;
 	height: 6vh;
 	
 }
@@ -209,16 +228,45 @@
 	height:4rem;
 	margin:1rem;
 }
-.courseInfo{
-display:flex;
-	justify-content: center;
+.courseinfobox{
+	display:flex;
 	align-items:center;
+	width:50vw;
 	font-size: 20px;
 }
-.courseInfo-date{
-	margin-right:50vh;
-	margin-left:1vh;
+
+.left{
+	display:flex;
+	flex:9;
 }
+.courseInfo-title{
+	display:flex;
+	justify-content: left;
+}
+.courseInfo-date{
+	margin-left:1vw;
+	margin-right:auto;
+	display:flex;
+	justify-content: left;
+}
+.right{
+	display:flex;
+	flex:2;
+}
+#courseInfo-installText{
+	margin-left:1vw;
+	margoin-right:0;
+	display:flex;
+	justify-content: right;
+}
+#coursedetail-img{
+	width:3vh;
+	height:2.5vh;
+	display:flex;
+	justify-content: right;
+}
+
+
 .swiper-container {
 	width: 50%; 
 	height: 17vh;
@@ -241,10 +289,6 @@ display:flex;
 	height:50%;
 	box-shadow: 0 0 5px #555;
 	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
-}
-#coursedetail-img{
-	width:3vh;
-	height:2.5vh;
 }
 .swiper-slide-day{
 	margin-top: 2vh;
@@ -278,32 +322,37 @@ display:flex;
 <body>
 <div class="header">
 		<div class="header-category">
-			<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
-			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
+			<div class="header-left">
+				<a href="/login/recommandcourse" id="label-left-course">코스추천</a>
+				 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				 <a href="/chatting" id="label-left-chat">채팅방</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
+				<!-- 로그인전 --> 
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
 				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 	<div class="body">
-		<div class="courseInfo">
-			<div class="courseInfo-title">[[${coursedetail.userID}]] 의 [[${coursedetail.planName}]]</div>
-			<div> 
-				<div class="courseInfo-date">[[${coursedetail.courseFirstDate}]] ~ [[${coursedetail.courseLastDate}]]</div>
-				
-			</div>
-			<div id="courseInfo-installText">저장하기</div>
-			<div id="coursedetail-img"><img src="/resources/image/coursedetail-img.png"></div>
-		</div>	
+		<div class="courseinfobox">
+				<div class="left">
+					<div class="courseInfo-title">[[${coursedetail.userID}]] 의 [[${coursedetail.planName}]]</div>
+					<div class="courseInfo-date">[[${coursedetail.courseFirstDate}]] ~ [[${coursedetail.courseLastDate}]]</div>
+				</div>
+				<div class="right">
+					<div id="courseInfo-installText">저장하기</div>
+					<div id="coursedetail-img"><img src="/resources/image/coursedetail-img.png"></div>
+				</div>
+		</div>
 		<!--  지도  -->
 		<div class="map">
 			<div id="map_div"></div>
