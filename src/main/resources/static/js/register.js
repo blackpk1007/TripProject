@@ -176,11 +176,9 @@ function sendEmailConfirm(){
       data: { userEmail : emailInput
       },
       success: function (data) {
-    	  
-      		alert(data);
+      		alert("인증메일 전송에 성공했습니다. 인증코드를 입력해주세요.");
       		var ac = document.getElementById("acd");
       		ac.value = data;
-      		console.log(ac);
       },
       error: function () {
         console.log('이메일전송에 실패했습니다.');
@@ -189,7 +187,7 @@ function sendEmailConfirm(){
 };
 
 
-//alert("인증메일 전송에 성공했습니다. 3분안에 인증코드를 입력해주세요.");
+
 
 //아이디 중복체크 팝업창(현재 공백문서)
 function id_check() {

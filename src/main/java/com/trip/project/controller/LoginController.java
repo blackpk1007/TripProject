@@ -219,19 +219,9 @@ public class LoginController {
 	  String confirm = emailService.sendSimpleMessage(userEmail);
 	  System.out.println("인증번호"+confirm);
 	  session.setAttribute("authcode", confirm);
-	  // 인증코드 3분 맥스 ㅇㅇ 
 	  session.setMaxInactiveInterval(180);
 	  return confirm;
 	}
-//	//이메일 인증 확인
-//	@RequestMapping("/emailAuth")
-//	public int emailAuth(String emailAuth) {
-//		session
-//		if(emailAuth == confirm) {
-//			
-//		}
-//		return null; 
-//	}
 
 	// 사용자 마이페이지 메인
 	@RequestMapping("/usermain")
