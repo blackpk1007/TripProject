@@ -188,12 +188,21 @@
 			}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-#(document).ready(function(){
-	$("#deleteBT").on('click', function(){
-		confirm("게시글을 삭제 하시겠습니까?");
-	});
+<script th:inline="javascript">
+        /*<![CDATA[*/
+$(function(){
+    var deleteURL = /*[[ @{/community/communitydelete(communityNumber=${dto.communityNumber})} ]]*/ '';
+
+    $("#deleteBT").on('click', function(){
+        var result = confirm("게시글을 삭제 하시겠습니까?");
+        if (result) {
+            location.href = deleteURL;
+        } else {
+            return false;
+        }
+    });
 });
+/*]]>*/
 </script>
 </head>
 <body>
@@ -245,7 +254,7 @@
         <div id="button">
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <div th:if="${dto.communityWriter == session.login}">
-            	<input type="button" value="삭제" id="deleteBT" th:onclick="|location.href='@{/community/communitydelete(communityNumber=${dto.communityNumber})}'|">
+            	<input type="button" value="삭제" id="deleteBT">
             	<input type="button" value="수정" id="updateBT" th:onclick="|location.href='@{/community/communityupdateform(communityNumber=${dto.communityNumber})}'|">
             </div>
             <div th:unless="${dto.communityWriter == session.login}"></div>

@@ -93,10 +93,18 @@
 
 .swiper-slide img {
 	width: 95%;
-	height: 95%;
+	height: 100%;
 	box-shadow: 0 0 5px #555;
 	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
 	opacity: 0.8;
+	object-fit: cover;
+}
+.swiper-slide a {
+	width: 93.5%;
+	height: 100%;
+	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+	opacity: 0.8;
+	
 }
 
 * {
@@ -181,6 +189,7 @@ header {
 
 #place_text {
 	text-align: center;
+	margin-top:8vh;
 }
 
 #place_text_korean { /*(양)*/
@@ -195,15 +204,19 @@ header {
 
 #tag1 {
 	width: 200px; /*150 -> 200 (양)*/
-	height: 30px;
+	height: 39px;
 	border: 1px solid #B8E9FF;
 	border-radius: 8px;
 	background-color: #B8E9FF;
 	color: white;
 	margin-left: 5vh; /*20 -> 5 (양)*/
-	margin-top: 8vh;
+	margin-top: 2vh;
 	margin-bottom: 2vh;
 	font-size: 20px; /* new (양)*/
+	display: flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .a {
@@ -249,7 +262,7 @@ header {
 
 #swiper-container-course {
 	width: 90%;
-	height: 70vh;
+	height: 64vh;
 }
 
 #swiper-button-next-hotPlace {

@@ -178,7 +178,6 @@ public class PlanController {
         } else if (pageNum > totalPages) {
         	pageNum = totalPages;
         }
-        
         placePagination paging = new placePagination(pageNum, 20);
         // 현재 페이지에 해당하는 데이터 조회
         List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
