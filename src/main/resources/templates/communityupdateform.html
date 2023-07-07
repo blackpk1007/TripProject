@@ -337,9 +337,10 @@
 			    </button>
 			</div>
             <div id="write_con">내용</div>
+           
             <div id="contentText" contenteditable="true" th:utext="${dto.communityContent}"  >
-            	<img th:src="|/community/image/__${image.imageStoredName}__|">
-            	 <input type="hidden" name="placeNumber" value="" id="placeNumber">
+            	 <img th:src="|/community/image/__${image.imageStoredName}__|">
+            	<input type="hidden" name="placeNumber" value="" id="placeNumber">
             </div>
            
             <input type="hidden" name="communityContent" id="communityContent">
@@ -486,7 +487,7 @@ $(document).ready(function() {
     	}
     	
     });
-   /*  function readURL(input) {
+     function readURL(input) {
         var session = sessionStorage.getItem('placeNumber');
         document.getElementById("placeNumber").value = session;
         var imagediv = document.querySelector("#contentText");
@@ -507,7 +508,7 @@ $(document).ready(function() {
     $("#attachFile").on("change", function() {
         readURL(this);
     });
-     */
+     
    
 });
 </script>

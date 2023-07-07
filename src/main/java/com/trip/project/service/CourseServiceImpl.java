@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.trip.project.dto.CourseDTO;
 import com.trip.project.dto.CourseDetailDTO;
+import com.trip.project.dto.PlaceDTO;
 import com.trip.project.mapper.CourseMapper;
 
 @Service
@@ -61,6 +62,18 @@ public class CourseServiceImpl implements CourseService{
 	public int courseListCount(String userID, String planName) {
 		
 		return cmapper.courseListCount(userID, planName);
+	}
+
+	@Override
+	public CourseDTO courseDetail(String userID, String planName) {
+
+		return cmapper.courseDetail(userID, planName);
+	}
+
+	@Override
+	public List<PlaceDTO> coursePlace(String userID, String planName) {
+
+		return cmapper.coursePlace(userID, planName);
 	}
 
 }

@@ -93,10 +93,17 @@
 	width:50%;
 	justify-content: center;
 }
+.body1{
+	display:flex;
+	width:50%;
+}
 
 .fixed{
 /* 	width:20%; */
 	border:solid;
+	border-width:0.1rem;
+	border-bottom-width:0;
+	border-right-width:0;
 	flex:1;
 	padding:2rem;
 	font-size:1.6rem;
@@ -106,12 +113,23 @@
 	background-color: #B8E9FF;
 	
 }
+#fixed1{
+	border:solid;
+	border-width:0.1rem;
+	border-right-width:0rem;
+}
 
 .info{
 	border:solid;
+	border-width:0.1rem;
+	border-bottom-width:0;
 	flex:3;
 	padding:2rem;
 	font-size:1.6rem;
+}
+#info1{
+	border:solid;
+	border-width:0.1rem;
 }
 .info>input{
 	width: 80%;
@@ -151,7 +169,7 @@
 }
 
 .loginForm>input {
-	width: 42%;
+	width: 46%;
 	height: 2.6rem;
 	display: inline-block;
 	box-sizing: border-box;
@@ -169,6 +187,7 @@
 	height: 2.6rem;
 	border-radius: 0.5rem;
 	border: solid;
+	border-width:0.1rem;
  	font-size: 1.6rem;
 	color: black;
 }
@@ -183,7 +202,8 @@
 	color: black;
 	background-color: #ffffff;
 	margin-top:1rem;
-
+ 	/* display: flex; */
+	
 }
 
 #userPw{

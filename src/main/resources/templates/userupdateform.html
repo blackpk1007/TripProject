@@ -57,7 +57,8 @@
    }
    function userDelete(){
 	   var userID = [[${userinfo.userID}]];
-	   
+	   var result = confirm("탈퇴하시겠습니까?");
+	   if (result == true){
 	   $.ajax({
 	          url : "/login/userdelete",
 	          type : "post",
@@ -69,8 +70,10 @@
 	            })
 	            .fail(function(jqXHR) {
 	                console.log(jqXHR);
-	                alert("재로그인 후 다시 시도해주세요.");
 	            })
+	   }else{
+		   false;
+	   }
    }
    </script>
 </head>
@@ -143,14 +146,14 @@
 						</div>
 					</div>
 					<div class="body">
-						<div class="fixed">이메일</div>
-						<div class="info">
+						<div class="fixed" id="fixed1">이메일</div>
+						<div class="info" id="info1">
 							[[${userinfo.userEmail}]]
 						</div>
 					</div>
-                    
-					<button id="deleteButton" type="submit" th:onclick="userDelete();">회원탈퇴</button>
-
+                    <div class="body1">
+						<button id="deleteButton" type="submit" th:onclick="userDelete();">회원탈퇴</button>
+					</div>
 			</div>
 		</div>
 	</div>

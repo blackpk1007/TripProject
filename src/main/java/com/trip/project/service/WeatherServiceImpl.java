@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,7 @@ public class WeatherServiceImpl implements WeatherService{
 		conn.disconnect();
 	
 		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
+		try {
 	    JSONObject json = new JSONObject(sb.toString());
 	    JSONObject response = json.getJSONObject("response");
 	    if (!response.has("body")) {
@@ -130,11 +132,13 @@ public class WeatherServiceImpl implements WeatherService{
 	        		}
 	        	}
 	        }
-	        	
-	        	
 	    }
 	    WeatherDTO weatherDTO = new WeatherDTO(day, minimumtemp, highesttemp, currenttemp, sky, pty);
 		return weatherDTO;
+		} catch (JSONException e) {
+			e.printStackTrace();
+            return null;
+        }
 	}
 
 	@Override
@@ -190,8 +194,9 @@ public class WeatherServiceImpl implements WeatherService{
 		}
 		rd.close();
 		conn.disconnect();
-	
+		
 		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
+		try {
 	    JSONObject json = new JSONObject(sb.toString());
 	    JSONObject response = json.getJSONObject("response");
 	    if (!response.has("body")) {
@@ -257,6 +262,10 @@ public class WeatherServiceImpl implements WeatherService{
 	    }
 	    WeatherDTO weatherDTO = new WeatherDTO(day, minimumtemp, highesttemp, currenttemp, sky, pty);
 		return weatherDTO;
-	}
+	}catch (JSONException e) {
+		e.printStackTrace();
+        return null;
+    }
+}
 	
 }

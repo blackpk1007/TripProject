@@ -8,11 +8,16 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
 	<link href="./resources/css/mainpage.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:inline="javascript">
-
+window.onload = function () {
+	airplaneOpenPopup();
+};	
 //장소별 팝업창
   function placePopup(placeName,imagePath) {
     $.ajax({
@@ -140,10 +145,10 @@
 	<div class="swiper-container" id="swiper-container-course">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
+				<a href="#"><img src="/resources/image/협재해수욕장.jpg"></a>
 			</div>
 			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
+				<a href="#"><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></a>
 			</div>
 			<div class="swiper-slide">
 				<a href="#"><img src="/resources/image/udo.jpg"></a>
@@ -215,23 +220,26 @@
                 </div>
             </div>
             <div class="hashtags">
-                <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${parentsList.placeName}" th:data-image-path="@{/resources/image/place/__${parentsList.placeName}__.jpg}"><div>#<span th:text="${parentsList.placeName}"></span></div></a>
+                <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${parentsList.placeName}" th:data-image-path="@{/resources/image/place/__${parentsList.placeName}__.jpg}">
+                <div>#<span th:text="${parentsList.placeName}"></span></div></a>
             </div>
         </div>
-	</div>
+	</div> 
 	
+	<div id="airplanePopupContainer" class="airplanePopupContainer">
+    <div class="airplanePopupContent">
 	<div id="AirplaneInformation">
-    <div id="airplane-title">
-    	<!-- <h1>Airplane Information</h1> -->
-    	<div id="airplane-button-block">
-    		<button class="airplane-button" id="startingPointButton">출발지: 제주</button>
-    		<button class="airplane-button" id="destinationButton">목적지: 제주</button>
+<div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
+    <div class="airplane-title">
+    	<div class="airplane-button-block">
+    		<button class="airplane-button"  onclick="viewBoardings();">출발지: 제주</button>
+    		<button class="airplane-button"  onclick="viewArriveds();">목적지: 제주</button>
     	</div>
-    	<div id="airplane-title-img-div">
-    		<img id="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    	<div class="airplane-title-img-div">
+    		<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
     	</div>
     </div>
-    <div th:if="${not #lists.isEmpty(boardings)}">
+   
     <table id="flightTable">
         <tr>
         	<th class="airplane-flightDate">날짜</th>
@@ -324,9 +332,137 @@
         </tr> 	
     </table>
   </div>
-  <div th:if="${#lists.isEmpty(boardings) or boardings == null}">
-  		<h5>나옴?</h5>
-  </div>	 
+ <div id="airplane-arriveds" th:if="${not #lists.isEmpty(arriveds)}" style="display: none">
+    <div class="airplane-title">
+    	 
+    	<div class="airplane-button-block">
+    		<button class="airplane-button" onclick="viewBoardings();">출발지: 제주</button>
+    		<button class="airplane-button" onclick="viewArriveds();">목적지: 제주</button>
+    	</div>
+    	<div class="airplane-title-img-div">
+    		<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    	</div>
+    </div>
+   
+    <table id="flightTable">
+        <tr>
+        	<th class="airplane-flightDate">날짜</th>
+        	<th class="airplane-std">출발시간</th>
+        	<th class="airplane-etd">변경시간</th>
+            <th class="airplane-boardingKor">출발지</th>
+            <th class="airplane-arrivedKor">목적지</th>
+            <th class="airplane-airFln">항공편</th>
+            <th class="airplane-airlineKorean">항공사</th>
+           	<th class="airplane-rmkKor">현황</th>
+        </tr>
+       	<tr th:each="arrived : ${arriveds}">
+           	<td class="airplane-flightDate" th:text="${arrived.flightDate}"></td>
+            <td class="airplane-std">
+            	<div th:if="${arrived.std.toString().length() == 3}">
+    				<div th:text="${#strings.substring(arrived.std.toString(), 0, 1) + ':' + #strings.substring(arrived.std.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${arrived.std.toString().length() == 4}">
+    				<div th:text="${#strings.substring(arrived.std.toString(), 0, 2) + ':' + #strings.substring(arrived.std.toString(), 2)}"></div>
+				</div>
+            </td>
+             <td class="airplane-etd" id="airplane-etd" >
+             	<div th:if="${arrived.etd.toString().length() == 3}">
+    				<div th:text="${#strings.substring(arrived.etd.toString(), 0, 1) + ':' + #strings.substring(arrived.etd.toString(), 1)}"></div>
+				</div>
+             	<div th:if="${arrived.etd.toString().length() == 4}">
+    				<div th:text="${#strings.substring(arrived.etd.toString(), 0, 2) + ':' + #strings.substring(arrived.etd.toString(), 2)}"></div>
+				</div>
+             </td>
+            <td class="airplane-boardingKor" th:text="${arrived.boardingKor}"></td>
+            <td class="airplane-arrivedKor" th:text="${arrived.arrivedKor}"></td>
+            <td class="airplane-airFln" th:text="${arrived.airFln}"></td>
+          	<td class="airplane-airlineKorean">
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '대한항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-koreanair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '아시아나항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-asiana.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '진에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jinair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '티웨이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-tway.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '제주항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-jeju.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어부산'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airbusan.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어로케이항공'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-aerok.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '하이에어'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-hiair.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '에어서울'}">
+			        <img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-airseoul.png}">
+			        <span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			    <div class="airplane-airlineKorean-div" th:if="${arrived.airlineKorean == '이스타항공'}">
+			    	<img class="airplane-airlineKorean-img" th:src="@{/resources/image/airplane-eastar.png}">
+			    	<span th:text="${arrived.airlineKorean}"></span>
+			    </div>
+			</td>
+            <td class="airplane-rmkKor">
+            	<div class="airplane-rmkKor-ifdiv" th:if="${arrived.rmkKor == '출발'} or ${arrived.rmkKor == '도착'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color:#0067a3;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor == '지연'} or ${arrived.rmkKor == '결항'}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color: #dc143c;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor == ''} or ${arrived.rmkKor == null}">
+            		<div class="airplane-rmkKor-ifdiv-div" th:text="${arrived.rmkKor}" style="background-color:white;"></div>
+            	</div>
+            	<div class="airplane-rmkKor-ifdiv"  th:if="${arrived.rmkKor != '출발'} and ${arrived.rmkKor != '도착'} and ${arrived.rmkKor != '지연'} and ${arrived.rmkKor != '결항' } and ${arrived.rmkKor != ''} and ${arrived.rmkKor != null}">
+            		<div class="airplane-rmkKor-ifdiv-div"  th:text="${arrived.rmkKor}" style="background-color: #32cd32;"></div>
+            	</div>
+            </td>
+            
+        </tr> 	
+    </table>
+  </div>
+  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and #lists.isEmpty(arriveds)}">
+  	<div class="airplane-title">
+    		<div class="airplane-title-img-div">
+    			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    		</div>
+    	</div> 
+  	<div class="listEmpty">
+  		<div class="listEmpty-title">*실시간 항공편 안내사항*</div><br><br>
+  		<div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div>
+  		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
+  	</div>
+  </div>
+  <div id="bothEmpty" th:if="${boardings == null or arriveds == null}">
+  	<div class="airplane-title">
+    		<div class="airplane-title-img-div">
+    			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    		</div>
+    	</div> 
+  	<div class="listEmpty">
+  		<div class="listEmpty-title">*실시간 항공편 안내사항*</div><br><br>
+  		<!-- <div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div> -->
+  		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
+  	</div>
+  </div>
+</div>
+<span class="place_popup-close" onclick="airplaneClosePopup()">X </span>
+   </div>
 </div>
 	<script th:inline="javascript">
 	var loginchk = [[${session.login}]];
@@ -335,14 +471,23 @@
 	</script>
 
 	<script type="text/javascript">
+	
+	function airplaneOpenPopup() {
+	    // 팝업 레이어 열기
+	    document.getElementById("airplanePopupContainer").style.display = "block";
+	}
 
-	document.addEventListener('DOMContentLoaded', function() {
+	function airplaneClosePopup() {
+	    // 팝업 레이어 닫기
+	    document.getElementById("airplanePopupContainer").style.display = "none";
+	}
+/* 	document.addEventListener('DOMContentLoaded', function() {
 		  window.addEventListener('load', function() {
 		    $.ajax({
 		      url: '/plan/airplane',
 		      type: 'GET',
 		      success: function(response) {
-		        var popupWindow = window.open('', 'Course Preview', 'width=1000,height=700');
+		        var popupWindow = window.open('', 'Course Preview', 'width=900,height=675');
 		        if (popupWindow && popupWindow.document) {
 		          popupWindow.document.open();
 		          popupWindow.document.write(response);
@@ -356,7 +501,7 @@
 	
 		  });
 		}); 
-
+ */
     </script>
 	<script>
 		new Swiper('.swiper-container', {

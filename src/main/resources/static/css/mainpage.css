@@ -93,10 +93,18 @@
 
 .swiper-slide img {
 	width: 95%;
-	height: 95%;
+	height: 100%;
 	box-shadow: 0 0 5px #555;
 	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
 	opacity: 0.8;
+	object-fit: cover;
+}
+.swiper-slide a {
+	width: 93.5%;
+	height: 100%;
+	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+	opacity: 0.8;
+	
 }
 
 * {
@@ -181,6 +189,7 @@ header {
 
 #place_text {
 	text-align: center;
+	margin-top:8vh;
 }
 
 #place_text_korean { /*(양)*/
@@ -195,15 +204,19 @@ header {
 
 #tag1 {
 	width: 200px; /*150 -> 200 (양)*/
-	height: 30px;
+	height: 39px;
 	border: 1px solid #B8E9FF;
 	border-radius: 8px;
 	background-color: #B8E9FF;
 	color: white;
 	margin-left: 5vh; /*20 -> 5 (양)*/
-	margin-top: 8vh;
+	margin-top: 2vh;
 	margin-bottom: 2vh;
 	font-size: 20px; /* new (양)*/
+	display: flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .a {
@@ -249,7 +262,7 @@ header {
 
 #swiper-container-course {
 	width: 90%;
-	height: 70vh;
+	height: 64vh;
 }
 
 #swiper-button-next-hotPlace {
@@ -505,6 +518,30 @@ td {
 	font-size: 16px;
 }
 
+/* 팝업 레이어 스타일 */
+.airplanePopupContainer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.airplanePopupContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    max-width: 40vw;
+    width: 90%;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
 .airplane-rmkKor-ifdiv-div {
 	width: 12vh;
 	height: 5vh;
@@ -558,3 +595,131 @@ td {
 	margin-bottom: 3vh;
 	margin-top: 3rvh;
 }
+
+#AirplaneInformation{
+ 		resize:none;
+ 		overflow:auto;
+ 		width:100%;
+ 	}
+ 	table{
+ 		border: solid 1px #d3d3d3;
+ 		border-collapse: collapse;
+ 	}
+ 	th {
+ 		border: solid 1px #d3d3d3;
+ 		height:7vh;
+ 		background-color:#B8E9FF;
+ 		color:black;
+ 	}
+ 	
+ 	td{
+ 		border: solid 1px #d3d3d3;
+ 		height:7vh;
+ 		text-align:center;
+ 	}
+ 	
+ 	.airplane-flightDate{
+ 		width:15vw;
+ 	}
+ 	.airplane-std{
+ 		width:10vw;
+ 		font-weigth: bold;
+ 	}
+ 	.airplane-etd{
+ 		width:10vw;
+ 	}
+ 	#airplane-etd{
+ 	 	color: #0067a3;
+ 	}
+ 	.airplane-boardingKor{
+ 		width:15vw;
+ 	}
+ 	.airplane-arrivedKor{
+ 		width:15vw;
+ 	}
+ 	.airplane-airFln{
+ 		width:13vw;
+ 	}
+ 	.airplane-airlineKorean{
+ 		width:20vw;
+ 	}
+ 	.airplane-rmkKor{
+ 		width:15vw;
+ 	}
+ 	.airplane-airlineKorean-img{
+ 		width:4vh;
+ 		height:4vh;
+ 		float:left;
+ 		margin-right:5%;
+ 	}
+ 	.airplane-airlineKorean-div{
+ 		width:100%;
+ 		height:100%;
+ 		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 16px;
+ 	}
+ 	.airplane-rmkKor-ifdiv-div{
+ 		width:12vh;
+ 		height:5vh;
+ 		color:white;
+ 		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius:10px;
+		font-size:12px;
+ 	}
+ 	.airplane-rmkKor-ifdiv{
+ 		width:100%;
+ 		heigth:100%;
+ 		display: flex;
+		justify-content: center;
+		align-items: center;
+ 	}
+ 	.airplane-title{
+ 		/* display: flex;
+		justify-content: center;
+		align-items: center; */
+ 	}
+ 	.airplane-title-img{
+ 		width:40%;
+ 		height:100%;
+ 	}
+ 	.airplane-button{
+ 		width:13.2%;
+ 		height:5.5vh;
+ 		margin-bottom: 1vh;
+ 		border-radius: 7px;
+ 		border:none;
+ 		background-color: #B8E9FF;
+ 		font-size: 14px;
+ 		cursor:pointer;
+ 	}
+ 	.airplane-button-block{
+ 		display:block;
+ 	}
+ 	.airplane-title-img-div{
+ 		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 3vh;
+		margin-top: 3rvh;
+ 	}
+ 	.listEmpty{
+ 		text-align:center;
+ 		margin-top:8vh;
+ 		height: 60vh;
+ 		border: solid 1px #0067a3;
+ 		border-radius:10px;
+ 		width:70%;
+ 		margin-left:15%;
+ 	}
+ 	.listEmpty-title{
+ 		font-size: 20pt;
+ 		margin-top:4vh;
+ 	}
+ 	.listEmpty-content{
+ 		font-size: 15pt;
+ 	}
+ 	
