@@ -139,6 +139,13 @@
     <artifactId>mail</artifactId>
     <version>1.4.7</version>
 </dependency>
+	
+	<!--  email 인증 maven 의존성추가 -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-mail</artifactId>
+	</dependency>
+		
 
 <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
 <dependency>

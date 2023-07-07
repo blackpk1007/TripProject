@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.trip.project.dto.CourseDTO;
 import com.trip.project.dto.CourseDetailDTO;
+import com.trip.project.dto.PlaceDTO;
 
 @Mapper
 public interface CourseMapper {
@@ -21,6 +22,9 @@ public interface CourseMapper {
 	
 	@Select(" select * from course order by courseFirstDate desc ")
 	List<CourseDTO> courseList();
+	
+	@Select(" select * from course where userID = #{userID} and planName = #{planName} ")
+	CourseDTO courseDetail(String userID, String planName);
 	
 	@Select({
 	    "<script>",
@@ -90,6 +94,9 @@ public interface CourseMapper {
 	@Select(" select * from courseDetail where userID = #{userID} and planName = #{planName} ")
 	List<CourseDetailDTO> courseDetailList(String userID, String planName);
 	
+	@Select(" select * from place p join courseDetail d on p.placeLon = d.courseDetailLon and p.placeLat = d.courseDetailLat"
+			+ " where userID = #{userID} and planName = #{planName} ")
+	List<PlaceDTO> coursePlace(String userID, String planName);
 	@Update(" update course set courseCount = courseCount + 1 where userID = #{userID} and planName = #{planName} ")
 	int courseListCount(String userID, String planName);
 }
