@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <title>Airplane</title>
     <link href="./resources/css/airplane.css" rel="stylesheet">
- <style type="text/css">
- 	
- </style>
- 
 </head>
 <body>
 
 <div id="AirplaneInformation">
 <div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
     <div class="airplane-title">
-    	 
     	<div class="airplane-button-block">
     		<button class="airplane-button"  onclick="viewBoardings();">출발지: 제주</button>
     		<button class="airplane-button"  onclick="viewArriveds();">목적지: 제주</button>
@@ -220,7 +215,7 @@
         </tr> 	
     </table>
   </div>
-  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and boardings == null and #lists.isEmpty(arriveds) and arriveds == null}">
+  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and #lists.isEmpty(arriveds)}">
   	<div class="airplane-title">
     		<div class="airplane-title-img-div">
     			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
@@ -231,9 +226,19 @@
   		<div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div>
   		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
   	</div>
-  	
   </div>
-
+  <div id="bothEmpty" th:if="${boardings == null and arriveds == null}">
+  	<div class="airplane-title">
+    		<div class="airplane-title-img-div">
+    			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
+    		</div>
+    	</div> 
+  	<div class="listEmpty">
+  		<div class="listEmpty-title">*실시간 항공편 안내사항*</div><br><br>
+  		<!-- <div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div> -->
+  		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
+  	</div>
+  </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

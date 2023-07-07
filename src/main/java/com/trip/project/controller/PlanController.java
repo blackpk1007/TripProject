@@ -158,6 +158,8 @@ public class PlanController {
 		
 		model.addAttribute("arriveds", aservice.jejuArrived());
 		model.addAttribute("boardings", aservice.jejuBoarding());
+		System.out.println(aservice.jejuArrived());
+		System.out.println(aservice.jejuBoarding());
 		
 		return "airplane";
 	}
@@ -169,10 +171,6 @@ public class PlanController {
 
 		int totalItems = pservice.placeSearchCount(KeywordDecode);
 		int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
-		placePagination paging = new placePagination(pageNum, 20);
-
-		List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
-
 				
         // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
         if (pageNum < 1) {
