@@ -179,7 +179,9 @@ public class PlanController {
         	pageNum = totalPages;
         }
         
+        placePagination paging = new placePagination(pageNum, 20);
         // 현재 페이지에 해당하는 데이터 조회
+        List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("placeList", dto);
         responseData.put("totalPages", totalPages);
