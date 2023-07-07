@@ -38,7 +38,7 @@ public class AirPlaneServiceImpl implements AirPlaneService {
 					StringBuilder urlBuilder = new StringBuilder(
 							"http://openapi.airport.co.kr/service/rest/FlightStatusList/getFlightStatusList"); /* URL */
 					urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
-							+ "=1kainzqQnmN7SXsZINtwO%2FxHhS9Vym1t4CDA1aTLEbOtE%2BnS7RhlsMw%2F4vTuOAaepTP5Cv8gt1sge%2Bhc%2BDJtA%3D%3D"); /*
+							+ "=1kainzqQnmN7SXsZINtwO%2FxHhS9Vym1t4CDA1aTLEbOtE%2BInS7RhlsMw%2F4vTuOAaepTP5Cv8gt1sge%2Bhc%2BDJtA%3D%3D"); /*
 																																			 * Service
 																																			 * Key
 																																			 */
