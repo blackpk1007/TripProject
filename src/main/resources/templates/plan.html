@@ -857,7 +857,7 @@ function createMarkers(data) {
   	  courseColor.className = "course-color-check";
   	  
   	courseColor.id = `course-color-check-${i}`; // 고유한 ID 설정
-  	courseColor.style.display = i === 1 ? "block" : "none"; // 첫 번째 day에 해당하는 course-list는 보여주기, 나머지는 숨김
+  	courseColor.style.display = i === 1 ? "flex" : "none"; // 첫 번째 day에 해당하는 course-list는 보여주기, 나머지는 숨김
   	  const colorh5 = document.createElement("div");
   	  const colorh5Element = document.createElement("h5");
   	  colorh5Element.textContent = '경로색상';
@@ -957,12 +957,14 @@ function createMarkers(data) {
    // 이전날 버튼 생성
       const previousDayButton = document.createElement("button");
       previousDayButton.type = "button";
+      previousDayButton.id = "previousDayButton";
       previousDayButton.innerText = "이전날";
       previousDayButton.addEventListener("click", previousDay);
 
       // 다음날 버튼 생성
       const nextDayButton = document.createElement("button");
       nextDayButton.type = "button";
+      nextDayButton.id = "nextDayButton";
       nextDayButton.innerText = "다음날";
       nextDayButton.addEventListener("click", nextDay);
       
@@ -999,7 +1001,7 @@ function createMarkers(data) {
       const nextCourseList = document.getElementById(`course-list-${currentDay}`);
       const nextCourseColor = document.getElementById(`course-color-check-${currentDay}`);
       nextCourseList.style.display = "block";
-      nextCourseColor.style.display = "block";
+      nextCourseColor.style.display = "flex";
 
       // Day 숫자 변경
       const courseColorDay = document.querySelector(".course-color-day");
@@ -1027,7 +1029,7 @@ function createMarkers(data) {
       const previousCourseList = document.getElementById(`course-list-${currentDay}`);
       const previousCourseColor = document.getElementById(`course-color-check-${currentDay}`);
       previousCourseList.style.display = "block";
-      previousCourseColor.style.display = "block";
+      previousCourseColor.style.display = "flex";
 
       // Day 숫자 변경
       const courseColorDay = document.querySelector(".course-color-day");
@@ -1245,7 +1247,7 @@ function createMarkers(data) {
 	
 	function handleCheckboxClick(day, checkboxId) {
 			const courseColorCheck = document.querySelector(`#course-color-check-${day}`);
-			  if (courseColorCheck.style.display === 'block') {
+			  if (courseColorCheck.style.display === 'flex') {
 			    const checkboxes = courseColorCheck.querySelectorAll('input[type="checkbox"]');
 			    checkboxes.forEach((checkbox) => {
 			      if (checkbox.id === checkboxId) {
@@ -1484,7 +1486,7 @@ function createMarkers(data) {
 		<div class="main-left">
 			<div class="search-div">
 				<input type="text" id="search" name="keyword" placeholder="검색어를 입력해주세요">
-				<button type="button" id="search-button" name="searchbutton" onclick="search()">검색</button>
+				<button type="button" id="search-button" name="searchbutton" onclick="search()"><img src="/resources/image/plan_dotbogi.png"></button>
 			</div>
 			<div class="list-scroll">
 			<div class="list">
@@ -1795,7 +1797,27 @@ function previewOpenPopup(inputValues) {
 		}
 		
 		// 2. 시작, 도착 심볼찍기
+	document.addEventListener('DOMContentLoaded', function() {
+		  const buttons = document.querySelectorAll('#category-button button');
+		  let selectedButton = document.querySelector('.button-selected');
 
+		  buttons.forEach(button => {
+		    button.addEventListener('click', function() {
+		      const isSelected = this.classList.contains('button-selected');
+
+		      if (!isSelected) {
+		        // 다른 버튼들의 선택 상태 제거
+		        buttons.forEach(btn => {
+		          btn.classList.remove('button-selected');
+		        });
+
+		        // 현재 버튼을 선택 상태로 설정
+		        this.classList.add('button-selected');
+		        selectedButton = this;
+		      }
+		    });
+		  });
+		});
 
 		function createPreviewButton(inputValues){
 		// 버튼을 추가할 컨테이너 선택
@@ -1845,6 +1867,27 @@ function previewOpenPopup(inputValues) {
 		      drawRoute(date, lonLatPairs, color);
 		    });
 		}
+		document.addEventListener('DOMContentLoaded', function() {
+			  const buttons = document.querySelectorAll('#category-button button');
+			  let selectedButton = document.querySelector('.button-selected');
+
+			  buttons.forEach(button => {
+			    button.addEventListener('click', function() {
+			      const isSelected = this.classList.contains('button-selected');
+
+			      if (!isSelected) {
+			        // 다른 버튼들의 선택 상태 제거
+			        buttons.forEach(btn => {
+			          btn.classList.remove('button-selected');
+			        });
+
+			        // 현재 버튼을 선택 상태로 설정
+			        this.classList.add('button-selected');
+			        selectedButton = this;
+			      }
+			    });
+			  });
+			});
 		}
 
 		function createInsertButton(inputValues){
@@ -1855,28 +1898,35 @@ function previewOpenPopup(inputValues) {
 			 inputButtonContainer.innerHTML="";
 			 var closeButtonDiv = document.createElement("div");
 			 closeButtonDiv.className = "close-Button-div";
+			 var dayButtonDiv = document.createElement("div");
+			 dayButtonDiv.className = "day-button-div";
 				var inputCloseButton = document.createElement('button');
 				inputCloseButton.textContent = 'X';
 				inputCloseButton.addEventListener('click', insertClosePopup);
 				closeButtonDiv.appendChild(inputCloseButton);
 				inputButtonContainer.appendChild(closeButtonDiv);
+				inputButtonContainer.appendChild(dayButtonDiv);
 			 
 			var AllDaybutton = document.createElement('button');
 			AllDaybutton.textContent = 'All Day';
-			
+			AllDaybutton.id ="input_button_container_allDayButton";
 			AllDaybutton.addEventListener('click', function() {
 				  showAllDayRoute(inputValues);
 				});
-			inputButtonContainer.appendChild(AllDaybutton);
+			dayButtonDiv.appendChild(AllDaybutton);
+			inputButtonContainer.appendChild(dayButtonDiv);
 			for (var i = 0; i < inputValues.length; i++) {
 			    var daybutton = document.createElement('button');
 			    daybutton.textContent = 'Day ' + (i + 1);
-			    inputButtonContainer.appendChild(daybutton);
+			    daybutton.id = "input_button_container_dayButton";
+			    dayButtonDiv.appendChild(daybutton);
+			    inputButtonContainer.appendChild(dayButtonDiv);
 			    
 			    // 클릭 이벤트 처리
 			    daybutton.addEventListener('click', function(event) {
-			      var buttonIndex = Array.from(inputButtonContainer.children).indexOf(event.target) - 2;
-			      var selectedInputValue = inputValues[buttonIndex];
+			    	var buttons = Array.from(dayButtonDiv.getElementsByTagName('button'));
+		              var buttonIndex = buttons.indexOf(event.target);
+			      var selectedInputValue = inputValues[buttonIndex + 1];
 			      console.log('Button ' + (buttonIndex + 1) + ' clicked');
 			      console.log('Selected Input Value:', selectedInputValue);
 			      // 경로 표시를 위한 데이터 추출
@@ -1896,12 +1946,33 @@ function previewOpenPopup(inputValues) {
 		    courseNameInput.placeholder = '제목';
 		    const couseInsertInput = document.createElement("button");
 		    couseInsertInput.type ="button";
+		    couseInsertInput.id ="courseInsertButton";
 		    couseInsertInput.setAttribute("onclick", "courseInsert()");
 		    couseInsertInput.textContent = "등록";
 		    
-		    inputButtonContainer.appendChild(courseNameInput);
 		    inputButtonContainer.appendChild(couseInsertInput);
-		    
+		    inputButtonContainer.appendChild(courseNameInput);
+		    document.addEventListener('DOMContentLoaded', function() {
+				  const buttons = document.querySelectorAll('.day-button-div button');
+				  let selectedButton = document.querySelector('.button-selected');
+
+				  buttons.forEach(button => {
+				    button.addEventListener('click', function() {
+				      const isSelected = this.classList.contains('button-selected');
+
+				      if (!isSelected) {
+				        // 다른 버튼들의 선택 상태 제거
+				        buttons.forEach(btn => {
+				          btn.classList.remove('button-selected');
+				        });
+
+				        // 현재 버튼을 선택 상태로 설정
+				        this.classList.add('button-selected');
+				        selectedButton = this;
+				      }
+				    });
+				  });
+				});
 			}
 function drawData(data, color){
 	// 지도위에 선은 다 지우기
