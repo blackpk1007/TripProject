@@ -220,7 +220,7 @@
         </tr> 	
     </table>
   </div>
-  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and boardings == null and #lists.isEmpty(arriveds) and arriveds == null}">
+  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) or boardings == null or #lists.isEmpty(arriveds) or arriveds == null}">
   	<div class="airplane-title">
     		<div class="airplane-title-img-div">
     			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">

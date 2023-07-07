@@ -55,21 +55,6 @@ public class CommunityController {
 
 	// 커뮤니티 상세 페이지
 	
-	@RequestMapping("/communitydetail")
-	public String communityDetail(Model model, int communityNumber, HttpSession session) {
-		logger.info("COMMUNITY DETAIL");
-		model.addAttribute("dto", cService.selectOne(communityNumber));
-//		model.addAttribute("image", cService.selectOneImg(communityNumber));
-
-		ImageDTO imgDto = cService.selectOneImg(communityNumber);
-		System.out.println("controller detail : "+imgDto);
-		model.addAttribute("image", imgDto);
-		
-		session.getAttribute("login");
-		model.addAttribute("session", session);
-		
-		return "communitydetail";
-	}
 
 	// 커뮤니티 글쓰기 페이지
 	@RequestMapping("/communitywriteform")
@@ -119,6 +104,22 @@ public class CommunityController {
 		}
 
 		 
+	}
+	
+	@RequestMapping("/communitydetail")
+	public String communityDetail(Model model, int communityNumber, HttpSession session) {
+		logger.info("COMMUNITY DETAIL");
+		model.addAttribute("dto", cService.selectOne(communityNumber));
+//		model.addAttribute("image", cService.selectOneImg(communityNumber));
+
+		ImageDTO imgDto = cService.selectOneImg(communityNumber);
+		System.out.println("controller detail : "+imgDto);
+		model.addAttribute("image", imgDto);
+		
+		session.getAttribute("login");
+		model.addAttribute("session", session);
+		
+		return "communitydetail";
 	}
 
 	// 커뮤니티 수정 페이지
