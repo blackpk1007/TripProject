@@ -311,7 +311,7 @@ display:flex;
 		<!-- 지도 밑 버튼 (경로 불러오는), 화면설계서랑 다름 -->
 		<div class="swiper-container" id="swiper-container-course">
 			<div class="swiper-wrapper">
-				<div class="swiper-slide">
+				<!-- <div class="swiper-slide">
 					<div class="swiper-slide-day"><button>day1</button></div>
 					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
 				</div>
@@ -323,7 +323,7 @@ display:flex;
 					<div class="swiper-slide-day"><button>day3</button></div>
 					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
 				</div>
-				<div class="swiper-slide">
+				<div class="swiper-slide">	
 					<div class="swiper-slide-day"><button>day4</button></div>
 					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
 				</div>
@@ -338,7 +338,7 @@ display:flex;
 				<div class="swiper-slide">
 					<div class="swiper-slide-day"><button>day7</button></div>
 					<div><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></div>
-				</div>
+				</div> -->
 			</div>
 		<!-- 네비게이션 -->
 		<div class="swiper-button-next" id="swiper-button-next-course"></div>
@@ -516,34 +516,47 @@ display:flex;
 		  var markers = [];
 		
 		  var inputValues = [[${coursemarker}]];
-		  console.log(inputValues);
-		  console.log(inputValues.lonLatPairs);
-		  console.log(inputValues.length);
-		  console.log(inputValues.size);
-		  
+		  var dates = Object.keys(inputValues[0]); // 날짜 배열 얻기
+		  var date = dates[0];
 		  // 버튼을 추가할 컨테이너 선택
-		  var buttonContainer = document.getElementsByClassName('coursebtn')[0];
-		  var AllDaybutton = document.createElement('button');
-		  AllDaybutton.textContent = 'All Day';
-		  buttonContainer.appendChild(AllDaybutton);
-		  AllDaybutton.addEventListener('click', showAllDayRoute);
+		  var buttonContainer = document.getElementsByClassName('swiper-wrapper')[0];
 
-		  for (var i = 0; i < inputValues.length; i++) {
+		  for (var i = 0; i < dates.length; i++) {
+			  var buttonSwiperContent = document.createElement('div');
+			  buttonSwiperContent.className = "swiper-slide";
+			  
+			  var dayButtondiv = document.createElement('div');
+			  dayButtondiv.className = "swiper-slide-day";
+			  
 		      var daybutton = document.createElement('button');
 		      daybutton.textContent = 'Day ' + (i + 1);
-		      buttonContainer.appendChild(daybutton);
 		      
+		      dayButtondiv.appendChild(daybutton);
+		      buttonSwiperContent.appendChild(dayButtondiv);
+		      
+		      var dayImgdiv = document.createElement('div');
+		      var image = document.createElement('img');
+		      image.src = '';
+		      
+		      dayImgdiv.appendChild(image);
+		      dayButtondiv.appendChild(dayImgdiv);
+		      buttonSwiperContent.appendChild(dayButtondiv);
+		      buttonContainer.appendChild(buttonSwiperContent);
 		      // 클릭 이벤트 처리
 		      daybutton.addEventListener('click', function(event) {
-		        var buttonIndex = Array.from(buttonContainer.children).indexOf(event.target) - 1;
-		        var selectedInputValue = inputValues[buttonIndex];
+		    	 var buttons = Array.from(buttonContainer.getElementsByTagName('button'));
+		        var buttonIndex = buttons.indexOf(event.target);
+		        console.log(buttonIndex);
+		        var date = dates[buttonIndex];
+		        var selectedInputValue = inputValues[0][date];
+		        var color = selectedInputValue.color;
+		        var lonLatPairs = selectedInputValue.lonLatPairs;
+		        
 		        console.log('Button ' + (buttonIndex + 1) + ' clicked');
 		        console.log('Selected Input Value:', selectedInputValue);
 		        // 추가적인 처리 로직을 여기에 작성하세요.
 		        // 경로 표시를 위한 데이터 추출
-		        var date = selectedInputValue.date;
-		        var color = selectedInputValue.color;
-		        var lonLatPairs = selectedInputValue.lonLatPairs;
+		       
 		        // 경로 표시 로직 추가
 		        clearMarkers()
 		        clearRoutes(); // 기존의 경로 삭제
@@ -570,94 +583,7 @@ display:flex;
 		  	  }
 		  	  markers = [];
 		  	}
-		  function showAllDayRoute() {
-		  	  // 기존 마커 지우기
-		  	  clearMarkers();
-		  for (var i = 0; i < inputValues.length; i++) {
-		  	var date = inputValues[i].date;
-		  	var color = inputValues[i].color;
-		  	var lonLatPairs = inputValues[i].lonLatPairs;
-		  	var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
-		  	if(lonLatPairs.length === 1){
-		  		addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
-		  	}else{
 
-		  	// 시작
-		  	addMarker("llStart", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
-		  	// 도착
-		  	addMarker("llEnd", lonLatPairs[lonLatPairs.length - 1].lat, lonLatPairs[lonLatPairs.length - 1].lon, 2, color);
-
-		  	// 경유지 심볼 찍기
-		  	for (var j = 0; j < waypoints.length; j++) {
-		  		var waypoint = waypoints[j];
-		  		addMarker("llPass", waypoint.lat, waypoint.lon, j + 3, color);
-		  	}
-		  	// 4. 경로탐색 API 사용요청
-		  	}
-		  	var startX = lonLatPairs[0].lat;
-		  	var startY = lonLatPairs[0].lon;
-		  	var endX = lonLatPairs[lonLatPairs.length - 1].lat;
-		  	var endY = lonLatPairs[lonLatPairs.length - 1].lon;
-		  	var passList = waypoints.map(function(waypoint) {
-		  		  return waypoint.lat + ',' + waypoint.lon;
-		  		}).join('_');
-		  	var prtcl;
-		  	var headers = {};
-		  	
-		  	headers["appKey"]="L9YT0x6My9adXfumw1zGi2Gs24KLX3qS7depPI37";
-		  	$.ajax({
-		  			method:"POST", 
-		  			headers : headers, 
-		  			url:"https://apis.openapi.sk.com/tmap/routes?version=1&format=json",//
-		  			async:false,
-		  			data:{ 
-		  				startX : startX,
-		  				startY : startY,
-		  				endX : endX,
-		  				endY : endY,
-		  				passList : passList,
-		  				reqCoordType : "WGS84GEO",
-		  				resCoordType : "WGS84GEO",
-		  				angle : "172",
-		  				searchOption : "0",
-		  				trafficInfo : "N"
-		  			},
-		  			success:function(response){
-		  			prtcl = response;
-		  			
-		  			// 5. 경로탐색 결과 Line 그리기 
-		  			var trafficColors = {
-		  				extractStyles:true,
-		  				/* 실제 교통정보가 표출되면 아래와 같은 Color로 Line이 생성됩니다. */
-		  				trafficDefaultColor:"#636f63", //Default
-		  				trafficType1Color:"#19b95f", //원할
-		  				trafficType2Color:"#f15426", //지체
-		  				trafficType3Color:"#ff970e"  //정체		
-		  			};    			
-		  			var style_red = {
-		  				fillColor:"#FF0000",
-		  				fillOpacity:0.2,
-		  				strokeColor: "#FF0000",
-		  				strokeWidth: 3,
-		  				strokeDashstyle: "solid",
-		  				pointRadius: 2,
-		  				title: "this is a red line"
-		  			};
-		  			drawData(prtcl, color);
-		  		
-		  		
-		   			// 6. 경로탐색 결과 반경만큼 지도 레벨 조정
-		  			  var center = new Tmapv2.LatLng(33.3616666, 126.5291666);
-		  			  var zoom = 10; // 현재 줌 레벨 가져오기
-		  			  map.setCenter(center);
-		  			  map.setZoom(zoom);
-		  			},
-		  			error:function(request,status,error){
-		  			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		  		}
-		  	});
-		  	}
-		  }
 		  	function addMarker(status, lon, lat, tag, color) {
 		  	//출도착경유구분
 		  	//이미지 파일 변경.
@@ -691,7 +617,7 @@ display:flex;
 		      markerList[tag] = marker;
 		      markers.push(marker);
 		      return marker;
-		  }
+		  } 
 		  	
 		  	 function drawRoute(date, lonLatPairs, color) {
 		  			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
@@ -794,7 +720,13 @@ display:flex;
 		  	    }
 		  	 window.onload = function() {
 		  			// 기본적으로 전체 경로 표시하기
-		  		showAllDayRoute();
+		  		var dates = Object.keys(inputValues[0]); // 날짜 배열 얻기
+		  		var date = dates[0];
+		        var Value = inputValues[0][date];
+		        var color = Value.color;
+		        var lonLatPairs = Value.lonLatPairs;
+		        
+		  		drawRoute(date, lonLatPairs, color)
 		  	};
 	 
 </script>
