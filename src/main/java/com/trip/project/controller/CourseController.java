@@ -1,4 +1,4 @@
-package com.trip.project.controller;
+	package com.trip.project.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,7 +98,6 @@ public class CourseController {
 		List<CourseDetailDTO> dtoList = cService.courseDetailList(userID, planName);
 		
 		List<Map<String, Object>> resultList = new ArrayList<>();
-		
 		   Map<String, Object> resultMap = new LinkedHashMap<>();
 
 		   for (CourseDetailDTO dto : dtoList) {
@@ -119,10 +118,8 @@ public class CourseController {
 		        lonLatMap.put("lon", dto.getCourseDetailLon());
 		        lonLatMap.put("lat", dto.getCourseDetailLat());
 		        lonLatPairs.add(lonLatMap);
-		        System.out.println("test : "+lonLatPairs);
 		    }
 		   resultList.add(resultMap);
-		   System.out.println("controller : "+resultList);
 		   
 		   model.addAttribute("coursemarker", resultList);
 		   model.addAttribute("coursedetailLists", dtoList);
