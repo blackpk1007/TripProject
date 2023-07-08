@@ -21,6 +21,9 @@ public interface CourseMapper {
 	@Select(" select * from course order by courseCount desc ")
 	List<CourseDTO> courseCountSort();
 	
+	@Select(" select * from course order by courseCount desc limit 6")
+	List<CourseDTO> courseCountMain();
+	
 	@Select(" select * from course order by courseFirstDate desc ")
 	List<CourseDTO> courseList();
 	

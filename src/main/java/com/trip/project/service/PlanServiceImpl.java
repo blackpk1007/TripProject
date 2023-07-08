@@ -164,5 +164,11 @@ public class PlanServiceImpl implements PlanService{
 		return pmapper.placename(userID);
 	}
 
+	@Override
+	public List<PlaceDTO> placeSearchDefault(placePagination paging) {
+
+		return pmapper.placeSearchDefault(paging);
+	}
+
 	
 }

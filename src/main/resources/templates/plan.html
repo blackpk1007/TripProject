@@ -795,6 +795,7 @@ function createMarkers(data) {
         nowColumn.classList.add("choiceDay");
       } else if (selectedStartDate && !selectedEndDate && nowDay.getTime() === selectedStartDate.getTime()) {
         nowColumn.classList.add("choiceDay");
+  
       }
     }
     // 선택된 날짜가 없을 때 Day 초기화
@@ -812,9 +813,6 @@ function createMarkers(data) {
       const courseButtonElement = document.querySelector(".course-button");
       courseButtonElement.innerHTML = "";
       courseButtonElement.style.display = 'none'
-    }else{
-    	const applyButton = document.querySelector("#applyButton");
-    	applyButton.style.display = 'block';
     }
     
   }
@@ -1093,6 +1091,8 @@ function createMarkers(data) {
         selectedStartDate = selectedDay;
       } else if (selectedDay > selectedStartDate) {
         selectedEndDate = selectedDay;
+        const applyButton = document.querySelector("#applyButton");
+    	applyButton.style.display = 'block';
       } else {
         selectedStartDate = null; // 선택된 날짜 초기화
       }
@@ -1166,8 +1166,9 @@ function createMarkers(data) {
 		          lon: inputLonValue,
 		          lat: inputLatValue
 		        });
+				
 		      });
-					
+
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
@@ -1175,20 +1176,34 @@ function createMarkers(data) {
 		        color: colorName
 		      });
 		     });
+		    values.forEach((values, index) => {
+		    	const lon = values.lonLatPairs;
+		    	console.log("test : "+lon);
+				if(lon.length == 0){
+					let placecheck = false;
+					return placecheck;
+				}else{
+					let placecheck = true;
+				}
+		    });
+			
+		    console.log("placecheck : "+placecheck);
+		    console.log("check : "+check);
 		    if(!check){
-	     		 alert('색상을 선택해 주세요');
+	     		 alert('날짜별 색상을 모두 선택해 주세요');
 	     		  return false;
 	     	  }
+		    if(!placecheck){
+		    	alert('날짜별 장소를 모두 선택해 주세요');
+		    	return false;
+		    }
 		    return values;
 		  }
 		  
 		  const inputValues = getInputValues();
-		  console.log("incput Values = "+inputValues);
-		  if(!inputValues){
+		  if(!inputValues || inputValues.length == 0){
      		  return false;
      	  }
-
-		  console.log(inputValues);
 
 		  previewOpenPopup(inputValues);
 
@@ -1198,7 +1213,8 @@ function createMarkers(data) {
 		  function getInputValues() {
 		    const courseLists = document.querySelectorAll('.course-plan .course-list');
 		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
-		    
+		    let check = true;
+		    let placecheck = true;
 		    const values = [];
 
 		    courseLists.forEach((courseList, index) => {
@@ -1207,8 +1223,11 @@ function createMarkers(data) {
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
 			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
 	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
-	     	  if(checkboxColor === false){
-	     		  return false;
+	    	  if(checkboxColor === false){
+	     		  check = false;
+	     		  return check;
+	     	  }else{
+	     		  check = true;
 	     	  }
 		      const colorName = convertRGBToColorName(checkboxColor);
 		      
@@ -1235,7 +1254,10 @@ function createMarkers(data) {
 		      });
 		      
 		      });
-		    
+		    if(!check){
+	     		 alert('날짜별 색상을 선택해 주세요');
+	     		  return false;
+	     	  }
 		    return values;
 		  }
 		  
@@ -1290,7 +1312,8 @@ function createMarkers(data) {
 		function getInputValues() {
 		    const courseLists = document.querySelectorAll('.course-plan .course-list');
 		    const courseColors = document.querySelectorAll('.course-plan .course-color-check');
-		    
+		    let check = true;
+		    let placecheck = true;
 		    const values = [];
 
 		    courseLists.forEach((courseList, index) => {
@@ -1299,6 +1322,12 @@ function createMarkers(data) {
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
   			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
 	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
+	    	  if(checkboxColor === false){
+	     		  check = false;
+	     		  return check;
+	     	  }else{
+	     		  check = true;
+	     	  }
 		      const colorName = convertRGBToColorName(checkboxColor);
 		      
 		      const inputDateValue = inputDateElement.value;
@@ -1323,8 +1352,10 @@ function createMarkers(data) {
 		        color: colorName
 		      });
 		    });
-		    
-
+		    if(!check){
+	     		 alert('날짜별 색상을 선택해 주세요');
+	     		  return false;
+	     	  }
 		    return values;
 		  }
 		
@@ -1348,7 +1379,7 @@ function createMarkers(data) {
 			      location.href="/login/usermain";
 			    },
 			    error: function(data){
-			    	alert("실패");
+			    	alert("일정이 완성 되지 않았습니다");
 			    }
 			  });	
 		}

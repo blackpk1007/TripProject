@@ -144,22 +144,14 @@ window.onload = function () {
 	</div>
 	<div class="swiper-container" id="swiper-container-course">
 		<div class="swiper-wrapper">
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/협재해수욕장.jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/성산일출봉(UNESCO 세계자연유산).jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide">
-				<a href="#"><img src="/resources/image/udo.jpg"></a>
-			</div>
-			<div class="swiper-slide" style="font-size: 50pt;">- 끝 -</div>
+		<div th:each="course : ${courses}" class="swiper-slide">
+	      <div class="hot_img">
+	        <a th:href="@{|/course/coursedetail?planName=${course.planName}&userID=${course.userID}|}">
+	          <img th:src="@{/resources/image/place/__${course.planName}__.jpg}">
+	        </a>
+	      </div>
+	      <div th:text="${course.planName}" class="hot_text"></div>
+	    </div>
 		</div>
 
 		<!-- 네비게이션 -->

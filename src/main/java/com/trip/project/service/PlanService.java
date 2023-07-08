@@ -2,6 +2,7 @@ package com.trip.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.trip.project.dto.LoginDTO;
@@ -14,6 +15,8 @@ import com.trip.project.dto.placePagination;
 public interface PlanService {
 	
 	public List<PlaceDTO> placeCategoryMarker(String categoey, placePagination pageing);
+	
+	List<PlaceDTO> placeSearchDefault(@Param("paging")placePagination paging);
 	
 	public int placeCategoryCount(String categoey);
 	

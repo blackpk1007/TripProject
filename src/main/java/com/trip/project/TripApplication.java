@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trip.project.dto.FlightStatusDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.service.AirPlaneService;
+import com.trip.project.service.CourseService;
 import com.trip.project.service.CrawlingService;
 import com.trip.project.service.MainpageService;
 
@@ -31,7 +32,7 @@ public class TripApplication {
 
 	@Autowired
 	private MainpageService mainpageService;
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(TripApplication.class, args);
 	}
@@ -44,6 +45,8 @@ public class TripApplication {
 		model.addAttribute("list", mainpageService.selectList());
 		model.addAttribute("animalList", mainpageService.animalList());
 		model.addAttribute("parentsList", mainpageService.parentsList());
+		model.addAttribute("courses", mainpageService.courseCountMain());
+		
 		return "main";
 	}
 

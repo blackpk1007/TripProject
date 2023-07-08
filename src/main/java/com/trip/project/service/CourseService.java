@@ -26,7 +26,7 @@ public interface CourseService {
 	
 	List<CourseDetailDTO> courseDetailList(String userID, String planName);
 	
-	List<PlaceDTO> coursePlace(String userID, String planName);
+	//List<PlaceDTO> coursePlace(String userID, String planName);
 	
 	int courseListCount(String userID, String planName);
 }

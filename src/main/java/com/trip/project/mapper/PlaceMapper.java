@@ -43,6 +43,9 @@ public interface PlaceMapper {
 	@Select(" select * from place where placeName like '%${keyword}%' order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}")
 	List<PlaceDTO> placeSearch(@Param("keyword") String keyword, @Param("paging")placePagination paging);
 	
+	@Select(" select * from place where placeCategory = 'restaurant' order by placeGood desc limit ${paging.getSkip()}, ${paging.getSize()}")
+	List<PlaceDTO> placeSearchDefault(@Param("paging")placePagination paging);
+	
 	@Select(" select count(*) from place where placeName like '%${keyword}%' ")
 	int placeSearchCount(@Param("keyword") String keyword);
 	
