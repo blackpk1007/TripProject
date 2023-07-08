@@ -1836,6 +1836,7 @@ function previewOpenPopup(inputValues) {
 			
 		var AllDaybutton = document.createElement('button');
 		AllDaybutton.textContent = 'All Day';
+		AllDaybutton.id ="input_button_container_allDayButton";
 		previewButtonContainer.appendChild(AllDaybutton);
 		AllDaybutton.addEventListener('click', function() {
 			  showAllDayRoute(inputValues);
@@ -1849,6 +1850,7 @@ function previewOpenPopup(inputValues) {
 		for (var i = 0; i < inputValues.length; i++) {
 		    var daybutton = document.createElement('button');
 		    daybutton.textContent = 'Day ' + (i + 1);
+		    daybutton.id = "input_button_container_dayButton";
 		    previewButtonContainer.appendChild(daybutton);
 		    
 		    // 클릭 이벤트 처리
