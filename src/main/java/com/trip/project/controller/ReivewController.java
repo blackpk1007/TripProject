@@ -68,10 +68,11 @@ public class ReivewController {
 	    if(db_check==2)OcrTest.updatePlaceGood(placeNumber);
 	}
 	
+	// 마이페이지 나의 리뷰 recommand 삭제
 	@ResponseBody
 	@PostMapping("/reviewdelete")
-	// 마이페이지 나의 리뷰 recommand 삭제
 	public String reviewdelete(@RequestParam("userID")String userID, @RequestParam("recommandNumber") String recommandNumber) {
+		System.out.println(recommandNumber);
 		int res = pservice.reviewdelete(userID, recommandNumber);
 		System.out.println(res);
 		return userID.toString()+"님의"+recommandNumber.toString()+"번 리뷰가 삭제되었습니다.";

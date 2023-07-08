@@ -227,25 +227,35 @@ public class LoginController {
 	@RequestMapping("/usermain")
 	public String userMain(HttpSession session, Model model) {
 		String userID = (String) session.getAttribute("login");
-		model.addAttribute("community", cservice.usermainCommunity(userID));
-		model.addAttribute("communitycount",cservice.usermainCommunity(userID).size());
 		System.out.println(userID);
-		System.out.println("게시물 : "+cservice.usermainCommunity(userID));
-		System.out.println(cservice.usermainCommunity(userID).size());
-		model.addAttribute("recommand", pservice.usermainRecommand(userID) );
-		model.addAttribute("recommandcount", pservice.usermainRecommand(userID).size());
-		System.out.println("리뷰 : "+ pservice.usermainRecommand(userID));
-		System.out.println(pservice.usermainRecommand(userID).size());
+		
 		model.addAttribute("plan", pservice.userPlancount(userID));
 		model.addAttribute("plancount", pservice.userPlancount(userID).size());
 		System.out.println("일정 : "+ pservice.userPlancount(userID));
 		System.out.println(pservice.userPlancount(userID).size());
+
+		model.addAttribute("recommand", pservice.placename(userID) );
+		model.addAttribute("recommandcount", pservice.placename(userID).size());
+		System.out.println("리뷰 : "+ pservice.placename(userID));
+		System.out.println(pservice.placename(userID).size());
 		
 		model.addAttribute("user2recommand", pservice.user2recommand(userID));
-		System.out.println("u2rec"+pservice.user2recommand(userID));
+		System.out.println("리뷰 2개이상 : "+pservice.user2recommand(userID));
+		
+//		model.addAttribute("placename", pservice.placename(userID));
+//		System.out.println(pservice.placename(userID));
+		
+		
+		model.addAttribute("community", cservice.usermainCommunity(userID));
+		model.addAttribute("communitycount",cservice.usermainCommunity(userID).size());
+		System.out.println("게시물 : "+cservice.usermainCommunity(userID));
+		System.out.println(cservice.usermainCommunity(userID).size());
+		
+		
 		return "usermain";
 		
 	}
+	
 
 	// 사용자 회원 정보 수정 페이지
 	@RequestMapping("/userupdateform")

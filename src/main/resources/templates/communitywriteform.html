@@ -44,8 +44,9 @@
 }
 
 #logimg {
-	width: 16vw;
-	height: 12vh;
+	font-size:62.5%;
+	width: 26em;
+	height: 16em;
 	padding-right:1vw;
 }
 
@@ -465,20 +466,24 @@ $(document).ready(function() {
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<div class="header-left">
+				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+				<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
 			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
 				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 	<div id="write">
