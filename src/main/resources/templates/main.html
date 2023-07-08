@@ -436,6 +436,9 @@ window.onload = function () {
         </tr> 	
     </table>
   </div>
+  <span class="place_popup-close" onclick="airplaneClosePopup()">X </span>
+   </div>
+   <div class="airplanePopupContent-listEmpty">
   <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and #lists.isEmpty(arriveds)}">
   	<div class="airplane-title">
     		<div class="airplane-title-img-div">
