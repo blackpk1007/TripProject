@@ -96,7 +96,6 @@ body {
 	/* left: 1vw; */
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 }
 
 /*  프로필 */
@@ -180,7 +179,7 @@ body {
 /* main */
 .mymain_text {
 	font-size: 1.8rem;
-	margin-left: 20vw;
+	margin-left: 22vw;
 }
 
 .mymain {
@@ -618,7 +617,7 @@ body {
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
 		<!-- 나의 일정  -->
-		<div class="mymain" id="myplan" >
+		<div class="mymain" id="myplan" style="display: block;">
 			<div class="list-scroll">
 				<div class="main" th:each="userplan : ${plan}">
 					<div class="myplan1">
@@ -636,7 +635,6 @@ body {
 						</div>
 						<div class="loc3">
 							<button id="share1" th:onclick="planshare([[${userplan.planName}]])">공유</button>
-							<button id="fix1">수정</button>
 							<button id="delete1" th:onclick="plandelete([[${userplan.planName}]])">삭제</button>
 						</div>
 					</div>
@@ -650,7 +648,7 @@ body {
 					<div class="myplan1">
 						<div class="loc2" >
 							<div class="tripdate">
-								장소 이름 :<label th:text="${userrecommand.placeName}"></label>
+								장소 이름 :<label th:text="${userrecommand.placeName}"></label><br>
 								리뷰 날짜 :<label th:text="${#dates.format(userrecommand.recommandNowDate, 'yyyy-MM-dd')}"></label>
 							</div>
 						</div>
