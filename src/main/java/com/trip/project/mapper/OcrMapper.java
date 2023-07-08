@@ -21,7 +21,7 @@ public interface OcrMapper {
     @Select(" SELECT recommandUserID,recommandPlaceNumber, recommandDate FROM recommand WHERE recommandPlaceNumber=#{placeNumber} " )
     List<RecommandDTO> selectRecommandPlaceNumber(int placeNumber);
     
-    @Insert("INSERT INTO recommand (recommandUserID, recommandPlaceNumber, recommandDate) VALUES (#{userID}, #{placeNumber}, #{date}) ")
+    @Insert("INSERT INTO recommand (recommandUserID, recommandPlaceNumber, recommandDate, recommandNowDate) VALUES (#{userID}, #{placeNumber}, #{date}, now()) ")
     void insertRecommandData(String userID, int placeNumber, String date);
     
     @Update(" UPDATE place SET placeGood = placeGood + 1 WHERE placeNumber = #{placeNumber} ")

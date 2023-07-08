@@ -70,11 +70,11 @@ public class CourseServiceImpl implements CourseService{
 		return cmapper.courseDetail(userID, planName);
 	}
 
-	@Override
-	public List<PlaceDTO> coursePlace(String userID, String planName) {
-
-		return cmapper.coursePlace(userID, planName);
-	}
+//	@Override
+//	public List<PlaceDTO> coursePlace(String userID, String planName) {
+//
+//		return cmapper.coursePlace(userID, planName);
+//	}
 
 	@Override
 	public List<PlaceDTO> courseImage(String userID, String planName) {

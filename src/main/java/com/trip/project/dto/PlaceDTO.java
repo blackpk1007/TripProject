@@ -27,6 +27,4 @@ public class PlaceDTO {
 	private String placeLat;
 	private String keyword;
 	
-	
-	
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.project.dto.CourseDTO;
 import com.trip.project.dto.CourseDetailDTO;
+import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDetailDTO;
 import com.trip.project.service.CourseService;
 
@@ -96,38 +97,40 @@ public class CourseController {
 	public String coursedetail(Model model, String planName, String userID){
 		cService.courseListCount(userID, planName);
 		List<CourseDetailDTO> dtoList = cService.courseDetailList(userID, planName);
-		
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		   Map<String, Object> resultMap = new LinkedHashMap<>();
 
 		   for (CourseDetailDTO dto : dtoList) {
 		        String date = dto.getCourseDetailDate();
 		        String color = dto.getCourseDetailColor();
+		        
 		        if (!resultMap.containsKey(date)) {
 		            Map<String, Object> itemMap = new HashMap<>();
 		            itemMap.put("date", date);
 		            itemMap.put("color", color);
 		            itemMap.put("lonLatPairs", new ArrayList<>());
+		            itemMap.put("placeName", new ArrayList<>());
 		            resultMap.put(date, itemMap);
 		        }
 		        
 		        Map<String, Object> itemMap = (Map<String, Object>) resultMap.get(date);
 		        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) itemMap.get("lonLatPairs");
-
+		        List<Map<String, String>> placeName = (List<Map<String, String>>) itemMap.get("placeName");
 		        Map<String, String> lonLatMap = new HashMap<>();
+		        Map<String, String> placeNameMap = new HashMap<>();
+		        placeNameMap.put("placeName", dto.getPlaceName());
 		        lonLatMap.put("lon", dto.getCourseDetailLon());
 		        lonLatMap.put("lat", dto.getCourseDetailLat());
 		        lonLatPairs.add(lonLatMap);
+		        placeName.add(placeNameMap);
 		    }
 		   resultList.add(resultMap);
 		   
 		   model.addAttribute("coursemarker", resultList);
 		   model.addAttribute("coursedetailLists", dtoList);
 		   model.addAttribute("coursedetail", cService.courseDetail(userID, planName));
-		   model.addAttribute("placeInfo", cService.coursePlace(userID, planName));
 		   model.addAttribute("courseimage", cService.courseImage(userID, planName));
 		  
-		   System.out.println("controllere : "+cService.courseImage(userID, planName));
 		return "coursedetail";
 		}
 	}

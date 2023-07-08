@@ -2,6 +2,7 @@ package com.trip.project.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -96,12 +97,27 @@ public interface CourseMapper {
 
 	List<CourseDTO> courseDaysSeasons(@Param("days") List<Integer> days, @Param("months") List<Integer> months);
 	
-	@Select(" select * from courseDetail where userID = #{userID} and planName = #{planName} ")
-	List<CourseDetailDTO> courseDetailList(String userID, String planName);
+//	@Select(" select * from courseDetail where userID = #{userID} and planName = #{planName} ")
+//	List<CourseDetailDTO> courseDetailList(String userID, String planName);
 	
 	@Select(" select * from place p join courseDetail d on p.placeLon = d.courseDetailLon and p.placeLat = d.courseDetailLat"
-			+ " where userID = #{userID} and planName = #{planName} ")
-	List<PlaceDTO> coursePlace(String userID, String planName);
+			+ " where userID = #{userID} and planName = #{planName} order by courseDetailDate ")
+	List<CourseDetailDTO> courseDetailList(String userID, String planName);
+	
 	@Update(" update course set courseCount = courseCount + 1 where userID = #{userID} and planName = #{planName} ")
 	int courseListCount(String userID, String planName);
+	
+	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, userID, planName )"
+			+ "select planFirstDate, planLastDate, #{datecount}, planCount, userID, planName "
+			+ "from plan "
+			+ "WHERE planName=#{planName} AND userID=#{userID} ")
+	int courseShare(String userID, String planName, @Param("datecount")int datecount);
+	
+	@Insert(" INSERT INTO courseDetail (courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, userID, planName) "
+			+ "select planDetailDate, planDetailLon, planDetailLat, planDetailColor, userID, planName "
+			+ "from planDetail "
+			+ "WHERE planName=#{planName} AND  userID=#{userID} ")
+	int courseDetailshare(String userID, String planName);
+	
+	
 }

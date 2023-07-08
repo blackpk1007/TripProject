@@ -19,6 +19,7 @@ public class CourseDetailDTO {
 	private String courseDetailColor;
 	private String userID;
 	private String planName;
+	private String placeName;
 	
 	private List<Map<String, String>> lonLatPairs; // 추가된 필드
 

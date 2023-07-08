@@ -264,7 +264,7 @@ function initTmap() {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	    width: "50vw", // 지도의 넓이
 	    height: "80vh", // 지도의 높이
-	    zoom: 10
+	    zoom: 11
 	  });
 	  
 	  createMarkers(placeList);
@@ -1366,7 +1366,7 @@ function createMarkers(data) {
 				   pageNum: pageNum},
 			success: function(data){
 				updateList(data.placeList);
-		    	  createMarkers(data.placeList);
+		    	createMarkers(data.placeList);
 				updatePaginationsearch(data.totalPages, data.currentPage, keyword);
 				
 			},
