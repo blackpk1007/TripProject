@@ -1816,6 +1816,10 @@ function previewOpenPopup(inputValues) {
 			
 		var AllDaybutton = document.createElement('button');
 		AllDaybutton.textContent = 'All Day';
+
+		AllDaybutton.id ="input_button_container_allDayButton";
+		previewButtonContainer.appendChild(AllDaybutton);
+
 		AllDaybutton.className = 'preview-day-button-selected';
 		previewdayButtonDiv.appendChild(AllDaybutton);
 		previewButtonContainer.appendChild(previewdayButtonDiv);
@@ -1828,7 +1832,8 @@ function previewOpenPopup(inputValues) {
 		for (var i = 0; i < inputValues.length; i++) {
 		    var daybutton = document.createElement('button');
 		    daybutton.textContent = 'Day ' + (i + 1);
-		 
+		    daybutton.id = "input_button_container_dayButton";
+		    previewButtonContainer.appendChild(daybutton);
 		    previewdayButtonDiv.appendChild(daybutton);
 			previewButtonContainer.appendChild(previewdayButtonDiv);
 		    

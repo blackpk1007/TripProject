@@ -51,6 +51,11 @@
 	cursor:pointer;
 	margin-bottom: 2vh;
 }
+.day-button-div{
+	float:left;
+	width:70%;
+	
+}
 #input_button_container_dayButton{
 	border: none;
     border-radius: 3px;
@@ -72,13 +77,25 @@
 }
 #planName{
 	float:right;
-	
+	width:9vw;
+	height:2vh;
+	margin-right: 0.2vw;
+    margin-top: 0.3vh;
+    padding: 2px;
+    padding-left: 9px;
 }
 #courseInsertButton{
 	float:right;
+	margin-top: 0.25vh;
+    height: 3vh;
+    border: none;
+    border-radius:3px;
+    background-color: #B8E9FF;
+    cursor: pointer;
 }
   #map_div {
     position: relative;
+    
   }
   
   #category-button {
@@ -110,30 +127,35 @@
     padding: 5px;
     padding-left: 20px; 
     padding-right: 20px; 
+    height:3.5vh;
   }
   #youtube-btn{
   	border-radius: 3px;
     padding: 5px;
     padding-left: 10px; 
     padding-right: 10px; 
+       height:3.5vh;
   }
   #tourist-btn{
   	border-radius: 3px;
     padding: 5px;
     padding-left: 20px; 
     padding-right: 20px; 
+       height:3.5vh;
   }
   #hill-btn{
   	border-radius: 3px;
     padding: 5px;
     padding-left: 25px; 
     padding-right: 25px; 
+       height:3.5vh;
   }
   #ollegil-btn{
   	border-radius: 3px;
     padding: 5px;
     padding-left: 20px; 
-    padding-right: 20px; 
+    padding-right: 20px;
+       height:3.5vh; 
   }
 
   #weather{
@@ -281,9 +303,11 @@
 }
 .search-div{
 	margin-bottom:1vh;
-	margin-left:0.7vw;
+	margin-left:2.1vw;
 	display:flex;
 	align-items: center;
+	padding-left: 20px;
+	padding-right:20px;
 }
 #search{
 	width:17.1vw;
@@ -301,14 +325,18 @@
 #search-button>img{
 	width:100%;
 	height:100%;
+	
 }
 .list-scroll{
 	width: 20vw;
 	height: 70vh;
 	overflow: auto;
+	padding-left: 20px;
+    margin: 0 auto;
+    
 }
 #pagination{
-	margin-left:5.8vw;
+	margin-left:8vw;
 	margin-top:2vh;
 }
 #pagination>a{
@@ -346,13 +374,18 @@
 	height: 10vh;
 	margin-left: 1vw;
 	margin-top: 3vh;
-	font-size: 12px;
+	font-size: 13px;
 	font-family: 'Noto Sans KR Light', sans-serif;
 	text-align: left;
 	color: #595959;
 }
 #list-minus>img{
-	margin-top: 7vh;
+	width: 1vw;
+	height: 2vh;
+	margin-top: 8vh;
+	margin-left: 1vw;
+	margin-right: 1vw;
+	cursor:pointer;
 	
 }
 #list-name-heartimg {
@@ -375,6 +408,7 @@
 	margin-top: 8vh;
 	margin-left: 1vw;
 	margin-right: 1vw;
+	cursor:pointer;
 }
 
 .course {
@@ -416,8 +450,6 @@
 	margin-right: 1vh;
 }
 .course-list{
-	border: 0.5px solid #B8E9FF;
-	border-radius: 7px;
 	margin-top:1vh;
 	overflow:auto;
 	height:28vh;
@@ -596,6 +628,7 @@ h5 {
   	padding: 3px;
   	padding-left: 12px;
   	padding-right: 12px;
+  	cursor:pointer;
 }
 td {
 	width: 3.5vh;
@@ -809,6 +842,7 @@ td {
 #placemenu_button{
 		display: flex;
     justify-content: flex-end;
+    cursor:pointer;
 }
 #placemenu_button button{
 	background-color: transparent;
