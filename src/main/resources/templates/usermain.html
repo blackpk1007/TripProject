@@ -243,7 +243,7 @@ body {
 }
 
 .main {
-	display:flex;
+	display:grid;
 	border: solid;
 	border-color: #B8E9FF;
 	border-radius: 0.5rem;
@@ -254,7 +254,6 @@ body {
 	height: 15vh;
 	box-sizing: content-box;
 	width:55vw;
-	justify-content: center;
 	align-items: center;
 }
 /* 나의리뷰 */
@@ -325,8 +324,8 @@ body {
 
 .loc1 {
 	flex: 1 0 auto;
-	margin-left:0;
-	margin-right:auto;
+	display: flex;
+	justify-content:center;
 }
 
 .loc2 {
@@ -343,6 +342,8 @@ body {
 
 .loc3 {
 	flex: 1 0 auto;
+	display: flex;
+	justify-content:center;
 }
 
 /*공 수 삭 */
