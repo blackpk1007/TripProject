@@ -46,8 +46,8 @@ body {
 }
 
 #logimg {
-	width: 16vw;
-	height: 12vh;
+	width: 26rem;
+	height: 16rem;
 	padding-right:1vw;
 }
 
@@ -426,6 +426,8 @@ body {
 		document.getElementById("myplan").style.display = "none";
 		document.getElementById("myreview").style.display = "flex"; 
 		document.getElementById("mycommunity").style.display = "none";
+		
+		
 	}
 	function mycommunity() {
 		document.getElementById("plan").style.display = "none";
@@ -471,6 +473,27 @@ body {
 			.done(function(result){
 				alert(result);
 				location.href="/login/usermain"
+			})
+			.fail(function(jqXHR){
+				console.log(jqXHR);
+				alert(jqXHR);
+			})
+	}
+	
+	// 리뷰 삭제 
+	function reviewdelete(recommandNumber){
+	var userID = [[${session.login}]];
+	
+	
+	$.ajax({
+		url : "/review/reviewdelete",
+		type : "post",
+		data : { userID : userID,
+				recommandNumber : recommandNumber}
+		})
+			.done(function(result){
+				alert(result);
+				location.href="/login/usermain";
 			})
 			.fail(function(jqXHR){
 				console.log(jqXHR);
@@ -542,7 +565,7 @@ body {
 			<div class="header-left">
 				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 				<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-				<a href="/chatting" id="label-left-chat">채팅방</a>
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
 			</div>
 			<div class="header-center">
 				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
@@ -594,7 +617,7 @@ body {
 			<div id="review" style="display: none;">나의 리뷰</div>
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
-
+		<!-- 나의 일정  -->
 		<div class="mymain" id="myplan" >
 			<div class="list-scroll">
 				<div class="main" th:each="userplan : ${plan}">
@@ -620,18 +643,19 @@ body {
 				</div>
 			</div>
 		</div>
-		
+		<!-- 나의 리뷰  -->
 		<div class="mymain2" id="myreview" style="display: none;">
 			<div class="list-scroll1">
 				<div class="main1" th:each="userrecommand : ${recommand}">
 					<div class="myplan1">
 						<div class="loc2" >
 							<div class="tripdate">
-								전체 추천 &nbsp; <label th:text="${userrecommand.recommandPlaceNumber}"></label>
+								장소 이름 :<label th:text="${userrecommand.placeName}"></label>
+								리뷰 날짜 :<label th:text="${#dates.format(userrecommand.recommandNowDate, 'yyyy-MM-dd')}"></label>
 							</div>
 						</div>
 						<div class="loc3">
-							<button id="delete1" th:onclick="reviewdelete([[${userrecommand.recommandPlaceNumber}]])" >삭제</button>
+							<button id="delete1" th:onclick="reviewdelete([[${userrecommand.recommandNumber}]])" >삭제</button>
 						</div>
 					</div>
 				</div>
@@ -641,17 +665,17 @@ body {
 					<div class="myplan1">
 						<div class="loc2" >
 							<div class="tripdate">
-								2번 이상 &nbsp; <label th:text="${user2.recommandPlaceNumber}"></label>
+								2번 이상 인증한 장소 <label th:text="${user2.recommandPlaceNumber}"></label>
 							</div>
 						</div>
 						<div class="loc3">
-							<button id="delete1" >삭제</button>
+							<button id="delete2" th:onclick="reviewdelete([[${user2.recommandNumber}]])" > 삭제</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-			
+		<!-- 나의 게시물  -->
 		<div class="mymain" id="mycommunity" style="display: none;">
 			<div class="list-scroll">
 				<div class="main" th:each="usercommunity : ${community}">
