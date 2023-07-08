@@ -62,6 +62,9 @@ public interface PlaceMapper {
 //	@Select(" SELECT * FROM place WHERE placeNumber=#{recommandPlaceNumber")
 //	List<PlaceDTO> userplace(String recommandPlaceNumber);
 	
+	// 마이페이지에 나의 리뷰 삭제하기 버튼
+	@Delete(" delete from recommand where recommandUserID=#{userID} and recommandNumber=#{recommandNumber} ")
+	int reviewdelete(String userID, String recommandNumber);
 
 	@Insert(" insert into plan values(null, #{userID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
 	int planInsert(PlanDTO dto);

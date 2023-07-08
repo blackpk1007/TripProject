@@ -32,7 +32,9 @@ public interface PlanService {
 	// 마이페이지 리뷰 
 	public List<RecommandDTO> usermainRecommand(String userID);
 	public List<RecommandDTO> user2recommand(String userID);
-
+	// 마이페이지 리뷰 삭제 버튼 
+	public int reviewdelete(String userID, String recommandNumber);
+	
 	public int planInsert(PlanDTO dto);
 	
 	public int planDetailInsert(PlanDetailDTO dto);

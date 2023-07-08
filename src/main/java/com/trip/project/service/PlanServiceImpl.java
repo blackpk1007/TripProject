@@ -151,5 +151,11 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.placeSearchCount(keyword);
 }
+	// 마이페이지 리뷰 삭제 recommand 
+	@Override
+	public int reviewdelete(String userID, String recommandNumber) {
+
+		return pmapper.reviewdelete(userID, recommandNumber);
+	}
 
 }
