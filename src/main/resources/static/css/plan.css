@@ -51,11 +51,7 @@
 	cursor:pointer;
 	margin-bottom: 2vh;
 }
-.day-button-div{
-	float:left;
-	width:70%;
-	
-}
+
 #input_button_container_dayButton{
 	border: none;
     border-radius: 3px;
@@ -114,7 +110,10 @@
   #category-button > .button-selected{
   	background-color: #B8E9FF;
   }
-  
+  .insert-day-button-div{
+	width:70%;
+	float:left;
+}
   .insert-day-button-div > .insert-day-button-selected{
   	background-color: #B8E9FF;
   }
@@ -232,7 +231,7 @@
 }
 
 #logimg {
-	width: 18vw;
+	width: 16vw;
 	height: 12vh;
 	padding-right:1vw;
 }
@@ -331,19 +330,26 @@
 	width: 20vw;
 	height: 70vh;
 	overflow: auto;
-	padding-left: 20px;
     margin: 0 auto;
     
 }
+.list-scroll::-webkit-scrollbar{
+	display: none;
+}
 #pagination{
-	margin-left:8vw;
-	margin-top:2vh;
+	width: 100%;
+    text-align: center;
+    margin-top: 2vh;
 }
 #pagination>a{
 	text-decoration: none;
 	padding:10px;
 	color:black;
 	
+}
+#pagination>.pagination-active{
+	color:#B8E9FF;
+	font-weight: bold;
 }
 .list {
 	/*display: flex;*/

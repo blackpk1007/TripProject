@@ -134,11 +134,11 @@ public class PlanServiceImpl implements PlanService{
 //	}
 
 	// 마이페이지 리뷰 갯수
-	@Override
-	public List<RecommandDTO> usermainRecommand(String userID) {
-		
-		return pmapper.usermainRecommand(userID);
-	}
+//	@Override
+//	public List<RecommandDTO> usermainRecommand(String userID) {
+//		
+//		return pmapper.usermainRecommand(userID);
+//	}
 	@Override
 	public List<RecommandDTO> user2recommand(String userID) {
 
@@ -151,5 +151,18 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.placeSearchCount(keyword);
 }
+	// 마이페이지 리뷰 삭제 recommand 
+	@Override
+	public int reviewdelete(String userID, String recommandNumber) {
 
+		return pmapper.reviewdelete(userID, recommandNumber);
+	}
+
+	@Override
+	public List<RecommandDTO> placename(String userID) {
+		
+		return pmapper.placename(userID);
+	}
+
+	
 }

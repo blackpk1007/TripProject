@@ -12,8 +12,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
-	/* display: flex;
-            justify-content: center; */
+	display:grid;
 }
 .header a{
 	color: inherit;
@@ -45,8 +44,9 @@
 }
 
 #logimg {
-	width: 18vw;
-	height: 12vh;
+	font-size:62.5%;
+	width: 26em;
+	height: 16em;
 	padding-right:1vw;
 }
 
@@ -163,9 +163,7 @@
 }
 
 #write {
-	clear: both;
 	float: right;
-	margin-top: 1%;
 	margin-right: 2.8%
 }
 
@@ -180,14 +178,13 @@ select {
 	width: 150%;
 	height: 3.3vh;
 	background-color: #B8E9FF;
-	border-color: #B8E9FF;
+  	border: none;
 	border-radius: 7px;
 	cursor: pointer;
 }
 #gt{
 	width:10%;
 	float:left;
-	margin-right:20%;
 	margin-top: 0.5vh;
 }
 
@@ -492,9 +489,9 @@ function drawListCategory(){
 	<div class="header">
 		<div class="header-category">
 			<div class="header-left">
+				<a href="/plan" id="label-left-community">일정 만들기</a> 
 				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-				 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-				 <a href="/chatting" id="label-left-chat">채팅방</a>
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
 			</div>
 			<div class="header-center">
 				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>

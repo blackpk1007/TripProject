@@ -225,7 +225,7 @@ window.onload = function () {
             </div>
         </div>
 	</div> 
-	
+
 	<div id="airplanePopupContainer" class="airplanePopupContainer">
 	<div class="airplanePopupContent">
 			<div id="AirplaneInformation">
@@ -435,7 +435,13 @@ window.onload = function () {
         </tr> 	
     </table>
   </div>
-  <div id="bothEmpty" th:if="${#lists.isEmpty(boardings) and #lists.isEmpty(arriveds)}">
+  
+   </div>
+   <span class="place_popup-close" onclick="airplaneClosePopup()">X </span>
+  </div>
+  <div class="bothEmpty" th:if="${#lists.isEmpty(boardings) and #lists.isEmpty(arriveds)}" >
+  <div class="airplanePopupContent-listEmpty">
+  <div class="AirplaneInformation">
   	<div class="airplane-title">
     		<div class="airplane-title-img-div">
     			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
@@ -447,7 +453,7 @@ window.onload = function () {
   		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
   	</div>
   </div>
-  <div id="bothEmpty" th:if="${boardings == null or arriveds == null}">
+  <div class="bothEmpty" th:if="${boardings == null or arriveds == null}">
   	<div class="airplane-title">
     		<div class="airplane-title-img-div">
     			<img class="airplane-title-img" th:src="@{/resources/image/airplane-title-img3.png}">
@@ -458,11 +464,15 @@ window.onload = function () {
   		<!-- <div class="listEmpty-content"><span style="color:#0067a3;">오후 10시 ~ 오전 6시 까지는</span> 항공편이 조회되지 않습니다.</div> -->
   		<div class="listEmpty-content">서비스 이용에 불편함을 드려서 죄송합니다.</div>
   	</div>
+  	</div>
+  	</div>
+  		<span class="place_popup-close-listEmpty" onclick="airplaneClosePopup()">X </span>
   </div>
+
+
+
 </div>
-<span class="place_popup-close" onclick="airplaneClosePopup()">X </span>
-   </div>
-</div>
+ 
 	<script th:inline="javascript">
 	var loginchk = [[${session.login}]];
 	console.log(loginchk); 

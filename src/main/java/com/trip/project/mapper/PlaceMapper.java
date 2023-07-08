@@ -52,16 +52,19 @@ public interface PlaceMapper {
 	@Select(" SELECT DATE_FORMAT(l.userBirth, '%Y') AS userBirth, r.recommandPlaceNumber FROM login AS l JOIN recommand AS r ON l.userID = r.recommandUserID WHERE r.recommandPlaceNumber =#{recommandPlaceNumber} ")
 	List<LoginDTO> birthList(int recommandPlaceNumber);
 	
-	// 마이페이지에 recommand 전체 갯수세는거 
-	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} " )
-	public List<RecommandDTO> usermainRecommand(String userID);	
+////	// 마이페이지에 recommand 전체 데이터 가져오기
+//	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} " )
+//	public List<RecommandDTO> usermainRecommand(String userID);	
 	// 마이페이지에 recommand 2개이상 갯수 세는거
 	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} group by recommandPlaceNumber having count(*) > 1" )
 	public List<RecommandDTO> user2recommand(String userID);
-//	// 마이페이지에 recommandPlaceNumber로 place 정보 (placeName) 가져오는거 
-//	@Select(" SELECT * FROM place WHERE placeNumber=#{recommandPlaceNumber")
-//	List<PlaceDTO> userplace(String recommandPlaceNumber);
+	// 마이페이지에 리뷰 부분에 recommandPlaceNumber로 place 정보 (placeName) 가져오는거, 리뷰쓴날자 가져오기 
+	@Select("select p.placeName, r.recommandNowDate, r.recommandNumber from recommand r join place p on r.recommandPlaceNumber = p.placeNumber where r.recommandUserID = #{userID}")
+	public List<RecommandDTO> placename(String userID);	
 	
+	// 마이페이지에 나의 리뷰 삭제하기 버튼
+	@Delete(" delete from recommand where recommandUserID=#{userID} and recommandNumber=#{recommandNumber} ")
+	int reviewdelete(String userID, String recommandNumber);
 
 	@Insert(" insert into plan values(null, #{userID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
 	int planInsert(PlanDTO dto);

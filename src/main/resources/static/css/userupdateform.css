@@ -7,8 +7,7 @@
 	margin-right: auto;
 	margin-bottom: 5vh;
 	font-size: 1.6rem;
-	/* display: flex;
-            justify-content: center; */
+	display:grid;
 }
 
 .header-category {
@@ -36,8 +35,8 @@
 }
 
 #logimg {
-	width: 20rem;
-	height: 14rem;
+	width: 26rem;
+	height: 16rem;
 	padding-right:1vw;
 }
 
