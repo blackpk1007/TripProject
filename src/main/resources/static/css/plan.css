@@ -114,6 +114,14 @@
   #category-button > .button-selected{
   	background-color: #B8E9FF;
   }
+  
+  .insert-day-button-div > .insert-day-button-selected{
+  	background-color: #B8E9FF;
+  }
+  
+  .preview-day-button-div > .preview-day-button-selected{
+  	background-color: #B8E9FF;
+  }
   #restaurant-btn{
   	border-radius: 3px;
     padding: 5px;

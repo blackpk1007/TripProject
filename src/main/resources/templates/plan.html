@@ -1795,29 +1795,6 @@ function previewOpenPopup(inputValues) {
 		  var insertPopupContainer = document.getElementById('insertPopupContainer');
 		  insertPopupContainer.style.display = 'none';
 		}
-		
-		// 2. 시작, 도착 심볼찍기
-	document.addEventListener('DOMContentLoaded', function() {
-		  const buttons = document.querySelectorAll('#category-button button');
-		  let selectedButton = document.querySelector('.button-selected');
-
-		  buttons.forEach(button => {
-		    button.addEventListener('click', function() {
-		      const isSelected = this.classList.contains('button-selected');
-
-		      if (!isSelected) {
-		        // 다른 버튼들의 선택 상태 제거
-		        buttons.forEach(btn => {
-		          btn.classList.remove('button-selected');
-		        });
-
-		        // 현재 버튼을 선택 상태로 설정
-		        this.classList.add('button-selected');
-		        selectedButton = this;
-		      }
-		    });
-		  });
-		});
 
 		function createPreviewButton(inputValues){
 		// 버튼을 추가할 컨테이너 선택
@@ -1828,6 +1805,9 @@ function previewOpenPopup(inputValues) {
 		 
 		 var closeButtonDiv = document.createElement("div");
 		 closeButtonDiv.className = "close-Button-div";
+		 var previewdayButtonDiv = document.createElement("div");
+		 previewdayButtonDiv.className = "preview-day-button-div";
+		 
 			var inputCloseButton = document.createElement('button');
 			inputCloseButton.textContent = 'X';
 			inputCloseButton.addEventListener('click', preivewClosePopup);
@@ -1836,15 +1816,17 @@ function previewOpenPopup(inputValues) {
 			
 		var AllDaybutton = document.createElement('button');
 		AllDaybutton.textContent = 'All Day';
+
 		AllDaybutton.id ="input_button_container_allDayButton";
 		previewButtonContainer.appendChild(AllDaybutton);
+
+		AllDaybutton.className = 'preview-day-button-selected';
+		previewdayButtonDiv.appendChild(AllDaybutton);
+		previewButtonContainer.appendChild(previewdayButtonDiv);
 		AllDaybutton.addEventListener('click', function() {
 			  showAllDayRoute(inputValues);
 			});
 			
-		var closeButton = document.createElement('button');
-		closeButton.textContent = 'X';
-		closeButton.addEventListener('click', preivewClosePopup);
 
 
 		for (var i = 0; i < inputValues.length; i++) {
@@ -1852,11 +1834,14 @@ function previewOpenPopup(inputValues) {
 		    daybutton.textContent = 'Day ' + (i + 1);
 		    daybutton.id = "input_button_container_dayButton";
 		    previewButtonContainer.appendChild(daybutton);
+		    previewdayButtonDiv.appendChild(daybutton);
+			previewButtonContainer.appendChild(previewdayButtonDiv);
 		    
 		    // 클릭 이벤트 처리
 		    daybutton.addEventListener('click', function(event) {
-		      var buttonIndex = Array.from(previewButtonContainer.children).indexOf(event.target) - 2;
-		      var selectedInputValue = inputValues[buttonIndex];
+		    	var buttons = Array.from(previewdayButtonDiv.getElementsByTagName('button'));
+	              var buttonIndex = buttons.indexOf(event.target);
+		      var selectedInputValue = inputValues[buttonIndex - 1];
 		      console.log('Button ' + (buttonIndex + 2) + ' clicked');
 		      console.log('Selected Input Value:', selectedInputValue);
 		      // 경로 표시를 위한 데이터 추출
@@ -1869,27 +1854,26 @@ function previewOpenPopup(inputValues) {
 		      drawRoute(date, lonLatPairs, color);
 		    });
 		}
-		document.addEventListener('DOMContentLoaded', function() {
-			  const buttons = document.querySelectorAll('#category-button button');
-			  let selectedButton = document.querySelector('.button-selected');
+		  const buttons = document.querySelectorAll('.preview-day-button-div button');
+		  console.log("test buttons : "+buttons);
+		  let selectedButton = document.querySelector('.preview-day-button-selected');
+		  
+		  buttons.forEach(button => {
+		    button.addEventListener('click', function() {
+		      const isSelected = this.classList.contains('preview-day-button-selected');
 
-			  buttons.forEach(button => {
-			    button.addEventListener('click', function() {
-			      const isSelected = this.classList.contains('button-selected');
+		      if (!isSelected) {
+		        // 다른 버튼들의 선택 상태 제거
+		        buttons.forEach(btn => {
+		          btn.classList.remove('preview-day-button-selected');
+		        });
 
-			      if (!isSelected) {
-			        // 다른 버튼들의 선택 상태 제거
-			        buttons.forEach(btn => {
-			          btn.classList.remove('button-selected');
-			        });
-
-			        // 현재 버튼을 선택 상태로 설정
-			        this.classList.add('button-selected');
-			        selectedButton = this;
-			      }
-			    });
-			  });
-			});
+		        // 현재 버튼을 선택 상태로 설정
+		        this.classList.add('preview-day-button-selected');
+		        selectedButton = this;
+		      }
+		    });
+		  });
 		}
 
 		function createInsertButton(inputValues){
@@ -1901,7 +1885,7 @@ function previewOpenPopup(inputValues) {
 			 var closeButtonDiv = document.createElement("div");
 			 closeButtonDiv.className = "close-Button-div";
 			 var dayButtonDiv = document.createElement("div");
-			 dayButtonDiv.className = "day-button-div";
+			 dayButtonDiv.className = "insert-day-button-div";
 				var inputCloseButton = document.createElement('button');
 				inputCloseButton.textContent = 'X';
 				inputCloseButton.addEventListener('click', insertClosePopup);
@@ -1912,6 +1896,7 @@ function previewOpenPopup(inputValues) {
 			var AllDaybutton = document.createElement('button');
 			AllDaybutton.textContent = 'All Day';
 			AllDaybutton.id ="input_button_container_allDayButton";
+			AllDaybutton.className = 'insert-day-button-selected';
 			AllDaybutton.addEventListener('click', function() {
 				  showAllDayRoute(inputValues);
 				});
@@ -1928,7 +1913,7 @@ function previewOpenPopup(inputValues) {
 			    daybutton.addEventListener('click', function(event) {
 			    	var buttons = Array.from(dayButtonDiv.getElementsByTagName('button'));
 		              var buttonIndex = buttons.indexOf(event.target);
-			      var selectedInputValue = inputValues[buttonIndex + 1];
+			      var selectedInputValue = inputValues[buttonIndex - 1];
 			      console.log('Button ' + (buttonIndex + 1) + ' clicked');
 			      console.log('Selected Input Value:', selectedInputValue);
 			      // 경로 표시를 위한 데이터 추출
@@ -1954,27 +1939,26 @@ function previewOpenPopup(inputValues) {
 		    
 		    inputButtonContainer.appendChild(couseInsertInput);
 		    inputButtonContainer.appendChild(courseNameInput);
-		    document.addEventListener('DOMContentLoaded', function() {
-				  const buttons = document.querySelectorAll('.day-button-div button');
-				  let selectedButton = document.querySelector('.button-selected');
-
+			
+				  const buttons = document.querySelectorAll('.insert-day-button-div button');
+				  let selectedButton = document.querySelector('.insert-day-button-selected');
+				  
 				  buttons.forEach(button => {
 				    button.addEventListener('click', function() {
-				      const isSelected = this.classList.contains('button-selected');
+				      const isSelected = this.classList.contains('insert-day-button-selected');
 
 				      if (!isSelected) {
 				        // 다른 버튼들의 선택 상태 제거
 				        buttons.forEach(btn => {
-				          btn.classList.remove('button-selected');
+				          btn.classList.remove('insert-day-button-selected');
 				        });
 
 				        // 현재 버튼을 선택 상태로 설정
-				        this.classList.add('button-selected');
+				        this.classList.add('insert-day-button-selected');
 				        selectedButton = this;
 				      }
 				    });
 				  });
-				});
 			}
 function drawData(data, color){
 	// 지도위에 선은 다 지우기
