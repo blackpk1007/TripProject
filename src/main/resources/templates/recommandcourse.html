@@ -4,14 +4,19 @@
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:inline="javascript">
-	
+let popularity = $('#popularity');
+let followingdate = $('#followingdate');
 $(document).ready(function() {
     $('#popularity').click(function() {
-      changeList('popularity');
+		changeList('popularity');
+		document.getElementById("popularity").style.color='#FD6F22';
+		document.getElementById("followingdate").style.color='black';
     });
 
     $('#followingdate').click(function() {
       changeList('followingdate');
+      document.getElementById("popularity").style.color='black';
+	  document.getElementById("followingdate").style.color='#FD6F22';
     });
   });
   
@@ -471,7 +476,11 @@ width:50%;
 	top:4.5vh;
 	width:100%;
 	height:80vh;
-	left: 13.9vw;
+	left: 13.4vw;
+	overflow:auto;
+}
+.mymain::-webkit-scrollbar{
+	display: none;
 }
 	/* 세로 4개씩 반갈 왼쪽 */
 .main1{
@@ -481,7 +490,7 @@ width:50%;
 	border-width:2px;
 	font-size: 1.8rem; */
 	flex:1;
-	padding:1rem;
+	padding:2rem;
 	padding-top:0;
 	height:100%;
 	width:100%;
@@ -667,6 +676,12 @@ align-content: start;
 	width:80%;
 }
 
+#popularity{
+	cursor:pointer;
+}
+#followingdate{
+	cursor:pointer;
+}
 </style>
 </head>
 
@@ -744,8 +759,9 @@ align-content: start;
 </div>
 <!-- 본 -->
 <div class="mymain_text">
-	<div id="popularity" name="popularity">인기순</div>&nbsp;&nbsp;
-	<div id="followingdate" name="followingdate">날짜순</div>
+<div id="followingdate" name="followingdate" style="color:#FD6F22">날짜순</div>&nbsp;&nbsp;
+	<div id="popularity" name="popularity">인기순</div>
+	
 </div>
 <div class="mymain">
 		<div class="main1"> 

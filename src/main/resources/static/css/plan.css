@@ -337,14 +337,19 @@
 	display: none;
 }
 #pagination{
-	margin-left:8vw;
-	margin-top:2vh;
+	width: 100%;
+    text-align: center;
+    margin-top: 2vh;
 }
 #pagination>a{
 	text-decoration: none;
 	padding:10px;
 	color:black;
 	
+}
+#pagination>.pagination-active{
+	color:#B8E9FF;
+	font-weight: bold;
 }
 .list {
 	/*display: flex;*/

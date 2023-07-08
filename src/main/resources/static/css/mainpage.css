@@ -52,6 +52,15 @@
 	font-size: 20px;
 	color: #888;
 }
+.place_popup-close-listEmpty{
+	position: absolute;
+	top: 185px;
+    right: 570px;
+	cursor: pointer;
+	font-size: 20px;
+	color: #888;
+	
+}
 
 .place_popup img {
 	max-width: 600px;
@@ -470,26 +479,25 @@ td {
   	left: 50%;
   	transform: translate(-50%, -50%);
 }
-/* .airplanePopupContent-listEmpty{
+.airplanePopupContent-listEmpty{
 	position: relative;
-	background-color: #fff;
-	padding: 20px;
-	max-width: 700px;
-	max-height: 90%;
-	width: 700px;
-	border-radius: 5px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	border: 4px solid #B8E9FF; 테두리 추가
-	box-sizing: border-box; 테두리를 요소 크기에 포함
-	overflow-y: auto;
-	top: 50%;
-  	left: 50%;
-  	transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    max-width: 800px;
+    max-height: 90%;
+    width: 800px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 4px solid #B8E9FF;
+    box-sizing: border-box;
+    overflow-y: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 30%);
 	
 	
-} */
-
-#AirplaneInformation{
+}
+.AirplaneInformation{
  		resize:none;
  		overflow:auto;
  		width:100%;
@@ -593,16 +601,15 @@ td {
 		justify-content: center;
 		align-items: center;
 		margin-bottom: 3vh;
-		margin-top: 3rvh;
+		margin-top: 3vh;
  	}
  	.listEmpty{
- 		text-align:center;
- 		margin-top:8vh;
- 		height: 60vh;
- 		border: solid 1px #0067a3;
- 		border-radius:10px;
- 		width:70%;
- 		margin-left:15%;
+ 		text-align: center;
+	    height: 40vh;
+	    border: solid 1px #0067a3;
+	    border-radius: 10px;
+	    width: 80%;
+	    margin: 0 auto;
  	}
  	.listEmpty-title{
  		font-size: 20pt;

@@ -437,29 +437,32 @@ $(document).ready(function() {
     	}
     	
     });
- /*    function readURL(input) {
-        var session = sessionStorage.getItem('placeNumber');
-        document.getElementById("placeNumber").value = session;
-        var imagediv = document.querySelector("#contentText");
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-            	var image = document.createElement("img");
-            	image.id = 'preview';
-            	imagediv.appendChild(image);
-                document.getElementById('preview').src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            document.getElementById('preview').src = "";
-        }
-    }
-   
-    $("#attachFile").on("change", function() {
+    /* $("#attachFile").on("change", function() {
         readURL(this);
-    }); */
+    });  */
+    
+    
+    
+   
+    
 });
-
+/* function readURL(input) {
+    var session = sessionStorage.getItem('placeNumber');
+    document.getElementById("placeNumber").value = session;
+    var imagediv = document.querySelector("#contentText");
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+        	var image = document.createElement("img");
+        	image.id = 'preview';
+        	imagediv.appendChild(image);
+            document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('preview').src = "";
+    }
+} */
 </script>
 </head>
 <body>
@@ -507,7 +510,7 @@ $(document).ready(function() {
         <div id="contents" class="div">
         	 <div class="editor-menu">
 	        	 <div class="filebox">
-            		<input type="file" id="attachFile" name="attachFile">
+            		<input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
         		</div>
         		<button id="buttonContourTwo">|</button>
 	        	 <button id="btn-unordered-list">
