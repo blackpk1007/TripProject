@@ -16,6 +16,8 @@ public interface CourseService {
 	
 	List<CourseDTO> courseCountSort();
 	
+	List<PlaceDTO> courseImage(String userID, String planName);
+	
 	List<CourseDTO> courseseason(List<Integer> months);
 	
 	List<CourseDTO> coursedays(List<Integer> days);

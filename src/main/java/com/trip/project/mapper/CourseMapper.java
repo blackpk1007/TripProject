@@ -26,6 +26,11 @@ public interface CourseMapper {
 	@Select(" select * from course where userID = #{userID} and planName = #{planName} ")
 	CourseDTO courseDetail(String userID, String planName);
 	
+	@Select(" select placeName from (select *, ROW_NUMBER() OVER (PARTITION BY d.courseDetailDate) AS rn from place p join courseDetail d on p.placeLon = d.courseDetailLon and p.placeLat = d.courseDetailLat "
+			+ " where userID = #{userID} and planName = #{planName}) sub "
+			+ " WHERE rn = 1 ")
+	List<PlaceDTO> courseImage(String userID, String planName);
+	
 	@Select({
 	    "<script>",
 	    "SELECT * FROM course",

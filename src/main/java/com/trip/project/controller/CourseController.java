@@ -125,7 +125,9 @@ public class CourseController {
 		   model.addAttribute("coursedetailLists", dtoList);
 		   model.addAttribute("coursedetail", cService.courseDetail(userID, planName));
 		   model.addAttribute("placeInfo", cService.coursePlace(userID, planName));
-		
+		   model.addAttribute("courseimage", cService.courseImage(userID, planName));
+		  
+		   System.out.println("controllere : "+cService.courseImage(userID, planName));
 		return "coursedetail";
 		}
 	}
