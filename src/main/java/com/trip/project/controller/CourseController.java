@@ -99,9 +99,9 @@ public class CourseController {
 	}
 	// 코스 상세
 	@RequestMapping("/coursedetail")
-	public String coursedetail(Model model, String planName, String userID){
-		cService.courseListCount(userID, planName);
-		List<CourseDetailDTO> dtoList = cService.courseDetailList(userID, planName);
+	public String coursedetail(Model model, String planName, String shareID){
+		cService.courseListCount(shareID, planName);
+		List<CourseDetailDTO> dtoList = cService.courseDetailList(shareID, planName);
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		   Map<String, Object> resultMap = new LinkedHashMap<>();
 
@@ -133,8 +133,8 @@ public class CourseController {
 		   
 		   model.addAttribute("coursemarker", resultList);
 		   model.addAttribute("coursedetailLists", dtoList);
-		   model.addAttribute("coursedetail", cService.courseDetail(userID, planName));
-		   model.addAttribute("courseimage", cService.courseImage(userID, planName));
+		   model.addAttribute("coursedetail", cService.courseDetail(shareID, planName));
+		   model.addAttribute("courseimage", cService.courseImage(shareID, planName));
 		  
 		return "coursedetail";
 		}

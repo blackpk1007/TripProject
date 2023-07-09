@@ -27,13 +27,13 @@ public interface CourseMapper {
 	@Select(" select * from course order by courseFirstDate desc ")
 	List<CourseDTO> courseList();
 	
-	@Select(" select * from course where userID = #{userID} and planName = #{planName} ")
-	CourseDTO courseDetail(String userID, String planName);
+	@Select(" select * from course where shareID = #{shareID} and planName = #{planName} ")
+	CourseDTO courseDetail(String shareID, String planName);
 	
 	@Select(" select placeName from (select *, ROW_NUMBER() OVER (PARTITION BY d.courseDetailDate) AS rn from place p join courseDetail d on p.placeLon = d.courseDetailLon and p.placeLat = d.courseDetailLat "
-			+ " where userID = #{userID} and planName = #{planName}) sub "
+			+ " where shareID = #{shareID} and planName = #{planName}) sub "
 			+ " WHERE rn = 1 ")
-	List<PlaceDTO> courseImage(String userID, String planName);
+	List<PlaceDTO> courseImage(String shareID, String planName);
 	
 	@Select({
 	    "<script>",
@@ -104,23 +104,23 @@ public interface CourseMapper {
 //	List<CourseDetailDTO> courseDetailList(String userID, String planName);
 	
 	@Select(" select * from place p join courseDetail d on p.placeLon = d.courseDetailLon and p.placeLat = d.courseDetailLat"
-			+ " where userID = #{userID} and planName = #{planName} order by courseDetailDate ")
-	List<CourseDetailDTO> courseDetailList(String userID, String planName);
+			+ " where shareID = #{shareID} and planName = #{planName} order by courseDetailDate ")
+	List<CourseDetailDTO> courseDetailList(String shareID, String planName);
 	
-	@Update(" update course set courseCount = courseCount + 1 where userID = #{userID} and planName = #{planName} ")
-	int courseListCount(String userID, String planName);
+	@Update(" update course set courseCount = courseCount + 1 where shareID = #{shareID} and planName = #{planName} ")
+	int courseListCount(String shareID, String planName);
 	
-	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, userID, planName )"
-			+ "select planFirstDate, planLastDate, #{datecount}, planCount, userID, planName "
+	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, shareID, planName )"
+			+ "select planFirstDate, planLastDate, #{datecount}, planCount, shareID, planName "
 			+ "from plan "
-			+ "WHERE planName=#{planName} AND userID=#{userID} ")
-	int courseShare(String userID, String planName, @Param("datecount")int datecount);
+			+ "WHERE planName=#{planName} AND shareID=#{shareID} ")
+	int courseShare(String shareID, String planName, @Param("datecount")int datecount);
 	
-	@Insert(" INSERT INTO courseDetail (courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, userID, planName) "
-			+ "select planDetailDate, planDetailLon, planDetailLat, planDetailColor, userID, planName "
+	@Insert(" INSERT INTO courseDetail (courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, shareID, planName) "
+			+ "select planDetailDate, planDetailLon, planDetailLat, planDetailColor, shareID, planName "
 			+ "from planDetail "
-			+ "WHERE planName=#{planName} AND  userID=#{userID} ")
-	int courseDetailshare(String userID, String planName);
+			+ "WHERE planName=#{planName} AND  shareID=#{shareID} ")
+	int courseDetailshare(String shareID, String planName);
 	
 	
 }

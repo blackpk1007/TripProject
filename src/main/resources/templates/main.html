@@ -146,7 +146,7 @@ window.onload = function () {
 		<div class="swiper-wrapper">
 		<div th:each="course : ${courses}" class="swiper-slide">
 	      <div class="hot_img">
-	        <a th:href="@{|/course/coursedetail?planName=${course.planName}&userID=${course.userID}|}">
+	        <a th:href="@{|/course/coursedetail?planName=${course.planName}&shareID=${course.shareID}|}">
 	          <img th:src="@{/resources/image/place/__${course.planName}__.jpg}">
 	        </a>
 	      </div>

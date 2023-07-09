@@ -41,7 +41,7 @@ function generateHTML(data) {
         var planName = course.planName;
         var courseFirstDate = course.courseFirstDate;
         var coursetravelDate = course.coursetravelDate;
-        var userID = course.userID;
+        var shareID = course.shareID;
         var courseCount = course.courseCount;
 
         var itemHtml = `
@@ -55,11 +55,11 @@ function generateHTML(data) {
                         <div class="category"> 여행 날짜 </div>
                         <div class="category"> 여행 기간 </div>
                         <div class="username">
-                            <img class="usernamelogo" src="/resources/image/stonepapa.png">${userID}
+                            <img class="usernamelogo" src="/resources/image/stonepapa.png">${shareID}
                         </div>
                     </div>
                     <div class="col2">
-                        <div class="data"><a href="/course/coursedetail?planName=${planName}">${planName}</a></div>
+                        <div class="data"><a href="/course/coursedetail?planName=${planName}&shareID=${shareID}">${planName}</a></div>
                         <div class="data">${courseFirstDate}</div>
                         <div class="data">${coursetravelDate}일간</div>
                         <div class="userview">
@@ -263,6 +263,7 @@ function sendSelectedDatesSeasons(dates, seasons) {
 <style type="text/css">
 html::-webkit-scrollbar {
 	display: none;
+	font-family: 'Noto Sans KR Light', sans-serif;
 }
 body {
     display: block;
@@ -770,10 +771,10 @@ align-content: start;
 						<div class="category"> 여행 날짜 </div>
 						<div class="category"> 여행 기간 </div>
 						<div class="username">
-							<img class="usernamelogo" src="/resources/image/stonepapa.png"> [[${course.userID}]] </div>
+							<img class="usernamelogo" src="/resources/image/stonepapa.png"> [[${course.shareID}]] </div>
 					</div>
 					<div class="col2">
-						<div class="data"><a th:href="|/course/coursedetail?planName=${course.planName}&userID=${course.userID}|"> [[${course.planName}]] </a></div>
+						<div class="data"><a th:href="|/course/coursedetail?planName=${course.planName}&shareID=${course.shareID}|"> [[${course.planName}]] </a></div>
 						<div class="data">[[${course.courseFirstDate}]] </div>
 						<div class="data">[[${course.coursetravelDate}]]일간 </div>
 						<div class="userview">

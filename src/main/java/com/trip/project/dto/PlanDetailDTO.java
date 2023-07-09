@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 public class PlanDetailDTO {
 	
 	private Integer planDetailNumber;
-	private String userID;
+	private String shareID;
+	private String saveID;
 	private String PlanName;
 	private String planDetailDate;
 	private String planDetailLon;

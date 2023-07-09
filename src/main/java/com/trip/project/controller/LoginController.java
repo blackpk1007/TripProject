@@ -226,30 +226,30 @@ public class LoginController {
 	// 사용자 마이페이지 메인
 	@RequestMapping("/usermain")
 	public String userMain(HttpSession session, Model model) {
-		String userID = (String) session.getAttribute("login");
-		System.out.println(userID);
+		String shareID = (String) session.getAttribute("login");
+		System.out.println(shareID);
 		
-		model.addAttribute("plan", pservice.userPlancount(userID));
-		model.addAttribute("plancount", pservice.userPlancount(userID).size());
-		System.out.println("일정 : "+ pservice.userPlancount(userID));
-		System.out.println(pservice.userPlancount(userID).size());
+		model.addAttribute("plan", pservice.userPlancount(shareID));
+		model.addAttribute("plancount", pservice.userPlancount(shareID).size());
+		System.out.println("일정 : "+ pservice.userPlancount(shareID));
+		System.out.println(pservice.userPlancount(shareID).size());
 
-		model.addAttribute("recommand", pservice.placename(userID) );
-		model.addAttribute("recommandcount", pservice.placename(userID).size());
-		System.out.println("리뷰 : "+ pservice.placename(userID));
-		System.out.println(pservice.placename(userID).size());
+		model.addAttribute("recommand", pservice.placename(shareID) );
+		model.addAttribute("recommandcount", pservice.placename(shareID).size());
+		System.out.println("리뷰 : "+ pservice.placename(shareID));
+		System.out.println(pservice.placename(shareID).size());
 		
-		model.addAttribute("user2recommand", pservice.user2recommand(userID));
-		System.out.println("리뷰 2개이상 : "+pservice.user2recommand(userID));
+		model.addAttribute("user2recommand", pservice.user2recommand(shareID));
+		System.out.println("리뷰 2개이상 : "+pservice.user2recommand(shareID));
 		
 //		model.addAttribute("placename", pservice.placename(userID));
 //		System.out.println(pservice.placename(userID));
 		
 		
-		model.addAttribute("community", cservice.usermainCommunity(userID));
-		model.addAttribute("communitycount",cservice.usermainCommunity(userID).size());
-		System.out.println("게시물 : "+cservice.usermainCommunity(userID));
-		System.out.println(cservice.usermainCommunity(userID).size());
+		model.addAttribute("community", cservice.usermainCommunity(shareID));
+		model.addAttribute("communitycount",cservice.usermainCommunity(shareID).size());
+		System.out.println("게시물 : "+cservice.usermainCommunity(shareID));
+		System.out.println(cservice.usermainCommunity(shareID).size());
 		
 		
 		return "usermain";
@@ -274,26 +274,27 @@ public class LoginController {
 	@ResponseBody
 	@RequestMapping("/plandelete")
 	public String planDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
-		int res = pservice.planDelete(userID,planName);
-		int res1 = pservice.planDetaildelete(userID, planName);
-		int res2 = pservice.courseDelete(userID, planName);
-		int res3 = pservice.courseDetaildelete(userID, planName);
+		String shareID = userID;
+		int res = pservice.planDelete(shareID,planName);
+		int res1 = pservice.planDetaildelete(shareID, planName);
+		int res2 = pservice.courseDelete(shareID, planName);
+		int res3 = pservice.courseDetaildelete(shareID, planName);
 		System.out.println(res);
 		System.out.println(res1);
 		System.out.println(res2);
 		System.out.println(res3);
-		return userID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
+		return shareID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
 	}
 	//plan 공유 
 	@ResponseBody
 	@RequestMapping("/planshare")
 	public String planshare(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
-	
-		int res = pservice.planShare(userID, planName);
-		int res1 = pservice.planDetailshare(userID, planName);
+		String shareID = userID;
+		int res = pservice.planShare(shareID, planName);
+		int res1 = pservice.planDetailshare(shareID, planName);
 		System.out.println(res);
 		System.out.println(res1);
-		return userID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
+		return shareID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
 	}
 	
 	// community 공유 

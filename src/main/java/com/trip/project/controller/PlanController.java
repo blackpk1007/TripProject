@@ -101,7 +101,7 @@ public class PlanController {
 	@PostMapping("/createplan")
 	public String createPlan(@RequestBody Map<String, Object> requestData, Model model) {
 	    List<Map<String, Object>> inputValues = (List<Map<String, Object>>) requestData.get("inputValues");
-	    String userID = (String) requestData.get("userID");
+	    String shareID = (String) requestData.get("userID");
 	    String planName = (String) requestData.get("planName");
 	    String firstDate = null;
 	    String lastDate = null;
@@ -119,18 +119,18 @@ public class PlanController {
 	        for (Map<String, String> lonLatPair : lonLatPairs) {
 	            String lon = lonLatPair.get("lon");
 	            String lat = lonLatPair.get("lat");
-	            PlanDetailDTO detaildto = new PlanDetailDTO(null, userID, planName, date, lon, lat, color);	           
+	            PlanDetailDTO detaildto = new PlanDetailDTO(null, shareID, null, planName, date, lon, lat, color);	           
 	            pservice.planDetailInsert(detaildto);
 	            // 데이터베이스에 저장 로직 구현
 	            // 예: saveDataToDatabase(userID, planName, date, color, lon, lat);
 	        }
-	        System.out.println("controller - user : "+userID);
+	        System.out.println("controller - user : "+shareID);
 	        System.out.println("controller - name : "+planName);
 	        System.out.println("Controller - Date: " + date);
 	        System.out.println("Controller - Color: " + color);
 	        System.out.println("controller pairs : " + lonLatPairs + "\n");
 	    }
-		PlanDTO dto = new PlanDTO(null, userID, planName, firstDate, lastDate, 0);
+		PlanDTO dto = new PlanDTO(null, shareID, null, planName, firstDate, lastDate, 0);
 		pservice.planInsert(dto);
 		
 		return "main"; 
