@@ -472,7 +472,20 @@ window.onload = function () {
 	</script>
 
 	<script type="text/javascript">
-	
+	var boardingsDiv = document.getElementById("airplane-boardings");
+	var arrivedsDiv = document.getElementById("airplane-arriveds");
+
+	 function viewBoardings() {
+		 
+	     boardingsDiv.style.display = "block";
+	     arrivedsDiv.style.display = "none";
+	   }
+
+	   function viewArriveds() {
+		 
+	     arrivedsDiv.style.display = "block";
+	     boardingsDiv.style.display = "none";
+	   }
 	function airplaneOpenPopup() {
 	    // 팝업 레이어 열기
 	    document.getElementById("airplanePopupContainer").style.display = "block";
