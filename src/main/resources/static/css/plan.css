@@ -1,4 +1,8 @@
 @charset "UTF-8";
+
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
     .preview-popup-container {
   display: none;
   position: fixed;

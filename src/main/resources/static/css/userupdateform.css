@@ -1,4 +1,9 @@
 @import "reset.css";
+
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
+
 .header {
 	width: 90vw;
 	border-bottom: 1px solid #EEEEEE;
