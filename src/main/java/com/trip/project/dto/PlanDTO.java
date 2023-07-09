@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 public class PlanDTO {
 	
 	private Integer planNumber;
-	private String userID;
+	private String shareID;
+	private String saveID;
 	private String planName;
 	private String planFirstDate;
 	private String planLastDate;

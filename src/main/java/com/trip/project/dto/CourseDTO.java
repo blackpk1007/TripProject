@@ -14,6 +14,7 @@ public class CourseDTO {
 	private String courseLastDate;
 	private String coursetravelDate;
 	private int courseCount;
-	private String userID;
+	private String shareID;
+	private String saveID;
 	private String planName;
 }

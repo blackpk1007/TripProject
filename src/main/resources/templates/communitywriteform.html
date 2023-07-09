@@ -435,19 +435,16 @@ $(document).ready(function() {
     	}
     	
     });
-    /* $("#attachFile").on("change", function() {
+/* 	$("#attachFile").on("change", function() {
         readURL(this);
-    });  */
-    
-    
-    
-   
+    }); */
     
 });
-/* function readURL(input) {
+/*   function readURL(input) {
     var session = sessionStorage.getItem('placeNumber');
     document.getElementById("placeNumber").value = session;
     var imagediv = document.querySelector("#contentText");
+    imagediv.innerHTML = '';
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -460,7 +457,7 @@ $(document).ready(function() {
     } else {
         document.getElementById('preview').src = "";
     }
-} */
+}  */
 </script>
 </head>
 <body>
@@ -554,7 +551,6 @@ $(document).ready(function() {
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="submit" value="작성" id="submitBT">
         </div>
-        
     </form>
 </div>
 </body>

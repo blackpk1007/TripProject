@@ -69,44 +69,44 @@ public interface PlaceMapper {
 	@Delete(" delete from recommand where recommandUserID=#{userID} and recommandNumber=#{recommandNumber} ")
 	int reviewdelete(String userID, String recommandNumber);
 
-	@Insert(" insert into plan values(null, #{userID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
+	@Insert(" insert into plan values(null, #{shareID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
 	int planInsert(PlanDTO dto);
 	
-	@Insert(" insert into planDetail values(null, #{userID}, #{planName}, #{planDetailDate}, #{planDetailLon}, #{planDetailLat}, #{planDetailColor}) ")
+	@Insert(" insert into planDetail values(null, #{shareID}, #{planName}, #{planDetailDate}, #{planDetailLon}, #{planDetailLat}, #{planDetailColor}) ")
 	int planDetailInsert(PlanDetailDTO dto);
 	
-	@Select(" select * from plan where userID = #{userID} ")
-	PlanDTO userPlan(String userID);
+	@Select(" select * from plan where shareID = #{shareID} ")
+	PlanDTO userPlan(String shareID);
 	
 	//마이페이지 갯수
-	@Select(" select * from plan where userID = #{userID} ")
-	public List<PlanDTO> userPlancount(String userID);
+	@Select(" select * from plan where shareID = #{shareID} ")
+	public List<PlanDTO> userPlancount(String shareID);
 	
-	@Select(" select * from planDetail where userID = #{userID} and planName = #{planName} ")
+	@Select(" select * from planDetail where shareID = #{shareID} and planName = #{planName} ")
 	List<PlanDetailDTO> userPlanDetail(PlanDetailDTO dto);
 	
 	// 마이페이지 삭제 - 플랜,플랜디테
-	@Delete(" delete from plan where userID = #{userID} and planName = #{planName} ")
-	int planDelete(String userID, String planName);
-	@Delete(" delete from planDetail where userID = #{userID} and planName = #{planName} ")
-	int planDetaildelete(String userID, String planName);
+	@Delete(" delete from plan where shareID = #{shareID} and planName = #{planName} ")
+	int planDelete(String shareID, String planName);
+	@Delete(" delete from planDetail where shareID = #{shareID} and planName = #{planName} ")
+	int planDetaildelete(String shareID, String planName);
 	// 코스, 코스디테일 삭제 
-	@Delete(" delete from course where userID = #{userID} and planName = #{planName} ")
-	int courseDelete(String userID, String planName);
-	@Delete(" delete from courseDetail where userID = #{userID} and planName = #{planName} ")
-	int courseDetaildelete(String userID, String planName);
+	@Delete(" delete from course where shareID = #{shareID} and planName = #{planName} ")
+	int courseDelete(String shareID, String planName);
+	@Delete(" delete from courseDetail where shareID = #{shareID} and planName = #{planName} ")
+	int courseDetaildelete(String shareID, String planName);
 	
 	// 마이페이지 공유
-	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, userID, planName )"
-			+ "select planFirstDate, planLastDate, #{datecount}, planCount, userID, planName "
+	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, shareID, planName )"
+			+ "select planFirstDate, planLastDate, #{datecount}, planCount, shareID, planName "
 			+ "from plan "
-			+ "WHERE planName=#{planName} AND userID=#{userID} ")
-	int planShare(String userID, String planName, @Param("datecount")int datecount);
-	@Insert(" INSERT INTO courseDetail (courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, userID, planName) "
-			+ "select planDetailDate, planDetailLon, planDetailLat, planDetailColor, userID, planName "
+			+ "WHERE planName=#{planName} AND shareID=#{shareID} ")
+	int planShare(String shareID, String planName, @Param("datecount")int datecount);
+	@Insert(" INSERT INTO courseDetail (courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, shareID, planName) "
+			+ "select planDetailDate, planDetailLon, planDetailLat, planDetailColor, shareID, planName "
 			+ "from planDetail "
-			+ "WHERE planName=#{planName} AND  userID=#{userID} ")
-	int planDetailshare(String userID, String planName);
-	@Select(" SELECT planFirstDate, planLastDate FROM plan WHERE planName=#{planName} AND userID=#{userID} ")
-	PlanDTO datecount(String userID, String planName);
+			+ "WHERE planName=#{planName} AND  shareID=#{shareID} ")
+	int planDetailshare(String shareID, String planName);
+	@Select(" SELECT planFirstDate, planLastDate FROM plan WHERE planName=#{planName} AND shareID=#{shareID} ")
+	PlanDTO datecount(String shareID, String planName);
 }
