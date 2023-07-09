@@ -1093,6 +1093,8 @@ function createMarkers(data) {
       if (selectedDay < selectedStartDate) {
         selectedEndDate = selectedStartDate;
         selectedStartDate = selectedDay;
+        const applyButton = document.querySelector("#applyButton");
+    	applyButton.style.display = 'block';
       } else if (selectedDay > selectedStartDate) {
         selectedEndDate = selectedDay;
         const applyButton = document.querySelector("#applyButton");
