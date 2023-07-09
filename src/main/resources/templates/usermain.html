@@ -172,15 +172,16 @@ body {
 /* main */
 .mymain_text {
 	font-size: 1.8rem;
-	margin-left: 22vw;
 	display:flex;
-	flex-direction:row;
+	justify-content:center;
 }
 .mine{
 	display:flex;
+	margin-right:30vw;
 }
 .somebody{
 	display:flex;
+	margin-right:26vw;
 }
 
 .mymain {
@@ -271,6 +272,7 @@ body {
 	display: none;
 }
 
+/* 나의 게시물 */
 .main {
 	display:grid;
 	border: solid;
@@ -280,9 +282,9 @@ body {
 	font-size: 1.8rem;
 	padding: 1rem;
 	margin-top: 2rem;
-	height: 15vh;
+	height: 8vh;
 	box-sizing: content-box;
-	width:55vw;
+	width:35vw;
 	align-items: center;
 }
 /* 나의 일정 */
@@ -359,9 +361,9 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-s}
-
-.myplan2 {
+}
+/* 나의 게시물 */
+.myplan1 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -386,6 +388,18 @@ s}
 }
 
 .loc3 {
+	flex: 1 1 auto;
+	display: flex;
+	justify-content:center;
+}
+
+/* 나의 리뷰, 나의 게시물 안에 내용 왼(이름) 4 오(버튼) 5*/
+.loc4 {
+	flex: 1 1 auto;
+	display: flex;
+	justify-content:center;
+}
+.loc5 {
 	flex: 1 1 auto;
 	display: flex;
 	justify-content:center;
@@ -455,7 +469,7 @@ s}
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script th:inline="javascript">
 	function myplan() {
-		document.getElementById("plan").style.display = "block";
+		document.getElementById("plan").style.display = "flex";
 		document.getElementById("review").style.display = "none"; 
 		document.getElementById("community").style.display = "none";
 		
@@ -659,7 +673,7 @@ s}
 		</div>
 
 		<div class="mymain_text">
-			<div id="plan" ><div class="mine">나의 일정</div><div class="somebody">남의 일정</div></div>
+			<div id="plan" style="display: flex;"><div class="mine">나의 일정</div><div class="somebody">남의 일정</div></div>
 			<div id="review" style="display: none;">나의 리뷰</div>
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
@@ -715,13 +729,13 @@ s}
 			<div class="list-scroll1">
 				<div class="main1" th:each="userrecommand : ${recommand}">
 					<div class="myplan1">
-						<div class="loc2" >
+						<div class="loc4" >
 							<div class="tripdate">
 								장소 이름 :<label th:text="${userrecommand.placeName}"></label><br>
 								리뷰 날짜 :<label th:text="${#dates.format(userrecommand.recommandNowDate, 'yyyy-MM-dd')}"></label>
 							</div>
 						</div>
-						<div class="loc3">
+						<div class="loc5">
 							<button id="delete1" th:onclick="reviewdelete([[${userrecommand.recommandNumber}]])" >삭제</button>
 						</div>
 					</div>
@@ -730,7 +744,7 @@ s}
 			<div class="list-scroll2">	
 				<div class="main2" th:each="user2 : ${user2recommand}">
 					<div class="myplan1">
-						<div class="loc2" >
+						<div class="loc4" >
 							<div class="tripdate">
 								2번 이상 인증한 장소 <label th:text="${user2.recommandPlaceNumber}"></label>
 							</div>
@@ -747,10 +761,10 @@ s}
 			<div class="list-scroll">
 				<div class="main" th:each="usercommunity : ${community}">
 					<div class="myplan1">
-						<div class="loc1">
+						<!-- <div class="loc1">
 							<img id="" src="#">
-						</div>
-						<div class="loc2">
+						</div> -->
+						<div class="loc4">
 							<div class="tripname">
 								게시물이름 &nbsp; <label th:text="${usercommunity.communityTitle}"></label>
 							</div>
@@ -758,7 +772,7 @@ s}
 								게시일자 &nbsp; <label th:text="${#dates.format(usercommunity.communityDate, 'yyyy-MM-dd')}"></label>
 							</div>
 						</div>
-						<div class="loc3">
+						<div class="loc5">
 							<button id="fix1" th:onclick="|location.href='/community/communityupdateform?communityNumber=${usercommunity.communityNumber}'|">수정</button>
 							<button id="delete1" th:onclick="communitydelete([[${usercommunity.communityNumber}]])">삭제</button>
 						</div>

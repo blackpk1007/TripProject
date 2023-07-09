@@ -177,7 +177,6 @@ function sendEmailConfirm(){
       data: { userEmail : emailInput
       },
       success: function (data) {
-      		document.querySelector('#userEmail').readOnly = true;
       		alert("인증메일 전송에 성공했습니다. 인증코드를 입력해주세요.");
       		var ac = document.getElementById("acd");
       		ac.value = data;
