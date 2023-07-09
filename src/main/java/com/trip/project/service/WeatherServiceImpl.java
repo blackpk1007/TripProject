@@ -21,7 +21,7 @@ import com.trip.project.dto.WeatherDTO;
 public class WeatherServiceImpl implements WeatherService {
 
 	private static final int MAX_RETRIES = 5;
-	private static final int RETRY_DELAY = 2000; // 1초
+	private static final int RETRY_DELAY = 3000; // 1초
 
 	@Override
 	public WeatherDTO Jeju() throws IOException, InterruptedException {
