@@ -12,7 +12,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
 var loginchk = [[${session.login}]];
-console.log(loginchk);
 var markers = []; // 마커를 담을 배열
 var placeData=[];
 var map; // map 객체 선언
@@ -90,15 +89,10 @@ function test(){
 	      processData: false,
 	      contentType: false,
 	      success:function(data){
-	          console.log(data);
 	          var loginchk = [[${session.login}]];
-	          console.log(loginchk);
 	          		let res=data[0];
 	          		let num=data[1];
 	          		let userCheck=data[2];
-	          		console.log(res);
-	          		console.log(num);
-	          		console.log(userCheck);
 	                var placeNumber2 = num.placeNumber;
 	                var placeName2 = num.placeName;
 	                var placeAddress2 = num.placeAddress;
@@ -106,9 +100,6 @@ function test(){
 	                placeName2 = placeName2.replace(/\s/g, '');
 	                placeAddress2 = placeAddress2.replace(/\s/g, '');
 
-	                console.log(placeNumber2);
-	                console.log(placeName2);
-	                console.log(placeAddress2);
 	                  //let res = '[(${res})]'; // Thymeleaf 문법으로 res 값을 가져옴
 	                  //let num = '[(${num})]';
 	                  //let userCheck = [[(${userCheck})]];
@@ -121,7 +112,6 @@ function test(){
 	                      if (loginchk == userCheck[i].recommandUserID) {
 	                          userCheckcnt++;
 	                          dateCheckdata=userCheck[i].recommandDate;
-	                          console.log(dateCheckdata);
 	                      }
 	                  }
 	                  /*
@@ -142,7 +132,6 @@ function test(){
 	                      for (let i = 0; i < res.images[0].fields.length; i++) {
 	                          check+=res.images[0].fields[i].inferText;
 	                      }
-	                      console.log(check);
 
 	                      var date;
 	                      var regex = /(200[0-9]|201[0-9]|202[0-3])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/g;
@@ -157,19 +146,13 @@ function test(){
 	                  
 	                   
 	                      if (check.includes(placeAddress2)) {
-	                          console.log("placeAddress 값이 포함되어 있습니다.");
 	                          placeCheckcnt++;
 	                      } else {
-	                          console.log("placeAddress 값이 포함되어 있지 않습니다.");
 	                      }
 	                      if (check.includes(placeName2)) {
-	                          console.log("placeName 값이 포함되어 있습니다.");
 	                          placeCheckcnt++;
 	                      } else {
-	                          console.log("placeName 값이 포함되어 있지 않습니다.");
 	                      }
-	                      console.log(dateCheckdata);
-	          			console.log(date);
 
 	                      if(placeCheckcnt==2){
 	                      	if(userCheckcnt==0){
@@ -187,17 +170,13 @@ function test(){
 	                                      db_check: db_check
 	                                  },
 	                                  success: function(response) {
-	                                      console.log(response);
 	                                  },
 	                                  error: function(error) {
-	                                      console.log(error);
 	                                  }
 	                              });
 	                      	}
 	                      	else if(userCheckcnt==1){
 	                      		if(dateCheckdata!=date){
-	                      			console.log(dateCheckdata);
-	                      			console.log(date);
 	                      			alert("두번째 영수증 인증이 완료되었습니다. 내 추천목록에 추가됩니다");
 	                      			closePopup();
 	                      			db_check=2;
@@ -212,10 +191,8 @@ function test(){
 	                                          db_check: db_check
 	                                      },
 	                                      success: function(response) {
-	                                          console.log(response);
 	                                      },
 	                                      error: function(error) {
-	                                          console.log(error);
 	                                      }
 	                                  });
 	                      		}
@@ -242,7 +219,6 @@ function test(){
 	
 
 var loginchk = [[${session.login}]];
-console.log(loginchk);
 var placeData=[];
 var map; // map 객체 선언
 var map2;
@@ -300,7 +276,6 @@ function fetchUpdatedMarkers(category, pageNum) {
     	  
       },
       error: function () {
-        console.log('Failed to fetch updated markers.');
       }
     });
   }
@@ -319,7 +294,6 @@ function fetchUpdatedMarkerssearch(keyword, pageNum) {
     	  
       },
       error: function () {
-        console.log('Failed to fetch updated markers.');
       }
     });
   }
@@ -459,8 +433,6 @@ function createMarkers(data) {
 	    	      var marker = markers[index];
 	      var placedata = placeData[index];
 	      var placeNumber = placedata.placeNumber;
-	      console.log(marker);
-	      console.log(placedata);
 	   	  // 이전에 클릭된 마커가 있을 경우 아이콘을 원래대로 되돌림
           if (selectedMarker !== null) {
                 selectedMarker.setIcon("/resources/image/mk.png");
@@ -493,7 +465,6 @@ function createMarkers(data) {
 	      
 	   	  // 클릭된 마커를 selectedMarker 변수에 저장
         selectedMarker = marker;
-	   	console.log("click :"+placeNumber);
 	   	selectedMarkerChartId = "chart" + index;  // 각 마커에 대한 고유한 ID 생성
 	      
         
@@ -502,14 +473,11 @@ function createMarkers(data) {
 						    type: 'GET',
 						    data: { recommandPlaceNumber : placeNumber },
 						    success: function(data2){
-						    	console.log("gender : "+data2.length);
 						    	if(data2.length == 0){
 						    		return false;
 						    	}
 						    	var count1 = data2[0].count;
 					            var count2 = data2[1].count;
-						    	console.log(data2[0].count);
-						    	console.log(data2[1].count);
 						    	
 						    	var total = count1 + count2;
 						    	  var ratio1 = count1 / total;
@@ -546,7 +514,6 @@ function createMarkers(data) {
 						    type: 'GET',
 						    data: { recommandPlaceNumber : placeNumber },
 						    success: function(data3){
-						    	console.log("birth : "+data3);
 						    	if(data3.length == 0){
 						    		
 						    		return false;
@@ -1185,8 +1152,6 @@ function createMarkers(data) {
 		        color: colorName
 		      });
 		     });
-		    console.log("placecheck : "+placecheck);
-		    console.log("check : "+check);
 		    if(!check){
 	     		 alert('날짜별 색상을 모두 선택해 주세요');
 	     		  return false;
@@ -1449,7 +1414,6 @@ function createMarkers(data) {
 	    var startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
 	    var endPage = Math.min(totalPages, startPage + pageRange - 1);
 	    var decodekeyword = decodeURIComponent(keyword);
-		console.log(decodekeyword);
 	    // 페이지 번호 생성
 	    for (var i = startPage; i <= endPage; i++) {
 	        var pageLink = document.createElement('a');
@@ -1879,8 +1843,6 @@ function previewOpenPopup(inputValues) {
 		    	var buttons = Array.from(previewdayButtonDiv.getElementsByTagName('button'));
 	              var buttonIndex = buttons.indexOf(event.target);
 		      var selectedInputValue = inputValues[buttonIndex - 1];
-		      console.log('Button ' + (buttonIndex + 2) + ' clicked');
-		      console.log('Selected Input Value:', selectedInputValue);
 		      // 경로 표시를 위한 데이터 추출
 		      var date = selectedInputValue.date;
 		      var color = selectedInputValue.color;
@@ -1892,7 +1854,6 @@ function previewOpenPopup(inputValues) {
 		    });
 		}
 		  const buttons = document.querySelectorAll('.preview-day-button-div button');
-		  console.log("test buttons : "+buttons);
 		  let selectedButton = document.querySelector('.preview-day-button-selected');
 		  
 		  buttons.forEach(button => {
@@ -1951,8 +1912,6 @@ function previewOpenPopup(inputValues) {
 			    	var buttons = Array.from(dayButtonDiv.getElementsByTagName('button'));
 		              var buttonIndex = buttons.indexOf(event.target);
 			      var selectedInputValue = inputValues[buttonIndex - 1];
-			      console.log('Button ' + (buttonIndex + 1) + ' clicked');
-			      console.log('Selected Input Value:', selectedInputValue);
 			      // 경로 표시를 위한 데이터 추출
 			      var date = selectedInputValue.date;
 			      var color = selectedInputValue.color;
@@ -2168,7 +2127,6 @@ for (var i = 0; i < inputValues.length; i++) {
 			  map2.setZoom(zoom);
 			},
 			error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	}
@@ -2176,7 +2134,6 @@ for (var i = 0; i < inputValues.length; i++) {
 	function addMarker(status, lon, lat, tag, color) {
 	//출도착경유구분
 	//이미지 파일 변경.
-	console.log("addMarker : "+color);
 	var markerLayer;
 	switch (status) {
 		case "llStart":
@@ -2274,7 +2231,6 @@ for (var i = 0; i < inputValues.length; i++) {
 						  map2.setZoom(zoom);
 						},
 						error:function(request,status,error){
-						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 					}
 				});
 				
@@ -2367,7 +2323,6 @@ for (var i = 0; i < inputValues.length; i++) {
 			
 				},
 				error:function(request,status,error){
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 			}

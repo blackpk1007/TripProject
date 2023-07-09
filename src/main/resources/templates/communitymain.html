@@ -439,7 +439,6 @@ function drawListCategory(){
 		communityCategory:value	
 	};
 	
-	console.log(value+": drawList");
 	//ajax로 요청 후 해당 카테고리의 데이터 응답받기.
 	$.ajax({
 		url: '/community/selectbox',
@@ -448,7 +447,6 @@ function drawListCategory(){
 		contentType: 'application/json',
 		data: JSON.stringify(category),
 		success: function(data) {
-			console.log(data);
 			$("#lists").empty();
 			
 			findAllPost(data.list, data.pagination);

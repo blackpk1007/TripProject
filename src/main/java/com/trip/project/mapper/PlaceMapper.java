@@ -99,6 +99,20 @@ public interface PlaceMapper {
 	@Delete(" delete from courseDetail where shareID = #{shareID} and planName = #{planName} ")
 	int courseDetaildelete(String shareID, String planName);
 	
+	// 마이페이지 삭제 - 플랜,플랜디테
+		@Delete(" delete from plan where shareID = #{shareID} and planName = #{planName} and saveID = #{saveID} ")
+		int plansaveDelete(String shareID, String planName, String saveID);
+		
+		@Delete(" delete from planDetail where shareID = #{shareID} and planName = #{planName} and saveID = #{saveID} ")
+		int plansaveDetaildelete(String shareID, String planName, String saveID);
+		
+		// 코스, 코스디테일 삭제 
+		@Delete(" delete from course where shareID = #{shareID} and planName = #{planName} and saveID = #{saveID} ")
+		int coursesaveDelete(String shareID, String planName, String saveID);
+		
+		@Delete(" delete from courseDetail where shareID = #{shareID} and planName = #{planName} and saveID = #{saveID} ")
+		int coursesaveDetaildelete(String shareID, String planName, String saveID);
+		
 	// 마이페이지 공유
 	@Insert(" INSERT INTO course (courseFirstDate, courseLastDate, coursetravelDate, courseCount, shareID, planName )"
 			+ "select planFirstDate, planLastDate, #{datecount}, planCount, shareID, planName "
@@ -114,4 +128,8 @@ public interface PlaceMapper {
 	
 	@Select(" SELECT planFirstDate, planLastDate FROM plan WHERE planName=#{planName} AND shareID=#{shareID} ")
 	PlanDTO datecount(String shareID, String planName);
+	
+	
+	@Select(" select * from plan where saveID = #{saveID} order by planNumber desc ")
+	public List<PlanDTO> savePlanList(String saveID);
 }

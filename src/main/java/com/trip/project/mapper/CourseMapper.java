@@ -122,5 +122,17 @@ public interface CourseMapper {
 			+ "WHERE planName=#{planName} AND  shareID=#{shareID} ")
 	int courseDetailshare(String shareID, String planName);
 	
+	@Insert(" insert into plan (planName, planFirstDate, planLastDate, planCount, shareID, saveID)"
+			+ " select planName, courseFirstDate, courseLastDate, courseCount, shareID, #{saveID}"
+			+ " from course "
+			+ " where planName=#{planName} and shareID=#{shareID}")
+	int coursesave( @Param("shareID")String shareID,  @Param("planName")String planName, @Param("saveID")String saveID);
+	
+	@Insert(" insert into planDetail (planName, planDetailDate, planDetailLon, planDetailLat, planDetailColor, shareID, saveID)"
+			+ " select planName, courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, shareID, #{saveID}"
+			+ " from courseDetail "
+			+ " where planName=#{planName} and shareID=#{shareID}")
+	int courseDetailSave(@Param("shareID")String shareID,  @Param("planName")String planName, @Param("saveID")String saveID);
+	
 	
 }

@@ -29,4 +29,8 @@ public interface CourseService {
 	//List<PlaceDTO> coursePlace(String userID, String planName);
 	
 	int courseListCount(String shareID, String planName);
+	
+	int coursesave(String shareID, String planName, String saveID);
+	
+	int courseDetailSave(String shareID, String planName, String saveID);
 }

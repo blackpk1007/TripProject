@@ -231,6 +231,7 @@ public class LoginController {
 		
 		model.addAttribute("plan", pservice.userPlancount(shareID));
 		model.addAttribute("plancount", pservice.userPlancount(shareID).size());
+		model.addAttribute("savePlanList", pservice.savePlanList(shareID));
 		System.out.println("일정 : "+ pservice.userPlancount(shareID));
 		System.out.println(pservice.userPlancount(shareID).size());
 
@@ -285,6 +286,22 @@ public class LoginController {
 		System.out.println(res3);
 		return shareID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
 	}
+	
+	@ResponseBody
+	@RequestMapping("/plansavedelete")
+	public String plansaveDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName, @RequestParam("saveID") String saveID) {
+		String shareID = userID;
+		int res = pservice.plansaveDelete(shareID,planName, saveID);
+		int res1 = pservice.plansaveDetaildelete(shareID, planName, saveID);
+		int res2 = pservice.coursesaveDelete(shareID, planName, saveID);
+		int res3 = pservice.coursesaveDetaildelete(shareID, planName, saveID);
+		System.out.println(res);
+		System.out.println(res1);
+		System.out.println(res2);
+		System.out.println(res3);
+		return shareID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
+	}
+	
 	//plan 공유 
 	@ResponseBody
 	@RequestMapping("/planshare")
