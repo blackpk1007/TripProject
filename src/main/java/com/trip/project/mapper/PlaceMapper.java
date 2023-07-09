@@ -69,10 +69,10 @@ public interface PlaceMapper {
 	@Delete(" delete from recommand where recommandUserID=#{userID} and recommandNumber=#{recommandNumber} ")
 	int reviewdelete(String userID, String recommandNumber);
 
-	@Insert(" insert into plan values(null, #{shareID}, #{planName}, #{planFirstDate}, #{planLastDate}, default) ")
+	@Insert(" insert into plan values(null, #{planName}, #{planFirstDate}, #{planLastDate}, default, #{shareID}, null) ")
 	int planInsert(PlanDTO dto);
 	
-	@Insert(" insert into planDetail values(null, #{shareID}, #{planName}, #{planDetailDate}, #{planDetailLon}, #{planDetailLat}, #{planDetailColor}) ")
+	@Insert(" insert into planDetail values(null, #{planName}, #{planDetailDate}, #{planDetailLon}, #{planDetailLat}, #{planDetailColor}, #{shareID}, null) ")
 	int planDetailInsert(PlanDetailDTO dto);
 	
 	@Select(" select * from plan where shareID = #{shareID} ")
