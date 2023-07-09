@@ -169,8 +169,11 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 16px;
+	font-size: 22px;
+
+	
 }
+
 
 #nav label {
 	margin-left: 5vh;
@@ -179,7 +182,11 @@ header {
 
 #nav>label>a {
 	text-decoration: none;
-	color: black;
+	  color: #FFFF;
+	  
+	  font-weight: bold;
+text-shadow: -1.2px -1.2px 0 #595959, 1.2px -1.2px 0 #595959, -1.2px 1.2px 0 #595959, 1.2px 1.2px 0 #595959;
+
 }
 
 #back_img {
@@ -197,6 +204,8 @@ header {
 	transform: translate(-50%, -50%);
 	color: white;
 	font-size: 24pt;
+	font-weight: bold;
+    text-shadow: -1px -1px 0 #595959, 1.7px -1.7px 0 #595959, -1px 1px 0 #595959, 1.7px 1.7px 0 #595959;
 }
 
 #place_text {
