@@ -20,8 +20,8 @@ import com.trip.project.dto.WeatherDTO;
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
-	private static final int MAX_RETRIES = 3;
-	private static final int RETRY_DELAY = 1000; // 1초
+	private static final int MAX_RETRIES = 5;
+	private static final int RETRY_DELAY = 2000; // 1초
 
 	@Override
 	public WeatherDTO Jeju() throws IOException, InterruptedException {
@@ -62,6 +62,7 @@ public class WeatherServiceImpl implements WeatherService {
 
 		conn.setConnectTimeout(5000); // 5초 연결 시간 초과 설정
 		conn.setReadTimeout(5000); // 5초 읽기 시간 초과 설정
+		
 		int retryCount = 0;
 		while (retryCount < MAX_RETRIES) {
 			try {
@@ -167,9 +168,6 @@ public class WeatherServiceImpl implements WeatherService {
 		String baseDate = dateFormat.format(cal.getTime()); // 현재 날짜를 base_date에 설정
 		String baseTime = timeFormat.format(cal.getTime()); // 현재 시간을 base_time에 설정
 		String previousDate = dateFormat.format(cal2.getTime()); // 현재 날짜를 base_date에 설정
-
-		System.out.println("weather service baseDate : " + baseDate);
-		System.out.println("weather service baseTime : " + baseTime);
 
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /* URL */

@@ -1172,9 +1172,12 @@ function createMarkers(data) {
 		          lon: inputLonValue,
 		          lat: inputLatValue
 		        });
-				
 		      });
-
+				
+		      if (lonLatPairs.length === 0) {
+		    	  placecheck = false;
+		          return;
+		        }
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
@@ -1182,17 +1185,6 @@ function createMarkers(data) {
 		        color: colorName
 		      });
 		     });
-		    values.forEach((values, index) => {
-		    	const lon = values.lonLatPairs;
-		    	console.log("test : "+lon);
-				if(lon.length == 0){
-					let placecheck = false;
-					return placecheck;
-				}else{
-					let placecheck = true;
-				}
-		    });
-			
 		    console.log("placecheck : "+placecheck);
 		    console.log("check : "+check);
 		    if(!check){
@@ -1251,7 +1243,10 @@ function createMarkers(data) {
 		          lat: inputLatValue
 		        });
 		      });
-					
+		      if (lonLatPairs.length === 0) {
+		    	  placecheck = false;
+		          return;
+		        }
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
@@ -1264,11 +1259,17 @@ function createMarkers(data) {
 	     		 alert('날짜별 색상을 선택해 주세요');
 	     		  return false;
 	     	  }
+		    if(!placecheck){
+		    	alert('날짜별 장소를 모두 선택해 주세요');
+		    	return false;
+		    }
 		    return values;
 		  }
 		  
 		  const inputValues = getInputValues();
-
+		  if(!inputValues || inputValues.length == 0){
+     		  return false;
+     	  }
 		  insertOpenPopup(inputValues);
 
 		 }
@@ -1387,7 +1388,7 @@ function createMarkers(data) {
 			    error: function(data){
 			    	alert("일정이 완성 되지 않았습니다");
 			    }
-			  });	
+			  });
 		}
 		   
 	}
@@ -1487,7 +1488,7 @@ function createMarkers(data) {
 		    });
 		  });
 		});
-	
+
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
