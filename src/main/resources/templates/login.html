@@ -66,7 +66,7 @@
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<!-- 인증 정보 가져오기 -->
 	<script>
-	window.Kakao.init("caf721d118cb16bb0ca6fb2a15be8b66");
+	window.Kakao.init("4fb6dbe1d5f6609176d8e3fcecf11a9a");
 	function kakaologin(){
 	    window.Kakao.Auth.login({ 
 	        scope   : 'profile_nickname, account_email',
@@ -79,7 +79,7 @@
 	                    console.log(kakao_account);
 	                    console.log(kakao_account.profile.nickname);
  	                    let obj = {
-	                    		userId : kakao_account.email,
+	                    		userEmail : kakao_account.email,
 	                    		userName : kakao_account.profile.nickname
 	                    };
 	                    
