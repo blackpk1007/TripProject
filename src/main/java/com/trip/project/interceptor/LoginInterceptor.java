@@ -17,14 +17,18 @@ public class LoginInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 		
-		if(request.getRequestURI().contains("/") ||
+		if(request.getRequestURI().equals("/login") ||
+		   
 		   request.getSession().getAttribute("login") != null){ 
 			return true;
 		}
 		
-		if(request.getSession().getAttribute("login") == null) {
+		if(request.getRequestURI().startsWith("/community/communitymain") ||
+		   request.getRequestURI().startsWith("/chatting") ||
+		   request.getRequestURI().startsWith("/course/recommandcourse") ||
+		   request.getSession().getAttribute("login") == null) {
 			
-			response.sendRedirect("/loginform");
+			response.sendRedirect("/login");
 			
 			return false;
 		}

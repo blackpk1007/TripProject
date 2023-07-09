@@ -822,6 +822,10 @@ function createMarkers(data) {
 
 //적용 버튼 클릭 시 실행되는 함수
   function applyDate() {
+	if(loginchk == null){
+		alert('로그인 후 이용이 가능합니다.');
+		return false;
+	}
 	  const info = document.querySelector(".info");
 	  info.style.display = 'none';
 	const applyButton = document.querySelector("#applyButton");

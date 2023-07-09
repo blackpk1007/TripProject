@@ -1,5 +1,6 @@
 	package com.trip.project.controller;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +25,8 @@ import com.trip.project.dto.CourseDetailDTO;
 import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDetailDTO;
 import com.trip.project.service.CourseService;
+import com.trip.project.service.MainpageService;
+import com.trip.project.service.PlanService;
 
 @Controller
 @RequestMapping("/course")
@@ -32,6 +35,8 @@ public class CourseController {
 	@Autowired
 	private CourseService cService;
 	
+	@Autowired
+	private MainpageService mservice;
 	// 코스 추천
 	@RequestMapping("/recommandcourse")
 	public String recommandcourse(Model model) {
@@ -133,4 +138,12 @@ public class CourseController {
 		  
 		return "coursedetail";
 		}
+	
+	@ResponseBody
+	@PostMapping("/info")
+	public PlaceDTO placeInfo(@RequestParam("placeName") String placeName) {
+		PlaceDTO dto = mservice.getPlaceInfo(placeName); 
+		
+		return dto;
 	}
+}
