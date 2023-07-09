@@ -53,6 +53,7 @@
 
 .place_popup p {
 	margin-bottom: 10px;
+	font-size:14px;
 }
 
 .place_popup-close {
@@ -218,6 +219,7 @@
 	justify-content: center;
   	align-items: center;
 	width:5vw;
+	height:3.5vh;
 }
 .day2{
 	width:6vw;
@@ -236,16 +238,18 @@
 /* 큰덩어리 */
 .mymain{
 	display: flex;
-	justify-content: center;
   	align-items: center;
 	flex-direction: column;
-	height: 48vh;
+	height: 70vh;
 	margin: 2rem;
 	margin-top:0;
 	margin-bottom:5vh;
 	overflow:auto;
 }
-
+.mymain::-webkit-scrollbar {
+	display: none;
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
 .main{
 	display:flex;
 	width:45vw;
@@ -300,6 +304,7 @@
 	width:4rem;
 	height:4rem;
 	margin:1rem;
+	cursor:pointer;
 }
 .location{
 	width:4rem;
@@ -361,6 +366,7 @@
 .swiper-slide {
     position: relative;
     height: 10vh;
+    bottom: 1.5vh;    
   }
 .swiper-slide img {
 	width:50%;
@@ -371,6 +377,11 @@
 .swiper-slide-day{
 	margin-top: 2vh;
 	margin-bottom: 1vh;
+	    width: 100%;
+}
+.swiper-slide-day>button{
+	font-weight: bold;
+	margin-bottom:1vh;
 }
 .allDay-img-div {
 	width: 16vw;
@@ -461,7 +472,7 @@
 		<div class="swiper-pagination" id="swiper-pagination-course"></div>
 		</div>
 		<!-- 밑에 리스트 -->
-		<div class="mymain_text">
+	<!-- 	<div class="mymain_text"> -->
 		</div>
 		<div class="mymain">
 		</div>
