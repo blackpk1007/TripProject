@@ -1,4 +1,7 @@
 @charset "UTF-8";
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
 /* 팝업 컨테이너 스타일 */
 .place_popup-container {
 	position: fixed;

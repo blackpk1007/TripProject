@@ -173,6 +173,14 @@ body {
 .mymain_text {
 	font-size: 1.8rem;
 	margin-left: 22vw;
+	display:flex;
+	flex-direction:row;
+}
+.mine{
+	display:flex;
+}
+.somebody{
+	display:flex;
 }
 
 .mymain {
@@ -200,6 +208,28 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	-ms-overflow-style: none;
+}
+/* 나의 일정 왼쪽 */
+.list-scroll3 {
+	width: 40vw;
+	/* height: 35vh; */
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-end;
+	-ms-overflow-style: none;
+}
+/* 나의 일정 오쪽 */
+.list-scroll4 {
+	width: 40vw;
+	/* height: 35vh; */
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
 	-ms-overflow-style: none;
 }
  /* 나의 리뷰  */
@@ -234,6 +264,12 @@ body {
 .list-scroll2::-webkit-scrollbar {
 	display: none;
 }
+.list-scroll3::-webkit-scrollbar {
+	display: none;
+}
+.list-scroll4::-webkit-scrollbar {
+	display: none;
+}
 
 .main {
 	display:grid;
@@ -249,6 +285,26 @@ body {
 	width:55vw;
 	align-items: center;
 }
+/* 나의 일정 */
+
+.main3 {
+	display:flex;
+	border: solid;
+	border-color: #B8E9FF;
+	border-radius: 0.5rem;
+	border-width: 2px;
+	font-size: 1.8rem;
+	padding: 1rem;
+	margin-top: 2rem;
+	margin-left:2rem;
+	margin-right:2rem;
+	box-sizing: content-box;
+	width:30vw;
+	align-items: center;
+	justify-content:center;
+	overflow:hidden;
+}
+
 /* 나의리뷰 */
 .main1 {
 	display:flex;
@@ -283,31 +339,27 @@ body {
 	align-items: center;
 }
 
-#location1 {
-	width: 18rem;
-	height: 15rem;
+.imageloc1 {
+	width: 15rem;
+	height: 13rem;
 	overflow: hidden;
 	background: #BDBDBD;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
-
-.myplan1 {
+/* 나의 일정 왼쪽*/
+.myplan3 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
-
-#location2 {
-	width: 18rem;
-	height: 15rem;
-	overflow: hidden;
-	background: #BDBDBD;
+/* 나의 일정 오른쪽*/
+.myplan4 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
+s}
 
 .myplan2 {
 	display: flex;
@@ -316,13 +368,13 @@ body {
 }
 
 .loc1 {
-	flex: 1 0 auto;
+	flex: 1 1 auto;
 	display: flex;
 	justify-content:center;
 }
 
 .loc2 {
-	flex: 3 0 auto;
+	flex: 3 1 auto;
 }
 
 .tripname {
@@ -334,7 +386,7 @@ body {
 }
 
 .loc3 {
-	flex: 1 0 auto;
+	flex: 1 1 auto;
 	display: flex;
 	justify-content:center;
 }
@@ -407,7 +459,7 @@ body {
 		document.getElementById("review").style.display = "none"; 
 		document.getElementById("community").style.display = "none";
 		
-		document.getElementById("myplan").style.display = "block";
+		document.getElementById("myplan").style.display = "flex";
 		document.getElementById("myreview").style.display = "none"; 
 		document.getElementById("mycommunity").style.display = "none";
 	}
@@ -606,17 +658,17 @@ body {
 		</div>
 
 		<div class="mymain_text">
-			<div id="plan" >나의 일정</div>
+			<div id="plan" ><div class="mine">나의 일정</div><div class="somebody">남의 일정</div></div>
 			<div id="review" style="display: none;">나의 리뷰</div>
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
-		<!-- 나의 일정  -->
-		<div class="mymain" id="myplan" style="display: block;">
-			<div class="list-scroll">
-				<div class="main" th:each="userplan : ${plan}">
-					<div class="myplan1">
+		<!-- 나의 일정 왼쪽 세로 -->
+		<div class="mymain2" id="myplan" style="display: flex;">
+			<div class="list-scroll3">
+				<div class="main3" th:each="userplan : ${plan}">
+					<div class="myplan3">
 						<div class="loc1">
-							<img id="location1" src="#">
+							<img class="imageloc1" src="#">
 						</div>
 						<div class="loc2">
 							<div class="tripname">
@@ -629,6 +681,28 @@ body {
 						</div>
 						<div class="loc3">
 							<button id="share1" th:onclick="planshare([[${userplan.planName}]])">공유</button>
+							<button id="delete1" th:onclick="plandelete([[${userplan.planName}]])">삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 나의 일정 오른쪽 세로 -->
+			<div class="list-scroll4">
+				<div class="main3" th:each="userplan : ${plan}">
+					<div class="myplan4">
+						<div class="loc1">
+							<img class="imageloc1" src="#">
+						</div>
+						<div class="loc2">
+							<div class="tripname">
+								여행이름 &nbsp; <label th:text="${userplan.planName}"></label>
+							</div>
+							<div class="tripdate">
+								여행일자 &nbsp; <label th:text="${userplan.planFirstDate}"></label>
+								~ <label th:text="${userplan.planLastDate}"></label>
+							</div>
+						</div>
+						<div class="loc3">
 							<button id="delete1" th:onclick="plandelete([[${userplan.planName}]])">삭제</button>
 						</div>
 					</div>
@@ -673,7 +747,7 @@ body {
 				<div class="main" th:each="usercommunity : ${community}">
 					<div class="myplan1">
 						<div class="loc1">
-							<img id="location1" src="#">
+							<img id="" src="#">
 						</div>
 						<div class="loc2">
 							<div class="tripname">
