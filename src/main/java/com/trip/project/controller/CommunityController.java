@@ -71,7 +71,7 @@ public class CommunityController {
 	public String communityWrite(CommunityDTO dto, Model modelD) throws IOException {
 		logger.info("COMMUNITY WRITE");
 		
-		
+		System.out.println("communitywrite="+dto);
 		
 		
 		// List<UploadFile> imagefile = FileStore.storeFiles(dto.getImageFiles());
