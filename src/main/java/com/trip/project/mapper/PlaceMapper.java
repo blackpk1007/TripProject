@@ -59,7 +59,7 @@ public interface PlaceMapper {
 //	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} " )
 //	public List<RecommandDTO> usermainRecommand(String userID);	
 	// 마이페이지에 recommand 2개이상 갯수 세는거
-	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} group by recommandPlaceNumber having count(*) > 1" )
+	@Select(" select p.placeName, r.recommandNowDate, r.recommandNumber from recommand r join place p on r.recommandPlaceNumber = p.placeNumber where r.recommandUserID = #{userID} group by recommandPlaceNumber having count(*) > 1 ")
 	public List<RecommandDTO> user2recommand(String userID);
 	// 마이페이지에 리뷰 부분에 recommandPlaceNumber로 place 정보 (placeName) 가져오는거, 리뷰쓴날자 가져오기 
 	@Select("select p.placeName, r.recommandNowDate, r.recommandNumber from recommand r join place p on r.recommandPlaceNumber = p.placeNumber where r.recommandUserID = #{userID}")

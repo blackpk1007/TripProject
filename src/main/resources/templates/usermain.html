@@ -53,6 +53,9 @@ body {
 	padding-right:1vw;
 }
 
+#label-left-plan {
+	margin: auto;
+}
 
 #label-left-course {
 	margin: auto;
@@ -184,6 +187,18 @@ body {
 	display:flex;
 	margin-right:26vw;
 }
+.reviewall{
+	display:flex;
+	margin-right:24vw;
+}
+.review2{
+	display:flex;
+	margin-right:16vw;
+}
+
+#community{
+	margin-right:50vw;
+}
 
 .mymain {
 	display: flex;
@@ -285,7 +300,7 @@ body {
 	margin-top: 2rem;
 	height: 8vh;
 	box-sizing: content-box;
-	width:35vw;
+	width:80rem;
 	align-items: center;
 }
 /* 나의 일정 */
@@ -396,7 +411,7 @@ body {
 
 /* 나의 리뷰, 나의 게시물 안에 내용 왼(이름) 4 오(버튼) 5*/
 .loc4 {
-	flex: 1 1 auto;
+	flex: 3 1 auto;
 	display: flex;
 	justify-content:center;
 }
@@ -480,7 +495,7 @@ body {
 	}
 	function myreview() {
 		document.getElementById("plan").style.display = "none";
-		document.getElementById("review").style.display = "block"; 
+		document.getElementById("review").style.display = "flex"; 
 		document.getElementById("community").style.display = "none";
 		
 		document.getElementById("myplan").style.display = "none";
@@ -492,7 +507,7 @@ body {
 	function mycommunity() {
 		document.getElementById("plan").style.display = "none";
 		document.getElementById("review").style.display = "none"; 
-		document.getElementById("community").style.display = "block";
+		document.getElementById("community").style.display = "flex";
 		
 		document.getElementById("myplan").style.display = "none";
 		document.getElementById("myreview").style.display = "none"; 
@@ -675,7 +690,7 @@ body {
 
 		<div class="mymain_text">
 			<div id="plan" style="display: flex;"><div class="mine">나의 일정</div><div class="somebody">남의 일정</div></div>
-			<div id="review" style="display: none;">나의 리뷰</div>
+			<div id="review" style="display: none;"><div class="reviewall">나의 모든 리뷰</div><div class="review2">두번 인증 한 장소</div></div>
 			<div id="community" style="display: none;">나의 게시물</div>
 		</div>
 		<!-- 나의 일정 왼쪽 세로 -->
@@ -747,7 +762,7 @@ body {
 					<div class="myplan1">
 						<div class="loc4" >
 							<div class="tripdate">
-								2번 이상 인증한 장소 <label th:text="${user2.recommandPlaceNumber}"></label>
+								두번 인증 한 장소 :&nbsp; <label th:text="${user2.placeName}"></label>
 							</div>
 						</div>
 						<!-- <div class="loc3">
