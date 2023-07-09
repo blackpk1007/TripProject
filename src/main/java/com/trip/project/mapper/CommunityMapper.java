@@ -69,7 +69,7 @@ public interface CommunityMapper {
 	List<CommunityDTO> selectCommunityCategoryList(String communityCategory, SearchDTO params);
 	
 	// 마이페이지에 내 게시물 정보 들고오
-	@Select( " SELECT * FROM community WHERE communityWriter=#{userID} " )
+	@Select( " SELECT * FROM community WHERE communityWriter=#{userID} order by communityNumber desc " )
 	List<CommunityDTO> usermainCommunity(String userID);
 	// 마이페이지에서 게시물 삭제
 	@Delete(" DELETE FROM community WHERE communityNumber=#{communityNumber} AND communityWriter=#{userID} ")

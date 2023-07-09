@@ -59,10 +59,10 @@ public interface PlaceMapper {
 //	@Select(" SELECT * FROM recommand WHERE recommandUserID=#{userID} " )
 //	public List<RecommandDTO> usermainRecommand(String userID);	
 	// 마이페이지에 recommand 2개이상 갯수 세는거
-	@Select(" select p.placeName, r.recommandNowDate, r.recommandNumber from recommand r join place p on r.recommandPlaceNumber = p.placeNumber where r.recommandUserID = #{userID} group by recommandPlaceNumber having count(*) > 1 ")
+	@Select(" select p.placeName, r.recommandNowDate, r.recommandNumber from recommand r join place p on r.recommandPlaceNumber = p.placeNumber where r.recommandUserID = #{userID} group by recommandPlaceNumber having count(*) > 1 order by recommandNumber desc ")
 	public List<RecommandDTO> user2recommand(String userID);
 	// 마이페이지에 리뷰 부분에 recommandPlaceNumber로 place 정보 (placeName) 가져오는거, 리뷰쓴날자 가져오기 
-	@Select("select p.placeName, r.recommandNowDate, r.recommandNumber from recommand r join place p on r.recommandPlaceNumber = p.placeNumber where r.recommandUserID = #{userID}")
+	@Select("select p.placeName, r.recommandNowDate, r.recommandNumber from recommand r join place p on r.recommandPlaceNumber = p.placeNumber where r.recommandUserID = #{userID} order by recommandNumber desc ")
 	public List<RecommandDTO> placename(String userID);	
 	
 	// 마이페이지에 나의 리뷰 삭제하기 버튼
@@ -79,7 +79,7 @@ public interface PlaceMapper {
 	PlanDTO userPlan(String shareID);
 	
 	//마이페이지 갯수
-	@Select(" select * from plan where shareID = #{shareID} ")
+	@Select(" select * from plan where shareID = #{shareID} order by planNumber desc ")
 	public List<PlanDTO> userPlancount(String shareID);
 	
 	@Select(" select * from planDetail where shareID = #{shareID} and planName = #{planName} ")
@@ -88,11 +88,14 @@ public interface PlaceMapper {
 	// 마이페이지 삭제 - 플랜,플랜디테
 	@Delete(" delete from plan where shareID = #{shareID} and planName = #{planName} ")
 	int planDelete(String shareID, String planName);
+	
 	@Delete(" delete from planDetail where shareID = #{shareID} and planName = #{planName} ")
 	int planDetaildelete(String shareID, String planName);
+	
 	// 코스, 코스디테일 삭제 
 	@Delete(" delete from course where shareID = #{shareID} and planName = #{planName} ")
 	int courseDelete(String shareID, String planName);
+	
 	@Delete(" delete from courseDetail where shareID = #{shareID} and planName = #{planName} ")
 	int courseDetaildelete(String shareID, String planName);
 	
@@ -102,11 +105,13 @@ public interface PlaceMapper {
 			+ "from plan "
 			+ "WHERE planName=#{planName} AND shareID=#{shareID} ")
 	int planShare(String shareID, String planName, @Param("datecount")int datecount);
+	
 	@Insert(" INSERT INTO courseDetail (courseDetailDate, courseDetailLon, courseDetailLat, courseDetailColor, shareID, planName) "
 			+ "select planDetailDate, planDetailLon, planDetailLat, planDetailColor, shareID, planName "
 			+ "from planDetail "
 			+ "WHERE planName=#{planName} AND  shareID=#{shareID} ")
 	int planDetailshare(String shareID, String planName);
+	
 	@Select(" SELECT planFirstDate, planLastDate FROM plan WHERE planName=#{planName} AND shareID=#{shareID} ")
 	PlanDTO datecount(String shareID, String planName);
 }
