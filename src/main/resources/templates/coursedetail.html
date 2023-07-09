@@ -168,7 +168,7 @@
 	height: 100%;
 	flex-direction: column;
 	position:relative;
-	left:1vw;
+
 	justify-content: center;
 	align-items: center;
 	
@@ -243,6 +243,7 @@
 	margin: 2rem;
 	margin-top:0;
 	margin-bottom:5vh;
+	overflow:auto;
 }
 
 .main{
@@ -370,6 +371,19 @@
 .swiper-slide-day{
 	margin-top: 2vh;
 	margin-bottom: 1vh;
+}
+.allDay-img-div {
+	width: 16vw;
+    height: 20vh;
+    /* display: flex;
+    justify-content: center;
+ */
+}
+.day-img-div{
+	width: 16vw;
+    height: 20vh;
+   	/* display: flex;
+    justify-content: center; */
 
 }
  .swiper-pagination-bullet-active{
@@ -385,7 +399,6 @@
   #courseInfo-installText{
   	margin-right:0.5vw;
   }
-  
   
 </style>
 
@@ -629,6 +642,7 @@ function closePopup() {
 		  allDayButtondiv.className = "swiper-slide-day";
 		  
 		  var allDayImgdiv = document.createElement('div');
+		  allDayImgdiv.className= "allDay-img-div";
 	      var allImage = document.createElement('img');
 	      allImage.src = '/resources/image/all.png';
 	      var allDaybutton = document.createElement('button');
@@ -659,6 +673,7 @@ function closePopup() {
 		      buttonSwiperContent.appendChild(dayButtondiv);
 		      
 		      var dayImgdiv = document.createElement('div');
+		      dayImgdiv.className= 'day-img-div';
 		      var image = document.createElement('img');
 		      image.src = '/resources/image/place/'+courseimage[i].placeName+'.jpg';
 		      
