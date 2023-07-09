@@ -360,6 +360,11 @@ html{
 .list > div{
 	display: flex;
 }
+#list-img{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
 #list-img>img {
 	width: 6vw;
 	height: 9vh;
@@ -367,7 +372,6 @@ html{
 	border-radius: 0.5vw;
 	margin-left: 0.5vw;
 	margin-right: 0.5vw;
-	margin-top: 0.5vh;
 }
 
 #list-name {
