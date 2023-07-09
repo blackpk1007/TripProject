@@ -219,9 +219,9 @@ window.onload = function () {
 	</div> 
 
 	<div id="airplanePopupContainer" class="airplanePopupContainer">
+				<div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
 	<div class="airplanePopupContent">
 			<div id="AirplaneInformation">
-				<div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
     				<div class="airplane-title">
     					<div class="airplane-button-block">
     						<button class="airplane-button"  onclick="viewBoardings();">출발지: 제주</button>
