@@ -103,7 +103,6 @@ function regist_check() {
       return false;
   }
   
-  
   alert("회원가입이 완료되었습니다!");
 
   //입력 값 전송
@@ -141,6 +140,8 @@ function idCheck(){
        		console.log(result);
                 if(result == 0 ){
                 alert(useridvalue+"는 사용가능한 아이디입니다");
+                document.querySelector('#userID').readOnly = true;
+                document.querySelector('#userEmail').disabled = false;
 				}else{
 				alert("중복된 아이디가 존재합니다!");
 				userID.focus();
@@ -159,7 +160,7 @@ function sendEmailConfirm(){
 	
 	var emailInput = document.getElementById("userEmail").value;
 	if (emailInput == "") {
-    alert("이메일 주소를 입력하세요.");
+    alert("아이디 중복체크 후 이메일 주소를 입력하세요.");
     emailInput.focus();
     return false;
   	}

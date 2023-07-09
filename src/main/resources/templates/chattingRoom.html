@@ -8,12 +8,11 @@
 
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
-	font-size: 1.6rem;
+	font-size: 1.8rem;
 	display:grid;
 	grid-template-rows: 13vh;
 	font-weight:500;
@@ -45,20 +44,9 @@
 }
 
 #logimg {
-	width: 26rem;
-	height: 16rem;
+	width: 280px;
+	height: 160px;
 	padding-right:1vw;
-}
-
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
 }
 
 #label-left-course {
@@ -195,9 +183,9 @@
 	<div class="header">
 		<div class="header-category">
 			<div class="header-left">
+				<a href="/plan" id="label-left-plan">일정 만들기</a>
 				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
 				<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-				<a href="/chatting" id="label-left-chat">동행구하기</a>
 			</div>
 			<div class="header-center">
 				<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>

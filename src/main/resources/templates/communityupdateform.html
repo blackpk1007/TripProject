@@ -5,13 +5,18 @@
 <title>Insert title here</title>
 
 <style type="text/css">
+
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
+
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
+	font-size:62.5%;
 	display:grid;
 	grid-template-rows: 13vh;
 	font-weight:500;
@@ -25,6 +30,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-size: 1.8em;
 }
 .header-left{
 	flex:2;
@@ -46,21 +52,9 @@
 }
 
 #logimg {
-	font-size:62.5%;
-	width: 26em;
-	height: 16em;
+	width: 280px;
+	height: 160px;
 	padding-right:1vw;
-}
-
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
 }
 
 #label-left-course {
@@ -84,11 +78,14 @@
 #label-right-register {
 	margin-left: 3vw;
 }
+html::-webkit-scrollbar {
+    display: none;
+}
 	  	   #write{
             width:50%;
 	        margin:20px auto;
 	        text-align:center;
-	        height:75vh;
+	        height:85vh;
 	        min-width:800px;
         }
         .div{

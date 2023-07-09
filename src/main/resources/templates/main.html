@@ -146,7 +146,7 @@ window.onload = function () {
 		<div class="swiper-wrapper">
 		<div th:each="course : ${courses}" class="swiper-slide">
 	      <div class="hot_img">
-	        <a th:href="@{|/course/coursedetail?planName=${course.planName}&userID=${course.userID}|}">
+	        <a th:href="@{|/course/coursedetail?planName=${course.planName}&shareID=${course.shareID}|}">
 	          <img th:src="@{/resources/image/place/__${course.planName}__.jpg}">
 	        </a>
 	      </div>
@@ -219,9 +219,9 @@ window.onload = function () {
 	</div> 
 
 	<div id="airplanePopupContainer" class="airplanePopupContainer">
+				<div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
 	<div class="airplanePopupContent">
 			<div id="AirplaneInformation">
-				<div id="airplane-boardings" th:if="${not #lists.isEmpty(boardings)}" style="display: block">
     				<div class="airplane-title">
     					<div class="airplane-button-block">
     						<button class="airplane-button"  onclick="viewBoardings();">출발지: 제주</button>
@@ -472,7 +472,20 @@ window.onload = function () {
 	</script>
 
 	<script type="text/javascript">
-	
+	var boardingsDiv = document.getElementById("airplane-boardings");
+	var arrivedsDiv = document.getElementById("airplane-arriveds");
+
+	 function viewBoardings() {
+		 
+	     boardingsDiv.style.display = "block";
+	     arrivedsDiv.style.display = "none";
+	   }
+
+	   function viewArriveds() {
+		 
+	     arrivedsDiv.style.display = "block";
+	     boardingsDiv.style.display = "none";
+	   }
 	function airplaneOpenPopup() {
 	    // 팝업 레이어 열기
 	    document.getElementById("airplanePopupContainer").style.display = "block";

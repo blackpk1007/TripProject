@@ -71,12 +71,10 @@ public class CommunityController {
 	public String communityWrite(CommunityDTO dto, Model modelD) throws IOException {
 		logger.info("COMMUNITY WRITE");
 		
-		
-		
-		
 		// List<UploadFile> imagefile = FileStore.storeFiles(dto.getImageFiles());
 		UploadFile file = FileStore.storeFile(dto.getAttachFile());
-
+		System.out.println("controller : "+dto);
+		
 		// 게시글 insert
 		int communityInsertRes = cService.insert(dto);
 		int imageInsertRes = 0;

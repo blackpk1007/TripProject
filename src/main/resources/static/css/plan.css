@@ -1,4 +1,8 @@
 @charset "UTF-8";
+
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
     .preview-popup-container {
   display: none;
   position: fixed;
@@ -189,11 +193,10 @@
   
   #weatherImg{
   	width: 4vw;
-  	height: 4.5vh;
+  	height: 5vh;
   }
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
@@ -213,6 +216,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-size:1.8em;
 }
 .header-left{
 	flex:2;
@@ -234,20 +238,9 @@
 }
 
 #logimg {
-	width: 16vw;
-	height: 12vh;
+	width: 280px;
+	height: 160px;
 	padding-right:1vw;
-}
-
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
 }
 
 #label-left-course {

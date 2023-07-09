@@ -10,7 +10,7 @@ public interface CourseService {
 	
 	List<CourseDTO> courseList();
 	
-	CourseDTO courseDetail(String userID, String planName);
+	CourseDTO courseDetail(String shareID, String planName);
 	
 	List<CourseDTO> courseDateSort();
 	
@@ -24,9 +24,9 @@ public interface CourseService {
 	
 	List<CourseDTO> courseDaysSeasons(List<Integer> days, List<Integer> months);
 	
-	List<CourseDetailDTO> courseDetailList(String userID, String planName);
+	List<CourseDetailDTO> courseDetailList(String shareID, String planName);
 	
 	//List<PlaceDTO> coursePlace(String userID, String planName);
 	
-	int courseListCount(String userID, String planName);
+	int courseListCount(String shareID, String planName);
 }

@@ -1,4 +1,7 @@
 @charset "UTF-8";
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
 /* 팝업 컨테이너 스타일 */
 .place_popup-container {
 	position: fixed;
@@ -569,7 +572,7 @@ td {
  		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 16px;
+		font-size: 14px;
  	}
  	.airplane-rmkKor-ifdiv-div{
  		width:12vh;

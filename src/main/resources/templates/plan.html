@@ -822,6 +822,10 @@ function createMarkers(data) {
 
 //적용 버튼 클릭 시 실행되는 함수
   function applyDate() {
+	if(loginchk == null){
+		alert('로그인 후 이용이 가능합니다.');
+		return false;
+	}
 	  const info = document.querySelector(".info");
 	  info.style.display = 'none';
 	const applyButton = document.querySelector("#applyButton");
@@ -1089,6 +1093,8 @@ function createMarkers(data) {
       if (selectedDay < selectedStartDate) {
         selectedEndDate = selectedStartDate;
         selectedStartDate = selectedDay;
+        const applyButton = document.querySelector("#applyButton");
+    	applyButton.style.display = 'block';
       } else if (selectedDay > selectedStartDate) {
         selectedEndDate = selectedDay;
         const applyButton = document.querySelector("#applyButton");
@@ -1166,9 +1172,12 @@ function createMarkers(data) {
 		          lon: inputLonValue,
 		          lat: inputLatValue
 		        });
-				
 		      });
-
+				
+		      if (lonLatPairs.length === 0) {
+		    	  placecheck = false;
+		          return;
+		        }
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
@@ -1176,17 +1185,6 @@ function createMarkers(data) {
 		        color: colorName
 		      });
 		     });
-		    values.forEach((values, index) => {
-		    	const lon = values.lonLatPairs;
-		    	console.log("test : "+lon);
-				if(lon.length == 0){
-					let placecheck = false;
-					return placecheck;
-				}else{
-					let placecheck = true;
-				}
-		    });
-			
 		    console.log("placecheck : "+placecheck);
 		    console.log("check : "+check);
 		    if(!check){
@@ -1245,7 +1243,10 @@ function createMarkers(data) {
 		          lat: inputLatValue
 		        });
 		      });
-					
+		      if (lonLatPairs.length === 0) {
+		    	  placecheck = false;
+		          return;
+		        }
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
@@ -1258,11 +1259,17 @@ function createMarkers(data) {
 	     		 alert('날짜별 색상을 선택해 주세요');
 	     		  return false;
 	     	  }
+		    if(!placecheck){
+		    	alert('날짜별 장소를 모두 선택해 주세요');
+		    	return false;
+		    }
 		    return values;
 		  }
 		  
 		  const inputValues = getInputValues();
-
+		  if(!inputValues || inputValues.length == 0){
+     		  return false;
+     	  }
 		  insertOpenPopup(inputValues);
 
 		 }
@@ -1376,12 +1383,13 @@ function createMarkers(data) {
 			    	}),
 			    contentType: 'application/json',
 			    success: function(data) {
+			    	alert("일정이 등록 되었습니다.");
 			      location.href="/login/usermain";
 			    },
 			    error: function(data){
 			    	alert("일정이 완성 되지 않았습니다");
 			    }
-			  });	
+			  });
 		}
 		   
 	}
@@ -1481,7 +1489,7 @@ function createMarkers(data) {
 		    });
 		  });
 		});
-	
+
 	window.onload = function () {
 		  buildCalendar();
 		  initTmap();
@@ -1496,7 +1504,7 @@ function createMarkers(data) {
 			<div class="header-left">
 				<a href="/course/recommandcourse" id="label-left-course">코스추천</a> 
 				<a href="/community/communitymain" id="label-left-community">커뮤니티</a>
-				<a href="/chatting" id="label-left-chat">채팅방</a>
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
 			</div>
 			<div class="header-center">
 				<a href="/"><img src="./resources/image/logo.png" alt="" id="logimg"></a>

@@ -58,8 +58,8 @@
 						&nbsp;비밀번호 확인 <input type="password" id="userPW2" name="userPW2">
 					</div>
 					<div class="loginForm">
-						&nbsp;이메일 <button id="sendAuthButton" type="button" onclick="sendEmailConfirm()">인증번호 전송</button>
-						<input type="text" id="userEmail" name="userEmail">
+						&nbsp;이메일 <button id="sendAuthButton" type="button" onclick="sendEmailConfirm()" >인증번호 전송</button>
+						<input type="text" id="userEmail" name="userEmail" disabled>
 					</div>
 					<div class="loginForm">
 						&nbsp;인증번호 입력 <input type="text" id="authCode" name="authCode" placeholder="인증번호8자리입력" maxlength="8">
@@ -99,6 +99,7 @@ function emailAuth(){
 	}
 	if (sendauthcode == userauthcode){
 	document.querySelector('#signinButton').disabled = false;
+	document.querySelector('#userEmail').readOnly = true;
 	alert(" 인증번호가 일치합니다! ");
 	}else{
 	alert(" 인증번호가 일치하지 않습니다!");

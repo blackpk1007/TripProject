@@ -5,13 +5,17 @@
 <title>Insert title here</title>
 
 <style type="text/css">
+html::-webkit-scrollbar {
+	font-family: 'Noto Sans KR Light', sans-serif;
+	display: none;
+}
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
+	font-size:62.5%;
 	display:grid;
 	grid-template-rows: 13vh;
 	font-weight:500;
@@ -26,6 +30,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-size: 1.8em;
 }
 .header-left{
 	flex:2;
@@ -47,21 +52,9 @@
 }
 
 #logimg {
-	font-size:62.5%;
-	width: 26em;
-	height: 16em;
+	width: 280px;
+	height: 160px;
 	padding-right:1vw;
-}
-
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
 }
 
 #label-left-course {
@@ -85,11 +78,14 @@
 #label-right-register {
 	margin-left: 3vw;
 }
+html::-webkit-scrollbar {
+    display: none;
+}
 	   #write{
             width:50%;
 	        margin:20px auto;
 	        text-align:center;
-	        height:90vh;
+	        height:85vh;
 	        min-width:800px;
         }
         .div{
@@ -181,6 +177,18 @@
 		    justify-content: center;
       	}
         #contentText{
+          	width: 33.5vw;
+		    border: none;
+		    height: 30vh;
+		    text-align: left;
+		    padding: 3px;
+		    overflow: auto;
+            
+        }
+        #contentText::-webkit-scrollbar {
+	display: none;
+}
+        #contentTextDiv-div{
           	width: 35vw;
 		    border: solid 1px black;
 		    height: 53vh;
@@ -190,6 +198,14 @@
 		    margin-left: 2.2vw;
             
         }
+        #contentText-img{
+        	height:20vh;
+        	width:20vw;
+        }
+        #preview{
+			width: 100%;
+        	float: left;
+		}
         .editor-menu{
     		margin-top: 1vh;
 		    width: 70%;
@@ -298,11 +314,7 @@
 	        color: #B8E9FF;
 	        
     	}
-		#preview{
-			width: 40%;
-        	hegith:5vh;
-        	float: left;
-		}
+		
 		
        
 </style>
@@ -441,22 +453,20 @@ $(document).ready(function() {
     	}
     	
     });
-    /* $("#attachFile").on("change", function() {
+/* 	$("#attachFile").on("change", function() {
         readURL(this);
-    });  */
-    
-    
-    
-   
+    }); */
     
 });
-/* function readURL(input) {
+ /* function readURL(input) {
     var session = sessionStorage.getItem('placeNumber');
     document.getElementById("placeNumber").value = session;
-    var imagediv = document.querySelector("#contentText");
+    var imagediv = document.querySelector("#contentText-img");
+    imagediv.innerHTML = '';
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
+        	imagediv.style.display='block';
         	var image = document.createElement("img");
         	image.id = 'preview';
         	imagediv.appendChild(image);
@@ -465,8 +475,10 @@ $(document).ready(function() {
         reader.readAsDataURL(input.files[0]);
     } else {
         document.getElementById('preview').src = "";
+  
+ 
     }
-} */
+}   */
 </script>
 </head>
 <body>
@@ -548,8 +560,9 @@ $(document).ready(function() {
 			<div id="content-write-div">
 	            <div id="write_con">내용</div>
 	            <div id="contentTextDiv">
-	            	<div id="contentText" contenteditable="true">
-	            		
+	            	<div id="contentTextDiv-div">
+	            		<div id="contentText-img" style="display:none;"></div>
+	            		<div id="contentText" contenteditable="true"></div>
 	            	</div>
 	            	<input type="hidden" name="placeNumber" value="" id="placeNumber">
 	            </div>	
@@ -560,7 +573,6 @@ $(document).ready(function() {
             <input type="button" value="목록" id="listBT" onclick="location.href='/community/communitymain'">
             <input type="submit" value="작성" id="submitBT">
         </div>
-        
     </form>
 </div>
 </body>

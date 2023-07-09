@@ -10,14 +10,100 @@
 	<link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css">
 <style type="text/css">
+/* 팝업 컨테이너 스타일 */
+.place_popup-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+}
+
+/* 팝업 내부 스타일 */
+.place_popup {
+	position: relative;
+	background-color: #fff;
+	padding: 20px;
+	max-width: 800px;
+	max-height: 95%;
+	width: 800px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	border: 4px solid #B8E9FF; /* 테두리 추가 */
+	box-sizing: border-box; /* 테두리를 요소 크기에 포함 */
+	overflow-y: auto;
+}
+
+.place_popup img {
+	width: 100%; /* 이미지를 꽉 차게 표시 */
+	height: auto;
+	margin: 0 auto;
+	display: block;
+}
+
+.place_popup h1 {
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+.place_popup p {
+	margin-bottom: 10px;
+	font-size:14px;
+}
+
+.place_popup-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	font-size: 20px;
+	color: #888;
+}
+.place_popup-close-listEmpty{
+	position: absolute;
+	top: 185px;
+    right: 570px;
+	cursor: pointer;
+	font-size: 20px;
+	color: #888;
+	
+}
+
+.place_popup img {
+	max-width: 600px;
+	max-height: 300px;
+	width: auto;
+	height: auto;
+	margin: 0 auto;
+	display: block;
+}
+
+.place_popup p.recommend {
+	display: flex;
+	align-items: center;
+}
+
+.place_popup p.recommend img {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+}
+
+.place_popup p.recommend span {
+	font-size: 14px;
+}
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
-	font-size:1.6rem;
+	font-size: 1.8rem;
 	display:grid;
 	grid-template-rows: 13vh;
 	font-weight:500;
@@ -49,21 +135,11 @@
 }
 
 #logimg {
-	width: 26rem;
-	height: 16rem;
+	width: 280px;
+	height: 160px;
 	padding-right:1vw;
 }
 
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
-}
 
 #label-left-course {
 	margin-right: 3vw;
@@ -94,7 +170,7 @@
 	height: 100%;
 	flex-direction: column;
 	position:relative;
-	left:1vw;
+
 	justify-content: center;
 	align-items: center;
 	
@@ -144,6 +220,7 @@
 	justify-content: center;
   	align-items: center;
 	width:5vw;
+	height:3.5vh;
 }
 .day2{
 	width:6vw;
@@ -162,15 +239,18 @@
 /* 큰덩어리 */
 .mymain{
 	display: flex;
-	justify-content: center;
   	align-items: center;
 	flex-direction: column;
-	height: 48vh;
+	height: 70vh;
 	margin: 2rem;
 	margin-top:0;
 	margin-bottom:5vh;
+	overflow:auto;
 }
-
+.mymain::-webkit-scrollbar {
+	display: none;
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
 .main{
 	display:flex;
 	width:45vw;
@@ -225,6 +305,7 @@
 	width:4rem;
 	height:4rem;
 	margin:1rem;
+	cursor:pointer;
 }
 .location{
 	width:4rem;
@@ -286,6 +367,7 @@
 .swiper-slide {
     position: relative;
     height: 10vh;
+    bottom: 1.5vh;    
   }
 .swiper-slide img {
 	width:50%;
@@ -296,6 +378,24 @@
 .swiper-slide-day{
 	margin-top: 2vh;
 	margin-bottom: 1vh;
+	    width: 100%;
+}
+.swiper-slide-day>button{
+	font-weight: bold;
+	margin-bottom:1vh;
+}
+.allDay-img-div {
+	width: 16vw;
+    height: 20vh;
+    /* display: flex;
+    justify-content: center;
+ */
+}
+.day-img-div{
+	width: 16vw;
+    height: 20vh;
+   	/* display: flex;
+    justify-content: center; */
 
 }
  .swiper-pagination-bullet-active{
@@ -311,7 +411,6 @@
   #courseInfo-installText{
   	margin-right:0.5vw;
   }
-  
   
 </style>
 
@@ -348,7 +447,7 @@
 	<div class="body">
 		<div class="courseinfobox">
 				<div class="left">
-					<div class="courseInfo-title">[[${coursedetail.userID}]] 의 [[${coursedetail.planName}]]</div>
+					<div class="courseInfo-title">[[${coursedetail.shareID}]] 의 [[${coursedetail.planName}]]</div>
 					<div class="courseInfo-date">[[${coursedetail.courseFirstDate}]] ~ [[${coursedetail.courseLastDate}]]</div>
 				</div>
 				<div class="right">
@@ -374,7 +473,7 @@
 		<div class="swiper-pagination" id="swiper-pagination-course"></div>
 		</div>
 		<!-- 밑에 리스트 -->
-		<div class="mymain_text">
+	<!-- 	<div class="mymain_text"> -->
 		</div>
 		<div class="mymain">
 		</div>
@@ -404,8 +503,64 @@
 	</script>
 </body>
 <script th:inline="javascript">
-	var place = [[${placeInfo}]];
-	var courseimage = [[${courseimage}]];
+//장소별 팝업창
+var place = [[${placeInfo}]];
+var courseimage = [[${courseimage}]];
+	
+function placePopup(placeName) {
+	console.log(placeName);
+  $.ajax({
+    url: '/course/info',
+    type: 'POST',
+    data: { placeName: placeName },
+    success: function(response) {
+      openPopup(response.placeName, response.placeAddress, response.placePhone, response.placeContent, response.placeInfo, response.placeGood);
+    },
+    error: function(error) {
+      console.error('Error:', error);
+    }
+  });
+}
+
+function openPopup(placeName,placeAddress,  placePhone, placeContent, placeInfo, placeGood, imagePath) {
+	  var popupContainer = document.createElement("div");
+	  popupContainer.setAttribute("id", "place_popupContainer");
+	  popupContainer.setAttribute("class", "place_popup-container");
+
+	  var popup = document.createElement("div");
+	  popup.setAttribute("class", "place_popup");
+
+	  popup.innerHTML = `
+	  <br>
+	  <div class="popup_imgcontainer">
+		<img src="/resources/image/place/${placeName}.jpg">
+		</div>
+		<br><hr><br><br>
+	    <h1>${placeName}</h1>
+	    <br>
+	    <p>📍 ${placeAddress}</p>
+	    <p>📞 ${placePhone}</p>
+	    <p>✔️ ${placeInfo}</p>
+	    <br>
+
+	    <p>${placeContent}</p><br><br><hr>
+	    <br>
+	    <p class="recommend"><img src="/resources/image/insta_heart.png"/><span>추천수: ${placeGood}</span></p>
+	    <span class="place_popup-close" onclick="closePopup()">X </span>
+	    	`;
+
+	  popupContainer.appendChild(popup);
+	  document.body.appendChild(popupContainer);
+	}
+
+
+function closePopup() {
+  var popupContainer = document.getElementById("place_popupContainer");
+  if (popupContainer) {
+    popupContainer.parentNode.removeChild(popupContainer);
+  }
+}
+	
 	  map = new Tmapv2.Map("map_div", {
 	    center: new Tmapv2.LatLng(33.3616666, 126.5291666),
 	    width: "50vw", // 지도의 넓이
@@ -496,9 +651,10 @@
 		  allButtonSwiperContent.className = "swiper-slide";
 		  
 		  var allDayButtondiv = document.createElement('div');
-		  allDayButtondiv.className = "swiper-slide";
+		  allDayButtondiv.className = "swiper-slide-day";
 		  
 		  var allDayImgdiv = document.createElement('div');
+		  allDayImgdiv.className= "allDay-img-div";
 	      var allImage = document.createElement('img');
 	      allImage.src = '/resources/image/all.png';
 	      var allDaybutton = document.createElement('button');
@@ -529,6 +685,7 @@
 		      buttonSwiperContent.appendChild(dayButtondiv);
 		      
 		      var dayImgdiv = document.createElement('div');
+		      dayImgdiv.className= 'day-img-div';
 		      var image = document.createElement('img');
 		      image.src = '/resources/image/place/'+courseimage[i].placeName+'.jpg';
 		      
@@ -572,7 +729,7 @@
   			mymainText.appendChild(day2Div);
   			mymainDiv.appendChild(mymainText);
 			  for (var i = 0; i < lonLatPairs.length; i++) {
-				  console.log(placeName[0].placeName);
+				  (function(i) {
 			    var mainDiv = document.createElement('div');
 			    mainDiv.className = 'main';
 			    mymainDiv.appendChild(mainDiv);
@@ -604,19 +761,25 @@
 			    infoImg.className = 'info';
 			    infoImg.src = '/resources/image/exclamationmark.png';
 			    sec4.appendChild(infoImg);
+			    infoImg.addEventListener('click', function(event) {
+			    	console.log("click : "+placeName[i].placeName);
+			    	placePopup(placeName[i].placeName);
+			    });
 
 			    mainDiv.appendChild(sec1);
 			    mainDiv.appendChild(sec2);
 			    mainDiv.appendChild(sec3);
 			    mainDiv.appendChild(sec4);
-			  }
+			  })(i);
 			}
+		  }
 		
 		  function allMainContent(dates) {
 			  var mymainDiv = document.querySelector('.mymain');
 			  mymainDiv.innerHTML = ''; // 기존 내용 초기화
 
 			for(var i = 0; i < dates.length; i++){
+				
 				var date = dates[i];
 				var item = inputValues[0][date];
 				var placeName = item.placeName;
@@ -666,15 +829,22 @@
 			    var infoImg = document.createElement('img');
 			    infoImg.className = 'info';
 			    infoImg.src = '/resources/image/exclamationmark.png';
+			    infoImg.dataset.placeName = placeName[j].placeName; // placeName 값을 data-place-name 속성으로 저장
+			    infoImg.addEventListener('click', function(event) {
+			    	 var clickedImg = event.target; // 클릭된 이미지 요소를 참조
+			    	  var clickedPlaceName = clickedImg.dataset.placeName; // 클릭된 이미지의 data-place-name 속성 값을 읽어옴
+			    	  console.log("click : " + clickedPlaceName);
+			    	  placePopup(clickedPlaceName);
+			      });
 			    sec4.appendChild(infoImg);
 
 			    mainDiv.appendChild(sec1);
 			    mainDiv.appendChild(sec2);
 			    mainDiv.appendChild(sec3);
 			    mainDiv.appendChild(sec4);
-			}
 			  }
 			}
+		  }
 
 		  function clearRoutes() {
 		      if (new_polyLine.length > 0) {
