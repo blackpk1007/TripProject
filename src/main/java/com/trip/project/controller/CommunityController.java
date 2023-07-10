@@ -124,19 +124,21 @@ public class CommunityController {
 
 	// 커뮤니티 수정
 	@RequestMapping("/communityupdate")
-	public String communityUpdate(CommunityDTO dto, ImageDTO imageDto) throws IOException {
+	public String communityUpdate(CommunityDTO dto, ImageDTO imageDto, int communityNumber) throws IOException {
 		UploadFile file = FileStore.storeFile(dto.getAttachFile());
-
+		System.out.println("updatefile="+file);
 		// 게시글 update
 		int communityUpdateRes = cService.update(dto);
+		System.out.println("communityudate="+communityUpdateRes);
 		int imageUpdateRes = 0;
 		int imageInsertRes = 0;
 		
 		//file을 선택했을때 
 		if (file != null) {
 			
-			CommunityDTO tmp = cService.ComunityselectOne();
+			CommunityDTO tmp = cService.selectOne(communityNumber);
 			file.setImageNumber(tmp.getCommunityNumber());
+			System.out.println("updatefilenumber="+file);
 			//image update
 			imageUpdateRes = cService.updateImg(file);
 			
@@ -179,7 +181,8 @@ public class CommunityController {
 	@ResponseBody
 	@RequestMapping("/image/{filename}")
 	public UrlResource showImage(@PathVariable String filename) throws MalformedURLException {
-	    return new UrlResource("file:" + FileStore.getFullPath(filename));
+	    System.out.println("show:"+filename);
+		return new UrlResource("file:" + FileStore.getFullPath(filename));
 
 	}
 	@ResponseBody

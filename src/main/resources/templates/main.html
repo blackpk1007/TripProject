@@ -115,12 +115,12 @@ window.onload = function () {
 	<div class="swiper-container" id="swiper-container-hotPlace">
 	  <div class="swiper-wrapper">
 	    <div th:each="list : ${list}" class="swiper-slide">
-	      <div class="hot_img">
+	      <div class="hot_img1">
 	        <a href="javascript:void(0);" onclick="placePopup(this.getAttribute('data-place-name'), this.getAttribute('data-image-path'))" th:data-place-name="${list.placeName}" th:data-image-path="@{/resources/image/place/__${list.placeName}__.jpg}">
 	          <img th:src="@{/resources/image/place/__${list.placeName}__.jpg}">
 	        </a>
 	      </div>
-	      <div th:text="${list.placeName}" class="hot_text"></div>
+	      <div th:text="${list.placeName}" class="hot_text1"></div>
 	    </div>
 	  </div>
 	  <!-- 네비게이션 -->
@@ -147,7 +147,7 @@ window.onload = function () {
 	          <img src="/resources/image/13day.png">
 	        </a>
 	      </div>
-	      <div class="hot_text">1~3일</div>
+	      <div class="hot_text">Day 1~3</div>
 	      </div>
 		<div class="swiper-slide">
 	      <div class="hot_img">
@@ -155,7 +155,7 @@ window.onload = function () {
 	          <img src="/resources/image/46day.png">
 	        </a>
 	      </div>
-	      <div class="hot_text">4~6일</div>
+	      <div class="hot_text">Day 4~6</div>
 	      </div>
 	      <div class="swiper-slide">
 	      <div class="hot_img">
@@ -171,7 +171,7 @@ window.onload = function () {
 	          <img src="/resources/image/10day.png">
 	        </a>
 	      </div>
-	      <div class="hot_text">10일 이상</div>
+	      <div class="hot_text">Day 10+</div>
 	      </div>
 	    </div>
 		<!-- 네비게이션 -->
