@@ -56,7 +56,6 @@ public class ReivewController {
         resultList.add(res);
         resultList.add(OcrTest.selectByPlaceNumber(placeNumber));
         resultList.add(OcrTest.selectRecommandPlaceNumber(placeNumber));
-        System.out.println(res);
         return resultList;
     }
 
@@ -72,9 +71,7 @@ public class ReivewController {
 	@ResponseBody
 	@PostMapping("/reviewdelete")
 	public String reviewdelete(@RequestParam("userID")String userID, @RequestParam("recommandNumber") String recommandNumber) {
-		System.out.println(recommandNumber);
 		int res = pservice.reviewdelete(userID, recommandNumber);
-		System.out.println(res);
 		return userID.toString()+"님의"+recommandNumber.toString()+"번 리뷰가 삭제되었습니다.";
 	}
 	
