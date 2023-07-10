@@ -82,8 +82,6 @@ public class CourseController {
 	public List<CourseDTO> seasonsdates(@RequestBody Map<String, List<Integer>> days){
 		List<Integer> selectDays = days.get("days");
 		List<Integer> selectMonths = days.get("months");
-		System.out.println("season days  days: "+selectDays);
-		System.out.println("season days  months: "+selectMonths);
 		List<CourseDTO> season = cService.courseDaysSeasons(selectDays, selectMonths);
 		
 		return season;

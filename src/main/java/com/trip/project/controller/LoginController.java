@@ -196,7 +196,7 @@ public class LoginController {
 		if (res != 0) {
 			System.out.println(dto.getUserName());
 			model.addAttribute("message", "회원가입 완료.");
-			return "redirect:/";
+			return "redirect:/login";
 		} else {
 			model.addAttribute("error", "재등록.");
 			return "redirect:/registerform";
@@ -217,7 +217,6 @@ public class LoginController {
 	public String emailConfirm(String userEmail, HttpSession session) throws Exception {
 
 	  String confirm = emailService.sendSimpleMessage(userEmail);
-	  System.out.println("인증번호"+confirm);
 	  session.setAttribute("authcode", confirm);
 	  session.setMaxInactiveInterval(180);
 	  return confirm;
@@ -227,30 +226,17 @@ public class LoginController {
 	@RequestMapping("/usermain")
 	public String userMain(HttpSession session, Model model) {
 		String shareID = (String) session.getAttribute("login");
-		System.out.println(shareID);
-		
+		//나의 일정 정보 
 		model.addAttribute("plan", pservice.userPlancount(shareID));
 		model.addAttribute("plancount", pservice.userPlancount(shareID).size());
-		System.out.println("일정 : "+ pservice.userPlancount(shareID));
-		System.out.println(pservice.userPlancount(shareID).size());
-
+		//나의 리뷰 정보 
 		model.addAttribute("recommand", pservice.placename(shareID) );
 		model.addAttribute("recommandcount", pservice.placename(shareID).size());
-		System.out.println("리뷰 : "+ pservice.placename(shareID));
-		System.out.println(pservice.placename(shareID).size());
-		
+		// 나의 리뷰 2군데 장소 
 		model.addAttribute("user2recommand", pservice.user2recommand(shareID));
-		System.out.println("리뷰 2개이상 : "+pservice.user2recommand(shareID));
-		
-//		model.addAttribute("placename", pservice.placename(userID));
-//		System.out.println(pservice.placename(userID));
-		
-		
+		// 나의 게시물 
 		model.addAttribute("community", cservice.usermainCommunity(shareID));
 		model.addAttribute("communitycount",cservice.usermainCommunity(shareID).size());
-		System.out.println("게시물 : "+cservice.usermainCommunity(shareID));
-		System.out.println(cservice.usermainCommunity(shareID).size());
-		
 		
 		return "usermain";
 		
@@ -279,10 +265,7 @@ public class LoginController {
 		int res1 = pservice.planDetaildelete(shareID, planName);
 		int res2 = pservice.courseDelete(shareID, planName);
 		int res3 = pservice.courseDetaildelete(shareID, planName);
-		System.out.println(res);
-		System.out.println(res1);
-		System.out.println(res2);
-		System.out.println(res3);
+
 		return shareID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
 	}
 	//plan 공유 
@@ -292,8 +275,7 @@ public class LoginController {
 		String shareID = userID;
 		int res = pservice.planShare(shareID, planName);
 		int res1 = pservice.planDetailshare(shareID, planName);
-		System.out.println(res);
-		System.out.println(res1);
+
 		return shareID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
 	}
 	
@@ -304,7 +286,6 @@ public class LoginController {
 	@RequestMapping("/communitydelete")
 	public String communityDelete(@RequestParam("communityNumber")String communityNumber,@RequestParam("userID")String userID ) {
 		int res = cservice.communityDelete(communityNumber, userID);
-		System.out.println(res);
 		
 		return "게시물이 삭제되었습니다.";
 	}
@@ -316,7 +297,7 @@ public class LoginController {
 	public String userupdate(Model model, LoginDTO dto) {
 		
 		int res = lservice.update(dto);
-		System.out.println(res);
+
 		return dto.getUserID();
 	}
 
@@ -325,7 +306,6 @@ public class LoginController {
 	@RequestMapping("/userdelete")
 	public String userDelete(Model model, LoginDTO dto) {
 		int res = lservice.delete(dto);
-		System.out.println(res);
 		
 		return dto.getUserID()+"님의 회원탈퇴가 완료되었습니다.";
 	}
