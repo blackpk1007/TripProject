@@ -66,7 +66,6 @@ public class PlanController {
 	@GetMapping("/birthList")
 	public List<LoginDTO> birthList(@RequestParam int recommandPlaceNumber) {
 		List<LoginDTO> birthList = pservice.birthList(recommandPlaceNumber);
-		System.out.println(birthList);
 		return birthList;
 	}
 	
@@ -74,8 +73,6 @@ public class PlanController {
 	@GetMapping("/fetchMarkers") 
 	public Map<String, Object> planMarker(@RequestParam("category")String category, @RequestParam("pageNum") int pageNum, Model model) {
 		int totalItems = pservice.placeCategoryCount(category);
-		System.out.println("controller category : "+category);
-		System.out.println("controller totalitem: "+totalItems);
         int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
 
         // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
@@ -124,11 +121,6 @@ public class PlanController {
 	            // 데이터베이스에 저장 로직 구현
 	            // 예: saveDataToDatabase(userID, planName, date, color, lon, lat);
 	        }
-	        System.out.println("controller - user : "+shareID);
-	        System.out.println("controller - name : "+planName);
-	        System.out.println("Controller - Date: " + date);
-	        System.out.println("Controller - Color: " + color);
-	        System.out.println("controller pairs : " + lonLatPairs + "\n");
 	    }
 		PlanDTO dto = new PlanDTO(null, shareID, null, planName, firstDate, lastDate, 0);
 		pservice.planInsert(dto);
@@ -144,10 +136,6 @@ public class PlanController {
 	        String date = (String) inputValue.get("date");
 	        String color = (String) inputValue.get("color");
 	        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) inputValue.get("lonLatPairs");
-
-	        System.out.println("Controller - Date: " + date);
-	        System.out.println("Controller - Color: " + color);
-	        System.out.println("controller pairs : " + lonLatPairs + "\n");
 	    }
 
 	    return "course";
@@ -158,8 +146,6 @@ public class PlanController {
 		
 		model.addAttribute("arriveds", aservice.jejuArrived());
 		model.addAttribute("boardings", aservice.jejuBoarding());
-		System.out.println(aservice.jejuArrived());
-		System.out.println(aservice.jejuBoarding());
 		
 		return "airplane";
 	}
