@@ -12,7 +12,7 @@ public class CourseDTO {
 	private int courseNumber;
 	private String courseFirstDate;
 	private String courseLastDate;
-	private String coursetravelDate;
+	private int coursetravelDate;
 	private int courseCount;
 	private String shareID;
 	private String saveID;

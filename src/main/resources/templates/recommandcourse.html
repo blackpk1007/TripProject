@@ -42,11 +42,22 @@ function generateHTML(data) {
         var coursetravelDate = course.coursetravelDate;
         var shareID = course.shareID;
         var courseCount = course.courseCount;
+        var coursePic = '';
+
+        if (coursetravelDate > 0 && coursetravelDate < 4) {
+            coursePic = '/resources/image/13day.png';
+        } else if (coursetravelDate > 3 && coursetravelDate < 7) {
+            coursePic = '/resources/image/46day.png';
+        } else if (coursetravelDate > 6 && coursetravelDate < 10) {
+            coursePic = '/resources/image/79day.png';
+        } else {
+            coursePic = '/resources/image/10day.png';
+        }
 
         var itemHtml = `
             <div class="plan1">
                 <div class="loc1">
-                    <img class="coursepic" src="/resources/image/course1.png">
+                    <img class="coursepic" src="${coursePic}">
                 </div>
                 <div class="loc2">
                     <div class="col1">
@@ -74,6 +85,7 @@ function generateHTML(data) {
 
     $('.main1').html(html);
 }
+
 
 function displayAllCourses() {
     $.ajax({
@@ -250,6 +262,17 @@ function sendSelectedDatesSeasons(dates, seasons) {
             // AJAX 요청 실패 시 수행할 동작
         }
     });
+}
+function getImageDay(travelDate) {
+    if (travelDate >= 1 && travelDate <= 3) {
+        return '13';
+    } else if (travelDate >= 4 && travelDate <= 6) {
+        return '46';
+    } else if (travelDate >= 7 && travelDate <= 9) {
+        return '79';
+    } else {
+        return '10';
+    }
 }
 </script>
 <title>코스 추천</title>
@@ -765,8 +788,17 @@ align-content: start;
 		<div class="main1"> 
 		 <div th:each="course : ${courses}">
 			<div class="plan1">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
+				<div class="loc1" th:if="${course.coursetravelDate > 0 && course.coursetravelDate < 4}">
+					<img class="coursepic" th:src="@{/resources/image/13day.png}">
+				</div>
+				<div class="loc1" th:if="${course.coursetravelDate > 3 && course.coursetravelDate < 7}">
+					<img class="coursepic" th:src="@{/resources/image/46day.png}">
+				</div>
+				<div class="loc1" th:if="${course.coursetravelDate > 6 && course.coursetravelDate < 10}">
+					<img class="coursepic" th:src="@{/resources/image/79day.png}">
+				</div>
+				<div class="loc1" th:if="${course.coursetravelDate > 9}">
+					<img class="coursepic" th:src="@{/resources/image/10day.png}">
 				</div>
 				<div class="loc2">
 					<div class="col1">
