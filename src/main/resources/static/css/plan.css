@@ -347,7 +347,7 @@ html{
 	color:black;
 	
 }
-#pagination>.pagination-active{
+#pagination>.active{
 	color:#B8E9FF;
 	font-weight: bold;
 }
