@@ -275,16 +275,12 @@ public class LoginController {
 	
 	@ResponseBody
 	@RequestMapping("/plansavedelete")
-	public String plansaveDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName, @RequestParam("saveID") String saveID) {
-		String shareID = userID;
-		int res = pservice.plansaveDelete(shareID,planName, saveID);
-		int res1 = pservice.plansaveDetaildelete(shareID, planName, saveID);
-		int res2 = pservice.coursesaveDelete(shareID, planName, saveID);
-		int res3 = pservice.coursesaveDetaildelete(shareID, planName, saveID);
-		System.out.println(res);
-		System.out.println(res1);
-		System.out.println(res2);
-		System.out.println(res3);
+	public String plansaveDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName, @RequestParam("shareID") String shareID) {
+		int res = pservice.plansaveDelete(shareID,planName, userID);
+		int res1 = pservice.plansaveDetaildelete(shareID, planName, userID);
+		int res2 = pservice.coursesaveDelete(shareID, planName, userID);
+		int res3 = pservice.coursesaveDetaildelete(shareID, planName, userID);
+		
 		return "일정이 삭제 되었습니다.";
 	}
 	

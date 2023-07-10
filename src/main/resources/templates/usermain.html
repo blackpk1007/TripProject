@@ -176,6 +176,8 @@ body {
 /* main */
 .mymain_text {
 	font-size: 1.8rem;
+	margin-top: 2rem;
+	font-weight: bold;
 	display:flex;
 	justify-content:center;
 }
@@ -543,7 +545,7 @@ body {
 			})
 	}
 	
-	function plansavedelete(planName, saveID){
+	function plansavedelete(planName, shareID){
 		var userID = [[${session.login}]];
 		
 		
@@ -551,7 +553,7 @@ body {
 			url : "/login/plansavedelete",
 			type : "post",
 			data : { userID : userID,
-				     saveID : saveID,
+				     shareID : shareID,
 					planName : planName}
 			})
 				.done(function(result){
@@ -756,7 +758,7 @@ body {
 							</div>
 						</div>
 						<div class="loc3">
-							<button id="delete1" th:onclick="plansavedelete([[${saveplan.planName}]], [[${saveplan.saveID}]])">삭제</button>
+							<button id="delete1" th:onclick="plansavedelete([[${saveplan.planName}]], [[${saveplan.shareID}]])">삭제</button>
 						</div>
 					</div>
 				</div>
