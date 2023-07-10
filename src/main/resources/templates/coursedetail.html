@@ -973,6 +973,9 @@ function closePopup() {
 		  	
 		  	 function drawRoute(date, lonLatPairs, color) {
 		  			var waypoints = lonLatPairs.slice(1, lonLatPairs.length - 1);
+		  			console.log("date : "+date);
+		  			console.log("lonLatPairs : "+lonLatPairs[0].lon);
+		  			console.log("lonLatPairs : "+lonLatPairs[0].lat);
 		  			if(lonLatPairs.length === 1){
 		  				addMarker("llPass", lonLatPairs[0].lat, lonLatPairs[0].lon, 1, color);
 		  			// 4. 경로탐색 API 사용요청
@@ -1129,6 +1132,7 @@ function closePopup() {
 		  			
 		  				},
 		  				error:function(request,status,error){
+		  					
 		  			}
 		  		});
 		  	    }

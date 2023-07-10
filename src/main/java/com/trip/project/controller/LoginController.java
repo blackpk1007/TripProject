@@ -270,7 +270,7 @@ public class LoginController {
 		int res2 = pservice.courseDelete(shareID, planName);
 		int res3 = pservice.courseDetaildelete(shareID, planName);
 
-		return shareID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
+		return shareID.toString()+"님의 "+planName.toString()+" 삭제 되었습니다.";
 	}
 	
 	@ResponseBody
@@ -292,7 +292,7 @@ public class LoginController {
 		int res = pservice.planShare(shareID, planName);
 		int res1 = pservice.planDetailshare(shareID, planName);
 
-		return shareID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
+		return shareID.toString()+"님의 "+planName.toString()+" 공유 되었습니다.";
 	}
 	
 	// community 공유 
