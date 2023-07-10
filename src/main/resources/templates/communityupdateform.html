@@ -175,22 +175,41 @@ html::-webkit-scrollbar {
 		    align-items: center;
 		    margin-left: 1.4vw;
         }
-      	#contentTextDiv{
+      		#contentTextDiv{
       		display: flex;
 		    align-items: center;
 		    justify-content: center;
       	}
         #contentText{
+          	width: 33.5vw;
+		    border: none;
+		    height: 52vh;
+		    text-align: left;
+		    padding: 3px;
+		    outline: none;
+		    overflow: auto;
+        }
+        #contentText::-webkit-scrollbar {
+	display: none;
+}
+        #contentTextDiv-div{
           	width: 35vw;
 		    border: solid 1px black;
 		    height: 53vh;
 		    text-align: left;
 		    padding: 3px;
-		    outline: none;
 		    overflow: auto;
 		    margin-left: 2.2vw;
             
         }
+        #contentText-img{
+        	height:20vh;
+        	width:20vw;
+        }
+        #preview{
+			width: 100%;
+        	float: left;
+		}
         .editor-menu{
     		margin-top: 1vh;
 		    width: 70%;
@@ -299,11 +318,7 @@ html::-webkit-scrollbar {
 	        color: #B8E9FF;
 	        
     	}
-		#preview{
-			width: 40%;
-        	hegith:5vh;
-        	float: left;
-		}
+		
 		
        
 </style>
@@ -361,7 +376,7 @@ html::-webkit-scrollbar {
         <div id="contents" class="div">
         	 <div class="editor-menu">
 			    <div class="filebox">
-            		<input type="file" id="attachFile" name="attachFile" >
+            		<input type="file" id="attachFile" name="attachFile" onchange="readURL(this);">
         		</div>
 	        	 <button id="buttonContourTwo">|</button>
 	        	 <button id="btn-unordered-list">
@@ -390,11 +405,23 @@ html::-webkit-scrollbar {
 			<div id="content-write-div">
 	            <div id="write_con">내용</div>
 	           	<div id="contentTextDiv">
-		            <div id="contentText" contenteditable="true" th:utext="${dto.communityContent}">
-		            </div>
-	            </div>
+				    <div id="contentTextDiv-div">
+				        <div th:if="${image != null}">
+				                <div id="contentText-img">
+				                    <img th:src="|/community/image/__${image.imageStoredName}__|" id="preview">
+				                </div>
+				                <div id="contentText" contenteditable="true" th:utext="${dto.communityContent}"></div>
+				        </div>
+				        <div th:unless="${image != null}">
+				        	<div id="contentText-img">
+				            </div>
+				            <div id="contentText" contenteditable="true" th:utext="${dto.communityContent}"></div>
+				        </div>
+				    </div>
+				</div>
 	            <input type="hidden" name="placeNumber" value="" id="placeNumber">
 	            <input type="hidden" name="communityContent" id="communityContent">
+	            <input type="hidden" name="communityNumber" id="communityNumber">
             </div>
         </div>
         <div id="button">
@@ -536,30 +563,32 @@ $(document).ready(function() {
     	}
     	
     });
-    /*  function readURL(input) {
-        var session = sessionStorage.getItem('placeNumber');
-        document.getElementById("placeNumber").value = session;
-        var imagediv = document.querySelector("#contentText");
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-            	var image = document.createElement("img");
-            	image.id = 'preview';
-            	imagediv.appendChild(image);
-                document.getElementById('preview').src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            document.getElementById('preview').src = "";
-        }
-    }
+    
    
-    $("#attachFile").on("change", function() {
+   /*  $("#attachFile").on("change", function() {
         readURL(this);
-    }); */
+    });  */
      
    
 });
+function readURL(input) {
+    var session = sessionStorage.getItem('placeNumber');
+    document.getElementById("placeNumber").value = session;
+    var imagediv = document.querySelector("#contentText-img");
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+        	
+        	var image = document.createElement("img");
+        	image.id = 'preview';
+        	imagediv.appendChild(image);
+            document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        document.getElementById('preview').src = "";
+    }
+}
 </script>
 </body>
 </html>
