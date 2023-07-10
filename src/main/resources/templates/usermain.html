@@ -527,7 +527,6 @@ body {
 	function plandelete(planName){
 	var userID = [[${session.login}]];
 	
-	console.log(planName);
 	
 	$.ajax({
 		url : "/login/plandelete",
@@ -540,10 +539,29 @@ body {
 				location.href="/login/usermain"
 			})
 			.fail(function(jqXHR){
-				console.log(jqXHR);
 				alert(jqXHR);
 			})
 	}
+	
+	function plansavedelete(planName, saveID){
+		var userID = [[${session.login}]];
+		
+		
+		$.ajax({
+			url : "/login/plansavedelete",
+			type : "post",
+			data : { userID : userID,
+				     saveID : saveID,
+					planName : planName}
+			})
+				.done(function(result){
+					alert(result);
+					location.href="/login/usermain"
+				})
+				.fail(function(jqXHR){
+					alert(jqXHR);
+				})
+		}
 	// 일정 공유 
 	function planshare(planName){
 	var userID = [[${session.login}]];
@@ -559,7 +577,6 @@ body {
 				location.href="/login/usermain"
 			})
 			.fail(function(jqXHR){
-				console.log(jqXHR);
 				alert(jqXHR);
 			})
 	}
@@ -580,7 +597,6 @@ body {
 				location.href="/login/usermain";
 			})
 			.fail(function(jqXHR){
-				console.log(jqXHR);
 				alert(jqXHR);
 			})
 	}
@@ -601,7 +617,6 @@ body {
 				location.href="/login/usermain";
 			})
 			.fail(function(jqXHR){
-				console.log(jqXHR);
 				alert(jqXHR);
 			})
 	}
@@ -609,7 +624,6 @@ body {
 	// 프로필 수정시 프롬프트에 비밀번호 값 받아 /logincheck 이
 	function passcheck(){
 		var userPW = prompt("수정을 위해 비밀번호를 입력해주세요.");
-		console.log(userPW);
 		if (userPW.value == "") {
 		    alert("비밀번호를 입력하세요.");
 		    return false;
@@ -635,7 +649,6 @@ body {
                     }
 				})
 				.fail(function(jqXHR){
-					console.log(jqXHR);
 					alert(jqXHR);
 				})
 		}
@@ -728,22 +741,22 @@ body {
 			</div>
 			<!-- 나의 일정 오른쪽 세로 -->
 			<div class="list-scroll4">
-				<div class="main3" th:each="userplan : ${plan}">
+				<div class="main3" th:each="saveplan : ${savePlanList}">
 					<div class="myplan4">
 						<div class="loc1">
 							<img class="imageloc1" src="#">
 						</div>
 						<div class="loc2">
 							<div class="tripname">
-								여행이름 &nbsp; <label th:text="${userplan.planName}"></label>
+								여행이름 &nbsp; <label th:text="${saveplan.planName}"></label>
 							</div>
 							<div class="tripdate">
-								여행일자 &nbsp; <label th:text="${userplan.planFirstDate}"></label>
-								~ <label th:text="${userplan.planLastDate}"></label>
+								여행일자 &nbsp; <label th:text="${saveplan.planFirstDate}"></label>
+								~ <label th:text="${saveplan.planLastDate}"></label>
 							</div>
 						</div>
 						<div class="loc3">
-							<button id="delete1" th:onclick="plandelete([[${userplan.planName}]])">삭제</button>
+							<button id="delete1" th:onclick="plansavedelete([[${saveplan.planName}]], [[${saveplan.saveID}]])">삭제</button>
 						</div>
 					</div>
 				</div>

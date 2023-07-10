@@ -63,7 +63,6 @@
    
    function fixPw(){
        var userinfo = [[${userinfo}]];
-       console.log(userinfo);
        
        /* var userID = document.getElementById("userID");
        var userEmail = document.getElementById("userEmail");
@@ -118,12 +117,10 @@
           }
        })
        		.done(function (result) {
-                console.log(result);
                 alert(result);
                 location.href="/login";
             })
             .fail(function(jqXHR) {
-                console.log(jqXHR);
                 alert(jqXHR);
             })
    	}

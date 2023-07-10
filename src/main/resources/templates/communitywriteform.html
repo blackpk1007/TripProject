@@ -188,7 +188,7 @@ html::-webkit-scrollbar {
 		    padding: 3px;
 		    outline: none;
 		    overflow: auto;
-            
+            margin-left:0.5vw;
         }
         #contentText::-webkit-scrollbar {
 	display: none;
@@ -439,9 +439,6 @@ $(document).ready(function() {
     	let titleLength = 30;
     	let contentLength = 1000;
     	
-    	console.log(communityTitle);
-    	console.log(contentText);
-    	
     	if(communityTitle == null || communityTitle == "" || contentText == null || contentText == ""){
     		alert("제목 또는 내용을 입력하여 주세요.");
     		return false;
@@ -463,7 +460,7 @@ $(document).ready(function() {
     }); */
     
 });
- /* function readURL(input) {
+ function readURL(input) {
     var session = sessionStorage.getItem('placeNumber');
     document.getElementById("placeNumber").value = session;
     var imagediv = document.querySelector("#contentText-img");
@@ -483,7 +480,7 @@ $(document).ready(function() {
   
  
     }
-}   */
+}   
 </script>
 </head>
 <body>

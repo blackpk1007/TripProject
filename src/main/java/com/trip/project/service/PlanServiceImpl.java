@@ -170,5 +170,32 @@ public class PlanServiceImpl implements PlanService{
 		return pmapper.placeSearchDefault(paging);
 	}
 
+	@Override
+	public List<PlanDTO> savePlanList(String userID) {
+
+		return pmapper.savePlanList(userID);
+	}
+
+	@Override
+	public int plansaveDelete(String shareID, String planName, String saveID) {
+
+		return pmapper.plansaveDelete(shareID,planName,saveID);
+	}
+	@Override
+	public int plansaveDetaildelete(String shareID, String planName, String saveID) {
+		
+		return pmapper.plansaveDetaildelete(shareID, planName,saveID);
+	}
+	// 코스,코스디테일 삭제 
+	@Override
+	public int coursesaveDelete(String shareID, String planName, String saveID) {
+		return pmapper.coursesaveDelete(shareID, planName,saveID);
+	}
+	
+	@Override
+	public int coursesaveDetaildelete(String shareID, String planName, String saveID) {
+		return pmapper.coursesaveDetaildelete(shareID, planName,saveID);
+	}
+
 	
 }

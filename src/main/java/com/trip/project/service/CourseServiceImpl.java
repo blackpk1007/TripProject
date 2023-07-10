@@ -82,4 +82,16 @@ public class CourseServiceImpl implements CourseService{
 		return cmapper.courseImage(userID, planName);
 	}
 
+	@Override
+	public int coursesave(String shareID, String planName, String saveID) {
+		
+		return cmapper.coursesave(shareID, planName, saveID);
+	}
+
+	@Override
+	public int courseDetailSave(String shareID, String planName, String saveID) {
+
+		return cmapper.courseDetailSave(shareID, planName, saveID);
+	}
+
 }

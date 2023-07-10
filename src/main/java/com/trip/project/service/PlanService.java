@@ -54,10 +54,19 @@ public interface PlanService {
 	// 일정 삭제 - 코스, 코스 디테일
 	public int courseDelete(String userID, String planName);
 	public int courseDetaildelete(String userID, String planName);
+	
+	public int plansaveDelete(String userID, String planName, String saveID);
+	public int plansaveDetaildelete(String userID, String planName, String saveID);
+	// 일정 삭제 - 코스, 코스 디테일
+	public int coursesaveDelete(String userID, String planName, String saveID);
+	public int coursesaveDetaildelete(String userID, String planName, String saveID);
+	
 	// 마이페이지 일정 공유버튼, 플랜,플랜디테일
 	public int planShare(String userID, String planName);
 	public int planDetailshare(String userID, String planName);
 
 	
 	public List<PlanDTO> userPlancount(String userID);
+	
+	public List<PlanDTO> savePlanList(String userID);
 }

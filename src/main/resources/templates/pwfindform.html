@@ -69,11 +69,6 @@
        var useridvalue = document.getElementById("userID").value;
        var useremailvalue = document.getElementById("userEmail").value;
 
-       console.log(useremailvalue);
-       console.log(userEmail);
-       console.log(useridvalue);
-       console.log(userID);
-       
        if (useridvalue == "") {
          alert("아이디를 입력해 주세요.");
          userid.focus();
@@ -101,7 +96,6 @@
                   }
             })
             .fail(function(jqXHR) {
-                console.log(jqXHR);
                 alert(jqXHR);
             })
    }

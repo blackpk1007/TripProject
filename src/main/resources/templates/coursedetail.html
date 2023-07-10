@@ -302,6 +302,9 @@
 	margin:1rem;
 	
 }
+.sec4 > img{
+	 cursor: pointer;
+}
 .info{
 	width:4rem;
 	height:4rem;
@@ -349,6 +352,7 @@
 	height:2.5vh;
 	display:flex;
 	justify-content: right;
+	cursor: pointer;
 }
 
 
@@ -510,7 +514,6 @@ var place = [[${placeInfo}]];
 var courseimage = [[${courseimage}]];
 	
 function placePopup(placeName) {
-	console.log(placeName);
   $.ajax({
     url: '/course/info',
     type: 'POST',
@@ -713,7 +716,6 @@ function closePopup() {
 		  }
 		  
 		  function updateMainContent(date, placeName, lonLatPairs, buttonIndex) {
-			  console.log("date : "+date);
 			  
 			  var mymainDiv = document.querySelector('.mymain');
 			  mymainDiv.innerHTML = ''; // 기존 내용 초기화
@@ -764,7 +766,6 @@ function closePopup() {
 			    infoImg.src = '/resources/image/exclamationmark.png';
 			    sec4.appendChild(infoImg);
 			    infoImg.addEventListener('click', function(event) {
-			    	console.log("click : "+placeName[i].placeName);
 			    	placePopup(placeName[i].placeName);
 			    });
 
@@ -800,7 +801,6 @@ function closePopup() {
   				mymainDiv.appendChild(mymainTextdiv);
   				
 			  for (var j = 0; j < lonLatPairs.length; j++) {
-				  console.log(placeName[0].placeName);
 			    var mainDiv = document.createElement('div');
 			    mainDiv.className = 'main';
 			    mymainDiv.appendChild(mainDiv);
@@ -835,7 +835,6 @@ function closePopup() {
 			    infoImg.addEventListener('click', function(event) {
 			    	 var clickedImg = event.target; // 클릭된 이미지 요소를 참조
 			    	  var clickedPlaceName = clickedImg.dataset.placeName; // 클릭된 이미지의 data-place-name 속성 값을 읽어옴
-			    	  console.log("click : " + clickedPlaceName);
 			    	  placePopup(clickedPlaceName);
 			      });
 			    sec4.appendChild(infoImg);
@@ -952,7 +951,6 @@ function closePopup() {
 					  map.setZoom(zoom);
 					},
 					error:function(request,status,error){
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 				}
 			});
 			}
@@ -960,7 +958,6 @@ function closePopup() {
 		  	function addMarker(status, lon, lat, tag, color) {
 		  	//출도착경유구분
 		  	//이미지 파일 변경.
-		  	console.log("addMarker : "+color);
 		  	var markerLayer;
 		  	switch (status) {
 		  		case "llStart":
@@ -1057,7 +1054,6 @@ function closePopup() {
 								  map.setZoom(zoom);
 								},
 								error:function(request,status,error){
-								console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 							}
 						});
 					      
@@ -1151,10 +1147,41 @@ function closePopup() {
 		  			
 		  				},
 		  				error:function(request,status,error){
-		  				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		  			}
 		  		});
 		  	    }
+		  // 요소 가져오기
+		    var userID = [[${session.login}]];
+		  	var imgWrapper = document.getElementById("coursedetail-img");
+		  	var planName = [[${coursedetail.planName}]];
+		  	var shareID = [[${coursedetail.shareID}]];
+		  	
+		  	// 클릭 이벤트 핸들러 함수 정의
+		  	function handleClick() {
+		  	  // 클릭 이벤트 발생 시 실행할 동작을 여기에 작성합니다.
+		  	  	$.ajax({
+					url:'/course/save',
+					type: 'POST',
+					data: {saveID:userID,
+						   shareID:shareID,
+						   planName:planName
+						},
+					success: function(data){
+						if(data === 1){
+							alert("코스가 저장 되었습니다.");
+							location.href='/login/usermain';
+						}
+					},
+					error: function(data){
+						alert(data);
+					}
+				});	
+		  	  // 추가적인 동작을 수행하거나 다른 함수를 호출할 수 있습니다.
+		  	}
+
+		  	// 클릭 이벤트 핸들러 함수를 요소에 연결
+		  	imgWrapper.addEventListener("click", handleClick);
+		  	
 		  	 window.onload = function() {
 		  			// 기본적으로 전체 경로 표시하기
 /* 		  		var dates = Object.keys(inputValues[0]); // 날짜 배열 얻기

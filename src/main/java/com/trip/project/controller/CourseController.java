@@ -144,4 +144,30 @@ public class CourseController {
 		
 		return dto;
 	}
+	
+	@ResponseBody
+	@PostMapping("/save")
+	public int coursesave(@RequestParam("planName") String planName, @RequestParam("saveID") String saveID, @RequestParam("shareID") String shareID) {
+		System.out.println("controller save : "+planName);
+		System.out.println("controller save : "+saveID);
+		System.out.println("controller save : "+shareID);
+		int result = cService.coursesave(shareID, planName, saveID);
+		int result2 = cService.courseDetailSave(shareID, planName, saveID);
+		
+		if(result > 0 && result2 > 0) {
+			return 1;
+		}
+		
+		return 0;
+	}
 }
+
+
+
+
+
+
+
+
+
+

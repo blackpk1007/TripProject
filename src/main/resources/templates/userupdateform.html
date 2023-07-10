@@ -14,10 +14,6 @@
 	   
 	   var userID = [[${userinfo.userID}]];
 	   
-	   console.log(userID);
-	   console.log(userPW);
-	   console.log(userpwvalue);
-	   
 	   if (userPW.value == "") {
 		    alert("비밀번호를 입력하세요.");
 		    userPW.focus();
@@ -51,7 +47,6 @@
 	                	  location.href="/login/usermain";
 	            })
 	            .fail(function(jqXHR) {
-	                console.log(jqXHR);
 	                alert("재로그인 후 다시 시도해주세요.");
 	            })
    }
@@ -69,7 +64,6 @@
 	                location.href="/login/logout";
 	            })
 	            .fail(function(jqXHR) {
-	                console.log(jqXHR);
 	            })
 	   }else{
 		   false;
