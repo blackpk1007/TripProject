@@ -21,8 +21,18 @@ public interface CourseMapper {
 	@Select(" select * from course order by courseCount desc ")
 	List<CourseDTO> courseCountSort();
 	
-	@Select(" select * from course order by courseCount desc limit 6")
-	List<CourseDTO> courseCountMain();
+	@Select(" select * from course where coursetravelDate > 0 and coursetravelDate < 4 order by courseCount desc limit 1 ")
+	CourseDTO courseCountMain1();
+	
+	@Select(" select * from course where coursetravelDate > 3 and coursetravelDate < 7 order by courseCount desc limit 1 ")
+	CourseDTO courseCountMain2();
+	
+	@Select(" select * from course where coursetravelDate > 6 and coursetravelDate < 10 order by courseCount desc limit 1 ")
+	CourseDTO courseCountMain3();
+	
+	@Select(" select * from course where coursetravelDate >= 10 order by courseCount desc limit 1 ")
+	CourseDTO courseCountMain4();
+	
 	
 	@Select(" select * from course order by courseFirstDate desc ")
 	List<CourseDTO> courseList();

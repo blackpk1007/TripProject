@@ -299,7 +299,7 @@ public class LoginController {
 		System.out.println(res1);
 		System.out.println(res2);
 		System.out.println(res3);
-		return shareID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
+		return "일정이 삭제 되었습니다.";
 	}
 	
 	//plan 공유 

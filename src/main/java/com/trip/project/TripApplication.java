@@ -45,7 +45,10 @@ public class TripApplication {
 		model.addAttribute("list", mainpageService.selectList());
 		model.addAttribute("animalList", mainpageService.animalList());
 		model.addAttribute("parentsList", mainpageService.parentsList());
-		model.addAttribute("courses", mainpageService.courseCountMain());
+		model.addAttribute("course1", mainpageService.courseCountMain1());
+		model.addAttribute("course2", mainpageService.courseCountMain2());
+		model.addAttribute("course3", mainpageService.courseCountMain3());
+		model.addAttribute("course4", mainpageService.courseCountMain4());
 		
 		return "main";
 	}

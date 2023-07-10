@@ -45,8 +45,26 @@ public class MainpageServiceImpl implements MainpageService{
     }
 
 	@Override
-	public List<CourseDTO> courseCountMain() {
+	public CourseDTO courseCountMain1() {
 
-		return cMapper.courseCountMain();
+		return cMapper.courseCountMain1();
+	}
+	
+	@Override
+	public CourseDTO courseCountMain2() {
+
+		return cMapper.courseCountMain2();
+	}
+	
+	@Override
+	public CourseDTO courseCountMain3() {
+
+		return cMapper.courseCountMain3();
+	}
+	
+	@Override
+	public CourseDTO courseCountMain4() {
+
+		return cMapper.courseCountMain4();
 	}
 }

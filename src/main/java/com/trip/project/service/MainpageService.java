@@ -15,5 +15,11 @@ public interface MainpageService {
 	
 	PlaceDTO getPlaceInfo(String placeName);
 	
-	public List<CourseDTO> courseCountMain();
+	public CourseDTO courseCountMain1();
+	
+	public CourseDTO courseCountMain2();
+	
+	public CourseDTO courseCountMain3();
+	
+	public CourseDTO courseCountMain4();
 }
