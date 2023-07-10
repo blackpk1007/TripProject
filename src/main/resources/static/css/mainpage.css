@@ -364,9 +364,10 @@ text-shadow: -1.2px -1.2px 0 #595959, 1.2px -1.2px 0 #595959, -1.2px 1.2px 0 #59
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	color: black;
+	color: #FFFFFF;
 	transform: translate(-50%, -50%);
-	font-size: 25px;	
+	font-size: 29px;
+	text-shadow: -1.2px -1.2px 0 #595959, 1.2px -1.2px 0 #595959, -1.2px 1.2px 0 #595959, 1.2px 1.2px 0 #595959;	
 }
 
 .hot_text1{
