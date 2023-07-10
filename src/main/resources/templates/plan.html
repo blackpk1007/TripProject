@@ -1117,13 +1117,12 @@ function createMarkers(data) {
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
   			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
 	     	  let checkboxColor = getCheckboxIconBackgroundColor(inputColor);
-	     	  if(checkboxColor === false){
+	    	  if(checkboxColor === false){
 	     		  check = false;
 	     		  return check;
 	     	  }else{
 	     		  check = true;
 	     	  }
-	     	  
 		      const colorName = convertRGBToColorName(checkboxColor);
 		      
 		      const inputDateValue = inputDateElement.value;
@@ -1140,11 +1139,7 @@ function createMarkers(data) {
 		          lat: inputLatValue
 		        });
 		      });
-				
-		      if (lonLatPairs.length === 0) {
-		    	  placecheck = false;
-		          return;
-		        }
+
 		      values.push({
 		        index: index + 1,
 		        date: inputDateValue,
@@ -1153,21 +1148,13 @@ function createMarkers(data) {
 		      });
 		     });
 		    if(!check){
-	     		 alert('날짜별 색상을 모두 선택해 주세요');
+	     		 alert('날짜별 색상을 선택해 주세요');
 	     		  return false;
 	     	  }
-		    if(!placecheck){
-		    	alert('날짜별 장소를 모두 선택해 주세요');
-		    	return false;
-		    }
 		    return values;
 		  }
 		  
 		  const inputValues = getInputValues();
-		  if(!inputValues || inputValues.length == 0){
-     		  return false;
-     	  }
-
 		  previewOpenPopup(inputValues);
 
 		 }
@@ -1294,12 +1281,6 @@ function createMarkers(data) {
 		      const inputLatElements = courseList.querySelectorAll('input[name="planLat"]');
   			  const inputColor = courseColors[index].querySelector('input[type="checkbox"]:checked');
 	     	  const checkboxColor = getCheckboxIconBackgroundColor(inputColor);
-	    	  if(checkboxColor === false){
-	     		  check = false;
-	     		  return check;
-	     	  }else{
-	     		  check = true;
-	     	  }
 		      const colorName = convertRGBToColorName(checkboxColor);
 		      
 		      const inputDateValue = inputDateElement.value;
@@ -1324,10 +1305,6 @@ function createMarkers(data) {
 		        color: colorName
 		      });
 		    });
-		    if(!check){
-	     		 alert('날짜별 색상을 선택해 주세요');
-	     		  return false;
-	     	  }
 		    return values;
 		  }
 		

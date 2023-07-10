@@ -489,6 +489,7 @@
 		</div>
 	
 </body>
+
 <script th:inline="javascript">
 //장소별 팝업창
 var place = [[${placeInfo}]];
@@ -1165,17 +1166,12 @@ function closePopup() {
 		  	
 		  	 window.onload = function() {
 		  			// 기본적으로 전체 경로 표시하기
-/* 		  		var dates = Object.keys(inputValues[0]); // 날짜 배열 얻기
-		  		var date = dates[0];
-		        var Value = inputValues[0][date];
-		        var color = Value.color;
-		        var lonLatPairs = Value.lonLatPairs; 
-		  		drawRoute(date, lonLatPairs, color) */
 		  		allMainContent(dates);
 		        showAllDayRoute();
 		  	};
 	 
 </script>
+
 <script type="text/javascript">
 		new Swiper('.swiper-container', {
 
@@ -1199,5 +1195,4 @@ function closePopup() {
 			},
 		});
 	</script>
-
 </html>
