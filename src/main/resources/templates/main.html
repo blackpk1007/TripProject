@@ -144,7 +144,7 @@ window.onload = function () {
 			<div class="swiper-slide">
 	      <div class="hot_img">
 	        <a th:href="@{|/course/coursedetail?planName=${course1.planName}&shareID=${course1.shareID}|}">
-	          <img src="/resources/image/13.png">
+	          <img src="/resources/image/13day.png">
 	        </a>
 	      </div>
 	      <div class="hot_text">1~3일</div>
@@ -152,15 +152,23 @@ window.onload = function () {
 		<div class="swiper-slide">
 	      <div class="hot_img">
 	        <a th:href="@{|/course/coursedetail?planName=${course2.planName}&shareID=${course2.shareID}|}">
-	          <img src="/resources/image/46.png">
+	          <img src="/resources/image/46day.png">
 	        </a>
 	      </div>
 	      <div class="hot_text">4~6일</div>
 	      </div>
+	      <div class="swiper-slide">
+	      <div class="hot_img">
+	        <a th:href="@{|/course/coursedetail?planName=${course2.planName}&shareID=${course2.shareID}|}">
+	          <img src="/resources/image/46.png">
+	        </a>
+	      </div>
+	      <div class="hot_text">7~9일</div>
+	      </div>
 	    <div class="swiper-slide">
 	      <div class="hot_img">
 	        <a th:href="@{|/course/coursedetail?planName=${course4.planName}&shareID=${course4.shareID}|}">
-	          <img th:src="@{/resources/image/place/__${course4.planName}__.jpg}">
+	          <img src="/resources/image/10day.png">
 	        </a>
 	      </div>
 	      <div class="hot_text">10일 이상</div>

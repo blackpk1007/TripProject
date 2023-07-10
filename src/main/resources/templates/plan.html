@@ -287,7 +287,8 @@ function insertTmap(){
 		});
 }
 function fetchUpdatedMarkers(category, pageNum) {
-	
+	var searchinput = document.querySelector("#search");
+	searchinput.value = '';
     $.ajax({
       url: '/plan/fetchMarkers',
       method: 'GET',
@@ -297,6 +298,7 @@ function fetchUpdatedMarkers(category, pageNum) {
     	  updateList(data.placeList);
     	  createMarkers(data.placeList);
     	  updatePagination(data.totalPages, data.currentPage);
+    	  
     	  
       },
       error: function () {

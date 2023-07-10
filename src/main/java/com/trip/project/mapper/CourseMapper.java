@@ -99,7 +99,7 @@ public interface CourseMapper {
 	    "<foreach item='day' collection='days' open='(' separator=',' close=')'>",
 	    "#{day}",
 	    "</foreach>",
-	    "AND MONTH(STR_TO_DATE(courseFirstDate, '%Y-%m-%d')) IN",
+	    "OR MONTH(STR_TO_DATE(courseFirstDate, '%Y-%m-%d')) IN",
 	    "<foreach item='month' collection='months' open='(' separator=',' close=')'>",
 	    "#{month}",
 	    "</foreach>",
