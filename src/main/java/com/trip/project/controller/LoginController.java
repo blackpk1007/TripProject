@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlanDTO;
 import com.trip.project.service.CommunityService;
+import com.trip.project.service.CourseService;
 import com.trip.project.service.EmailService;
 import com.trip.project.service.LoginService;
 import com.trip.project.service.PlanService;
@@ -41,6 +42,8 @@ public class LoginController {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private CourseService courseService;
 	// 로그인 메인 페이지
 	@RequestMapping
 	public String loginMain() {
@@ -231,8 +234,6 @@ public class LoginController {
 		model.addAttribute("plancount", pservice.userPlancount(shareID).size());
 
 		model.addAttribute("savePlanList", pservice.savePlanList(shareID));
-		System.out.println("일정 : "+ pservice.userPlancount(shareID));
-		System.out.println(pservice.userPlancount(shareID).size());
 
 		model.addAttribute("recommand", pservice.placename(shareID) );
 		model.addAttribute("recommandcount", pservice.placename(shareID).size());
@@ -242,6 +243,8 @@ public class LoginController {
 		model.addAttribute("community", cservice.usermainCommunity(shareID));
 		model.addAttribute("communitycount",cservice.usermainCommunity(shareID).size());
 		
+		model.addAttribute("travel", courseService.travelDate(shareID));
+		model.addAttribute("travelsave", courseService.travelsaveDate(shareID));
 		return "usermain";
 		
 	}

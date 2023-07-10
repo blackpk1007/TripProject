@@ -94,4 +94,16 @@ public class CourseServiceImpl implements CourseService{
 		return cmapper.courseDetailSave(shareID, planName, saveID);
 	}
 
+	@Override
+	public List<CourseDTO> travelDate(String shareID) {
+
+		return cmapper.travelDate(shareID);
+	}
+
+	@Override
+	public List<CourseDTO> travelsaveDate(String shareID) {
+
+		return cmapper.travelsaveDate(shareID);
+	}
+
 }

@@ -33,4 +33,8 @@ public interface CourseService {
 	int coursesave(String shareID, String planName, String saveID);
 	
 	int courseDetailSave(String shareID, String planName, String saveID);
+	
+	List<CourseDTO> travelDate(String shareID);
+	
+	List<CourseDTO> travelsaveDate(String shareID);
 }

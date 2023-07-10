@@ -144,5 +144,10 @@ public interface CourseMapper {
 			+ " where planName=#{planName} and shareID=#{shareID}")
 	int courseDetailSave(@Param("shareID")String shareID,  @Param("planName")String planName, @Param("saveID")String saveID);
 	
+	@Select(" select coursetravelDate from course c join plan p on c.planName = p.planName and c.shareID = p.shareID where p.shareID = #{shareID} ")
+	List<CourseDTO> travelDate(@Param("shareID")String shareID);
+	
+	@Select(" select coursetravelDate from course c join plan p on c.planName = p.planName and c.shareID = p.shareID where p.saveID = #{shareID} ")
+	List<CourseDTO> travelsaveDate(@Param("shareID")String shareID);
 	
 }
