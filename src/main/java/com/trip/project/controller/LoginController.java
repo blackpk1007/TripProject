@@ -320,9 +320,12 @@ public class LoginController {
 	// 사용자 회원 탈퇴
 	@ResponseBody
 	@RequestMapping("/userdelete")
-	public String userDelete(Model model, LoginDTO dto) {
+	public String userDelete(Model model, LoginDTO dto, HttpSession session, HttpServletRequest request) {
 		int res = lservice.delete(dto);
-		
+		session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
 		return dto.getUserID()+"님의 회원탈퇴가 완료되었습니다.";
 	}
 	

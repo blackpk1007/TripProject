@@ -34,7 +34,7 @@ public interface CourseMapper {
 	CourseDTO courseCountMain4();
 	
 	
-	@Select(" select * from course order by courseFirstDate desc ")
+	@Select(" select * from course order by courseCount desc ")
 	List<CourseDTO> courseList();
 	
 	@Select(" select * from course where shareID = #{shareID} and planName = #{planName} ")
