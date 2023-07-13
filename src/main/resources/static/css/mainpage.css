@@ -1,4 +1,7 @@
 @charset "UTF-8";
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
 /* 팝업 컨테이너 스타일 */
 .place_popup-container {
 	position: fixed;
@@ -52,6 +55,15 @@
 	font-size: 20px;
 	color: #888;
 }
+.place_popup-close-listEmpty{
+	position: absolute;
+	top: 185px;
+    right: 570px;
+	cursor: pointer;
+	font-size: 20px;
+	color: #888;
+	
+}
 
 .place_popup img {
 	max-width: 600px;
@@ -93,10 +105,17 @@
 
 .swiper-slide img {
 	width: 95%;
-	height: 95%;
+	height: 100%;
 	box-shadow: 0 0 5px #555;
 	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
+	object-fit: cover;
+}
+.swiper-slide a {
+	width: 93.5%;
+	height: 100%;
+	max-width: 100%; /* 이미지 최대너비를 제한, 슬라이드에 이미지가 여러개가 보여질때 필요 */
 	opacity: 0.8;
+	
 }
 
 * {
@@ -123,6 +142,7 @@ header {
 	position: absolute;
 	top: 0;
 	left: 0;
+	
 }
 
 #logo {
@@ -149,8 +169,11 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 16px;
+	font-size: 22px;
+
+	
 }
+
 
 #nav label {
 	margin-left: 5vh;
@@ -159,7 +182,11 @@ header {
 
 #nav>label>a {
 	text-decoration: none;
-	color: black;
+	  color: #FFFF;
+	  
+	  font-weight: bold;
+text-shadow: -1.2px -1.2px 0 #595959, 1.2px -1.2px 0 #595959, -1.2px 1.2px 0 #595959, 1.2px 1.2px 0 #595959;
+
 }
 
 #back_img {
@@ -177,10 +204,13 @@ header {
 	transform: translate(-50%, -50%);
 	color: white;
 	font-size: 24pt;
+	font-weight: bold;
+    text-shadow: -1px -1px 0 #595959, 1.7px -1.7px 0 #595959, -1px 1px 0 #595959, 1.7px 1.7px 0 #595959;
 }
 
 #place_text {
 	text-align: center;
+	margin-top:8vh;
 }
 
 #place_text_korean { /*(양)*/
@@ -195,15 +225,19 @@ header {
 
 #tag1 {
 	width: 200px; /*150 -> 200 (양)*/
-	height: 30px;
+	height: 39px;
 	border: 1px solid #B8E9FF;
 	border-radius: 8px;
 	background-color: #B8E9FF;
 	color: white;
 	margin-left: 5vh; /*20 -> 5 (양)*/
-	margin-top: 8vh;
+	margin-top: 2vh;
 	margin-bottom: 2vh;
 	font-size: 20px; /* new (양)*/
+	display: flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .a {
@@ -249,7 +283,7 @@ header {
 
 #swiper-container-course {
 	width: 90%;
-	height: 70vh;
+	height: 64vh;
 }
 
 #swiper-button-next-hotPlace {
@@ -275,10 +309,6 @@ header {
 
 #swiper-pagination-course { /*new (양)*/
 	margin-bottom: 3.5%;
-}
-
-.hot_text {
-	font-size: 25px;
 }
 
 .swiper-pagination-bullet-active {
@@ -314,15 +344,39 @@ header {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	opacity: 0.8; /*(양)*/
 }
 
+.hot_img1 {
+	position: relative;
+	text-align: center;
+	width: 39vw; /* 원하는 너비로 조정 */
+	height: 50vh; /* 원하는 높이로 조정 */
+	overflow: hidden;
+}
+
+.hot_img1 img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0.8; /*(양)*/
+}
 .hot_text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	color: #FFFFFF;
+	transform: translate(-50%, -50%);
+	font-size: 29px;
+	text-shadow: -1.2px -1.2px 0 #595959, 1.2px -1.2px 0 #595959, -1.2px 1.2px 0 #595959, 1.2px 1.2px 0 #595959;	
+}
+
+.hot_text1{
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	color: white;
 	transform: translate(-50%, -50%);
+	font-size: 25px;	
 }
 
 .instagram-feed-container {
@@ -425,7 +479,10 @@ td {
 	text-align: center;
 }
 
-.airplane_popup-container {
+
+
+/* 팝업 레이어 스타일 */
+.airplanePopupContainer {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -438,152 +495,41 @@ td {
 	z-index: 9999;
 }
 
-/* 팝업 내부 스타일 */
-.airplane_popup {
+.airplanePopupContent {
 	position: relative;
 	background-color: #fff;
 	padding: 20px;
-	max-width: 800px;
-	max-height: 95%;
-	width: 800px;
+	max-width: 1000px;
+	max-height: 90%;
+	width: 1000px;
 	border-radius: 5px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 	border: 4px solid #B8E9FF; /* 테두리 추가 */
 	box-sizing: border-box; /* 테두리를 요소 크기에 포함 */
 	overflow-y: auto;
+	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
 }
-.airplane-flightDate {
-	width: 15vw;
-}
-
-.airplane-std {
-	width: 10vw;
-	font-weigth: bold;
-}
-
-.airplane-etd {
-	width: 10vw;
-}
-
-#airplane-etd {
-	color: #0067a3;
-}
-
-.airplane-boardingKor {
-	width: 15vw;
-}
-
-.airplane-arrivedKor {
-	width: 15vw;
-}
-
-.airplane-airFln {
-	width: 13vw;
-}
-
-.airplane-airlineKorean {
-	width: 20vw;
-}
-
-.airplane-rmkKor {
-	width: 15vw;
-}
-
-.airplane-airlineKorean-img {
-	width: 4vh;
-	height: 4vh;
-	float: left;
-	margin-right: 5%;
-}
-
-.airplane-airlineKorean-div {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 16px;
-}
-
-/* 팝업 레이어 스타일 */
-.airplanePopupContainer {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.airplanePopupContent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.airplanePopupContent-listEmpty{
+	position: relative;
     background-color: #fff;
     padding: 20px;
-    max-width: 40vw;
-    width: 90%;
-    max-height: 60vh;
+    max-width: 800px;
+    max-height: 90%;
+    width: 800px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 4px solid #B8E9FF;
+    box-sizing: border-box;
     overflow-y: auto;
-}
-
-.airplane-rmkKor-ifdiv-div {
-	width: 12vh;
-	height: 5vh;
-	color: white;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 10px;
-	font-size: 12px;
-}
-
-.airplane-rmkKor-ifdiv {
-	width: 100%;
-	heigth: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-#airplane-title {
-	/* display: flex;
-		justify-content: center;
-		align-items: center; */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 30%);
+	
 	
 }
-
-#airplane-title-img {
-	width: 40%;
-	height: 100%;
-}
-
-.airplane-button {
-	width: 13.2%;
-	height: 5.5vh;
-	margin-bottom: 1vh;
-	border-radius: 7px;
-	border: none;
-	background-color: #B8E9FF;
-	font-size: 14px;
-	cursor: pointer;
-}
-
-#airplane-button-block {
-	display: block;
-}
-
-#airplane-title-img-div {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 3vh;
-	margin-top: 3rvh;
-}
-
-#AirplaneInformation{
+.AirplaneInformation{
  		resize:none;
  		overflow:auto;
  		width:100%;
@@ -645,7 +591,7 @@ td {
  		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-size: 16px;
+		font-size: 14px;
  	}
  	.airplane-rmkKor-ifdiv-div{
  		width:12vh;
@@ -664,11 +610,7 @@ td {
 		justify-content: center;
 		align-items: center;
  	}
- 	.airplane-title{
- 		/* display: flex;
-		justify-content: center;
-		align-items: center; */
- 	}
+
  	.airplane-title-img{
  		width:40%;
  		height:100%;
@@ -691,16 +633,15 @@ td {
 		justify-content: center;
 		align-items: center;
 		margin-bottom: 3vh;
-		margin-top: 3rvh;
+		margin-top: 3vh;
  	}
  	.listEmpty{
- 		text-align:center;
- 		margin-top:8vh;
- 		height: 60vh;
- 		border: solid 1px #0067a3;
- 		border-radius:10px;
- 		width:70%;
- 		margin-left:15%;
+ 		text-align: center;
+	    height: 40vh;
+	    border: solid 1px #0067a3;
+	    border-radius: 10px;
+	    width: 80%;
+	    margin: 0 auto;
  	}
  	.listEmpty-title{
  		font-size: 20pt;

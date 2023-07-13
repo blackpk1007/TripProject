@@ -14,10 +14,6 @@
 	   
 	   var userID = [[${userinfo.userID}]];
 	   
-	   console.log(userID);
-	   console.log(userPW);
-	   console.log(userpwvalue);
-	   
 	   if (userPW.value == "") {
 		    alert("비밀번호를 입력하세요.");
 		    userPW.focus();
@@ -51,7 +47,6 @@
 	                	  location.href="/login/usermain";
 	            })
 	            .fail(function(jqXHR) {
-	                console.log(jqXHR);
 	                alert("재로그인 후 다시 시도해주세요.");
 	            })
    }
@@ -69,7 +64,6 @@
 	                location.href="/login/logout";
 	            })
 	            .fail(function(jqXHR) {
-	                console.log(jqXHR);
 	            })
 	   }else{
 		   false;
@@ -80,20 +74,25 @@
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
+			<div class="header-left">
+				<a href="/plan" id="label-left-plan">일정 만들기</a>
+				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+				<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
+			</div>
+			<div class="header-center">
 			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
 			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
-				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
+			<!-- 로그인 후 -->
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 	<div class="signup1">

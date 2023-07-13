@@ -18,10 +18,13 @@ import org.springframework.stereotype.Service;
 import com.trip.project.dto.WeatherDTO;
 
 @Service
-public class WeatherServiceImpl implements WeatherService{
+public class WeatherServiceImpl implements WeatherService {
+
+	private static final int MAX_RETRIES = 5;
+	private static final int RETRY_DELAY = 2000; // 1초
 
 	@Override
-	public WeatherDTO Jeju() throws IOException {
+	public WeatherDTO Jeju() throws IOException, InterruptedException {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		DateFormat timeFormat = new SimpleDateFormat("HH00");
 		Calendar cal = Calendar.getInstance();
@@ -30,7 +33,7 @@ public class WeatherServiceImpl implements WeatherService{
 		String baseDate = dateFormat.format(cal.getTime()); // 현재 날짜를 base_date에 설정
 		String baseTime = timeFormat.format(cal.getTime()); // 현재 시간을 base_time에 설정
 		String previousDate = dateFormat.format(cal2.getTime()); // 현재 날짜를 base_date에 설정
-		
+
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /* URL */
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
@@ -56,89 +59,103 @@ public class WeatherServiceImpl implements WeatherService{
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Content-type", "application/json");
-		System.out.println("Response code: " + conn.getResponseCode());
-		BufferedReader rd;
-		if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		} else {
-			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-		}
-		StringBuilder sb = new StringBuilder();
-		String line;
-		while ((line = rd.readLine()) != null) {
-			sb.append(line);
-		}
-		rd.close();
-		conn.disconnect();
-	
-		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
-		try {
-	    JSONObject json = new JSONObject(sb.toString());
-	    JSONObject response = json.getJSONObject("response");
-	    if (!response.has("body")) {
-			return null;
-		}
-	    JSONObject body = response.getJSONObject("body");
-	    JSONObject items = body.getJSONObject("items");
-	    JSONArray weatherArray = items.getJSONArray("item");
-	    
-	    int minimumtemp = 0;
-	    int highesttemp = 0;
-	    int currenttemp = 0;
-	    int sky = 0;
-	    int pty = 0;
-	    String day = null;
-	    for (int i = 0; i < weatherArray.length(); i++) {
-	        JSONObject weatherObj = weatherArray.getJSONObject(i);
-	        String fcsttime = weatherObj.getString("fcstTime");
-	        String fcstdate = weatherObj.getString("fcstDate");
-	        String bDate = weatherObj.getString("baseDate");
-	        // 현재 시간과 base_time이 일치하는 경우에만 처리
-	        String category = weatherObj.getString("category");
-	        String fcstValue = weatherObj.getString("fcstValue");
-	        
-	        if (baseTime.compareTo("0600") >= 0 && baseTime.compareTo("1800") <= 0) {
-	        	day = "day";
-	        }else {
-	        	day = "night";
-	        }
-	        if (baseTime.equals(fcsttime) && baseDate.equals(fcstdate)) {
-	        	
-	        	 if ("TMP".equals(category)) {
-	        		currenttemp = Integer.parseInt(fcstValue);
-	        	}else if ("SKY".equals(category)) {
-	        		sky = Integer.parseInt(fcstValue);
-	        	}else if ("PTY".equals(category)) {
-	        		pty = Integer.parseInt(fcstValue);
-	        	}
-	        }
-	        
-	        if("1500".equals(fcsttime) && baseDate.equals(fcstdate)) {
-	        	if ("TMX".equals(category)) {
-	        		String[] fcstValue2 = fcstValue.split("\\.");
 
-	        		String result = fcstValue2[0];
-	        		highesttemp = (int)Integer.parseInt(result);
-	        	}
-	        }
-	        
-	        if(previousDate.equals(bDate) && "0600".equals(fcsttime)) {
-	        	if(baseDate.equals(fcstdate)) {
-	        		if ("TMN".equals(category)) {
-	        			String[] fcstValue2 = fcstValue.split("\\.");
+		conn.setConnectTimeout(5000); // 5초 연결 시간 초과 설정
+		conn.setReadTimeout(5000); // 5초 읽기 시간 초과 설정
+		
+		int retryCount = 0;
+		while (retryCount < MAX_RETRIES) {
+			try {
+				BufferedReader rd;
+				if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+					rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				} else {
+					rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+				}
+				StringBuilder sb = new StringBuilder();
+				String line;
+				while ((line = rd.readLine()) != null) {
+					sb.append(line);
+				}
+				rd.close();
 
-		        		String result = fcstValue2[0];
-		        	    minimumtemp = (int)Integer.parseInt(result);
-	        		}
-	        	}
-	        }
-	    }
-	    WeatherDTO weatherDTO = new WeatherDTO(day, minimumtemp, highesttemp, currenttemp, sky, pty);
-		return weatherDTO;
-		} catch (JSONException e) {
-			e.printStackTrace();
-            return null;
-        }
+				// JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
+				try {
+					JSONObject json = new JSONObject(sb.toString());
+					JSONObject response = json.getJSONObject("response");
+					if (!response.has("body")) {
+						return null;
+					}
+					JSONObject body = response.getJSONObject("body");
+					JSONObject items = body.getJSONObject("items");
+					JSONArray weatherArray = items.getJSONArray("item");
+
+					int minimumtemp = 0;
+					int highesttemp = 0;
+					int currenttemp = 0;
+					int sky = 0;
+					int pty = 0;
+					String day = null;
+
+					for (int i = 0; i < weatherArray.length(); i++) {
+						JSONObject weatherObj = weatherArray.getJSONObject(i);
+						String fcsttime = weatherObj.getString("fcstTime");
+						String fcstdate = weatherObj.getString("fcstDate");
+						String bDate = weatherObj.getString("baseDate");
+						// 현재 시간과 base_time이 일치하는 경우에만 처리
+						String category = weatherObj.getString("category");
+						String fcstValue = weatherObj.getString("fcstValue");
+
+						if (baseTime.compareTo("0600") >= 0 && baseTime.compareTo("1800") <= 0) {
+							day = "day";
+						} else {
+							day = "night";
+						}
+						if (baseTime.equals(fcsttime) && baseDate.equals(fcstdate)) {
+
+							if ("TMP".equals(category)) {
+								currenttemp = Integer.parseInt(fcstValue);
+							} else if ("SKY".equals(category)) {
+								sky = Integer.parseInt(fcstValue);
+							} else if ("PTY".equals(category)) {
+								pty = Integer.parseInt(fcstValue);
+							}
+						}
+
+						if ("1500".equals(fcsttime) && baseDate.equals(fcstdate)) {
+							if ("TMX".equals(category)) {
+								String[] fcstValue2 = fcstValue.split("\\.");
+
+								String result = fcstValue2[0];
+								highesttemp = (int) Integer.parseInt(result);
+							}
+						}
+
+						if (previousDate.equals(bDate) && "0600".equals(fcsttime)) {
+							if (baseDate.equals(fcstdate)) {
+								if ("TMN".equals(category)) {
+									String[] fcstValue2 = fcstValue.split("\\.");
+
+									String result = fcstValue2[0];
+									minimumtemp = (int) Integer.parseInt(result);
+								}
+							}
+						}
+					}
+
+					WeatherDTO weatherDTO = new WeatherDTO(day, minimumtemp, highesttemp, currenttemp, sky, pty);
+					return weatherDTO;
+				} catch (JSONException e) {
+					e.printStackTrace();
+					return null;
+				}
+			} catch (IOException e) {
+				retryCount++;
+				Thread.sleep(RETRY_DELAY);
+			}
+		}
+		// 최대 재시도 횟수를 넘어서도 작업이 실패하는 경우에 대한 처리
+		return null;
 	}
 
 	@Override
@@ -151,10 +168,7 @@ public class WeatherServiceImpl implements WeatherService{
 		String baseDate = dateFormat.format(cal.getTime()); // 현재 날짜를 base_date에 설정
 		String baseTime = timeFormat.format(cal.getTime()); // 현재 시간을 base_time에 설정
 		String previousDate = dateFormat.format(cal2.getTime()); // 현재 날짜를 base_date에 설정
-		
-		System.out.println("weather service baseDate : "+baseDate);
-        System.out.println("weather service baseTime : "+baseTime);
-        
+
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"); /* URL */
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8")
@@ -180,7 +194,11 @@ public class WeatherServiceImpl implements WeatherService{
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Content-type", "application/json");
-		System.out.println("Response code: " + conn.getResponseCode());
+		 conn.setConnectTimeout(5000); // 5초 연결 시간 초과 설정
+		    conn.setReadTimeout(5000); // 5초 읽기 시간 초과 설정
+		    int retryCount = 0;
+		    while (retryCount < MAX_RETRIES) {
+		    	try {
 		BufferedReader rd;
 		if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -193,79 +211,87 @@ public class WeatherServiceImpl implements WeatherService{
 			sb.append(line);
 		}
 		rd.close();
-		conn.disconnect();
-		
-		 // JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
+
+		// JSON 데이터 파싱 및 필요한 정보 추출하여 DTO에 담기
 		try {
-	    JSONObject json = new JSONObject(sb.toString());
-	    JSONObject response = json.getJSONObject("response");
-	    if (!response.has("body")) {
-			return null;
+			JSONObject json = new JSONObject(sb.toString());
+			JSONObject response = json.getJSONObject("response");
+			if (!response.has("body")) {
+				return null;
+			}
+			JSONObject body = response.getJSONObject("body");
+			JSONObject items = body.getJSONObject("items");
+			JSONArray weatherArray = items.getJSONArray("item");
+
+			int minimumtemp = 0;
+			int highesttemp = 0;
+			int currenttemp = 0;
+			int sky = 0;
+			int pty = 0;
+			String day = null;
+
+			for (int i = 0; i < weatherArray.length(); i++) {
+				JSONObject weatherObj = weatherArray.getJSONObject(i);
+				String fcsttime = weatherObj.getString("fcstTime");
+				String fcstdate = weatherObj.getString("fcstDate");
+				String bDate = weatherObj.getString("baseDate");
+				// 현재 시간과 base_time이 일치하는 경우에만 처리
+				String category = weatherObj.getString("category");
+				String fcstValue = weatherObj.getString("fcstValue");
+				if (baseTime.compareTo("0600") >= 0 && baseTime.compareTo("1800") <= 0) {
+					day = "day";
+				} else {
+					day = "night";
+				}
+
+				if (baseTime.equals(fcsttime) && baseDate.equals(fcstdate)) {
+
+					if ("TMP".equals(category)) {
+						currenttemp = Integer.parseInt(fcstValue);
+					} else if ("SKY".equals(category)) {
+						sky = Integer.parseInt(fcstValue);
+					} else if ("PTY".equals(category)) {
+						pty = Integer.parseInt(fcstValue);
+					}
+				}
+
+				if ("1500".equals(fcsttime) && baseDate.equals(fcstdate)) {
+					if ("TMX".equals(category)) {
+						String[] fcstValue2 = fcstValue.split("\\.");
+
+						String result = fcstValue2[0];
+						highesttemp = Integer.parseInt(result);
+					}
+				}
+
+				if (previousDate.equals(bDate) && "0600".equals(fcsttime)) {
+					if (baseDate.equals(fcstdate)) {
+						if ("TMN".equals(category)) {
+							String[] fcstValue2 = fcstValue.split("\\.");
+
+							String result = fcstValue2[0];
+							minimumtemp = Integer.parseInt(result);
+						}
+					}
+				}
+			}
+			WeatherDTO weatherDTO = new WeatherDTO(day, minimumtemp, highesttemp, currenttemp, sky, pty);
+			return weatherDTO;
+		} catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    } catch (IOException e) {
+        retryCount++;
+        try {
+			Thread.sleep(RETRY_DELAY);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-	    JSONObject body = response.getJSONObject("body");
-	    JSONObject items = body.getJSONObject("items");
-	    JSONArray weatherArray = items.getJSONArray("item");
-	    
-	    int minimumtemp = 0;
-	    int highesttemp = 0;
-	    int currenttemp = 0;
-	    int sky = 0;
-	    int pty = 0;
-	    String day = null;
-	    
-	    for (int i = 0; i < weatherArray.length(); i++) {
-	        JSONObject weatherObj = weatherArray.getJSONObject(i);
-	        String fcsttime = weatherObj.getString("fcstTime");
-	        String fcstdate = weatherObj.getString("fcstDate");
-	        String bDate = weatherObj.getString("baseDate");
-	        // 현재 시간과 base_time이 일치하는 경우에만 처리
-	        String category = weatherObj.getString("category");
-	        String fcstValue = weatherObj.getString("fcstValue");
-	        if (baseTime.compareTo("0600") >= 0 && baseTime.compareTo("1800") <= 0) {
-	        	day = "day";
-	        }else {
-	        	day = "night";
-	        }
-	        
-	        if (baseTime.equals(fcsttime) && baseDate.equals(fcstdate)) {
-	        	
-	        	 if ("TMP".equals(category)) {
-	        		currenttemp = Integer.parseInt(fcstValue);
-	        	}else if ("SKY".equals(category)) {
-	        		sky = Integer.parseInt(fcstValue);
-	        	}else if ("PTY".equals(category)) {
-	        		pty = Integer.parseInt(fcstValue);
-	        	}
-	        }
-	        
-	        if("1500".equals(fcsttime) && baseDate.equals(fcstdate)) {
-	        	if ("TMX".equals(category)) {
-	        		String[] fcstValue2 = fcstValue.split("\\.");
-
-	        		String result = fcstValue2[0];
-	        		highesttemp = Integer.parseInt(result);
-	        	}
-	        }
-	        
-	        if(previousDate.equals(bDate) && "0600".equals(fcsttime)) {
-	        	if(baseDate.equals(fcstdate)) {
-	        		if ("TMN".equals(category)) {
-		        		String[] fcstValue2 = fcstValue.split("\\.");
-
-		        		String result = fcstValue2[0];
-		        	    minimumtemp = Integer.parseInt(result);
-	        		}
-	        	}
-	        }
-	        	
-	        	
-	    }
-	    WeatherDTO weatherDTO = new WeatherDTO(day, minimumtemp, highesttemp, currenttemp, sky, pty);
-		return weatherDTO;
-	}catch (JSONException e) {
-		e.printStackTrace();
-        return null;
     }
 }
-	
+// 최대 재시도 횟수를 넘어서도 작업이 실패하는 경우에 대한 처리
+return null;
+	}
 }

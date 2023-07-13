@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trip.project.dto.LoginDTO;
 import com.trip.project.dto.PlanDTO;
 import com.trip.project.service.CommunityService;
+import com.trip.project.service.CourseService;
 import com.trip.project.service.EmailService;
 import com.trip.project.service.LoginService;
 import com.trip.project.service.PlanService;
@@ -41,6 +42,8 @@ public class LoginController {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private CourseService courseService;
 	// 로그인 메인 페이지
 	@RequestMapping
 	public String loginMain() {
@@ -196,7 +199,7 @@ public class LoginController {
 		if (res != 0) {
 			System.out.println(dto.getUserName());
 			model.addAttribute("message", "회원가입 완료.");
-			return "redirect:/";
+			return "redirect:/login";
 		} else {
 			model.addAttribute("error", "재등록.");
 			return "redirect:/registerform";
@@ -217,45 +220,35 @@ public class LoginController {
 	public String emailConfirm(String userEmail, HttpSession session) throws Exception {
 
 	  String confirm = emailService.sendSimpleMessage(userEmail);
-	  System.out.println("인증번호"+confirm);
 	  session.setAttribute("authcode", confirm);
-	  // 인증코드 3분 맥스 ㅇㅇ 
 	  session.setMaxInactiveInterval(180);
 	  return confirm;
 	}
-//	//이메일 인증 확인
-//	@RequestMapping("/emailAuth")
-//	public int emailAuth(String emailAuth) {
-//		session
-//		if(emailAuth == confirm) {
-//			
-//		}
-//		return null; 
-//	}
 
 	// 사용자 마이페이지 메인
 	@RequestMapping("/usermain")
 	public String userMain(HttpSession session, Model model) {
-		String userID = (String) session.getAttribute("login");
-		model.addAttribute("community", cservice.usermainCommunity(userID));
-		model.addAttribute("communitycount",cservice.usermainCommunity(userID).size());
-		System.out.println(userID);
-		System.out.println("게시물 : "+cservice.usermainCommunity(userID));
-		System.out.println(cservice.usermainCommunity(userID).size());
-		model.addAttribute("recommand", pservice.usermainRecommand(userID) );
-		model.addAttribute("recommandcount", pservice.usermainRecommand(userID).size());
-		System.out.println("리뷰 : "+ pservice.usermainRecommand(userID));
-		System.out.println(pservice.usermainRecommand(userID).size());
-		model.addAttribute("plan", pservice.userPlancount(userID));
-		model.addAttribute("plancount", pservice.userPlancount(userID).size());
-		System.out.println("일정 : "+ pservice.userPlancount(userID));
-		System.out.println(pservice.userPlancount(userID).size());
+		String shareID = (String) session.getAttribute("login");
+		//나의 일정 정보 
+		model.addAttribute("plan", pservice.userPlancount(shareID));
+		model.addAttribute("plancount", pservice.userPlancount(shareID).size());
+
+		model.addAttribute("savePlanList", pservice.savePlanList(shareID));
+
+		model.addAttribute("recommand", pservice.placename(shareID) );
+		model.addAttribute("recommandcount", pservice.placename(shareID).size());
+		// 나의 리뷰 2군데 장소 
+		model.addAttribute("user2recommand", pservice.user2recommand(shareID));
+		// 나의 게시물 
+		model.addAttribute("community", cservice.usermainCommunity(shareID));
+		model.addAttribute("communitycount",cservice.usermainCommunity(shareID).size());
 		
-		model.addAttribute("user2recommand", pservice.user2recommand(userID));
-		System.out.println("u2rec"+pservice.user2recommand(userID));
+		model.addAttribute("travel", courseService.travelDate(shareID));
+		model.addAttribute("travelsave", courseService.travelsaveDate(shareID));
 		return "usermain";
 		
 	}
+	
 
 	// 사용자 회원 정보 수정 페이지
 	@RequestMapping("/userupdateform")
@@ -274,26 +267,35 @@ public class LoginController {
 	@ResponseBody
 	@RequestMapping("/plandelete")
 	public String planDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
-		int res = pservice.planDelete(userID,planName);
-		int res1 = pservice.planDetaildelete(userID, planName);
-		int res2 = pservice.courseDelete(userID, planName);
-		int res3 = pservice.courseDetaildelete(userID, planName);
-		System.out.println(res);
-		System.out.println(res1);
-		System.out.println(res2);
-		System.out.println(res3);
-		return userID.toString()+"님의"+planName.toString()+"이 삭제 되었습니다.";
+		String shareID = userID;
+		int res = pservice.planDelete(shareID,planName);
+		int res1 = pservice.planDetaildelete(shareID, planName);
+		int res2 = pservice.courseDelete(shareID, planName);
+		int res3 = pservice.courseDetaildelete(shareID, planName);
+
+		return shareID.toString()+"님의 "+planName.toString()+" 삭제 되었습니다.";
 	}
+	
+	@ResponseBody
+	@RequestMapping("/plansavedelete")
+	public String plansaveDelete(@RequestParam("userID")String userID, @RequestParam("planName") String planName, @RequestParam("shareID") String shareID) {
+		int res = pservice.plansaveDelete(shareID,planName, userID);
+		int res1 = pservice.plansaveDetaildelete(shareID, planName, userID);
+		int res2 = pservice.coursesaveDelete(shareID, planName, userID);
+		int res3 = pservice.coursesaveDetaildelete(shareID, planName, userID);
+		
+		return "일정이 삭제 되었습니다.";
+	}
+	
 	//plan 공유 
 	@ResponseBody
 	@RequestMapping("/planshare")
 	public String planshare(@RequestParam("userID")String userID, @RequestParam("planName") String planName) {
-	
-		int res = pservice.planShare(userID, planName);
-		int res1 = pservice.planDetailshare(userID, planName);
-		System.out.println(res);
-		System.out.println(res1);
-		return userID.toString()+"님의"+planName.toString()+"이 공유 되었습니다.";
+		String shareID = userID;
+		int res = pservice.planShare(shareID, planName);
+		int res1 = pservice.planDetailshare(shareID, planName);
+
+		return shareID.toString()+"님의 "+planName.toString()+" 공유 되었습니다.";
 	}
 	
 	// community 공유 
@@ -303,7 +305,6 @@ public class LoginController {
 	@RequestMapping("/communitydelete")
 	public String communityDelete(@RequestParam("communityNumber")String communityNumber,@RequestParam("userID")String userID ) {
 		int res = cservice.communityDelete(communityNumber, userID);
-		System.out.println(res);
 		
 		return "게시물이 삭제되었습니다.";
 	}
@@ -315,17 +316,19 @@ public class LoginController {
 	public String userupdate(Model model, LoginDTO dto) {
 		
 		int res = lservice.update(dto);
-		System.out.println(res);
+
 		return dto.getUserID();
 	}
 
 	// 사용자 회원 탈퇴
 	@ResponseBody
 	@RequestMapping("/userdelete")
-	public String userDelete(Model model, LoginDTO dto) {
+	public String userDelete(Model model, LoginDTO dto, HttpSession session, HttpServletRequest request) {
 		int res = lservice.delete(dto);
-		System.out.println(res);
-		
+		session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
 		return dto.getUserID()+"님의 회원탈퇴가 완료되었습니다.";
 	}
 	

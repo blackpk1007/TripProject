@@ -27,7 +27,6 @@ public class ApiController {
 	@RequestMapping
 	public String ocrTest2(Model model) throws IOException {
 		String path=Paths.get(resourceLoader.getResource("classpath:static").getURI()).toString();
-		System.out.println(path);
 		
 		Ocr ocr =new Ocr();
 //		String res=ocr.ocr(path);

@@ -8,20 +8,25 @@
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<div class="header-left">
+				<a href="/plan" id="label-left-plan">일정 만들기</a>
+				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+				<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
 			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
 				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 	<div class="signup1">
@@ -64,11 +69,6 @@
        var useridvalue = document.getElementById("userID").value;
        var useremailvalue = document.getElementById("userEmail").value;
 
-       console.log(useremailvalue);
-       console.log(userEmail);
-       console.log(useridvalue);
-       console.log(userID);
-       
        if (useridvalue == "") {
          alert("아이디를 입력해 주세요.");
          userid.focus();
@@ -96,7 +96,6 @@
                   }
             })
             .fail(function(jqXHR) {
-                console.log(jqXHR);
                 alert(jqXHR);
             })
    }

@@ -12,20 +12,25 @@
 <body>
  	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<div class="header-left">
+				<a href="/plan" id="label-left-plan">일정 만들기</a>
+				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+			 	<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
 			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login"></a> 
-					<a href="/login/registerform" id="label-right-login"></a>
-				</div>
-				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login"></a> 
+				<a href="/login/registerform" id="label-right-login"></a>
+			</div>
+				<!-- 로그인 후 -->				
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 	<div class="signup1">
@@ -48,13 +53,13 @@
 						<li><a href="/login/idfindform">아이디 찾기</a></li>&nbsp; /&nbsp;
 						<li><a href="/login/pwfindform">비밀번호 찾기</a></li>
 					</ul>
-					<div class="wrap">
+					<!-- <div class="wrap">
 						<hr class="line">
 						<div class="txt">sns 간편 로그인</div>
 						<hr class="line">
 					</div>
 					
-					<button id="submitKakao" type="button" onclick="kakaologin();"><img alt="카카오로그인" src="/resources/image/kakao_login_large_wide.png"></button>
+					<button id="submitKakao" type="button" onclick="kakaologin();"><img alt="카카오로그인" src="/resources/image/kakao_login_large_wide.png"></button> -->
 			</div>
 		</div>
 	</div>
@@ -62,7 +67,7 @@
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<!-- 인증 정보 가져오기 -->
 	<script>
-	window.Kakao.init("caf721d118cb16bb0ca6fb2a15be8b66");
+	window.Kakao.init("4fb6dbe1d5f6609176d8e3fcecf11a9a");
 	function kakaologin(){
 	    window.Kakao.Auth.login({ 
 	        scope   : 'profile_nickname, account_email',
@@ -75,7 +80,7 @@
 	                    console.log(kakao_account);
 	                    console.log(kakao_account.profile.nickname);
  	                    let obj = {
-	                    		userId : kakao_account.email,
+	                    		userEmail : kakao_account.email,
 	                    		userName : kakao_account.profile.nickname
 	                    };
 	                    
@@ -137,13 +142,10 @@
 	                      }
 		            })
 		            .fail(function(jqXHR) {
-		                console.log(jqXHR);
 		                alert(jqXHR);
 		            })
 			
 		}
 	</script>
 </body>
-</html>
-
 </html>

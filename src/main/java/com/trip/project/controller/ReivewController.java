@@ -24,6 +24,7 @@ import com.trip.project.dto.LoginDTO;
 import com.trip.project.service.CommunityService;
 import com.trip.project.service.Ocr;
 import com.trip.project.service.OcrTest;
+import com.trip.project.service.PlanService;
 
 @Controller
 @RequestMapping("/review")
@@ -33,6 +34,9 @@ public class ReivewController {
 	
 	@Autowired
 	private CommunityService cService;
+	
+	@Autowired
+	private PlanService pservice;
 	
 	@Autowired
 	ResourceLoader resourceLoader;
@@ -52,7 +56,6 @@ public class ReivewController {
         resultList.add(res);
         resultList.add(OcrTest.selectByPlaceNumber(placeNumber));
         resultList.add(OcrTest.selectRecommandPlaceNumber(placeNumber));
-        System.out.println(res);
         return resultList;
     }
 
@@ -63,4 +66,14 @@ public class ReivewController {
 	    OcrTest.insertRecommandData(userID, placeNumber, date);
 	    if(db_check==2)OcrTest.updatePlaceGood(placeNumber);
 	}
+	
+	// 마이페이지 나의 리뷰 recommand 삭제
+	@ResponseBody
+	@PostMapping("/reviewdelete")
+	public String reviewdelete(@RequestParam("userID")String userID, @RequestParam("recommandNumber") String recommandNumber) {
+		int res = pservice.reviewdelete(userID, recommandNumber);
+		return userID.toString()+"님의"+recommandNumber.toString()+"번 리뷰가 삭제되었습니다.";
+	}
+	
+	
 }

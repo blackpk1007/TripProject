@@ -1,5 +1,6 @@
-package com.trip.project.controller;
+	package com.trip.project.controller;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.project.dto.CourseDTO;
 import com.trip.project.dto.CourseDetailDTO;
+import com.trip.project.dto.PlaceDTO;
 import com.trip.project.dto.PlanDetailDTO;
 import com.trip.project.service.CourseService;
+import com.trip.project.service.MainpageService;
+import com.trip.project.service.PlanService;
 
 @Controller
 @RequestMapping("/course")
@@ -31,6 +35,8 @@ public class CourseController {
 	@Autowired
 	private CourseService cService;
 	
+	@Autowired
+	private MainpageService mservice;
 	// 코스 추천
 	@RequestMapping("/recommandcourse")
 	public String recommandcourse(Model model) {
@@ -76,8 +82,6 @@ public class CourseController {
 	public List<CourseDTO> seasonsdates(@RequestBody Map<String, List<Integer>> days){
 		List<Integer> selectDays = days.get("days");
 		List<Integer> selectMonths = days.get("months");
-		System.out.println("season days  days: "+selectDays);
-		System.out.println("season days  months: "+selectMonths);
 		List<CourseDTO> season = cService.courseDaysSeasons(selectDays, selectMonths);
 		
 		return season;
@@ -93,42 +97,77 @@ public class CourseController {
 	}
 	// 코스 상세
 	@RequestMapping("/coursedetail")
-	public String coursedetail(Model model, String planName, String userID){
-		cService.courseListCount(userID, planName);
-		List<CourseDetailDTO> dtoList = cService.courseDetailList(userID, planName);
-		
+	public String coursedetail(Model model, String planName, String shareID){
+		cService.courseListCount(shareID, planName);
+		List<CourseDetailDTO> dtoList = cService.courseDetailList(shareID, planName);
 		List<Map<String, Object>> resultList = new ArrayList<>();
-		
 		   Map<String, Object> resultMap = new LinkedHashMap<>();
 
 		   for (CourseDetailDTO dto : dtoList) {
 		        String date = dto.getCourseDetailDate();
 		        String color = dto.getCourseDetailColor();
+		        
 		        if (!resultMap.containsKey(date)) {
 		            Map<String, Object> itemMap = new HashMap<>();
 		            itemMap.put("date", date);
 		            itemMap.put("color", color);
 		            itemMap.put("lonLatPairs", new ArrayList<>());
+		            itemMap.put("placeName", new ArrayList<>());
 		            resultMap.put(date, itemMap);
 		        }
 		        
 		        Map<String, Object> itemMap = (Map<String, Object>) resultMap.get(date);
 		        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) itemMap.get("lonLatPairs");
-
+		        List<Map<String, String>> placeName = (List<Map<String, String>>) itemMap.get("placeName");
 		        Map<String, String> lonLatMap = new HashMap<>();
+		        Map<String, String> placeNameMap = new HashMap<>();
+		        placeNameMap.put("placeName", dto.getPlaceName());
 		        lonLatMap.put("lon", dto.getCourseDetailLon());
 		        lonLatMap.put("lat", dto.getCourseDetailLat());
 		        lonLatPairs.add(lonLatMap);
-		        System.out.println("test : "+lonLatPairs);
+		        placeName.add(placeNameMap);
 		    }
 		   resultList.add(resultMap);
-		   System.out.println("controller : "+resultList);
 		   
 		   model.addAttribute("coursemarker", resultList);
 		   model.addAttribute("coursedetailLists", dtoList);
-		   model.addAttribute("coursedetail", cService.courseDetail(userID, planName));
-		   model.addAttribute("placeInfo", cService.coursePlace(userID, planName));
-		
+		   model.addAttribute("coursedetail", cService.courseDetail(shareID, planName));
+		   model.addAttribute("courseimage", cService.courseImage(shareID, planName));
+		  
 		return "coursedetail";
 		}
+	
+	@ResponseBody
+	@PostMapping("/info")
+	public PlaceDTO placeInfo(@RequestParam("placeName") String placeName) {
+		PlaceDTO dto = mservice.getPlaceInfo(placeName); 
+		
+		return dto;
 	}
+	
+	@ResponseBody
+	@PostMapping("/save")
+	public int coursesave(@RequestParam("planName") String planName, @RequestParam("saveID") String saveID, @RequestParam("shareID") String shareID) {
+		System.out.println("controller save : "+planName);
+		System.out.println("controller save : "+saveID);
+		System.out.println("controller save : "+shareID);
+		int result = cService.coursesave(shareID, planName, saveID);
+		int result2 = cService.courseDetailSave(shareID, planName, saveID);
+		
+		if(result > 0 && result2 > 0) {
+			return 1;
+		}
+		
+		return 0;
+	}
+}
+
+
+
+
+
+
+
+
+
+

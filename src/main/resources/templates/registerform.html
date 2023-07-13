@@ -9,21 +9,25 @@
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<div class="header-left">
+				<a href="/plan" id="label-left-plan">일정 만들기</a>
+				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+				<a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
 			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
 				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
-		</div>
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>				</div> 
+			</div>
 	</div>
 	<div class="signup1">
 		<div class="signup2">
@@ -55,7 +59,8 @@
 						&nbsp;비밀번호 확인 <input type="password" id="userPW2" name="userPW2">
 					</div>
 					<div class="loginForm">
-						&nbsp;이메일 <input type="text" id="userEmail" name="userEmail">
+						&nbsp;이메일 <button id="sendAuthButton" type="button" onclick="sendEmailConfirm()" >인증번호 전송</button>
+						<input type="text" id="userEmail" name="userEmail" disabled>
 					</div>
 					<div class="loginForm">
 						&nbsp;인증번호 입력 <input type="text" id="authCode" name="authCode" placeholder="인증번호8자리입력" maxlength="8">
@@ -67,10 +72,9 @@
 					-->
 
 					<!-- temp? -->
-					<button id="signinButton" type="submit" onclick="return regist_check();">회원가입</button>
+					<button id="userAuthButton" type="button" onclick="emailAuth()">이메일 인증</button>
+					<button id="signinButton" type="submit" onclick="return regist_check();" disabled>회원가입</button>
 				</form>
-					<button id="AuthButton" type="submit" onclick="sendEmailConfirm()">인증번호 전송</button>
-					<button id="AuthButton" type="submit" onclick="emailAuth()">인증번호 입력</button>
 					<input type="hidden" id="acd">
 
 			</div>
@@ -82,15 +86,23 @@
 <script th:inline="javascript">
 function emailAuth(){
 	/* var authcode = [[${session.authcode}]]; */
-	var userauthcode = document.getElementById("acd").value;
-	var inputauthcode = document.getElementById("authCode").value;
-	console.log(userauthcode);
-	console.log(inputauthcode);
-	if (userauthcode == inputauthcode){
+	var sendauthcode = document.getElementById("acd").value;
+	var userauthcode = document.getElementById("authCode").value;
+	if (sendauthcode == ""){
+		alert("이메일 인증번호 요청을 해 주세요.")
+		return false;
+	}
+	if(userauthcode == ""){
+		alert("받으신 인증번호를 입력 해 주세요.")
+		return false;
+	}
+	if (sendauthcode == userauthcode){
+	document.querySelector('#signinButton').disabled = false;
+	document.querySelector('#userEmail').readOnly = true;
 	alert(" 인증번호가 일치합니다! ");
 	}else{
 	alert(" 인증번호가 일치하지 않습니다!");
-	};
+	}
 };
 </script>
 </body>

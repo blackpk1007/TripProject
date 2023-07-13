@@ -55,15 +55,15 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public PlanDTO userplan(String userID) {
+	public PlanDTO userplan(String shareID) {
 
-		return pmapper.userPlan(userID);
+		return pmapper.userPlan(shareID);
 	}
 	
 	@Override
-	public List<PlanDTO> userPlancount(String userID) {
+	public List<PlanDTO> userPlancount(String shareID) {
 
-		return pmapper.userPlancount(userID);
+		return pmapper.userPlancount(shareID);
 	}
 
 	@Override
@@ -73,24 +73,24 @@ public class PlanServiceImpl implements PlanService{
 	}
 	// 마이페이지 나의 일정 삭제 - 플랜,플랜디테
 	@Override
-	public int planDelete(String userID, String planName) {
+	public int planDelete(String shareID, String planName) {
 
-		return pmapper.planDelete(userID,planName);
+		return pmapper.planDelete(shareID,planName);
 	}
 	@Override
-	public int planDetaildelete(String userID, String planName) {
+	public int planDetaildelete(String shareID, String planName) {
 		
-		return pmapper.planDetaildelete(userID, planName);
+		return pmapper.planDetaildelete(shareID, planName);
 	}
 	// 코스,코스디테일 삭제 
 	@Override
-	public int courseDelete(String userID, String planName) {
-		return pmapper.courseDelete(userID, planName);
+	public int courseDelete(String shareID, String planName) {
+		return pmapper.courseDelete(shareID, planName);
 	}
 	
 	@Override
-	public int courseDetaildelete(String userID, String planName) {
-		return pmapper.courseDetaildelete(userID, planName);
+	public int courseDetaildelete(String shareID, String planName) {
+		return pmapper.courseDetaildelete(shareID, planName);
 	}
 	
 
@@ -113,18 +113,18 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public int planShare(String userID, String planName) {
-		PlanDTO dto = pmapper.datecount(userID, planName);
+	public int planShare(String shareID, String planName) {
+		PlanDTO dto = pmapper.datecount(shareID, planName);
 		int fd = Integer.parseInt(dto.getPlanFirstDate().replaceAll("-", ""));
 		int ld = Integer.parseInt(dto.getPlanLastDate().replaceAll("-", ""));
 		int datecount = ld-fd+1;
 		
-		return pmapper.planShare(userID, planName, datecount);
+		return pmapper.planShare(shareID, planName, datecount);
 	}
 	@Override
-	public int planDetailshare(String userID, String planName) {
+	public int planDetailshare(String shareID, String planName) {
 		
-		return pmapper.planDetailshare(userID, planName);
+		return pmapper.planDetailshare(shareID, planName);
 	}
 //	// 마이페이지 recommandPlaceNumber로 place 정보(placeName용) 가져오는거 
 //	@Override
@@ -134,11 +134,11 @@ public class PlanServiceImpl implements PlanService{
 //	}
 
 	// 마이페이지 리뷰 갯수
-	@Override
-	public List<RecommandDTO> usermainRecommand(String userID) {
-		
-		return pmapper.usermainRecommand(userID);
-	}
+//	@Override
+//	public List<RecommandDTO> usermainRecommand(String userID) {
+//		
+//		return pmapper.usermainRecommand(userID);
+//	}
 	@Override
 	public List<RecommandDTO> user2recommand(String userID) {
 
@@ -151,5 +151,51 @@ public class PlanServiceImpl implements PlanService{
 
 		return pmapper.placeSearchCount(keyword);
 }
+	// 마이페이지 리뷰 삭제 recommand 
+	@Override
+	public int reviewdelete(String userID, String recommandNumber) {
 
+		return pmapper.reviewdelete(userID, recommandNumber);
+	}
+
+	@Override
+	public List<RecommandDTO> placename(String userID) {
+		
+		return pmapper.placename(userID);
+	}
+
+	@Override
+	public List<PlaceDTO> placeSearchDefault(placePagination paging) {
+
+		return pmapper.placeSearchDefault(paging);
+	}
+
+	@Override
+	public List<PlanDTO> savePlanList(String userID) {
+
+		return pmapper.savePlanList(userID);
+	}
+
+	@Override
+	public int plansaveDelete(String shareID, String planName, String saveID) {
+
+		return pmapper.plansaveDelete(shareID,planName,saveID);
+	}
+	@Override
+	public int plansaveDetaildelete(String shareID, String planName, String saveID) {
+		
+		return pmapper.plansaveDetaildelete(shareID, planName,saveID);
+	}
+	// 코스,코스디테일 삭제 
+	@Override
+	public int coursesaveDelete(String shareID, String planName, String saveID) {
+		return pmapper.coursesaveDelete(shareID, planName,saveID);
+	}
+	
+	@Override
+	public int coursesaveDetaildelete(String shareID, String planName, String saveID) {
+		return pmapper.coursesaveDetaildelete(shareID, planName,saveID);
+	}
+
+	
 }

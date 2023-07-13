@@ -46,7 +46,7 @@ public class PlanController {
 	private WeatherService wservice;
 	
 	@RequestMapping
-	public String planMain(Model model, placePagination paging) throws IOException{
+	public String planMain(Model model, placePagination paging) throws IOException, InterruptedException{
 		model.addAttribute("jeju", wservice.Jeju());
 		model.addAttribute("seogwipo", wservice.Seogwipo());
 		model.addAttribute("placeRestaurantList", pservice.placeRestaurantList(paging));
@@ -66,7 +66,6 @@ public class PlanController {
 	@GetMapping("/birthList")
 	public List<LoginDTO> birthList(@RequestParam int recommandPlaceNumber) {
 		List<LoginDTO> birthList = pservice.birthList(recommandPlaceNumber);
-		System.out.println(birthList);
 		return birthList;
 	}
 	
@@ -74,8 +73,6 @@ public class PlanController {
 	@GetMapping("/fetchMarkers") 
 	public Map<String, Object> planMarker(@RequestParam("category")String category, @RequestParam("pageNum") int pageNum, Model model) {
 		int totalItems = pservice.placeCategoryCount(category);
-		System.out.println("controller category : "+category);
-		System.out.println("controller totalitem: "+totalItems);
         int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
 
         // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
@@ -101,7 +98,7 @@ public class PlanController {
 	@PostMapping("/createplan")
 	public String createPlan(@RequestBody Map<String, Object> requestData, Model model) {
 	    List<Map<String, Object>> inputValues = (List<Map<String, Object>>) requestData.get("inputValues");
-	    String userID = (String) requestData.get("userID");
+	    String shareID = (String) requestData.get("userID");
 	    String planName = (String) requestData.get("planName");
 	    String firstDate = null;
 	    String lastDate = null;
@@ -119,18 +116,13 @@ public class PlanController {
 	        for (Map<String, String> lonLatPair : lonLatPairs) {
 	            String lon = lonLatPair.get("lon");
 	            String lat = lonLatPair.get("lat");
-	            PlanDetailDTO detaildto = new PlanDetailDTO(null, userID, planName, date, lon, lat, color);	           
+	            PlanDetailDTO detaildto = new PlanDetailDTO(null, shareID, null, planName, date, lon, lat, color);	           
 	            pservice.planDetailInsert(detaildto);
 	            // 데이터베이스에 저장 로직 구현
 	            // 예: saveDataToDatabase(userID, planName, date, color, lon, lat);
 	        }
-	        System.out.println("controller - user : "+userID);
-	        System.out.println("controller - name : "+planName);
-	        System.out.println("Controller - Date: " + date);
-	        System.out.println("Controller - Color: " + color);
-	        System.out.println("controller pairs : " + lonLatPairs + "\n");
 	    }
-		PlanDTO dto = new PlanDTO(null, userID, planName, firstDate, lastDate, 0);
+		PlanDTO dto = new PlanDTO(null, shareID, null, planName, firstDate, lastDate, 0);
 		pservice.planInsert(dto);
 		
 		return "main"; 
@@ -144,10 +136,6 @@ public class PlanController {
 	        String date = (String) inputValue.get("date");
 	        String color = (String) inputValue.get("color");
 	        List<Map<String, String>> lonLatPairs = (List<Map<String, String>>) inputValue.get("lonLatPairs");
-
-	        System.out.println("Controller - Date: " + date);
-	        System.out.println("Controller - Color: " + color);
-	        System.out.println("controller pairs : " + lonLatPairs + "\n");
 	    }
 
 	    return "course";
@@ -158,8 +146,6 @@ public class PlanController {
 		
 		model.addAttribute("arriveds", aservice.jejuArrived());
 		model.addAttribute("boardings", aservice.jejuBoarding());
-		System.out.println(aservice.jejuArrived());
-		System.out.println(aservice.jejuBoarding());
 		
 		return "airplane";
 	}
@@ -168,22 +154,41 @@ public class PlanController {
 	@PostMapping("/search")
 	public Map<String, Object> search(@RequestParam("keyword") String keyword, @RequestParam("pageNum") int pageNum) throws UnsupportedEncodingException {
 		String KeywordDecode = URLDecoder.decode(keyword, "UTF-8");
-
-		int totalItems = pservice.placeSearchCount(KeywordDecode);
-		int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
-				
-        // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
-        if (pageNum < 1) {
-            pageNum = 1;
-        } else if (pageNum > totalPages) {
-        	pageNum = totalPages;
-        }
-        
+		
+		
+        placePagination paging = new placePagination(pageNum, 20);
         // 현재 페이지에 해당하는 데이터 조회
         Map<String, Object> responseData = new HashMap<>();
-        responseData.put("placeList", dto);
-        responseData.put("totalPages", totalPages);
-        responseData.put("currentPage", pageNum);
+        if(KeywordDecode.isEmpty()) {
+        	int totalItems = pservice.placeRestaurantListCount();
+    		int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
+    				
+            // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
+            if (pageNum < 1) {
+                pageNum = 1;
+            } else if (pageNum > totalPages) {
+            	pageNum = totalPages;
+            }
+        	List<PlaceDTO> dto = pservice.placeSearchDefault(paging);
+        	responseData.put("placeList", dto);
+			responseData.put("totalPages", totalPages);
+			responseData.put("currentPage", pageNum);
+        	
+		}else {
+			int totalItems = pservice.placeSearchCount(KeywordDecode);
+			int totalPages = (int) Math.ceil((double) totalItems / 20); // 전체 페이지 수 계산
+					
+	        // 현재 페이지 번호가 유효한 범위를 벗어날 경우 첫 번째 페이지로 설정
+	        if (pageNum < 1) {
+	            pageNum = 1;
+	        } else if (pageNum > totalPages) {
+	        	pageNum = totalPages;
+	        }
+			List<PlaceDTO> dto = pservice.placeSearch(KeywordDecode, paging);
+			responseData.put("placeList", dto);
+			responseData.put("totalPages", totalPages);
+			responseData.put("currentPage", pageNum);
+		}
 		
 		return responseData;
 	}

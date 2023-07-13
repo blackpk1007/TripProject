@@ -2,13 +2,15 @@
 
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
-	/* display: flex;
-            justify-content: center; */
+	font-size: 1.8rem;
+	display:grid;
+	grid-template-rows: 13vh;
+	font-weight:500;
+	text-shadow:  -0.1px 0.1px 0 #000, 0.1px 0.1px 0 #000;
 }
 
 .header-category {
@@ -16,37 +18,45 @@
 	justify-content: center;
 	align-items: center;
 }
-
-#logimg {
-	width: 15vw;
-	height: 12vh;
-	margin-left: 7vw;
-	margin-right: 14vw;
+.header-left{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-center{
+	flex:3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-right{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
+#logimg {
+	width: 280px;
+	height: 160px;
+	padding-right:1vw;
+}
+
+#label-left-plan {
+	margin: auto;
 }
 
 #label-left-course {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-community {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-chat {
-	margin-right: 3vw;
-	padding-left: 1vw;
-	padding-right: 1vw;
+	margin: auto;
 }
 
 #label-right-login {
@@ -58,7 +68,6 @@
 #label-right-register {
 	margin-left: 3vw;
 }
-
 .signup1 {
 	width: 25vw;
 	min-width: 300px;

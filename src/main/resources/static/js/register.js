@@ -103,7 +103,6 @@ function regist_check() {
       return false;
   }
   
-  
   alert("회원가입이 완료되었습니다!");
 
   //입력 값 전송
@@ -141,6 +140,8 @@ function idCheck(){
        		console.log(result);
                 if(result == 0 ){
                 alert(useridvalue+"는 사용가능한 아이디입니다");
+                document.querySelector('#userID').readOnly = true;
+                document.querySelector('#userEmail').disabled = false;
 				}else{
 				alert("중복된 아이디가 존재합니다!");
 				userID.focus();
@@ -154,19 +155,31 @@ function idCheck(){
 	
 };
 
+// 인증번호 보내기 버튼 기능 
 function sendEmailConfirm(){
-    var emailInput = document.getElementById("userEmail").value;
-    $.ajax({
+	
+	var emailInput = document.getElementById("userEmail").value;
+	if (emailInput == "") {
+    alert("아이디 중복체크 후 이메일 주소를 입력하세요.");
+    emailInput.focus();
+    return false;
+  	}
+  	var emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+  	if (!emailRegExp.test(emailInput)) {
+      alert("이메일 형식이 올바르지 않습니다!");
+      emailInput.focus();
+      return false;
+  	}
+  	
+      $.ajax({
       url: '/login/emailConfirm',
       method: 'POST',
       data: { userEmail : emailInput
       },
       success: function (data) {
-    	  
-      		alert(data);
+      		alert("인증메일 전송에 성공했습니다. 인증코드를 입력해주세요.");
       		var ac = document.getElementById("acd");
       		ac.value = data;
-      		console.log(ac);
       },
       error: function () {
         console.log('이메일전송에 실패했습니다.');
@@ -175,7 +188,7 @@ function sendEmailConfirm(){
 };
 
 
-//alert("인증메일 전송에 성공했습니다. 3분안에 인증코드를 입력해주세요.");
+
 
 //아이디 중복체크 팝업창(현재 공백문서)
 function id_check() {

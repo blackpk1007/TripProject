@@ -5,53 +5,71 @@
 <title>Insert title here</title>
 
 <style type="text/css">
+html{
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
-	/* display: flex;
-            justify-content: center; */
+	font-size:62.5%;
+	display:grid;
+	grid-template-rows: 13vh;
+	font-weight:500;
+	text-shadow:  -0.1px 0.1px 0 #000, 0.1px 0.1px 0 #000;
+}
+.header a{
+	color: inherit;
+	text-decoration: none;
 }
 
 .header-category {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-size:1.8em;
+}
+.header-left{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-center{
+	flex:3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-right{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #logimg {
-	width: 15vw;
-	height: 12vh;
-	margin-left: 7vw;
-	margin-right: 14vw;
+	width: 280px;
+	height: 160px;
+	padding-right:1vw;
 }
 
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
+#label-left-plan {
+	margin: auto;
 }
 
 #label-left-course {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-community {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-chat {
-	margin-right: 3vw;
-	padding-left: 1vw;
-	padding-right: 1vw;
+	margin: auto;
 }
 
 #label-right-login {
@@ -63,6 +81,7 @@
 #label-right-register {
 	margin-left: 3vw;
 }
+
 #community {
 	width: 50%;
 	margin: 20px auto;
@@ -143,9 +162,7 @@
 }
 
 #write {
-	clear: both;
 	float: right;
-	margin-top: 1%;
 	margin-right: 2.8%
 }
 
@@ -160,23 +177,24 @@ select {
 	width: 150%;
 	height: 3.3vh;
 	background-color: #B8E9FF;
-	border-color: #B8E9FF;
+  	border: none;
 	border-radius: 7px;
 	cursor: pointer;
 }
 #gt{
 	width:10%;
 	float:left;
-	margin-right:30%;
+	margin-top: 0.5vh;
 }
 
 #lt{
 	width:10%;
 	float:left;
-	margin-left:30%;
+	margin-left:20%;
+	margin-top: 0.6vh;
 }
 #pagingNumber{
-	width:20%;
+	width:40%;
 	float:left;
 }
 p{margin:0;}
@@ -187,15 +205,17 @@ p{margin:0;}
 	
 }
 
-#gt a{text-decoration: none; color: black;}
-#lt a{text-decoration: none; color: black;}
+#gt a{text-decoration: none; color: black; }
+#lt a{text-decoration: none; color: black; }
 #pagingNumber a{
 	text-decoration: none; 
 	color:black; 
-	width:10%;
+	width:5.5%;
+	padding:6px;
 	display: inline-block; }
 .on{
-	width:10%;
+	width:5.5%;
+	padding:6px;
 	background-color:#B8E9FF; 
 	border-radius:50%; 
 	display: inline-block;}
@@ -423,7 +443,6 @@ function drawListCategory(){
 		communityCategory:value	
 	};
 	
-	console.log(value+": drawList");
 	//ajax로 요청 후 해당 카테고리의 데이터 응답받기.
 	$.ajax({
 		url: '/community/selectbox',
@@ -432,7 +451,6 @@ function drawListCategory(){
 		contentType: 'application/json',
 		data: JSON.stringify(category),
 		success: function(data) {
-			console.log(data);
 			$("#lists").empty();
 			
 			findAllPost(data.list, data.pagination);
@@ -467,20 +485,24 @@ function drawListCategory(){
 <body>
 	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			<div class="header-left">
+				<a href="/plan" id="label-left-community">일정 만들기</a> 
+				<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
+				<a href="/chatting" id="label-left-chat">동행구하기</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
 			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
 				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 	<div id="community">

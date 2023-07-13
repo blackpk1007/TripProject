@@ -4,19 +4,23 @@
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:inline="javascript">
-	
+let popularity = $('#popularity');
+let followingdate = $('#followingdate');
 $(document).ready(function() {
     $('#popularity').click(function() {
-      changeList('popularity');
+		changeList('popularity');
+		document.getElementById("popularity").style.color='#FD6F22';
+		document.getElementById("followingdate").style.color='black';
     });
 
     $('#followingdate').click(function() {
       changeList('followingdate');
+      document.getElementById("popularity").style.color='black';
+	  document.getElementById("followingdate").style.color='#FD6F22';
     });
   });
   
 function changeList(sortBy) {
-	console.log(sortBy);
 		$.ajax({
 			url:'/course/sort',
 			type: 'POST',
@@ -36,13 +40,24 @@ function generateHTML(data) {
         var planName = course.planName;
         var courseFirstDate = course.courseFirstDate;
         var coursetravelDate = course.coursetravelDate;
-        var userID = course.userID;
+        var shareID = course.shareID;
         var courseCount = course.courseCount;
+        var coursePic = '';
+
+        if (coursetravelDate > 0 && coursetravelDate < 4) {
+            coursePic = '/resources/image/13day.png';
+        } else if (coursetravelDate > 3 && coursetravelDate < 7) {
+            coursePic = '/resources/image/46day.png';
+        } else if (coursetravelDate > 6 && coursetravelDate < 10) {
+            coursePic = '/resources/image/79day.png';
+        } else {
+            coursePic = '/resources/image/10day.png';
+        }
 
         var itemHtml = `
             <div class="plan1">
                 <div class="loc1">
-                    <img class="coursepic" src="/resources/image/course1.png">
+                    <img class="coursepic" src="${coursePic}">
                 </div>
                 <div class="loc2">
                     <div class="col1">
@@ -50,11 +65,11 @@ function generateHTML(data) {
                         <div class="category"> 여행 날짜 </div>
                         <div class="category"> 여행 기간 </div>
                         <div class="username">
-                            <img class="usernamelogo" src="/resources/image/stonepapa.png">${userID}
+                            <img class="usernamelogo" src="/resources/image/stonepapa.png">${shareID}
                         </div>
                     </div>
                     <div class="col2">
-                        <div class="data"><a href="/course/coursedetail?planName=${planName}">${planName}</a></div>
+                        <div class="data"><a href="/course/coursedetail?planName=${planName}&shareID=${shareID}">${planName}</a></div>
                         <div class="data">${courseFirstDate}</div>
                         <div class="data">${coursetravelDate}일간</div>
                         <div class="userview">
@@ -70,6 +85,7 @@ function generateHTML(data) {
 
     $('.main1').html(html);
 }
+
 
 function displayAllCourses() {
     $.ajax({
@@ -146,8 +162,6 @@ function sendSelectedSeasons(seasons) {
     if (seasons.includes('겨울')) {
         selectedMonths.push(12, 1, 2);
     }
-    console.log(selectedMonths);
-    console.log(typeof selectedMonths);
     $.ajax({
         url: '/course/season',
         type: 'POST',
@@ -181,7 +195,6 @@ function sendSelectedDates(dates) {
         selectedDayRanges.push(10);
     }
     
-    console.log(selectedDayRanges);
     
     $.ajax({
         url: '/course/days',
@@ -235,8 +248,6 @@ function sendSelectedDatesSeasons(dates, seasons) {
         selectedMonths.push(12, 1, 2);
     }
     
-    console.log(selectedDayRanges);
-    console.log(selectedMonths);
     
     $.ajax({
         url: '/course/seasonsdates',
@@ -252,19 +263,40 @@ function sendSelectedDatesSeasons(dates, seasons) {
         }
     });
 }
+function getImageDay(travelDate) {
+    if (travelDate >= 1 && travelDate <= 3) {
+        return '13';
+    } else if (travelDate >= 4 && travelDate <= 6) {
+        return '46';
+    } else if (travelDate >= 7 && travelDate <= 9) {
+        return '79';
+    } else {
+        return '10';
+    }
+}
 </script>
 <title>코스 추천</title>
 <link rel="stylesheet" href="/resources/css/reset.css"	type="text/css">
 <style type="text/css">
+html::-webkit-scrollbar {
+	display: none;
+	font-family: 'Noto Sans KR Light', sans-serif;
+}
+body {
+    display: block;
+    margin: 8px;
+}
 .header {
 	width: 90vw;
-	height: 13vh;
 	border-bottom: 1px solid #EEEEEE;
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 5vh;
-	/* display: flex;
-            justify-content: center; */
+	font-size:1.8rem;
+	display:grid;
+	grid-template-rows: 13vh;
+	font-weight:500;
+	text-shadow:  -0.1px 0.1px 0 #000, 0.1px 0.1px 0 #000;
 }
 
 .header-category {
@@ -273,36 +305,45 @@ function sendSelectedDatesSeasons(dates, seasons) {
 	align-items: center;
 }
 
-#logimg {
-	width: 15vw;
-	height: 12vh;
-	margin-left: 9vw;
-	margin-right: 14vw;
+.header-left{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-center{
+	flex:3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.header-right{
+	flex:2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.header-category>label {
-	/* border: 1px solid;
-            border-radius: 5px; */
-	color: #595959;
-	font-family: 'Noto Sans KR Regular', sans-serif;
-	padding: 7px;
-	padding-top: 0.2vh;
-	padding-bottom: 0.2vh;
-	cursor: pointer;
+#logimg {
+	width: 280px;
+	height: 160px;
+	padding-right:1vw;
+}
+
+#label-left-plan {
+	margin: auto;
 }
 
 #label-left-course {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-community {
-	margin-right: 3vw;
+	margin: auto;
 }
 
 #label-left-chat {
-	margin-right: 3vw;
-	padding-left: 1vw;
-	padding-right: 1vw;
+	margin: auto;
 }
 
 #label-right-login {
@@ -314,6 +355,7 @@ function sendSelectedDatesSeasons(dates, seasons) {
 #label-right-register {
 	margin-left: 3vw;
 }
+
 .main_text{
 	font-size:3rem;
 	text-align:center;
@@ -322,12 +364,11 @@ function sendSelectedDatesSeasons(dates, seasons) {
 }
 .course{
 
-	width:64vw;
+	width:71vw;
 	height:20vh;
-  	border:solid #d3d3d3;
-	border-width:2px;
+  	border:3px solid #B8E9FF;
 	position:relative;
-	left: 17.4vw;
+	left: 14vw;
 	top: 2vw;
 	text-align:center;
 }
@@ -407,7 +448,7 @@ function sendSelectedDatesSeasons(dates, seasons) {
 
 /* 줄 */
 hr{
-	width: 90rem;
+	width: 60vw;
 }
 .option{
 	display:flex;
@@ -434,13 +475,15 @@ hr{
 
 /* main 인기순 날짜순 */
 .mymain_text{
+width:50%;
 	font-size:1.8rem;
 	position:relative;
 	top: 4vh;
-	left:18vw;
+	left:6.4vw;
 	display:flex;
-	margin-top: 7.7rem;
+	margin-top: 10rem;
 	margin-bottom: 0.7rem;
+	margin-left : 10%;
 }
 /* 큰틀 */
 .mymain{
@@ -448,9 +491,13 @@ hr{
 	position:relative;
 	display:flex;
 	top:4.5vh;
-	width:90%;
+	width:100%;
 	height:80vh;
-	left:13.9vw;
+	left: 13.4vw;
+	overflow:auto;
+}
+.mymain::-webkit-scrollbar{
+	display: none;
 }
 	/* 세로 4개씩 반갈 왼쪽 */
 .main1{
@@ -460,16 +507,18 @@ hr{
 	border-width:2px;
 	font-size: 1.8rem; */
 	flex:1;
-	padding:1rem;
+	padding:2rem;
 	padding-top:0;
 	height:100%;
-	width:45vw;
+	width:100%;
 	position:relative;
 	/* left:2vw; */
 	display: flex;
 	flex-direction: column;
-  	align-items: center;
-	
+flex-direction: row;	
+flex-wrap: wrap;
+right:1%;
+align-content: start;
 }
 	/* 세로 4개씩 반갈 오른쪽 div 디폴트 세로정렬이라 ㅇㅇ  */
 .main2{
@@ -492,10 +541,10 @@ hr{
 }
 	/* 왼쪽 개별 네모 칸 4개  */
 .plan1{
-	width:30vw;
+	width:35vw;
 	height:15rem;
 	border: solid;
-	border-color: #B8E9FF;
+	border-color: #EEEEEE;
 	border-radius:0.5rem;
 	border-width:2px;
 	font-size: 1.8rem;
@@ -503,16 +552,14 @@ hr{
 	justify-content: center;
   	align-items: center;
 	margin-bottom: 2rem;
-  	margin-left:auto;
   	margin-right:3rem;
-
 }
 	/* 오른쪽 개별 네모 칸 4개  */
 .plan2{
 	width:30vw;
 	height:15rem;
 	border: solid;
-	border-color: #B8E9FF;
+	border-color: #EEEEEE;
 	border-radius:0.5rem;
 	border-width:2px;
 	font-size: 1.8rem;
@@ -646,26 +693,40 @@ hr{
 	width:80%;
 }
 
+#popularity{
+	cursor:pointer;
+}
+#followingdate{
+	cursor:pointer;
+}
+.dates label,
+.seasons label {
+  padding-left: 0.2em; /* 왼쪽에 1em(글자 폰트 크기의 공간) 추가 */
+}
 </style>
 </head>
 
 <body>
  	<div class="header">
 		<div class="header-category">
-			<a href="/course/recommandcourse" id="label-left-course">코스추천</a>
-			 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
-			 <a href="/chatting" id="label-left-chat">채팅방</a>
-			<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
-			<!-- 로그인전 --> 
-				<div th:if="${session.login == null}">
-					<a href="/login" id="label-right-login">로그인</a> 
-					<a href="/login/registerform" id="label-right-login">회원가입</a>
-				</div>
+			<div class="header-left">
+				<a href="/plan" id="label-left-plan">일정 만들기</a>
+				 <a href="/community/communitymain" id="label-left-community">커뮤니티</a> 
+				 <a href="/chatting" id="label-left-chat">동행구하기</a>
+			</div>
+			<div class="header-center">
+				<a href="/"><img src="/resources/image/logo.png" alt="" id="logimg"></a>
+			</div>
+			<!-- 로그인전 -->
+			<div class ="header-right" th:if="${session.login == null}">
+				<a href="/login" id="label-right-login">로그인</a> 
+				<a href="/login/registerform" id="label-right-login">회원가입</a>
+			</div>
 				<!-- 로그인 후 -->
-				<div th:if="${session.login != null}" >
-					<a href="/login/logout" id="label-right-login">로그아웃</a>
-					<a href="/login/usermain" id="label-right-register">마이페이지</a>
-				</div> 
+			<div class ="header-right" th:if="${session.login != null}" >
+				<a href="/login/logout" id="label-right-login">로그아웃</a>
+				<a href="/login/usermain" id="label-right-register">마이페이지</a>
+			</div> 
 		</div>
 	</div>
 <!-- 옵션 -->
@@ -719,15 +780,25 @@ hr{
 </div>
 <!-- 본 -->
 <div class="mymain_text">
-	<div id="popularity" name="popularity">인기순</div>&nbsp;&nbsp;
-	<div id="followingdate" name="followingdate">날짜순</div>
+<div id="popularity" name="popularity" style="color:#FD6F22">인기순</div>&nbsp;&nbsp;
+	<div id="followingdate" name="followingdate" >날짜순</div>
+	
 </div>
 <div class="mymain">
 		<div class="main1"> 
 		 <div th:each="course : ${courses}">
 			<div class="plan1">
-				<div class="loc1">
-					<img class="coursepic" src="/resources/image/course1.png">
+				<div class="loc1" th:if="${course.coursetravelDate > 0 && course.coursetravelDate < 4}">
+					<img class="coursepic" th:src="@{/resources/image/13day.png}">
+				</div>
+				<div class="loc1" th:if="${course.coursetravelDate > 3 && course.coursetravelDate < 7}">
+					<img class="coursepic" th:src="@{/resources/image/46day.png}">
+				</div>
+				<div class="loc1" th:if="${course.coursetravelDate > 6 && course.coursetravelDate < 10}">
+					<img class="coursepic" th:src="@{/resources/image/79day.png}">
+				</div>
+				<div class="loc1" th:if="${course.coursetravelDate > 9}">
+					<img class="coursepic" th:src="@{/resources/image/10day.png}">
 				</div>
 				<div class="loc2">
 					<div class="col1">
@@ -735,10 +806,10 @@ hr{
 						<div class="category"> 여행 날짜 </div>
 						<div class="category"> 여행 기간 </div>
 						<div class="username">
-							<img class="usernamelogo" src="/resources/image/stonepapa.png"> [[${course.userID}]] </div>
+							<img class="usernamelogo" src="/resources/image/stonepapa.png"> [[${course.shareID}]] </div>
 					</div>
 					<div class="col2">
-						<div class="data"><a th:href="|/course/coursedetail?planName=${course.planName}&userID=${course.userID}|"> [[${course.planName}]] </a></div>
+						<div class="data"><a th:href="|/course/coursedetail?planName=${course.planName}&shareID=${course.shareID}|"> [[${course.planName}]] </a></div>
 						<div class="data">[[${course.courseFirstDate}]] </div>
 						<div class="data">[[${course.coursetravelDate}]]일간 </div>
 						<div class="userview">

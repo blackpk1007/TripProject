@@ -41,7 +41,6 @@ public class FileStore {
     // 파일이 여러개 들어왔을 때 처리해주는 부분
     public static List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
         List<UploadFile> storeFileResult = new ArrayList<>();
-        System.out.println("filestore : "+multipartFiles);
         for (MultipartFile multipartFile : multipartFiles) {
             if(!multipartFile.isEmpty()) {
                 storeFileResult.add(storeFile(multipartFile));
